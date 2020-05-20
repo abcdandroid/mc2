@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_10"
+    tools:context=".activities.NewEntranceActivity">
+
+    <ImageView
+        android:id="@+id/gear2"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/spacing_large"
+        android:layout_marginBottom="-30dp"
+        android:background="#0CF44336"
+        android:src="@drawable/gearr" />
+
+
+    <com.nightonke.wowoviewpager.WoWoViewPager
+        android:id="@+id/wowoGear"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true" />
+
+    <com.nightonke.wowoviewpager.WoWoViewPager
+        android:id="@+id/wowo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/radioGroupUserType"
+        android:layout_alignParentTop="true"
+        android:background="@color/indigo_900"
+        app:wowo_scrollDuration="3000" />
+
+    <ImageView
+        android:id="@+id/img_mechanic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/radioGroupUserType"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/mechanic1" />
+
+    <LinearLayout
+        android:id="@+id/txt_normal_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/wowo"
+        android:layout_alignBottom="@id/wowo"
+        android:layout_marginBottom="155dp"
+        android:gravity="center_vertical"
+        android:weightSum="1"
+        android:orientation="horizontal">
+
+
+
+        <TextView
+            android:layout_weight="0.9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:gravity="bottom"
+            android:layoutDirection="rtl"
+            android:text="@string/normal_desc_1"
+            android:textColor="@color/grey_10"
+            android:textDirection="rtl"
+            android:textSize="17dp" />
+
+
+        <ImageView
+            android:id="@+id/gearn1"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="5dp"
+            android:tint="@color/grey_10"
+            android:src="@drawable/gearr2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/txt_normal_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/wowo"
+        android:layout_alignBottom="@id/wowo"
+        android:layout_marginBottom="80dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/gearn2"
+            android:layout_weight="0.9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layoutDirection="rtl"
+            android:text="@string/normal_desc_2"
+            android:textColor="@color/grey_10"
+            android:textDirection="rtl"
+            android:textSize="17dp" />
+        <ImageView
+            android:id="@+id/gearn3"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="5dp"
+            android:tint="@color/grey_10"
+            android:src="@drawable/gearr2" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/txt_mechanic_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/wowo"
+        android:layout_alignBottom="@id/wowo"
+        android:layout_marginBottom="155dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/gearm1"
+            android:layout_weight="0.9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:gravity="bottom"
+            android:layoutDirection="rtl"
+            android:text="@string/mechanic_desc_1"
+            android:textColor="@color/grey_10"
+            android:textDirection="rtl"
+            android:textSize="17dp" />
+        <ImageView
+            android:id="@+id/gearm2"
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="5dp"
+            android:tint="@color/grey_10"
+            android:src="@drawable/gearr2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/txt_mechanic_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/wowo"
+        android:layout_alignBottom="@id/wowo"
+        android:layout_marginBottom="80dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="0.9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layoutDirection="rtl"
+            android:text="@string/mechanic_desc_2"
+            android:textColor="@color/grey_10"
+            android:textDirection="rtl"
+            android:textSize="17dp" />
+        <ImageView
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="5dp"
+            android:tint="@color/grey_10"
+            android:src="@drawable/gearr2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/txt_normal_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/wowo"
+        android:layout_alignBottom="@id/wowo"
+        android:layout_marginBottom="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_weight="0.9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="5dp"
+            android:layoutDirection="rtl"
+            android:text="@string/normal_desc_3"
+            android:textColor="@color/grey_10"
+            android:textDirection="rtl"
+            android:textSize="17dp" />
+        <ImageView
+            android:layout_marginRight="10dp"
+            android:layout_weight="0.1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="top"
+            android:layout_marginTop="5dp"
+            android:tint="@color/grey_10"
+            android:src="@drawable/gearr2" />
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/img_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/radioGroupUserType"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/normal_user" />
+
+    <RadioGroup
+        android:id="@+id/radioGroupUserType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/submit"
+        android:layout_margin="16dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/mechanic_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rbtn_selector"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="کاربر مکانیک هستم"
+            android:textColor="@drawable/rbtn_textcolor_selector" />
+
+        <RadioButton
+            android:id="@+id/normal_user"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:background="@drawable/rbtn_selector"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="کاربر معمولی هستم"
+            android:textColor="@drawable/rbtn_textcolor_selector" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/gear2"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/btn_rounded_primary"
+        android:gravity="center"
+        android:padding="16dp"
+        android:text="تکمیل اطلاعات"
+        android:textColor="@android:color/white"
+        android:textSize="16dp" />
+
+
+</RelativeLayout>

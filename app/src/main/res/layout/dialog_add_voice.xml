@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_large">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lt_record"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:lottie_rawRes="@raw/record"
+            app:lottie_loop="true"
+            />
+
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="32dp"
+            android:id="@+id/btn_manage_record"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fillet_add_store"
+            android:text="ضبط کن"
+            android:textColor="@color/icons" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:id="@+id/layer_pb"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/fillet_remove_store"
+            >
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+
+                <ImageView
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/play_icon"
+                    android:id="@+id/ivPlayPause"
+                    android:paddingTop="4dp"
+                    android:paddingBottom="4dp"
+                    />
+
+            </RelativeLayout>
+
+
+            <SeekBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/sbProgress"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/bt_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="بی خیال" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_margin="8dp"
+            android:id="@+id/bt_submit"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fillet_add_store"
+            android:gravity="center"
+            android:text="بفرست بره"
+            android:textColor="@color/icons" />
+
+    </LinearLayout>
+
+</LinearLayout>
