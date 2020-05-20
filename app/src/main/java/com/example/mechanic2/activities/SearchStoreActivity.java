@@ -137,4 +137,5 @@ public class SearchStoreActivity extends AppCompatActivity implements View.OnCli
     }
 
 
+
 }
