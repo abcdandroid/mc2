@@ -10,15 +10,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.util.Pair;
@@ -67,7 +71,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StoreFragment extends Fragment implements VoiceOnClickListener {
+public class StoreFragment extends Fragment implements VoiceOnClickListener, View.OnClickListener {
 
     private static final int REQUEST_CODE_FOR_SEARCH_GOODS = 101;
     public static final String ALL = "همه";
@@ -80,7 +84,15 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener {
     private StoreRecyclerAdapter adapter;
     private boolean isLoading;
 
-    public static SearchOnBackPressed searchOnBackPressed;
+
+    private CoordinatorLayout parent;
+    private AppBarLayout appbar;
+    private TextView submitFilter;
+    private AutoCompleteTextView carQuestion;
+    private AutoCompleteTextView goodQuestion;
+    private AppCompatTextView stoke;
+    private AppCompatSpinner warrantySpinner;
+    private AppCompatSpinner countrySpinner;
 
 
 
@@ -99,6 +111,16 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener {
 
     private View init(View inflate) {
         recyclerStore = inflate.findViewById(R.id.recyclerStore);
+        parent = inflate.findViewById(R.id.parent);
+        appbar = inflate.findViewById(R.id.appbar);
+        submitFilter = inflate.findViewById(R.id.submit_filter);
+        carQuestion = inflate.findViewById(R.id.car_question);
+        goodQuestion = inflate.findViewById(R.id.good_question);
+        stoke = inflate.findViewById(R.id.stoke);
+        warrantySpinner = inflate.findViewById(R.id.warranty_spinner);
+        countrySpinner = inflate.findViewById(R.id.country_spinner);
+        initAppbar();
+
 
         recyclerStore.setLayoutManager(new LinearLayoutManager(getContext()) {
             @Override
@@ -117,7 +139,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener {
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
                 if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == tmpGoods.size() - 1 && !isLoading) {
- *//*                   StringRequest stringRequest = new StringRequest(Request.Method.POST, app.adminBaseUrl + lastId, response -> {
+                    StringRequest stringRequest = new StringRequest(Request.Method.POST, app.adminBaseUrl + lastId, response -> {
                         app.l("**" + response + "**");
                         Gson gson = new Gson();
                         AdminMedia[] adminMediasModels = gson.fromJson(response, AdminMedia[].class);
@@ -138,7 +160,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener {
                             DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-                    requestQueue.add(stringRequest);*//*
+                    requestQueue.add(stringRequest);
                     isLoading = true;
                    resumeGetData(lastId, "getStore2", "null", "null", "null");
                 }
@@ -148,6 +170,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener {
         resumeDataListener("getStore2", "null", "null", "null");
         requestGoods(lastId, "getStore2", "null", "null", "null");
         return inflate;
+    }
+
+    private void initAppbar() {
+        stoke.setOnClickListener(this);
     }
 
     private void resumeDataListener(String root, String carName, String goodName, String search) {
@@ -189,7 +215,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener {
                 List<Good> newGoods = response.body();
                 if (newGoods != null) {
 
-                    app.l(newGoods.get(newGoods.size()-1).getId()+"******");
+                    app.l(newGoods.get(newGoods.size() - 1).getId() + "******");
                     lastId = newGoods.get(newGoods.size() - 1).getId();
                 }
                 if (newGoods != null) {
@@ -329,5 +355,27 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener {
 
     }
 
+    boolean is_stoke_active;
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.stoke:
+                is_stoke_active = !is_stoke_active;
+                if (is_stoke_active) {
+                    stoke.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
+                    countrySpinner.setEnabled(false);
+                    countrySpinner.setClickable(false);
+                    warrantySpinner.setEnabled(false);
+                    warrantySpinner.setClickable(false);
+
+                } else
+                    stoke.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
+                countrySpinner.setEnabled(true);
+                countrySpinner.setClickable(true);
+                warrantySpinner.setEnabled(true);
+                warrantySpinner.setClickable(true);
+                break;
+        }
+    }
 }
