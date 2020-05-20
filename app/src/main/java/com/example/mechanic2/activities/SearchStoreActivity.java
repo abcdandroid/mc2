@@ -127,6 +127,7 @@ public class SearchStoreActivity extends AppCompatActivity implements View.OnCli
     @Override
     public void onClick(View v) {
         //test1
+        //test2
         Intent intent = new Intent("aa");
         intent.putExtra("carName", carName.getText().toString());
         intent.putExtra("goodName", goodName.getText().toString());
