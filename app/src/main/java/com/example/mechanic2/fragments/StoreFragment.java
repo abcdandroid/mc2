@@ -45,6 +45,7 @@ import com.downloader.Status;
 import com.downloader.request.DownloadRequest;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.SearchStoreActivity;
+import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
 import com.example.mechanic2.adapters.StoreRecyclerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
@@ -95,7 +96,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private AppCompatSpinner countrySpinner;
 
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +116,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         submitFilter = inflate.findViewById(R.id.submit_filter);
         carQuestion = inflate.findViewById(R.id.car_question);
         goodQuestion = inflate.findViewById(R.id.good_question);
+        carQuestion.setAdapter(new CarAutoCompleteAdapter(getActivity(),R.layout.item));
         stoke = inflate.findViewById(R.id.stoke);
         warrantySpinner = inflate.findViewById(R.id.warranty_spinner);
         countrySpinner = inflate.findViewById(R.id.country_spinner);
@@ -369,12 +370,13 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     warrantySpinner.setEnabled(false);
                     warrantySpinner.setClickable(false);
 
-                } else
+                } else {
                     stoke.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
-                countrySpinner.setEnabled(true);
-                countrySpinner.setClickable(true);
-                warrantySpinner.setEnabled(true);
-                warrantySpinner.setClickable(true);
+                    countrySpinner.setEnabled(true);
+                    countrySpinner.setClickable(true);
+                    warrantySpinner.setEnabled(true);
+                    warrantySpinner.setClickable(true);
+                }
                 break;
         }
     }
