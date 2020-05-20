@@ -67,7 +67,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StoreFragment extends Fragment implements VoiceOnClickListener, View.OnClickListener {
+public class StoreFragment extends Fragment implements VoiceOnClickListener {
 
     private static final int REQUEST_CODE_FOR_SEARCH_GOODS = 101;
     public static final String ALL = "همه";
@@ -79,16 +79,9 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private List<Good> tmpGoods = new ArrayList<>();
     private StoreRecyclerAdapter adapter;
     private boolean isLoading;
-    private TextView search;
 
-    private Toolbar toolbar;
-    public static SearchButtonAction searchButtonAction;
     public static SearchOnBackPressed searchOnBackPressed;
 
-    private TextView carName;
-    private ImageView closeCarName;
-    private TextView goodName;
-    private ImageView closeGoodName;
 
 
     @Override
@@ -101,34 +94,12 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View inflate = inflater.inflate(R.layout.fragment_store, container, false);
-        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, new IntentFilter("aa"));
         return init(inflate);
     }
 
     private View init(View inflate) {
-        toolbar = inflate.findViewById(R.id.toolbar);
-        toolbar.setVisibility(View.GONE);
-        search = inflate.findViewById(R.id.search);
         recyclerStore = inflate.findViewById(R.id.recyclerStore);
-        carName = inflate.findViewById(R.id.carName);
-        goodName = inflate.findViewById(R.id.goodName);
-        closeCarName = inflate.findViewById(R.id.closeCarName);
-        closeGoodName = inflate.findViewById(R.id.closeGoodName);
 
-        closeCarName.setOnClickListener(this);
-        closeGoodName.setOnClickListener(this);
-        searchButtonAction = new SearchButtonAction() {
-            @Override
-            public void hide() {
-                search.setVisibility(View.INVISIBLE);
-            }
-
-            @Override
-            public void show() {
-                search.setVisibility(View.VISIBLE);
-            }
-        };
-        search.setOnClickListener(this);
         recyclerStore.setLayoutManager(new LinearLayoutManager(getContext()) {
             @Override
             public boolean canScrollVertically() {
@@ -176,22 +147,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         });  */
         resumeDataListener("getStore2", "null", "null", "null");
         requestGoods(lastId, "getStore2", "null", "null", "null");
-        searchOnBackPressed=new SearchOnBackPressed() {
-            @Override
-            public void SearchAll() {
-                ((View) StoreFragment.this.goodName.getParent()).setVisibility(View.INVISIBLE);
-                ((View) StoreFragment.this.carName.getParent()).setVisibility(View.INVISIBLE);
-                isLoading = false;
-                resumeDataListener("getStore2", "null", "null", "null");
-                requestGoods(lastId, "getStore2", "null", "null", "null");
-                search.setText(SEARCH);
-                toolbar.setVisibility(View.GONE);
-
-                Intent intent1=new Intent("searchAction");
-                intent1.putExtra("searchText",search.getText().toString());
-                LocalBroadcastManager.getInstance(Application.getContext()).sendBroadcast(intent1);
-            }
-        };
         return inflate;
     }
 
@@ -281,10 +236,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     if (goods != null) {
                         goods.size();
                         app.t("not found");
-                        StoreFragment.this.search.setText(SEARCH);
-                        toolbar.setVisibility(View.GONE);
-                        ((View) StoreFragment.this.goodName.getParent()).setVisibility(View.INVISIBLE);
-                        ((View) StoreFragment.this.carName.getParent()).setVisibility(View.INVISIBLE);
 
                         isLoading = false;
                         resumeDataListener("getStore2", "null", "null", "null");
@@ -376,143 +327,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         SharedPrefUtils.saveData("soundDownloadId**" + good.getId(), downloadId);
 
 
-    }
-
-
-    //View.OnClickListener
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.search) {
-
-
-
-            Intent intent = new Intent(getContext(), SearchStoreActivity.class);
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
-                    Pair.create(search, search.getTransitionName()));
-            getActivity().startActivity(intent, options.toBundle());
-        } else if (v.getId() == closeGoodName.getId()) {
-            if (((View) closeCarName.getParent()).getVisibility() == View.VISIBLE) {
-                resumeDataListener("getStore2", carName.getText().toString(), "null", "null");
-                requestGoods(lastId, "getStore2", carName.getText().toString(), "null", "null");
-                ((View) StoreFragment.this.goodName.getParent()).setVisibility(View.INVISIBLE);
-                toolbar.setVisibility(View.VISIBLE);
-            } else {
-                search.setText(SEARCH);
-                toolbar.setVisibility(View.GONE);
-                isLoading = false;
-                ((View) StoreFragment.this.goodName.getParent()).setVisibility(View.INVISIBLE);
-                resumeDataListener("getStore2", "null", "null", "null");
-                requestGoods(lastId, "getStore2", "null", "null", "null");
-            }
-        } else if (v.getId() == closeCarName.getId()) {
-            if (((View) closeGoodName.getParent()).getVisibility() == View.VISIBLE) {
-                resumeDataListener("getStore2", "null", goodName.getText().toString(), "null");
-                requestGoods(lastId, "getStore2", "null", goodName.getText().toString(), "null");
-                ((View) StoreFragment.this.carName.getParent()).setVisibility(View.INVISIBLE);
-                toolbar.setVisibility(View.VISIBLE);
-            } else {
-                ((View) StoreFragment.this.carName.getParent()).setVisibility(View.INVISIBLE);
-                search.setText(SEARCH);
-                toolbar.setVisibility(View.GONE);
-                isLoading = false;
-                resumeDataListener("getStore2", "null", "null", "null");
-                requestGoods(lastId, "getStore2", "null", "null", "null");
-            }
-        }
-    }
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String carName = intent.getStringExtra("carName");
-            StoreFragment.this.carName.setText(carName);
-            String goodName = intent.getStringExtra("goodName");
-            StoreFragment.this.goodName.setText(goodName);
-
-
-            if (carName.equals(ALL))
-                ((View) StoreFragment.this.carName.getParent()).setVisibility(View.INVISIBLE);
-            else ((View) StoreFragment.this.carName.getParent()).setVisibility(View.VISIBLE);
-            if (goodName.equals(ALL))
-                ((View) StoreFragment.this.goodName.getParent()).setVisibility(View.INVISIBLE);
-            else ((View) StoreFragment.this.goodName.getParent()).setVisibility(View.VISIBLE);
-
-            if (carName.equals(ALL) && goodName.equals(ALL)) {
-                search.setText(SEARCH);
-                toolbar.setVisibility(View.GONE);
-            } else {
-                search.setText(CANCEL_SEARCH);
-                toolbar.setVisibility(View.VISIBLE);
-
-                Intent intent1=new Intent("searchAction");
-                intent1.putExtra("searchText",search.getText().toString());
-                LocalBroadcastManager.getInstance(Application.getContext()).sendBroadcast(intent1);
-            }
-
-
-
-
-            search.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (search.getText().equals(CANCEL_SEARCH)) {
-
-                        ((View) StoreFragment.this.goodName.getParent()).setVisibility(View.INVISIBLE);
-                        ((View) StoreFragment.this.carName.getParent()).setVisibility(View.INVISIBLE);
-                        isLoading = false;
-                        resumeDataListener("getStore2", "null", "null", "null");
-                        requestGoods(lastId, "getStore2", "null", "null", "null");
-                        search.setText(SEARCH);
-                        toolbar.setVisibility(View.GONE);
-                    } else if (search.getText().equals(SEARCH)) {
-                        Intent intent = new Intent(getContext(), SearchStoreActivity.class);
-                        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(),
-                                Pair.create(search, search.getTransitionName()));
-                        getActivity().startActivity(intent, options.toBundle());
-                    }
-
-                    Intent intent1=new Intent("searchAction");
-                    intent1.putExtra("searchText",search.getText().toString());
-                    LocalBroadcastManager.getInstance(Application.getContext()).sendBroadcast(intent1);
-
-                }
-            });
-
-
-            if (carName.equals(ALL) && !goodName.equals(ALL)) {
-                app.l("A");
-
-                isLoading = false;
-                resumeDataListener("getStore2", "null", goodName, "null");
-                requestGoods(lastId, "getStore2", "null", goodName, "null");
-            } else if (goodName.equals(ALL) && !carName.equals(ALL)) {
-                app.l("B");
-
-
-                isLoading = false;
-                resumeDataListener("getStore2", carName, "null", "null");
-                requestGoods(lastId, "getStore2", carName, "null", "null");
-
-            } else if (!goodName.equals(ALL) && !carName.equals(ALL) && !goodName.equals("") && !carName.equals("")) {
-                app.l("C");
-
-                isLoading = false;
-                resumeDataListener("getStore2", carName, goodName, "null");
-                requestGoods(lastId, "getStore2", carName, goodName, "null");
-            } else if (goodName.equals(ALL) && carName.equals(ALL)) {
-                isLoading = false;
-                resumeDataListener("getStore2", "null", "null", "null");
-                requestGoods(lastId, "getStore2", "null", "null", "null");
-            }
-
-
-        }
-    };
-
-    @Override
-    public void onDestroy() {
-        LocalBroadcastManager.getInstance(Objects.requireNonNull(getActivity())).unregisterReceiver(broadcastReceiver);
-        super.onDestroy();
     }
 
 
