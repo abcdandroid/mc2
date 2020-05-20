@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,6 +48,7 @@ import com.downloader.request.DownloadRequest;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.SearchStoreActivity;
 import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
+import com.example.mechanic2.adapters.MySpinnerAdapter;
 import com.example.mechanic2.adapters.StoreRecyclerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
@@ -63,6 +66,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,8 +98,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private AppCompatTextView stoke;
     private AppCompatSpinner warrantySpinner;
     private AppCompatSpinner countrySpinner;
-
-
+    private int selectedCarId;
+    private int selectedWarrantyId;
+    ArrayAdapter<String> spinnerAdapter;
+    MySpinnerAdapter mySpinnerAdapter;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,6 +115,8 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         return init(inflate);
     }
 
+
+
     private View init(View inflate) {
         recyclerStore = inflate.findViewById(R.id.recyclerStore);
         parent = inflate.findViewById(R.id.parent);
@@ -116,12 +124,23 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         submitFilter = inflate.findViewById(R.id.submit_filter);
         carQuestion = inflate.findViewById(R.id.car_question);
         goodQuestion = inflate.findViewById(R.id.good_question);
-        carQuestion.setAdapter(new CarAutoCompleteAdapter(getActivity(),R.layout.item));
         stoke = inflate.findViewById(R.id.stoke);
         warrantySpinner = inflate.findViewById(R.id.warranty_spinner);
+        /*spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, getActivity().getResources().getStringArray(R.array.question_filter));*/
+        mySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, Arrays.asList(getActivity().getResources().getStringArray(R.array.question_filter)), false);
+        warrantySpinner.setAdapter(mySpinnerAdapter);
         countrySpinner = inflate.findViewById(R.id.country_spinner);
+        countrySpinner.setAdapter(mySpinnerAdapter);
         initAppbar();
 
+        CarAutoCompleteAdapter carAdapter = new CarAutoCompleteAdapter(getActivity(), R.layout.item);
+        carQuestion.setAdapter(carAdapter);
+        carQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedCarId = Integer.parseInt(((TextView) parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent())).findViewById(R.id.id)).getText().toString());
+            }
+        });
 
         recyclerStore.setLayoutManager(new LinearLayoutManager(getContext()) {
             @Override
@@ -363,6 +382,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         switch (v.getId()) {
             case R.id.stoke:
                 is_stoke_active = !is_stoke_active;
+                mySpinnerAdapter.disableAdapter(is_stoke_active);
                 if (is_stoke_active) {
                     stoke.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
                     countrySpinner.setEnabled(false);

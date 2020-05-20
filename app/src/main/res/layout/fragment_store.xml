@@ -194,14 +194,24 @@
 
 
             <androidx.appcompat.widget.AppCompatSpinner
+                android:background="@drawable/btn_inactive_stoke"
                 android:id="@+id/warranty_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
                 android:layout_weight="1"
                 android:entries="@array/question_filter"
                 android:textSize="12sp" />
 
             <androidx.appcompat.widget.AppCompatSpinner
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/btn_inactive_stoke"
                 android:id="@+id/country_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -211,6 +221,8 @@
 
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -220,7 +232,6 @@
                 android:layout_weight="1"
                 android:background="@drawable/btn_inactive_stoke"
                 android:clickable="true"
-                android:gravity="center"
                 android:paddingLeft="12sp"
                 android:paddingTop="2dp"
                 android:paddingRight="12sp"
