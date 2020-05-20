@@ -8,14 +8,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+<!--
     <com.google.android.material.appbar.AppBarLayout
         android:visibility="gone"
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-        <!---->
+        &lt;!&ndash;&ndash;&gt;
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -104,7 +104,7 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-    </com.google.android.material.appbar.AppBarLayout>
+    </com.google.android.material.appbar.AppBarLayout>-->
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -249,22 +249,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-    <TextView
-        android:id="@+id/search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_margin="30dp"
-        android:background="@drawable/fillet_add_store"
-        android:gravity="bottom|center"
-        android:paddingLeft="24dp"
-        android:paddingTop="8dp"
-        android:paddingRight="24dp"
-        android:paddingBottom="8dp"
-        android:text="جست و جو کن"
-        android:textColor="@color/icons"
-        android:textSize="24dp"
-        android:transitionName="@string/search_transition" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
