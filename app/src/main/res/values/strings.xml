@@ -17,8 +17,13 @@
     <string name="enterCarName">خودروی خود را انتخاب کنید</string>
     <string name="search_transition">search_transition</string>
     <array name="question_filter">
+        <item>پربازدیدترین ها</item>
+        <item>جدیدترین ها</item>
         <item>جدیدترین ها</item>
         <item>پربازدیدترین ها</item>
+        <item>پربازدیدترین ها</item>
+        <item>پربازدیدترین ها</item>
         <item>پر پاسخ ترین ها</item>
+        <item>پر پاسخ ترین هر پاسخ ترین ها پر پاسخ ترین هر پاسخ ترین ها</item>
     </array>
 </resources>

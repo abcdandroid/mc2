@@ -123,12 +123,19 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         appbar = inflate.findViewById(R.id.appbar);
         submitFilter = inflate.findViewById(R.id.submit_filter);
         carQuestion = inflate.findViewById(R.id.car_question);
+        carQuestion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus){resetAppbar();}
+            }
+        });
         goodQuestion = inflate.findViewById(R.id.good_question);
         stoke = inflate.findViewById(R.id.stoke);
         warrantySpinner = inflate.findViewById(R.id.warranty_spinner);
         /*spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, getActivity().getResources().getStringArray(R.array.question_filter));*/
         mySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, Arrays.asList(getActivity().getResources().getStringArray(R.array.question_filter)), false);
         warrantySpinner.setAdapter(mySpinnerAdapter);
+
         countrySpinner = inflate.findViewById(R.id.country_spinner);
         countrySpinner.setAdapter(mySpinnerAdapter);
         initAppbar();
@@ -148,6 +155,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 return super.canScrollVertically();
             }
         });
+
 
         recyclerStore.setLayoutAnimation(new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left)));
 /*        recyclerStore.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -190,6 +198,18 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         resumeDataListener("getStore2", "null", "null", "null");
         requestGoods(lastId, "getStore2", "null", "null", "null");
         return inflate;
+    }
+
+    private void resetAppbar() {
+        is_stoke_active=false;
+        stoke.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
+        countrySpinner.setEnabled(true);
+        countrySpinner.setClickable(true);
+        warrantySpinner.setEnabled(true);
+        warrantySpinner.setClickable(true);
+        warrantySpinner.setSelection(0);
+        countrySpinner.setSelection(0);
+        mySpinnerAdapter.disableAdapter(is_stoke_active);
     }
 
     private void initAppbar() {

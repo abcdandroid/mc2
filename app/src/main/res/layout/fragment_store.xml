@@ -124,23 +124,42 @@
             app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="scroll|enterAlways">
 
-            <TextView
-                android:id="@+id/submit_filter"
+            <RelativeLayout
+                android:id="@+id/submit_filter2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@id/car_question"
-                android:layout_alignBottom="@id/good_question"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="4dp"
-                android:background="@color/grey_10"
-                android:gravity="center"
-                android:paddingLeft="4dp"
+                android:layout_alignTop="@id/car_question"
+                android:layout_alignBottom="@id/good_question"
+                android:paddingLeft="8dp"
                 android:paddingTop="0dp"
-                android:paddingRight="4dp"
+                android:paddingRight="8dp"
                 android:paddingBottom="0dp"
-                android:text="جست و جو"
-                android:textColor="@color/colorPrimary" />
+                android:gravity="center"
+                android:background="@drawable/rectangle_inactive_stoke">
+
+                <TextView
+                    android:layout_centerInParent="true"
+                    android:id="@+id/submit_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="جستجو کن"
+                    android:textColor="@color/lime_700"
+                    android:textSize="14sp"
+                    android:visibility="invisible"
+                    android:textStyle="bold|italic" />
+
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:visibility="visible"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_centerInParent="true"
+                    style="@style/SpinKitView.Large.FadingCircle"
+                    />
+
+            </RelativeLayout>
 
             <AutoCompleteTextView
                 android:id="@+id/car_question"
@@ -150,16 +169,16 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="4dp"
-                android:layout_toRightOf="@id/submit_filter"
-                android:background="@color/grey_10"
+                android:layout_toRightOf="@id/submit_filter2"
+                android:background="@drawable/rectangle_zero_radius_inactive_stoke"
                 android:hint="ماشینت چیه؟"
                 android:layoutDirection="rtl"
                 android:paddingLeft="8dp"
                 android:paddingTop="2dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="2dp"
-                android:textColor="@color/colorPrimary"
-                android:textColorHint="@color/colorAccent"
+                android:textColor="@color/grey_10"
+                android:textColorHint="@color/blue_grey_300"
                 android:textSize="16sp" />
 
             <AutoCompleteTextView
@@ -171,14 +190,15 @@
                 android:layout_alignRight="@id/car_question"
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="4dp"
-                android:background="@color/grey_10"
+                android:background="@drawable/rectangle_zero_radius_inactive_stoke"
                 android:hint="دنبال چه قطعه ای هستی؟"
                 android:layoutDirection="rtl"
                 android:paddingLeft="8dp"
                 android:paddingTop="2dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="2dp"
-                android:textColorHint="@color/colorAccent"
+                android:textColor="@color/grey_10"
+                android:textColorHint="@color/blue_grey_300"
                 android:textSize="16sp" />
 
 
@@ -188,43 +208,44 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_marginBottom="4dp"
             android:gravity="center"
             android:layoutDirection="rtl"
             android:orientation="horizontal">
 
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:background="@drawable/btn_inactive_stoke"
                 android:id="@+id/warranty_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_inactive_stoke"
+                android:entries="@array/question_filter"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
-                android:layout_weight="1"
-                android:entries="@array/question_filter"
                 android:textSize="12sp" />
 
             <androidx.appcompat.widget.AppCompatSpinner
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/btn_inactive_stoke"
                 android:id="@+id/country_spinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_weight="1"
+                android:background="@drawable/btn_inactive_stoke"
                 android:entries="@array/question_filter"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
                 android:textSize="12sp" />
 
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_gravity="center"
-                android:gravity="center"
+                android:id="@+id/stoke"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="8dp"
@@ -232,14 +253,14 @@
                 android:layout_weight="1"
                 android:background="@drawable/btn_inactive_stoke"
                 android:clickable="true"
+                android:gravity="center"
                 android:paddingLeft="12sp"
                 android:paddingTop="2dp"
                 android:paddingRight="12sp"
                 android:paddingBottom="2dp"
                 android:text="استوک"
-                android:id="@+id/stoke"
                 android:textColor="@color/grey_10"
-                android:textSize="16sp" />
+                android:textSize="12sp" />
 
 
         </LinearLayout>
