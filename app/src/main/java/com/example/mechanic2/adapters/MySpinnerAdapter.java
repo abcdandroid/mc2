@@ -45,7 +45,6 @@ public class MySpinnerAdapter extends ArrayAdapter<String> {
         notifyDataSetChanged();
     }
 
-
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         return createView(position, parent, false, true);

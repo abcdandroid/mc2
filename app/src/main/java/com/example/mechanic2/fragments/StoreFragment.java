@@ -411,6 +411,8 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     warrantySpinner.setEnabled(false);
                     warrantySpinner.setClickable(false);
 
+
+
                 } else {
                     stoke.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
                     countrySpinner.setEnabled(true);
