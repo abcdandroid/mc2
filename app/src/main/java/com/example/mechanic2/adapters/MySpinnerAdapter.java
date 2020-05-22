@@ -78,7 +78,8 @@ public class MySpinnerAdapter extends ArrayAdapter<String> {
 
         if (!mode) {
             textView.setTextColor(Application.getContext().getResources().getColor(R.color.grey_10));
-            arrowSpinner.setColorFilter(Application.getContext().getResources().getColor(R.color.grey_10));
+            arrowSpinner.setColorFilter(Application.getContext().getResources().getColor(R.color.grey_10
+            ));
         } else {
             textView.setTextColor(Application.getContext().getResources().getColor(R.color.grey_500));
             arrowSpinner.setColorFilter(Application.getContext().getResources().getColor(R.color.grey_500));
