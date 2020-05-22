@@ -8,26 +8,26 @@ import java.util.List;
 public class CountriesAndWarranties{
   @SerializedName("countries")
   @Expose
-  private List<Countries> countries;
+  private List<Country> countries;
   @SerializedName("warrantys")
   @Expose
-  private List<Warrantys> warrantys;
+  private List<Warranty> warranties;
   public CountriesAndWarranties(){
   }
-  public CountriesAndWarranties(List<Countries> countries,List<Warrantys> warrantys){
+  public CountriesAndWarranties(List<Country> countries, List<Warranty> warranties){
    this.countries=countries;
-   this.warrantys=warrantys;
+   this.warranties = warranties;
   }
-  public void setCountries(List<Countries> countries){
+  public void setCountries(List<Country> countries){
    this.countries=countries;
   }
-  public List<Countries> getCountries(){
+  public List<Country> getCountries(){
    return countries;
   }
-  public void setWarrantys(List<Warrantys> warrantys){
-   this.warrantys=warrantys;
+  public void setWarranties(List<Warranty> warranties){
+   this.warranties = warranties;
   }
-  public List<Warrantys> getWarrantys(){
-   return warrantys;
+  public List<Warranty> getWarranties(){
+   return warranties;
   }
 }

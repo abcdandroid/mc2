@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Awesome Pojo Generator
  * */
-public class Warranty{
+public class Warranty {
   @SerializedName("name")
   @Expose
   private String name;
@@ -13,7 +13,7 @@ public class Warranty{
   private Integer id;
   public Warranty(){
   }
-  public Warranty(String name,Integer id){
+  public Warranty(String name, Integer id){
    this.name=name;
    this.id=id;
   }

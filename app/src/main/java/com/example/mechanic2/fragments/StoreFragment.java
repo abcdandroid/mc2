@@ -1,9 +1,5 @@
 package com.example.mechanic2.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,25 +9,16 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -46,31 +33,27 @@ import com.downloader.Progress;
 import com.downloader.Status;
 import com.downloader.request.DownloadRequest;
 import com.example.mechanic2.R;
-import com.example.mechanic2.activities.SearchStoreActivity;
 import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
 import com.example.mechanic2.adapters.MySpinnerAdapter;
 import com.example.mechanic2.adapters.StoreRecyclerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
-import com.example.mechanic2.interfaces.SearchButtonAction;
-import com.example.mechanic2.interfaces.SearchOnBackPressed;
 import com.example.mechanic2.interfaces.VoiceOnClickListener;
+import com.example.mechanic2.models.Country;
+import com.example.mechanic2.models.CountriesAndWarranties;
 import com.example.mechanic2.models.Good;
+import com.example.mechanic2.models.Warranty;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.hmomeni.progresscircula.ProgressCircula;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -102,7 +85,9 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private int selectedCarId;
     private int selectedWarrantyId;
     ArrayAdapter<String> spinnerAdapter;
-    MySpinnerAdapter mySpinnerAdapter;
+    MySpinnerAdapter countrySpinnerAdapter;
+    MySpinnerAdapter warrantySpinnerAdapter;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,21 +102,43 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     }
 
 
-
     private View init(View inflate) {
+        goodQuestion = inflate.findViewById(R.id.good_question);
+        stoke = inflate.findViewById(R.id.stoke);
+
+        warrantySpinner = inflate.findViewById(R.id.warranty_spinner);
+        countrySpinner = inflate.findViewById(R.id.country_spinner);
+
         SweetAlertDialog loadingData = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE).setTitleText("شکیبا باشید");
         loadingData.setCancelable(false);
         loadingData.show();
-
-        Application.getApi().getDataInString(null).enqueue(new Callback<String>() {
+        loadingData.setCancelable(false);
+        Map<String, String> map = new HashMap<>();
+        map.put("route", "getCountriesAndWarranties");
+        Application.getApi().getCountriesAndWarranties(map).enqueue(new Callback<CountriesAndWarranties>() {
             @Override
-            public void onResponse(Call<String> call, Response<String> response) {
+            public void onResponse(Call<CountriesAndWarranties> call, Response<CountriesAndWarranties> response) {
+                loadingData.dismissWithAnimation();
+                List<Country> countries = response.body().getCountries();
+                List<Warranty> warranties = response.body().getWarranties();
+                List<String> countryNames = new ArrayList<>();
+                List<String> warrantyNames = new ArrayList<>();
+                for (Country countries1 : countries) {
+                    countryNames.add(countries1.getName());
+                }
+                for (Warranty warranty1 : warranties) {
+                    warrantyNames.add(warranty1.getName());
+                }
 
+                countrySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, countryNames, false);
+                warrantySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, warrantyNames, false);
+                warrantySpinner.setAdapter(warrantySpinnerAdapter);
+                countrySpinner.setAdapter(countrySpinnerAdapter);
             }
 
             @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
+            public void onFailure(Call<CountriesAndWarranties> call, Throwable t) {
+                app.l(t.getLocalizedMessage() + "WW");
             }
         });
 
@@ -143,18 +150,13 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         carQuestion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){resetAppbar();}
+                if (hasFocus) {
+                    resetAppbar();
+                }
             }
         });
-        goodQuestion = inflate.findViewById(R.id.good_question);
-        stoke = inflate.findViewById(R.id.stoke);
-        warrantySpinner = inflate.findViewById(R.id.warranty_spinner);
-        /*spinnerAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_spinner, getActivity().getResources().getStringArray(R.array.question_filter));*/
-        mySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, Arrays.asList(getActivity().getResources().getStringArray(R.array.question_filter)), false);
-        warrantySpinner.setAdapter(mySpinnerAdapter);
 
-        countrySpinner = inflate.findViewById(R.id.country_spinner);
-        countrySpinner.setAdapter(mySpinnerAdapter);
+
         initAppbar();
 
         CarAutoCompleteAdapter carAdapter = new CarAutoCompleteAdapter(getActivity(), R.layout.item);
@@ -219,7 +221,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
     private void resetAppbar() {
 
-        is_stoke_active=false;
+        is_stoke_active = false;
         stoke.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
         countrySpinner.setEnabled(true);
         countrySpinner.setClickable(true);
@@ -227,7 +229,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         warrantySpinner.setClickable(true);
         warrantySpinner.setSelection(0);
         countrySpinner.setSelection(0);
-        mySpinnerAdapter.disableAdapter(is_stoke_active);
+        countrySpinnerAdapter.disableAdapter(is_stoke_active);
     }
 
     private void initAppbar() {
@@ -420,14 +422,14 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         switch (v.getId()) {
             case R.id.stoke:
                 is_stoke_active = !is_stoke_active;
-                mySpinnerAdapter.disableAdapter(is_stoke_active);
+                countrySpinnerAdapter.disableAdapter(is_stoke_active);
+                warrantySpinnerAdapter.disableAdapter(is_stoke_active);
                 if (is_stoke_active) {
                     stoke.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
                     countrySpinner.setEnabled(false);
                     countrySpinner.setClickable(false);
                     warrantySpinner.setEnabled(false);
                     warrantySpinner.setClickable(false);
-
 
 
                 } else {

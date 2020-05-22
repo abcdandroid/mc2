@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 /**
  * Awesome Pojo Generator
  * */
-public class Country{
+public class Country {
   @SerializedName("name")
   @Expose
   private String name;
@@ -13,7 +13,7 @@ public class Country{
   private Integer id;
   public Country(){
   }
-  public Country(String name,Integer id){
+  public Country(String name, Integer id){
    this.name=name;
    this.id=id;
   }
