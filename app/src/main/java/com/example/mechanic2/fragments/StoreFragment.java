@@ -122,6 +122,19 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         SweetAlertDialog loadingData = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE).setTitleText("شکیبا باشید");
         loadingData.setCancelable(false);
         loadingData.show();
+
+        Application.getApi().getDataInString(null).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
+            }
+        });
+
         recyclerStore = inflate.findViewById(R.id.recyclerStore);
         parent = inflate.findViewById(R.id.parent);
         appbar = inflate.findViewById(R.id.appbar);
