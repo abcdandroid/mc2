@@ -72,6 +72,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -118,6 +119,9 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
 
     private View init(View inflate) {
+        SweetAlertDialog loadingData = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE).setTitleText("شکیبا باشید");
+        loadingData.setCancelable(false);
+        loadingData.show();
         recyclerStore = inflate.findViewById(R.id.recyclerStore);
         parent = inflate.findViewById(R.id.parent);
         appbar = inflate.findViewById(R.id.appbar);
