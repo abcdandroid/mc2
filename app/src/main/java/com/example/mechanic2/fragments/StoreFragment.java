@@ -87,6 +87,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private AppCompatSpinner warrantySpinner;
     private AppCompatSpinner countrySpinner;
     private int selectedCarId;
+    private int selectedGoodId;
     String countryIdInString;
     String warrantyIdInString;
     private int selectedWarrantyId;
@@ -148,6 +149,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
             @Override
             public void onFailure(Call<CountriesAndWarranties> call, Throwable t) {
+                loadingData.dismissWithAnimation();
                 app.l(t.getLocalizedMessage() + "WW");
             }
         });
@@ -210,6 +212,12 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedCarId = Integer.parseInt(((TextView) parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent())).findViewById(R.id.id)).getText().toString());
+            }
+        });
+        goodQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedGoodId = Integer.parseInt(((TextView) parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent())).findViewById(R.id.id)).getText().toString());
             }
         });
 
@@ -473,6 +481,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         switch (v.getId()) {
             case R.id.stoke:
                 is_stoke_active = !is_stoke_active;
+                app.l("ci:"+selectedCarId+"gi"+selectedGoodId+"wi"+warrantyIdInString+"cni"+countryIdInString+(is_stoke_active?"1":"0"));
                 countrySpinnerAdapter.disableAdapter(is_stoke_active);
                 warrantySpinnerAdapter.disableAdapter(is_stoke_active);
                 if (is_stoke_active) {
