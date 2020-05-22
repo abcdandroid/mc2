@@ -25,6 +25,13 @@
         android:ellipsize="start"
         android:textAlignment="inherit"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/id_spinner"
+        />
+
 
         <ImageView
             android:tint="@color/grey_10"

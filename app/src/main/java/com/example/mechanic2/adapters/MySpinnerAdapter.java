@@ -18,19 +18,23 @@ import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.AdminFragment;
+import com.example.mechanic2.models.Country;
 import com.j256.ormlite.stmt.query.In;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MySpinnerAdapter extends ArrayAdapter<String> {
     private boolean isActive;
     private List<String> list;
-    ImageView arrowSpinner;
+    private List<Integer> ids;
+    //ImageView arrowSpinner;
 
-    public MySpinnerAdapter(@NonNull Context context, int resource, @NonNull List<String> objects, boolean isActive) {
+    public MySpinnerAdapter(@NonNull Context context, int resource, @NonNull List<String> objects,List<Integer> ids,boolean isActive) {
         super(context, resource, objects);
         this.isActive = isActive;
         this.list = objects;
+        this.ids=ids;
     }
 
     @NonNull
@@ -54,12 +58,15 @@ public class MySpinnerAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = (LayoutInflater) Application.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.item_spinner, parent, false);
-        TextView textView = view.findViewById(R.id.text1);
-        LinearLayout parentLayout = view.findViewById(R.id.parent);
-        arrowSpinner = view.findViewById(R.id.arrow_spinner);
 
+        TextView textView = view.findViewById(R.id.text1);
+        TextView id_spinner = view.findViewById(R.id.id_spinner);
+        LinearLayout parentLayout = view.findViewById(R.id.parent);
+        ImageView arrowSpinner = view.findViewById(R.id.arrow_spinner);
 
         textView.setText(list.get(position));
+        id_spinner.setText(String.valueOf(ids.get(position)));
+
         if (!isDropdown) {
             arrowSpinner.setVisibility(View.VISIBLE);
             arrowSpinner.getLayoutParams().height = app.pxToDp(24);

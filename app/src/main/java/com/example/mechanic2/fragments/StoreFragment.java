@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatSpinner;
@@ -45,7 +46,9 @@ import com.example.mechanic2.models.Country;
 import com.example.mechanic2.models.CountriesAndWarranties;
 import com.example.mechanic2.models.Good;
 import com.example.mechanic2.models.Warranty;
+import com.example.mechanic2.views.MyTextView;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
 import com.hmomeni.progresscircula.ProgressCircula;
 
@@ -84,6 +87,8 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private AppCompatSpinner warrantySpinner;
     private AppCompatSpinner countrySpinner;
     private int selectedCarId;
+    String countryIdInString;
+    String warrantyIdInString;
     private int selectedWarrantyId;
     ArrayAdapter<String> spinnerAdapter;
     MySpinnerAdapter countrySpinnerAdapter;
@@ -123,16 +128,20 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 List<Country> countries = response.body().getCountries();
                 List<Warranty> warranties = response.body().getWarranties();
                 List<String> countryNames = new ArrayList<>();
+                List<Integer> countryIds = new ArrayList<>();
                 List<String> warrantyNames = new ArrayList<>();
+                List<Integer> warrantyIds = new ArrayList<>();
                 for (Country countries1 : countries) {
                     countryNames.add(countries1.getName());
+                    countryIds.add(countries1.getId());
                 }
                 for (Warranty warranty1 : warranties) {
                     warrantyNames.add(warranty1.getName());
+                    warrantyIds.add(warranty1.getId());
                 }
 
-                countrySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, countryNames, false);
-                warrantySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, warrantyNames, false);
+                countrySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, countryNames, countryIds, false);
+                warrantySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, warrantyNames, warrantyIds, false);
                 warrantySpinner.setAdapter(warrantySpinnerAdapter);
                 countrySpinner.setAdapter(countrySpinnerAdapter);
             }
@@ -140,6 +149,38 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             @Override
             public void onFailure(Call<CountriesAndWarranties> call, Throwable t) {
                 app.l(t.getLocalizedMessage() + "WW");
+            }
+        });
+
+        countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (view != null) {
+                    View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
+                    TextView myTextView = view1.findViewById(R.id.id_spinner);
+                    countryIdInString = myTextView == null ? "" : myTextView.getText().toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        warrantySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (view != null) {
+                    View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
+                    TextView myTextView = view1.findViewById(R.id.id_spinner);
+                    warrantyIdInString = myTextView == null ? "" : myTextView.getText().toString();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
 
@@ -417,6 +458,12 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         SharedPrefUtils.saveData("soundDownloadId**" + good.getId(), downloadId);
 
 
+    }
+
+    public void collectData() {
+        String carQuestionString = carQuestion.getText().toString();
+        String goodQuestionString = goodQuestion.getText().toString();
+        int warrantyId = 0;
     }
 
     boolean is_stoke_active;
