@@ -46,7 +46,10 @@ public class Good {
     @Expose
     private boolean visible;
 
-
+    public Good(String name, Integer id) {
+        this.name = name;
+        this.id = id;
+    }
 
     public void setPreview(String preview) {
         this.preview = preview;

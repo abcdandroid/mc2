@@ -1,6 +1,7 @@
 package com.example.mechanic2.adapters;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,16 +36,12 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
     private ArrayList<Car> data;
     private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchCar&lastId=0&search=";
-    private FilterListeners filterListeners;
 
     public CarAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
         this.data = new ArrayList<>();
     }
 
-    public void setFilterListeners(FilterListeners filterFinishedListener) {
-        filterListeners = filterFinishedListener;
-    }
 
 
     @Override
@@ -105,6 +102,7 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
                     InputStream input = null;
                     try {
                         URL url = new URL(server + constraint.toString());
+
                         conn = (HttpURLConnection) url.openConnection();
                         input = conn.getInputStream();
                         InputStreamReader reader = new InputStreamReader(input, "UTF-8");
@@ -114,6 +112,7 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
                         while ((line = buffer.readLine()) != null) {
                             builder.append(line);
                         }
+
                         JSONArray terms = new JSONArray(builder.toString());
 
 
@@ -124,8 +123,8 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
                             JSONObject jsonObject = terms.getJSONObject(ind);
                             suggestions.add(new Car(jsonObject.getString("name"), jsonObject.getInt("id")));
                         }
-                        results.values = suggestions;
                         results.count = suggestions.size();
+                        app.l(suggestions.get(0).getId());
                         data = suggestions;
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -146,10 +145,7 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                List<String> filterList = (ArrayList<String>) results.values;
 
-                if (filterListeners != null && filterList != null)
-                    filterListeners.filteringFinished(filterList.size());
 
                 if (results != null && results.count > 0) {
                     notifyDataSetChanged();

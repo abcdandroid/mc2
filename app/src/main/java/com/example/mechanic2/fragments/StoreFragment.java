@@ -34,6 +34,7 @@ import com.downloader.Status;
 import com.downloader.request.DownloadRequest;
 import com.example.mechanic2.R;
 import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
+import com.example.mechanic2.adapters.GoodAutoCompleteAdapter;
 import com.example.mechanic2.adapters.MySpinnerAdapter;
 import com.example.mechanic2.adapters.StoreRecyclerAdapter;
 import com.example.mechanic2.app.Application;
@@ -161,6 +162,9 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
         CarAutoCompleteAdapter carAdapter = new CarAutoCompleteAdapter(getActivity(), R.layout.item);
         carQuestion.setAdapter(carAdapter);
+        GoodAutoCompleteAdapter goodAdapter = new GoodAutoCompleteAdapter(Application.getContext(), R.layout.item);
+        goodQuestion.setAdapter(goodAdapter);
+
         carQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

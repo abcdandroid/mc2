@@ -4,19 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
@@ -25,11 +19,8 @@ import com.example.mechanic2.adapters.ViewPagerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.AdsViewPagerFragment;
-import com.example.mechanic2.fragments.ShowThumbnailFragment;
 import com.example.mechanic2.models.Ads;
-import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
