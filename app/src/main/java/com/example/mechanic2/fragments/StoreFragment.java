@@ -201,6 +201,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     }
 
     private void resetAppbar() {
+
         is_stoke_active=false;
         stoke.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
         countrySpinner.setEnabled(true);
