@@ -160,7 +160,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
         initAppbar();
 
-        CarAutoCompleteAdapter carAdapter = new CarAutoCompleteAdapter(getActivity(), R.layout.item);
+        CarAutoCompleteAdapter carAdapter = new CarAutoCompleteAdapter(getActivity(), R.layout.item_show_auto_complete);
         carQuestion.setAdapter(carAdapter);
         GoodAutoCompleteAdapter goodAdapter = new GoodAutoCompleteAdapter(Application.getContext(), R.layout.item);
         goodQuestion.setAdapter(goodAdapter);

@@ -75,11 +75,11 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
             mViewHolder.idTv = convertView.findViewById(R.id.id);
 
             convertView.setTag(mViewHolder);
-            mViewHolder.textView.setTag(data.get(position));
+            //mViewHolder.textView.setTag(data.get(position));
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
-        good = (Good) mViewHolder.textView.getTag();
+        good = data.get(position);
         mViewHolder.textView.setText(good.getName());
         mViewHolder.idTv.setText(String.valueOf(good.getId()));
 

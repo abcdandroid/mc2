@@ -18,6 +18,7 @@ import com.example.mechanic2.R;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.FilterListeners;
 import com.example.mechanic2.models.Car;
+import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -43,7 +44,6 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
     }
 
 
-
     @Override
     public int getCount() {
         return data.size();
@@ -62,12 +62,13 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
     }
 
-    @NonNull
+   @NonNull
     @Override
     public View getView(final int position, View convertView, @NotNull ViewGroup parent) {
 
         ViewHolder mViewHolder;
         Car car;
+        app.l(data.get(position).getName()+"RRR");
         if (convertView == null) {
             mViewHolder = new ViewHolder();
 
@@ -79,16 +80,17 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             mViewHolder.idTv = convertView.findViewById(R.id.id);
 
             convertView.setTag(mViewHolder);
-            mViewHolder.textView.setTag(data.get(position));
+            //mViewHolder.textView.setTag(data.get(position));
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
-        car = (Car) mViewHolder.textView.getTag();
+        //car = (Car) mViewHolder.textView.getTag();
+        car = data.get(position);
         mViewHolder.textView.setText(car.getName());
         mViewHolder.idTv.setText(String.valueOf(car.getId()));
 
         return convertView;
-    }
+    }/* */
 
     @NonNull
     @Override
@@ -118,13 +120,12 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
                         ArrayList<Car> suggestions = new ArrayList<>();
 
-
                         for (int ind = 0; ind < terms.length(); ind++) {
                             JSONObject jsonObject = terms.getJSONObject(ind);
-                            suggestions.add(new Car(jsonObject.getString("name"), jsonObject.getInt("id")));
+                            suggestions.add(new Car(jsonObject.getString("name"),Integer.parseInt(jsonObject.getString("id"))));
                         }
+                        app.l(suggestions.size()+"QAZ");
                         results.count = suggestions.size();
-                        app.l(suggestions.get(0).getId());
                         data = suggestions;
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -144,7 +145,6 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-
 
 
                 if (results != null && results.count > 0) {
