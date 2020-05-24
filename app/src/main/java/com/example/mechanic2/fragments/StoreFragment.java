@@ -1,6 +1,8 @@
 package com.example.mechanic2.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -160,7 +162,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 if (view != null) {
                     View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
                     TextView myTextView = view1.findViewById(R.id.id_spinner);
-                    countryIdInString = myTextView == null ? "" : myTextView.getText().toString();
+                    countryIdInString = myTextView == null ? "0" : myTextView.getText().toString();
                 }
             }
 
@@ -176,7 +178,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 if (view != null) {
                     View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
                     TextView myTextView = view1.findViewById(R.id.id_spinner);
-                    warrantyIdInString = myTextView == null ? "" : myTextView.getText().toString();
+                    warrantyIdInString = myTextView == null ? "0" : myTextView.getText().toString();
                 }
             }
 
@@ -197,6 +199,38 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 if (hasFocus) {
                     resetAppbar();
                 }
+            }
+        });
+        carQuestion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                selectedCarId = 0;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        carQuestion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                selectedGoodId = 0;
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
 
@@ -271,6 +305,20 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         requestGoods(lastId, "getStore2", "null", "null", "null");
         return inflate;
     }
+
+
+    public void getGooods(int carId, int goodId, int warrantyId, int countryId, int isStock) {
+        Map<String, String> map = new HashMap<>();
+        map.put("route", "getStore3");
+        map.put("lastId", String.valueOf(lastId));
+        map.put("carId", String.valueOf(carId));
+        map.put("goodId", String.valueOf(goodId));
+        map.put("warrantyId", String.valueOf(warrantyId));
+        map.put("countryId", String.valueOf(countryId));
+        map.put("isStock", String.valueOf(isStock));
+
+    }
+
 
     private void resetAppbar() {
 
@@ -468,11 +516,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
     }
 
-    public void collectData() {
-        String carQuestionString = carQuestion.getText().toString();
-        String goodQuestionString = goodQuestion.getText().toString();
-        int warrantyId = 0;
-    }
 
     boolean is_stoke_active;
 
@@ -480,8 +523,19 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.stoke:
+
+                if (carQuestion.getText().toString().length() == 0 && selectedCarId == 0) {
+                    selectedCarId = 0;
+                } else if (carQuestion.getText().toString().length() > 0 && selectedCarId == 0) {
+                    selectedCarId = -1;
+                }
+                if (goodQuestion.getText().toString().length() == 0 && selectedGoodId == 0) {
+                    selectedGoodId = 0;
+                } else if (goodQuestion.getText().toString().length() > 0 && selectedGoodId == 0) {
+                    selectedGoodId = -1;
+                }
                 is_stoke_active = !is_stoke_active;
-                app.l("ci:"+selectedCarId+"gi"+selectedGoodId+"wi"+warrantyIdInString+"cni"+countryIdInString+(is_stoke_active?"1":"0"));
+                app.l("ci:" + selectedCarId + "gi" + selectedGoodId + "wi" + warrantyIdInString + "cni" + countryIdInString + (is_stoke_active ? "1" : "0"));
                 countrySpinnerAdapter.disableAdapter(is_stoke_active);
                 warrantySpinnerAdapter.disableAdapter(is_stoke_active);
                 if (is_stoke_active) {
@@ -499,6 +553,8 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     warrantySpinner.setEnabled(true);
                     warrantySpinner.setClickable(true);
                 }
+
+
                 break;
         }
     }

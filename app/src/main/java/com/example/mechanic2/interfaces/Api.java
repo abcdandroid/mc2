@@ -8,6 +8,7 @@ import com.example.mechanic2.models.AdminMedia;
 import com.example.mechanic2.models.Ads;
 import com.example.mechanic2.models.CountriesAndWarranties;
 import com.example.mechanic2.models.Good;
+import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Question;
 
@@ -38,6 +39,9 @@ public interface Api {
 
     @GET(".")
     Call<List<Good>> getGoodList(@QueryMap Map<String, String> map);
+
+    @GET(".")
+    Call<List<Goood>> getGooodList(@QueryMap Map<String, String> map);
 
     @GET(".")
     Call<List<Ads>> getAdsList(@Query("route") String ads);
