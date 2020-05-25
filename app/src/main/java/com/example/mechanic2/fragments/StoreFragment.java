@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatSpinner;
@@ -38,6 +39,7 @@ import com.downloader.request.DownloadRequest;
 import com.example.mechanic2.R;
 import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
 import com.example.mechanic2.adapters.GoodAutoCompleteAdapter;
+import com.example.mechanic2.adapters.GooodStoreAdapter;
 import com.example.mechanic2.adapters.MySpinnerAdapter;
 import com.example.mechanic2.adapters.StoreRecyclerAdapter;
 import com.example.mechanic2.app.Application;
@@ -47,8 +49,10 @@ import com.example.mechanic2.interfaces.VoiceOnClickListener;
 import com.example.mechanic2.models.Country;
 import com.example.mechanic2.models.CountriesAndWarranties;
 import com.example.mechanic2.models.Good;
+import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.models.Warranty;
 import com.example.mechanic2.views.MyTextView;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.gson.Gson;
@@ -76,13 +80,15 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private int lastId = 0;
     private List<Good> goods = new ArrayList<>();
     private List<Good> tmpGoods = new ArrayList<>();
-    private StoreRecyclerAdapter adapter;
+    private List<Goood> gooods = new ArrayList<>();
+    private List<Goood> tmpGooods = new ArrayList<>();
+    private GooodStoreAdapter adapter;
     private boolean isLoading;
+    private RelativeLayout submitFilterParent;
 
 
     private CoordinatorLayout parent;
     private AppBarLayout appbar;
-    private TextView submitFilter;
     private AutoCompleteTextView carQuestion;
     private AutoCompleteTextView goodQuestion;
     private AppCompatTextView stoke;
@@ -90,12 +96,15 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private AppCompatSpinner countrySpinner;
     private int selectedCarId;
     private int selectedGoodId;
-    String countryIdInString;
-    String warrantyIdInString;
+    String countryIdInString = "0";
+    String warrantyIdInString = "0";
     private int selectedWarrantyId;
     ArrayAdapter<String> spinnerAdapter;
     MySpinnerAdapter countrySpinnerAdapter;
     MySpinnerAdapter warrantySpinnerAdapter;
+    private TextView submitFilter;
+    private SpinKitView loading;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -112,12 +121,17 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
 
     private View init(View inflate) {
+
+        //      getGooods(selectedCarId,selectedGoodId,Integer.parseInt(warrantyIdInString),0,0);
         goodQuestion = inflate.findViewById(R.id.good_question);
         stoke = inflate.findViewById(R.id.stoke);
-
         warrantySpinner = inflate.findViewById(R.id.warranty_spinner);
         countrySpinner = inflate.findViewById(R.id.country_spinner);
+        submitFilterParent = inflate.findViewById(R.id.submit_filter_parent);
+        submitFilter = inflate.findViewById(R.id.submit_filter);
+        loading = inflate.findViewById(R.id.loading);
 
+        submitFilterParent.setOnClickListener(this);
         SweetAlertDialog loadingData = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE).setTitleText("شکیبا باشید");
         loadingData.setCancelable(false);
         loadingData.show();
@@ -155,7 +169,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 app.l(t.getLocalizedMessage() + "WW");
             }
         });
-
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -163,6 +176,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
                     TextView myTextView = view1.findViewById(R.id.id_spinner);
                     countryIdInString = myTextView == null ? "0" : myTextView.getText().toString();
+                    loading.setVisibility(View.VISIBLE);
+                    submitFilter.setVisibility(View.INVISIBLE);
+                    resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+                    getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
                 }
             }
 
@@ -171,7 +188,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
             }
         });
-
         warrantySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -179,6 +195,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
                     TextView myTextView = view1.findViewById(R.id.id_spinner);
                     warrantyIdInString = myTextView == null ? "0" : myTextView.getText().toString();
+                    loading.setVisibility(View.VISIBLE);
+                    submitFilter.setVisibility(View.INVISIBLE);
+                    resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+                    getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
                 }
             }
 
@@ -187,12 +207,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
             }
         });
-
         recyclerStore = inflate.findViewById(R.id.recyclerStore);
         parent = inflate.findViewById(R.id.parent);
         appbar = inflate.findViewById(R.id.appbar);
-        submitFilter = inflate.findViewById(R.id.submit_filter);
-        carQuestion = inflate.findViewById(R.id.car_question);
+        carQuestion = inflate.findViewById(R.id.car_question);/*
         carQuestion.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -200,43 +218,9 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     resetAppbar();
                 }
             }
-        });
-        carQuestion.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                selectedCarId = 0;
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        carQuestion.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                selectedGoodId = 0;
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
+        });*/
 
         initAppbar();
-
         CarAutoCompleteAdapter carAdapter = new CarAutoCompleteAdapter(getActivity(), R.layout.item_show_auto_complete);
         carQuestion.setAdapter(carAdapter);
         GoodAutoCompleteAdapter goodAdapter = new GoodAutoCompleteAdapter(Application.getContext(), R.layout.item);
@@ -264,50 +248,21 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
 
         recyclerStore.setLayoutAnimation(new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left)));
-/*        recyclerStore.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-
-                if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == tmpGoods.size() - 1 && !isLoading) {
-                    StringRequest stringRequest = new StringRequest(Request.Method.POST, app.adminBaseUrl + lastId, response -> {
-                        app.l("**" + response + "**");
-                        Gson gson = new Gson();
-                        AdminMedia[] adminMediasModels = gson.fromJson(response, AdminMedia[].class);
-                        if (adminMediasModels.length == 0) {
-                            app.l("f");
-                            return;
-                        }
-                        List<AdminMedia> newModels = Arrays.asList(adminMediasModels);
-                        lastId = newModels.get(newModels.size() - 1).getId();
-
-                        tmpModels.addAll(newModels);
-                        adapter.notifyDataSetChanged();
-                    }, error -> {
-
-                    });
-                    stringRequest.setRetryPolicy(new DefaultRetryPolicy(
-                            60000,
-                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-
-                    requestQueue.add(stringRequest);
-                    isLoading = true;
-                   resumeGetData(lastId, "getStore2", "null", "null", "null");
-                }
-
-            }
-        });  */
-        resumeDataListener("getStore2", "null", "null", "null");
-        requestGoods(lastId, "getStore2", "null", "null", "null");
+        loading.setVisibility(View.VISIBLE);
+        submitFilter.setVisibility(View.INVISIBLE);
+        resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+        getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
         return inflate;
     }
 
 
-    public void getGooods(int carId, int goodId, int warrantyId, int countryId, int isStock) {
+    private void getGooods(int carId, int goodId, int warrantyId, int countryId, int isStock) {
+        lastId = 0;
+        gooods = new ArrayList<>();
+        tmpGooods = new ArrayList<>();
+        adapter = new GooodStoreAdapter(gooods, getActivity());
+
+
         Map<String, String> map = new HashMap<>();
         map.put("route", "getStore3");
         map.put("lastId", String.valueOf(lastId));
@@ -317,8 +272,99 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         map.put("countryId", String.valueOf(countryId));
         map.put("isStock", String.valueOf(isStock));
 
+        Application.getApi().getGooodList(map).enqueue(new Callback<List<Goood>>() {
+            @Override
+            public void onResponse(Call<List<Goood>> call, Response<List<Goood>> response) {
+
+                loading.setVisibility(View.INVISIBLE);
+                submitFilter.setVisibility(View.VISIBLE);
+                gooods = response.body();
+                if (gooods != null && gooods.size() != 0) {
+                    tmpGooods.addAll(gooods);
+                    StoreFragment.this.lastId = gooods.get(gooods.size() - 1).getId();
+                } else {
+                    if (gooods != null) {
+                        app.t("not found");
+                        isLoading = false;
+                        resumeGooodListener(0, 0, 0, 0, is_stoke_active ? 1 : 0);
+                        getGooods(0, 0, 0, 0, is_stoke_active ? 1 : 0);
+
+                    }
+                }
+                adapter = new GooodStoreAdapter(tmpGooods, getActivity());
+                recyclerStore.setAdapter(adapter);
+
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Goood>> call, Throwable t) {
+
+            }
+        });
+
     }
 
+    private void resumeGetGooods(int lastIdN, int carId, int goodId, int warrantyId, int countryId, int isStock) {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("route", "getStore3");
+        map.put("lastId", String.valueOf(lastIdN));
+        map.put("carId", String.valueOf(carId));
+        map.put("goodId", String.valueOf(goodId));
+        map.put("warrantyId", String.valueOf(warrantyId));
+        map.put("countryId", String.valueOf(countryId));
+        map.put("isStock", String.valueOf(isStock));
+
+        Application.getApi().getGooodList(map).enqueue(new Callback<List<Goood>>() {
+            @Override
+            public void onResponse(Call<List<Goood>> call, Response<List<Goood>> response) {
+                app.l(new Gson().toJson(response.body()));
+                if (response.body() != null && response.body().size() == 0) {
+                    app.l("f");
+                    return;
+                }
+                List<Goood> newGooods = response.body();
+                if (newGooods != null) {
+
+                    app.l(newGooods.get(newGooods.size() - 1).getId() + "******");
+                    lastId = newGooods.get(newGooods.size() - 1).getId();
+                }
+                if (newGooods != null) {
+                    tmpGooods.addAll(newGooods);
+                }
+                adapter.notifyDataSetChanged();
+                isLoading = false;
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Goood>> call, Throwable t) {
+
+            }
+        });
+
+
+    }
+
+    private void resumeGooodListener(int carId, int goodId, int warrantyId, int countryId, int isStock) {
+        isLoading=false;
+        recyclerStore.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+
+                if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == tmpGooods.size() - 1 && !isLoading) {
+                    isLoading = true;
+                    resumeGetGooods(lastId, carId, goodId, warrantyId, countryId, isStock);
+                }
+
+            }
+        });
+    }
 
     private void resetAppbar() {
 
@@ -336,7 +382,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private void initAppbar() {
         stoke.setOnClickListener(this);
     }
-
+/*
     private void resumeDataListener(String root, String carName, String goodName, String search) {
         recyclerStore.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
@@ -398,7 +444,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         lastId = 0;
         goods = new ArrayList<>();
         tmpGoods = new ArrayList<>();
-        adapter = new StoreRecyclerAdapter(getActivity(), getContext(), tmpGoods, StoreFragment.this);
+        adapter = new GooodStoreAdapter(gooods,getActivity());
         Map<String, String> data = new HashMap<>();
         data.put("route", root);
         data.put("lastId", String.valueOf(lastId));
@@ -438,7 +484,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 app.l(t.getLocalizedMessage());
             }
         });
-    }
+    }*/
 
     //VoiceOnClickListener
     @Override
@@ -517,7 +563,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     }
 
 
-    boolean is_stoke_active;
+    private boolean is_stoke_active = false;
 
     @Override
     public void onClick(View v) {
@@ -554,8 +600,24 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     warrantySpinner.setClickable(true);
                 }
 
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
+                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+
 
                 break;
+            case R.id.submit_filter_parent:
+                app.l("selectedCarId:"+selectedCarId);
+                app.l("selectedGoodId:"+selectedGoodId);
+                app.l("warrantyIdInStringInteger:"+Integer.parseInt(warrantyIdInString));
+                app.l("is_stoke_active:"+(is_stoke_active ? 1 : 0));
+                app.l("IntegercountryIdInString:"+Integer.parseInt(countryIdInString));
+                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);/**/
+                break;
+
+
         }
     }
 }

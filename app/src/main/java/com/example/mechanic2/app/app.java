@@ -50,6 +50,18 @@ public class app {
         Log.e(main.TAG, text + "");
     }
 
+    public static void l(String... values) {
+        for (String value:values) {
+            app.l(value+"*");
+        }
+    }
+    public static void l(Integer... values) {
+        for (int value:values) {
+            app.l(value+"*");
+        }
+    }
+
+
 
 
     public static void hideKeyboard(EditText editText){

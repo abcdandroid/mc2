@@ -125,7 +125,7 @@
             app:layout_scrollFlags="scroll|enterAlways">
 
             <RelativeLayout
-                android:id="@+id/submit_filter2"
+                android:id="@+id/submit_filter_parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -152,6 +152,7 @@
                     android:textStyle="bold|italic" />
 
                 <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/loading"
                     android:visibility="visible"
                     android:layout_width="55dp"
                     android:layout_height="55dp"
@@ -170,7 +171,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="4dp"
-                android:layout_toRightOf="@id/submit_filter2"
+                android:layout_toRightOf="@id/submit_filter_parent"
                 android:background="@drawable/rectangle_zero_radius_inactive_stoke"
                 android:hint="ماشینت چیه؟"
                 android:layoutDirection="rtl"

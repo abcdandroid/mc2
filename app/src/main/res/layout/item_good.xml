@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp">
+
+        <ImageView
+            android:id="@+id/preview"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/grey_1000"
+            android:scaleType="centerCrop" />
+
+        <com.example.mechanic2.views.MyTextView
+            android:id="@+id/good_name"
+            style="@style/TextAppearance.Subhead.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@id/preview"
+            android:layoutDirection="rtl"
+            android:text="@string/hello_world"
+            android:textColor="@color/grey_1000"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/car_icon"
+            android:layout_width="20dp"
+            android:layout_height="14sp"
+            android:layout_below="@id/good_name"
+            android:layout_alignRight="@id/good_name"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_car3" />
+
+        <com.example.mechanic2.views.MyTextView
+            android:id="@+id/suitable_cars"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/car_icon"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/car_icon"
+            android:layout_toEndOf="@id/preview"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:layoutDirection="rtl"
+            android:lines="1"
+            android:textColor="@color/grey_1000"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/factory_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_below="@id/car_icon"
+            android:layout_alignLeft="@id/car_icon"
+            android:layout_alignRight="@id/car_icon"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_factory2" />
+
+
+        <com.example.mechanic2.views.MyTextView
+            android:id="@+id/company_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/factory_icon"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/factory_icon"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:layoutDirection="rtl"
+            android:lines="1"
+            android:textColor="@color/grey_1000"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <com.example.mechanic2.views.MyTextView
+            android:id="@+id/country_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/company_name"
+            android:layout_marginStart="20dp"
+            android:layout_toLeftOf="@id/company_name"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:layoutDirection="rtl"
+            android:lines="1"
+            android:textColor="@color/grey_1000"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+
+        <ImageView
+            android:id="@+id/warranty_icon"
+            android:layout_width="20dp"
+            android:layout_height="22dp"
+            android:layout_below="@id/factory_icon"
+            android:layout_alignLeft="@id/car_icon"
+            android:layout_alignRight="@id/car_icon"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_warranty" />
+
+
+        <com.example.mechanic2.views.MyTextView
+            android:id="@+id/warranty_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/warranty_icon"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/factory_icon"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:layoutDirection="rtl"
+            android:lines="1"
+            android:textColor="@color/grey_1000"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/state_icon"
+            android:layout_width="20dp"
+            android:layout_height="22dp"
+            android:layout_alignLeft="@id/car_icon"
+            android:layout_alignRight="@id/car_icon"
+            android:layout_alignBottom="@id/read_more"
+            android:layout_marginTop="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_nis"
+            android:tint="#ff0000" />
+
+
+        <com.example.mechanic2.views.MyTextView
+            android:text="@string/lorem_simple"
+            android:maxLength="10"
+            android:id="@+id/state_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/state_icon"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/factory_icon"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:layoutDirection="rtl"
+            android:lines="1"
+            android:textColor="#ff0000"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <com.example.mechanic2.views.MyTextView
+            android:id="@+id/read_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/warranty_icon"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:gravity="right"
+            android:layoutDirection="rtl"
+            android:lines="1"
+            android:maxLength="35"
+            android:text="برای مشاهده جزییات کلیک کنید"
+            android:textColor="@color/grey_1000"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/read_more"
+            android:layout_marginTop="8dp"
+            android:background="@color/grey_60" />
+    </RelativeLayout>
+
+</LinearLayout>
