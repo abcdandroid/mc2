@@ -599,6 +599,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         });
     }*/
 
+
     //VoiceOnClickListener
     @Override
     public void onClick(View v, Good good) {
