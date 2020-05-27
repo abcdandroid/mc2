@@ -144,12 +144,10 @@
             android:layout_marginTop="8dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_nis"
-            android:tint="#ff0000" />
+            android:tint="@color/red_full" />
 
 
         <com.example.mechanic2.views.MyTextView
-            android:text="@string/lorem_simple"
-            android:maxLength="10"
             android:id="@+id/state_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

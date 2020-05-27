@@ -61,7 +61,9 @@ public class app {
         }
     }
 
-
+    public static  String getEmojiByUnicode(int unicode){
+        return new String(Character.toChars(unicode));
+    }
 
 
     public static void hideKeyboard(EditText editText){

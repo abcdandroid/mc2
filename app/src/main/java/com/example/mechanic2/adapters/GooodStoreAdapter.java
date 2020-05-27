@@ -87,11 +87,28 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
                 stateText.setVisibility(View.VISIBLE);
                 stateIcon.setVisibility(View.VISIBLE);
                 readMore.setVisibility(View.INVISIBLE);
-            } else if (goood.getIs_stock() == 1 && goood.getStatus() == 1) {
-                stateText.setText("استوک");
+            } else if (goood.getIs_stock() == 2 && goood.getStatus() == 1) {
+
                 stateText.setVisibility(View.VISIBLE);
-                readMore.setVisibility(View.VISIBLE);
+                stateText.setText(activity.getResources().getString(R.string.luxury_good));
+                stateText.setTextColor(activity.getResources().getColor(R.color.yellow_900));
+
                 stateIcon.setVisibility(View.VISIBLE);
+                stateIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_diamond));
+                stateIcon.setColorFilter(activity.getResources().getColor(R.color.yellow_900));
+
+                readMore.setVisibility(View.VISIBLE);
+
+            } else if (goood.getIs_stock() == 1 && goood.getStatus() == 1) {
+                stateText.setVisibility(View.VISIBLE);
+                stateText.setText(activity.getResources().getString(R.string.stoke_good));
+                stateText.setTextColor(activity.getResources().getColor(R.color.red_full));
+
+                stateIcon.setVisibility(View.VISIBLE);
+                stateIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_nis));
+                stateIcon.setColorFilter(activity.getResources().getColor(R.color.red_full));
+
+                readMore.setVisibility(View.VISIBLE);
             } else if (goood.getIs_stock() == 0 && goood.getStatus() == 1) {
                 stateText.setVisibility(View.INVISIBLE);
                 stateIcon.setVisibility(View.INVISIBLE);

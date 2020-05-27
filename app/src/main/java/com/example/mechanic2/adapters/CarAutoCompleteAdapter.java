@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mechanic2.R;
+import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.FilterListeners;
 import com.example.mechanic2.models.Car;
@@ -62,13 +63,15 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
     }
 
-   @NonNull
+    @NonNull
     @Override
     public View getView(final int position, View convertView, @NotNull ViewGroup parent) {
 
         ViewHolder mViewHolder;
         Car car;
-        app.l(data.get(position).getName()+"RRR");
+
+        //data.add(new Car(Application.getContext().getResources().getString(R.string.all_cars), 0));
+        app.l(position + "RRR");
         if (convertView == null) {
             mViewHolder = new ViewHolder();
 
@@ -85,9 +88,10 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             mViewHolder = (ViewHolder) convertView.getTag();
         }
         //car = (Car) mViewHolder.textView.getTag();
-        car = data.get(position);
-        mViewHolder.textView.setText(car.getName());
-        mViewHolder.idTv.setText(String.valueOf(car.getId()));
+            car = data.get(position);
+            mViewHolder.textView.setText(car.getName());
+            mViewHolder.idTv.setText(String.valueOf(car.getId()));
+
 
         return convertView;
     }/* */
@@ -99,6 +103,9 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
+                ArrayList<Car> suggestions = new ArrayList<>();
+
+                suggestions.add(new Car(Application.getContext().getResources().getString(R.string.all_cars), 0));
                 if (constraint != null) {
                     HttpURLConnection conn = null;
                     InputStream input = null;
@@ -118,13 +125,11 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
                         JSONArray terms = new JSONArray(builder.toString());
 
 
-                        ArrayList<Car> suggestions = new ArrayList<>();
-
                         for (int ind = 0; ind < terms.length(); ind++) {
                             JSONObject jsonObject = terms.getJSONObject(ind);
-                            suggestions.add(new Car(jsonObject.getString("name"),Integer.parseInt(jsonObject.getString("id"))));
+                            suggestions.add(new Car(jsonObject.getString("name"), Integer.parseInt(jsonObject.getString("id"))));
                         }
-                        app.l(suggestions.size()+"QAZ");
+                        app.l(suggestions.size() + "QAZ");
                         results.count = suggestions.size();
                         data = suggestions;
                     } catch (Exception ex) {

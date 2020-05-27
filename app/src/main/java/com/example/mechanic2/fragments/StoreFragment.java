@@ -1,5 +1,6 @@
 package com.example.mechanic2.fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -104,7 +105,15 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     MySpinnerAdapter warrantySpinnerAdapter;
     private TextView submitFilter;
     private SpinKitView loading;
+    private ImageView resetCar;
+    private ImageView resetGood;
+    private int stokeState;
 
+
+    RelativeLayout btnShowAllGoods;
+    RelativeLayout btnShowLuxuryGoods;
+    RelativeLayout btnShowStokeGoods;
+    SweetAlertDialog sweetAlertDialogGoodNotExist;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -130,9 +139,13 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         submitFilterParent = inflate.findViewById(R.id.submit_filter_parent);
         submitFilter = inflate.findViewById(R.id.submit_filter);
         loading = inflate.findViewById(R.id.loading);
+        resetCar = inflate.findViewById(R.id.reset_car);
+        resetGood = inflate.findViewById(R.id.reset_good);
+        resetCar.setOnClickListener(this);
+        resetGood.setOnClickListener(this);
 
         submitFilterParent.setOnClickListener(this);
-        SweetAlertDialog loadingData = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE).setTitleText("شکیبا باشید");
+        SweetAlertDialog loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setTitleText("شکیبا باشید");
         loadingData.setCancelable(false);
         loadingData.show();
         loadingData.setCancelable(false);
@@ -173,13 +186,16 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (view != null) {
+
+                    modifyIds();
+
                     View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
                     TextView myTextView = view1.findViewById(R.id.id_spinner);
                     countryIdInString = myTextView == null ? "0" : myTextView.getText().toString();
                     loading.setVisibility(View.VISIBLE);
                     submitFilter.setVisibility(View.INVISIBLE);
-                    resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
-                    getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+                    resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                    getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
                 }
             }
 
@@ -192,13 +208,16 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (view != null) {
+
+                    modifyIds();
+
                     View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
                     TextView myTextView = view1.findViewById(R.id.id_spinner);
                     warrantyIdInString = myTextView == null ? "0" : myTextView.getText().toString();
                     loading.setVisibility(View.VISIBLE);
                     submitFilter.setVisibility(View.INVISIBLE);
-                    resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
-                    getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+                    resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                    getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
                 }
             }
 
@@ -207,6 +226,8 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
             }
         });
+
+
         recyclerStore = inflate.findViewById(R.id.recyclerStore);
         parent = inflate.findViewById(R.id.parent);
         appbar = inflate.findViewById(R.id.appbar);
@@ -236,6 +257,16 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedGoodId = Integer.parseInt(((TextView) parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent())).findViewById(R.id.id)).getText().toString());
+                if (selectedGoodId == -2 /*luxury good*/) {
+                    selectedGoodId = 0;
+                    stokeState = 2;
+                    stoke.setEnabled(false);
+                    stoke.setBackgroundColor(getActivity().getResources().getColor(R.color.grey_40));
+                } else {
+                    stoke.setEnabled(true);
+                    stoke.setBackground(getActivity().getDrawable(R.drawable.btn_inactive_stoke));
+                    stokeState = 0;
+                }
             }
         });
 
@@ -246,13 +277,65 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             }
         });
 
+        carQuestion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() == 0) {
+                    selectedCarId = 0;
+                    resetCar.setVisibility(View.INVISIBLE);
+                } else resetCar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        goodQuestion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() == 0) {
+                    selectedGoodId = 0;
+                    resetGood.setVisibility(View.INVISIBLE);
+                } else resetGood.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
 
         recyclerStore.setLayoutAnimation(new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left)));
         loading.setVisibility(View.VISIBLE);
         submitFilter.setVisibility(View.INVISIBLE);
-        resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
-        getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+        resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+        getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
         return inflate;
+    }
+
+    private void modifyIds() {
+        if (carQuestion.getText().toString().length() == 0 && selectedCarId == 0) {
+            selectedCarId = 0;
+        } else if (carQuestion.getText().toString().length() > 0 && !carQuestion.getText().toString().equals(getString(R.string.all_cars)) && selectedCarId == 0) {
+            selectedCarId = -1;
+        }
+        if (goodQuestion.getText().toString().length() == 0 && selectedGoodId == 0) {
+            selectedGoodId = 0;
+        } else if (goodQuestion.getText().toString().length() > 0 && (!goodQuestion.getText().toString().equals(getString(R.string.all_goods)) && !goodQuestion.getText().toString().equals(getString(R.string.luxury_good))) && selectedGoodId == 0) {
+            selectedGoodId = -1;
+        }
     }
 
 
@@ -275,31 +358,62 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         Application.getApi().getGooodList(map).enqueue(new Callback<List<Goood>>() {
             @Override
             public void onResponse(Call<List<Goood>> call, Response<List<Goood>> response) {
+                if (response.body() != null && response.body().size() > 0) {
+                    app.l(response.body().size() + "@@@");
 
-                loading.setVisibility(View.INVISIBLE);
-                submitFilter.setVisibility(View.VISIBLE);
-                gooods = response.body();
-                if (gooods != null && gooods.size() != 0) {
-                    tmpGooods.addAll(gooods);
-                    StoreFragment.this.lastId = gooods.get(gooods.size() - 1).getId();
-                } else {
-                    if (gooods != null) {
-                        app.t("not found");
-                        isLoading = false;
-                        resumeGooodListener(0, 0, 0, 0, is_stoke_active ? 1 : 0);
-                        getGooods(0, 0, 0, 0, is_stoke_active ? 1 : 0);
-
+                    if (response.body().get(0).getId() == -2) {
+                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از خودروهای پیشنهادی کلیک کنید").show();
+                        return;
                     }
+                    if (response.body().get(0).getId() == -3) {
+                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از فطعات پیشنهادی کلیک کنید").show();
+                        return;
+                    }
+                    if (response.body().get(0).getId() == -4) {
+                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از فطعات پیشنهادی و یکی از خودروهای پیشنهادی کلیک کنید").show();
+                        return;
+                    }
+
+
+                    loading.setVisibility(View.INVISIBLE);
+                    submitFilter.setVisibility(View.VISIBLE);
+                    gooods = response.body();
+                    if (gooods != null && gooods.size() != 0) {
+                        tmpGooods.addAll(gooods);
+                        StoreFragment.this.lastId = gooods.get(gooods.size() - 1).getId();
+                    } else {
+                        if (gooods != null) {
+                            app.t("not found11");
+                            isLoading = false;
+                        /*resumeGooodListener(0, 0, 0, 0, is_stoke_active ? 1 : 0);
+                        getGooods(0, 0, 0, 0, is_stoke_active ? 1 : 0);*/
+
+                        }
+                    }
+                    adapter = new GooodStoreAdapter(tmpGooods, getActivity());
+                    recyclerStore.setAdapter(adapter);
+
+                } else {
+                    View view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
+                    TextView textView=view.findViewById(R.id.txt);
+                    textView.setText(textView.getText().toString()+app.getEmojiByUnicode(0x1F614));
+
+                    btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
+                    btnShowLuxuryGoods = view.findViewById(R.id.btn_show_luxury_goods);
+                    btnShowStokeGoods = view.findViewById(R.id.btn_show_stoke_goods);
+                    btnShowAllGoods.setOnClickListener(StoreFragment.this);
+                    btnShowLuxuryGoods.setOnClickListener(StoreFragment.this);
+                    btnShowStokeGoods.setOnClickListener(StoreFragment.this);
+
+                    sweetAlertDialogGoodNotExist = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).hideConfirmButton()
+                            .setCustomView(view);
+                    sweetAlertDialogGoodNotExist.show();
                 }
-                adapter = new GooodStoreAdapter(tmpGooods, getActivity());
-                recyclerStore.setAdapter(adapter);
-
-
             }
 
             @Override
             public void onFailure(Call<List<Goood>> call, Throwable t) {
-
+                app.l(t.getLocalizedMessage() + "@");
             }
         });
 
@@ -348,7 +462,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     }
 
     private void resumeGooodListener(int carId, int goodId, int warrantyId, int countryId, int isStock) {
-        isLoading=false;
+        isLoading = false;
         recyclerStore.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
 
@@ -361,7 +475,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     isLoading = true;
                     resumeGetGooods(lastId, carId, goodId, warrantyId, countryId, isStock);
                 }
-
             }
         });
     }
@@ -570,21 +683,21 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         switch (v.getId()) {
             case R.id.stoke:
 
-                if (carQuestion.getText().toString().length() == 0 && selectedCarId == 0) {
-                    selectedCarId = 0;
-                } else if (carQuestion.getText().toString().length() > 0 && selectedCarId == 0) {
-                    selectedCarId = -1;
-                }
-                if (goodQuestion.getText().toString().length() == 0 && selectedGoodId == 0) {
-                    selectedGoodId = 0;
-                } else if (goodQuestion.getText().toString().length() > 0 && selectedGoodId == 0) {
-                    selectedGoodId = -1;
-                }
+                app.l("selectedCarId:" + selectedCarId);
+                app.l("selectedGoodId:" + selectedGoodId);
+                app.l("warrantyIdInStringInteger:" + Integer.parseInt(warrantyIdInString));
+                app.l("is_stoke_active:" + (getStockValue()));
+                app.l("IntegercountryIdInString:" + Integer.parseInt(countryIdInString));
+/*
+                app.hideKeyboard(carQuestion);
+                app.hideKeyboard(goodQuestion);*/
+                modifyIds();
                 is_stoke_active = !is_stoke_active;
-                app.l("ci:" + selectedCarId + "gi" + selectedGoodId + "wi" + warrantyIdInString + "cni" + countryIdInString + (is_stoke_active ? "1" : "0"));
+                app.l("ci:" + selectedCarId + "gi" + selectedGoodId + "wi" + warrantyIdInString + "cni" + countryIdInString + (getStockValue()));
                 countrySpinnerAdapter.disableAdapter(is_stoke_active);
                 warrantySpinnerAdapter.disableAdapter(is_stoke_active);
                 if (is_stoke_active) {
+                    stokeState = 1;
                     stoke.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
                     countrySpinner.setEnabled(false);
                     countrySpinner.setClickable(false);
@@ -593,6 +706,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
 
                 } else {
+                    stokeState = 0;
                     stoke.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
                     countrySpinner.setEnabled(true);
                     countrySpinner.setClickable(true);
@@ -602,22 +716,115 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
                 loading.setVisibility(View.VISIBLE);
                 submitFilter.setVisibility(View.INVISIBLE);
-                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
-                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
+                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
 
 
                 break;
             case R.id.submit_filter_parent:
-                app.l("selectedCarId:"+selectedCarId);
-                app.l("selectedGoodId:"+selectedGoodId);
-                app.l("warrantyIdInStringInteger:"+Integer.parseInt(warrantyIdInString));
-                app.l("is_stoke_active:"+(is_stoke_active ? 1 : 0));
-                app.l("IntegercountryIdInString:"+Integer.parseInt(countryIdInString));
-                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);
-                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), is_stoke_active ? 1 : 0);/**/
+                modifyIds();
+                app.l(carQuestion.getText().toString());
+                app.l(carQuestion.getHint().toString());
+                app.l("selectedCarId:" + selectedCarId);
+                app.l("selectedGoodId:" + selectedGoodId);
+                app.l("warrantyIdInStringInteger:" + Integer.parseInt(warrantyIdInString));
+                app.l("is_stoke_active:" + getStockValue());
+                app.l("IntegercountryIdInString:" + Integer.parseInt(countryIdInString));
+                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());/**/
                 break;
+            case R.id.reset_car:
+                carQuestion.setText("");
+                selectedCarId = 0;
+                modifyIds();
+                app.l("selectedCarId:" + selectedCarId);
+                app.l("selectedGoodId:" + selectedGoodId);
+                app.l("warrantyIdInStringInteger:" + Integer.parseInt(warrantyIdInString));
+                app.l("is_stoke_active:" + (getStockValue()));
+                app.l("IntegercountryIdInString:" + Integer.parseInt(countryIdInString));
+                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());/**/
+                break;
+            case R.id.reset_good:
+                modifyIds();
+                goodQuestion.setHint(getString(R.string.ask_good));
+                goodQuestion.setText("");
+                stoke.setEnabled(true);
+                stoke.setBackground(getActivity().getDrawable(R.drawable.btn_inactive_stoke));
+                stokeState = 0;
+                selectedGoodId = 0;
+                app.l("selectedCarId:" + selectedCarId);
+                app.l("selectedGoodId:" + selectedGoodId);
+                app.l("warrantyIdInStringInteger:" + Integer.parseInt(warrantyIdInString));
+                app.l("is_stoke_active:" + (getStockValue()));
+                app.l("IntegercountryIdInString:" + Integer.parseInt(countryIdInString));
+                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());/**/
+                break;
+            case R.id.btn_show_all_goods:
+                sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
+                stokeState = 0;
+                stoke.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
+                goodQuestion.setText("");
+                carQuestion.setText("");
+                is_stoke_active=false;
+                stoke.setEnabled(true);
+                selectedGoodId=0;
+                selectedCarId=0;
+                warrantyIdInString="0";
+                countryIdInString="0";
+                warrantySpinner.setSelection(0);
+                countrySpinner.setSelection(0);
+                break;
+            case R.id.btn_show_luxury_goods:
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
+                stokeState = 2;
+                stoke.setEnabled(false);
+                stoke.setBackgroundColor(getActivity().getResources().getColor(R.color.grey_40));
+                goodQuestion.setText(getText(R.string.luxury_good));
+                carQuestion.setText("");
+                stokeState=2;
+                is_stoke_active=false;
+                selectedGoodId=0;
+                selectedCarId=0;
+                warrantySpinner.setSelection(0);
+                countrySpinner.setSelection(0);
+               // resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                //getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                break;
+            case R.id.btn_show_stoke_goods:
+                stoke.setEnabled(true);
+                stokeState = 1;
+                is_stoke_active=true;
+                countrySpinnerAdapter.disableAdapter(true);
+                warrantySpinnerAdapter.disableAdapter(true);
+                stoke.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
+                countrySpinner.setEnabled(false);
+                countrySpinner.setClickable(false);
+                warrantySpinner.setEnabled(false);
+                warrantySpinner.setClickable(false);
+                goodQuestion.setText("");
+                carQuestion.setText("");
+                warrantySpinner.setSelection(0);
+                countrySpinner.setSelection(0);
+                sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
+                selectedGoodId=0;
+                selectedCarId=0;
+                //resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                //getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
 
 
         }
+    }
+
+    private int getStockValue() {
+        if (is_stoke_active) return 1;
+        else return stokeState;
     }
 }

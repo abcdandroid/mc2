@@ -16,6 +16,16 @@
     <string name="content_description_end_icon">contetn desc end icon</string>
     <string name="enterCarName">خودروی خود را انتخاب کنید</string>
     <string name="search_transition">search_transition</string>
+    <string name="all_cars">همه ماشین ها</string>
+    <string name="all_goods">همه قطعه ها</string>
+    <string name="ask_car">ماشینت چیه؟</string>
+    <string name="ask_good">دنبال چه قطعه ای هستی؟</string>
+    <string name="luxury_good">کالای لوکس</string>
+    <string name="stoke_good">کالای استوک</string>
+    <string name="good_not_found">این کالا در حال حاضر\n موجود نمی باشد</string>
+    <string name="show_stoke_goods">نمایش کالهای استوک</string>
+    <string name="show_luxury_goods">نمایش کالای لوکس</string>
+    <string name="show_all_goods">نمایش تمام کالاها</string>
     <array name="question_filter">
         <item>پربازدیدترین ها</item>
         <item>جدیدترین ها</item>

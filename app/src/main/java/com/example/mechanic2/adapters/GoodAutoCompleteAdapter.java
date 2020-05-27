@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -14,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.mechanic2.R;
+import com.example.mechanic2.app.Application;
+import com.example.mechanic2.app.app;
 import com.example.mechanic2.models.Good;
 
 import org.jetbrains.annotations.NotNull;
@@ -39,7 +42,6 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
     }
 
 
-
     @Override
     public int getCount() {
         return data.size();
@@ -55,6 +57,7 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
 
         private TextView textView;
         private TextView idTv;
+        private LinearLayout parent;
 
     }
 
@@ -73,6 +76,7 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
             convertView = vi.inflate(R.layout.item_test, parent, false);
             mViewHolder.textView = convertView.findViewById(R.id.title);
             mViewHolder.idTv = convertView.findViewById(R.id.id);
+            mViewHolder.parent = convertView.findViewById(R.id.parent);
 
             convertView.setTag(mViewHolder);
             //mViewHolder.textView.setTag(data.get(position));
@@ -80,8 +84,14 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
             mViewHolder = (ViewHolder) convertView.getTag();
         }
         good = data.get(position);
+        if (good.getId()==-2) {
+            mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.yellow_900));
+        } else {
+            mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
+        }
         mViewHolder.textView.setText(good.getName());
         mViewHolder.idTv.setText(String.valueOf(good.getId()));
+
 
         return convertView;
     }
@@ -93,6 +103,9 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
+                ArrayList<Good> suggestions = new ArrayList<>();
+                suggestions.add(new Good(Application.getContext().getResources().getString(R.string.all_goods), 0));
+                suggestions.add(new Good(Application.getContext().getResources().getString(R.string.luxury_good), -2));
                 if (constraint != null) {
                     HttpURLConnection conn = null;
                     InputStream input = null;
@@ -110,15 +123,13 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
                         JSONArray terms = new JSONArray(builder.toString());
 
 
-                        ArrayList<Good> suggestions = new ArrayList<>();
-
-
                         for (int ind = 0; ind < terms.length(); ind++) {
                             JSONObject jsonObject = terms.getJSONObject(ind);
                             suggestions.add(new Good(jsonObject.getString("name"), jsonObject.getInt("id")));
                         }
                         results.values = suggestions;
                         results.count = suggestions.size();
+
                         data = suggestions;
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -138,7 +149,6 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-
 
 
                 if (results != null && results.count > 0) {
