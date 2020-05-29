@@ -1,16 +1,26 @@
 package com.example.mechanic2.adapters;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
+import com.example.mechanic2.activities.ShowGoodDetailActivity;
+import com.example.mechanic2.app.app;
+import com.example.mechanic2.fragments.ShowThumbnailFragment;
+import com.example.mechanic2.interfaces.OnGoodClickListener;
 import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.views.MyTextView;
@@ -30,7 +40,25 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
     @NonNull
     @Override
     public GooodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new GooodViewHolder(LayoutInflater.from(activity).inflate(R.layout.item_good, parent, false));
+        View v = LayoutInflater.from(activity).inflate(R.layout.item_good, parent, false);
+  /*      final GooodViewHolder holder = new GooodViewHolder(v);
+
+        holder.parent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(activity, ShowGoodDetailActivity.class);
+
+                intent.putExtra("good", gooodList.get(holder.getAdapterPosition()));
+
+                Pair<View, String> pair = Pair.create(v.findViewById(R.id.preview), "img");
+
+
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pair);
+
+                activity.startActivity(intent, optionsCompat.toBundle());
+            }
+        });*/
+        return new GooodViewHolder(v);
     }
 
     @Override
@@ -41,6 +69,11 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
     @Override
     public int getItemCount() {
         return gooodList.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (position);
     }
 
     class GooodViewHolder extends RecyclerView.ViewHolder {
@@ -56,6 +89,8 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
         private MyTextView readMore;
         private ImageView stateIcon;
         private MyTextView stateText;
+        private LinearLayout parent;
+
 
         GooodViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,6 +106,26 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
             readMore = itemView.findViewById(R.id.read_more);
             stateIcon = itemView.findViewById(R.id.state_icon);
             stateText = itemView.findViewById(R.id.state_text);
+            parent = itemView.findViewById(R.id.parent);
+            parent.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(activity, ShowGoodDetailActivity.class);
+
+                    intent.putExtra("good", gooodList.get(getAdapterPosition()));
+/*
+                    Pair<View, String> pair0 = Pair.create(parent, ViewCompat.getTransitionName(parent));
+                    Pair<View, String> pair1 = Pair.create(itemView.findViewById(R.id.preview), "img");
+
+                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
+                            pair1,pair1
+                    );*/
+
+                    activity.startActivity(intent/*, optionsCompat.toBundle()*/);
+
+                }
+            });
         }
 
         void binder(Goood goood) {
@@ -114,7 +169,6 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
                 stateIcon.setVisibility(View.INVISIBLE);
                 readMore.setVisibility(View.VISIBLE);
             }
-
 
         }
 

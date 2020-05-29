@@ -23,7 +23,7 @@
     <string name="luxury_good">کالای لوکس</string>
     <string name="stoke_good">کالای استوک</string>
     <string name="good_not_found">این کالا در حال حاضر\n موجود نمی باشد</string>
-    <string name="show_stoke_goods">نمایش کالهای استوک</string>
+    <string name="show_stoke_goods">نمایش کالای استوک</string>
     <string name="show_luxury_goods">نمایش کالای لوکس</string>
     <string name="show_all_goods">نمایش تمام کالاها</string>
     <array name="question_filter">

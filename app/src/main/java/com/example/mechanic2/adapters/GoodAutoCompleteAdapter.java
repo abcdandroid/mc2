@@ -83,8 +83,10 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
-        good = data.get(position);
-        if (good.getId()==-2) {
+        if (position <= data.size() - 1)
+            good = data.get(position);
+        else good = new Good("", 0);
+        if (good.getId() == -2) {
             mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.yellow_900));
         } else {
             mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));

@@ -2,6 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:id="@+id/parent"
+    android:background="@color/grey_3"
+    android:transitionName="pT"
     android:orientation="horizontal">
 
 
@@ -11,6 +14,7 @@
         android:layout_marginTop="8dp">
 
         <ImageView
+            android:transitionName="img"
             android:id="@+id/preview"
             android:layout_width="100dp"
             android:layout_height="100dp"
@@ -21,6 +25,7 @@
             android:scaleType="centerCrop" />
 
         <com.example.mechanic2.views.MyTextView
+            android:transitionName="nameTxt"
             android:id="@+id/good_name"
             style="@style/TextAppearance.Subhead.Bold"
             android:layout_width="match_parent"
@@ -36,6 +41,8 @@
             android:textSize="16sp" />
 
         <ImageView
+            android:tint="@color/indigo_400"
+            android:transitionName="carT"
             android:id="@+id/car_icon"
             android:layout_width="20dp"
             android:layout_height="14sp"
@@ -45,6 +52,7 @@
             android:src="@drawable/ic_car3" />
 
         <com.example.mechanic2.views.MyTextView
+            android:transitionName="scT"
             android:id="@+id/suitable_cars"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,6 +71,8 @@
 
 
         <ImageView
+            android:tint="@color/indigo_400"
+            android:transitionName="factoryT"
             android:id="@+id/factory_icon"
             android:layout_width="wrap_content"
             android:layout_height="20dp"
@@ -76,6 +86,7 @@
 
         <com.example.mechanic2.views.MyTextView
             android:id="@+id/company_name"
+            android:transitionName="cT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/factory_icon"
@@ -91,6 +102,7 @@
             android:textStyle="bold" />
 
         <com.example.mechanic2.views.MyTextView
+            android:transitionName="cnT"
             android:id="@+id/country_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,6 +119,8 @@
 
 
         <ImageView
+            android:tint="@color/indigo_400"
+            android:transitionName="warrantyT"
             android:id="@+id/warranty_icon"
             android:layout_width="20dp"
             android:layout_height="22dp"
@@ -119,6 +133,7 @@
 
 
         <com.example.mechanic2.views.MyTextView
+            android:transitionName="wT"
             android:id="@+id/warranty_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -135,6 +150,7 @@
             android:textStyle="bold" />
 
         <ImageView
+            android:transitionName="stokeT"
             android:id="@+id/state_icon"
             android:layout_width="20dp"
             android:layout_height="22dp"
@@ -148,6 +164,7 @@
 
 
         <com.example.mechanic2.views.MyTextView
+            android:transitionName="sT"
             android:id="@+id/state_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

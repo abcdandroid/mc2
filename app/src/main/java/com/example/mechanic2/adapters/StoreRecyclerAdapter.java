@@ -232,7 +232,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
 
         }
 
-        void bindView(Good good) {
+        private void bindView(Good good) {
 
             prepareRecyclerThumbnail();
 

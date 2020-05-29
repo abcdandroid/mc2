@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.LayoutRes;
@@ -19,6 +20,7 @@ import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.FilterListeners;
 import com.example.mechanic2.models.Car;
+import com.example.mechanic2.models.Good;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -60,6 +62,7 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
         private TextView textView;
         private TextView idTv;
+        private LinearLayout parent;
 
     }
 
@@ -81,6 +84,8 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             convertView = vi.inflate(R.layout.item_test, parent, false);
             mViewHolder.textView = convertView.findViewById(R.id.title);
             mViewHolder.idTv = convertView.findViewById(R.id.id);
+            mViewHolder.parent = convertView.findViewById(R.id.parent);
+
 
             convertView.setTag(mViewHolder);
             //mViewHolder.textView.setTag(data.get(position));
@@ -88,9 +93,13 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             mViewHolder = (ViewHolder) convertView.getTag();
         }
         //car = (Car) mViewHolder.textView.getTag();
+
+        if (position <= data.size() - 1)
             car = data.get(position);
-            mViewHolder.textView.setText(car.getName());
-            mViewHolder.idTv.setText(String.valueOf(car.getId()));
+        else car = new Car("", 0);
+        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
+        mViewHolder.textView.setText(car.getName());
+        mViewHolder.idTv.setText(String.valueOf(car.getId()));
 
 
         return convertView;
