@@ -53,7 +53,7 @@ public class SharedPrefUtils {
      */
     // Get Data
     static public String getStringData( String key) {
-        return  getContext().getSharedPreferences(PREF_APP, Context.MODE_PRIVATE).getString(key, null);
+        return  getContext().getSharedPreferences(PREF_APP, Context.MODE_PRIVATE).getString(key, "-1");
     }// Get Data
     static public float getFloatData( String key) {
         return  getContext().getSharedPreferences(PREF_APP, Context.MODE_PRIVATE).getFloat(key, 0);

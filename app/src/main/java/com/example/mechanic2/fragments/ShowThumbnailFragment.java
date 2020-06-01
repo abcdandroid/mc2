@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.OnViewPagerClickListener;
 
 import java.util.Objects;
 
@@ -31,18 +32,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShowThumbnailFragment extends Fragment {
-    String url;
+public  class ShowThumbnailFragment extends Fragment  {
+    private String url;
+    private OnViewPagerClickListener onViewPagerClickListener;
+
 
     public ShowThumbnailFragment() {
         // Required empty public constructor
     }
-
-    public static ShowThumbnailFragment newInstance(String url) {
+/**/
+    public static ShowThumbnailFragment newInstance(String url,OnViewPagerClickListener onViewPagerClickListener) {
 
         Bundle args = new Bundle();
         args.putString("url", url);
-        ShowThumbnailFragment fragment = new ShowThumbnailFragment();
+        args.putParcelable("onClick", onViewPagerClickListener);
+        ShowThumbnailFragment fragment = new ShowThumbnailFragment() ;
         fragment.setArguments(args);
         return fragment;
     }
@@ -53,6 +57,8 @@ public class ShowThumbnailFragment extends Fragment {
         url = null;
         if (getArguments() != null) {
             url = getArguments().getString("url");
+            app.l(url+"_________");
+            onViewPagerClickListener=getArguments().getParcelable("onClick");
         }
     }
 
@@ -67,6 +73,12 @@ public class ShowThumbnailFragment extends Fragment {
 
     private void init(View inflate) {
         ImageView imThumbnail = inflate.findViewById(R.id.imThumbnail);
+            imThumbnail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onViewPagerClickListener.onViewPagerClick(v);
+                }
+            });
         Glide.with(Objects.requireNonNull(getActivity())).load(url).into(imThumbnail);
     }
 }

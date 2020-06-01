@@ -79,5 +79,8 @@ public interface Api {
     @GET(".")
     Call<CountriesAndWarranties> getCountriesAndWarranties(@QueryMap Map<String, String> map);
 
+    @GET(".")
+    Call<Void> addToSold(@QueryMap Map<String, String> map);
+
 
 }

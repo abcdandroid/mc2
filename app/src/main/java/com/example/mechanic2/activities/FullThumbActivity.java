@@ -26,7 +26,7 @@ public class FullThumbActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         if (linkList != null) {
             for (String s : linkList) {
-                adapter.addFragment(ShowThumbnailFragment.newInstance(s));
+                adapter.addFragment(ShowThumbnailFragment.newInstance(s,null));
             }
         }
         vpThumbnail.setAdapter(adapter);

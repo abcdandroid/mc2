@@ -11,11 +11,13 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcel;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -49,30 +51,37 @@ import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.AdsViewPagerFragment;
 import com.example.mechanic2.fragments.ShowThumbnailFragment;
+import com.example.mechanic2.interfaces.OnViewPagerClickListener;
 import com.example.mechanic2.interfaces.ThumbnailViewPagerState;
 import com.example.mechanic2.models.Ads;
 import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Good;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.views.MyTextView;
+import com.example.mechanic2.views.MyViewPager;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.gson.Gson;
 import com.hmomeni.progresscircula.ProgressCircula;
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class ShowGoodDetailActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
-    private ViewPager viewpager;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class ShowGoodDetailActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener{
+    private MyViewPager viewpager;
     private ViewPagerAdapter adapter;
     int ci = 0;
     private Activity activity = this;
@@ -112,14 +121,13 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     private TextView sen3;
 
 
-
     private TextView priceBtn;
     private TextView call;
     Goood goood;
     private ExtensiblePageIndicator extensiblePageIndicator;
     String audioAddress;
     private TextView price;
-
+    String[] splitAll;
     private Handler mSeekbarUpdateHandler = new Handler();
     private Runnable mUpdateSeekbar = new Runnable() {
         @Override
@@ -146,7 +154,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         binder(goood);
         initViewPager();
 
-        app.l(goood.getSentence_1(),goood.getSentence_2(),goood.getSentence_3());
+        app.l(goood.getSentence_1(), goood.getSentence_2(), goood.getSentence_3());
 
         audioAddress = context.getExternalFilesDir("voice/mp3").getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
 
@@ -211,8 +219,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
                 playManager(goood);
             }
         });/**/
-
-
+        call.setOnClickListener(this);
         ivPlayPause.setOnClickListener(this);
         ltPlayPause.setOnClickListener(this);
         sbProgress.setOnSeekBarChangeListener(this); /* */
@@ -222,7 +229,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     private void initViewPager() {
         String thumbAddressesInString = goood.getThumbnails();
         String[] splitThumb = thumbAddressesInString.split(",");
-        String[] splitAll = new String[splitThumb.length + 1];
+          splitAll = new String[splitThumb.length + 1];
         splitAll[0] = goood.getPreview();
         System.arraycopy(splitThumb, 0, splitAll, 1, splitThumb.length);
 
@@ -235,6 +242,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     private void initViews() {
         extensiblePageIndicator = findViewById(R.id.flexibleIndicator);
         viewpager = findViewById(R.id.viewpager);
+
         goodName = findViewById(R.id.good_name);
         carIcon = findViewById(R.id.car_icon);
         suitableCars = findViewById(R.id.suitable_cars);
@@ -250,6 +258,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
 
         priceBtn = findViewById(R.id.price);
         call = findViewById(R.id.call);
+
 
 
         startDownload = findViewById(R.id.startDownload);
@@ -323,6 +332,8 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         SharedPrefUtils.saveData("soundDownloadId**" + good.getId(), downloadId);
     }
 
+
+
     /**/
     private class SeekBarUpdater implements Runnable {
         @Override
@@ -336,7 +347,26 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
 
     private void renderData(String[] body) {
         for (String url : body) {
-            adapter.addFragment(ShowThumbnailFragment.newInstance(url));
+            ShowThumbnailFragment fragment =ShowThumbnailFragment.newInstance(url, new OnViewPagerClickListener() {
+                @Override
+                public void onViewPagerClick(View view) {
+                    Intent intent=new Intent(ShowGoodDetailActivity.this,FullThumbActivity.class);
+                    intent.putExtra("linkList",splitAll);
+                    intent.putExtra("currentItem",viewpager.getCurrentItem());
+                    ShowGoodDetailActivity.this.startActivity(intent);
+                }
+
+                @Override
+                public int describeContents() {
+                    return 0;
+                }
+
+                @Override
+                public void writeToParcel(Parcel dest, int flags) {
+
+                }
+            });
+            adapter.addFragment(fragment);
         }
 
         viewpager.setAdapter(adapter);
@@ -360,13 +390,13 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     }
 
     void binder(Goood goood) {
-        imSen1.setVisibility(goood.getSentence_1().length()>0?View.VISIBLE:View.GONE);
-        imSen2.setVisibility(goood.getSentence_2().length()>0?View.VISIBLE:View.GONE);
-        imSen3.setVisibility(goood.getSentence_3().length()>0?View.VISIBLE:View.GONE);
+        imSen1.setVisibility(goood.getSentence_1().length() > 0 ? View.VISIBLE : View.GONE);
+        imSen2.setVisibility(goood.getSentence_2().length() > 0 ? View.VISIBLE : View.GONE);
+        imSen3.setVisibility(goood.getSentence_3().length() > 0 ? View.VISIBLE : View.GONE);
 
-        sen1.setVisibility(goood.getSentence_1().length()>0?View.VISIBLE:View.GONE);
-        sen2.setVisibility(goood.getSentence_2().length()>0?View.VISIBLE:View.GONE);
-        sen3.setVisibility(goood.getSentence_3().length()>0?View.VISIBLE:View.GONE);
+        sen1.setVisibility(goood.getSentence_1().length() > 0 ? View.VISIBLE : View.GONE);
+        sen2.setVisibility(goood.getSentence_2().length() > 0 ? View.VISIBLE : View.GONE);
+        sen3.setVisibility(goood.getSentence_3().length() > 0 ? View.VISIBLE : View.GONE);
 
         NumberFormat formatter = new DecimalFormat("#,###");
         double myNumber = goood.getPrice();
@@ -378,7 +408,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         sen1.setText(goood.getSentence_1());
         sen2.setText(goood.getSentence_2());
         sen3.setText(goood.getSentence_3());
-
 
         desc.setText(goood.getGood_desc());
         goodName.setText(goood.getGood_id());
@@ -479,6 +508,26 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
                 updatePlayingView();
             }
             break;
+            case R.id.call:
+                app.l("AAA");
+                Map<String, String> map = new HashMap<>();
+                map.put("route", "addToSold");
+                map.put("userId", SharedPrefUtils.getStringData("entranceId"));
+                map.put("goodId", String.valueOf(goood.getId()));
+                Application.getApi().addToSold(map).enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+
+                    }
+                });
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + goood.getPhone()));
+                startActivity(intent);
+                break;
         }
     }
 

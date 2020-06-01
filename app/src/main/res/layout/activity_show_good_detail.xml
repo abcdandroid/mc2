@@ -431,7 +431,7 @@
             app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
             app:titleEnabled="false">
 
-            <androidx.viewpager.widget.ViewPager
+            <com.example.mechanic2.views.MyViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
