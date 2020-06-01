@@ -12,6 +12,19 @@ public class Goood implements Serializable {
     @SerializedName("preview")
     @Expose
     private String preview;
+
+
+    @SerializedName("sentence_2")
+    @Expose
+    private String sentence_2;
+    @SerializedName("sentence_3")
+    @Expose
+    private String sentence_3;
+    @SerializedName("sentence_1")
+    @Expose
+    private String sentence_1;
+
+
     @SerializedName("voice")
     @Expose
     private String voice;
@@ -61,8 +74,11 @@ public class Goood implements Serializable {
     public Goood() {
     }
 
-    public Goood(String preview, String voice, String price_time, String good_id, String suitable_car, Integer is_stock, Integer phone, Integer fileSize, Integer price, String warranty, String company, Integer id, String thumbnails, String made_by, String good_desc, Integer status) {
+    public Goood(String preview, String sentence_2, String sentence_3, String sentence_1, String voice, String price_time, String good_id, String suitable_car, Integer is_stock, Integer phone, Integer fileSize, Integer price, String warranty, String company, Integer id, String thumbnails, String made_by, String good_desc, Integer status) {
         this.preview = preview;
+        this.sentence_2 = sentence_2;
+        this.sentence_3 = sentence_3;
+        this.sentence_1 = sentence_1;
         this.voice = voice;
         this.price_time = price_time;
         this.good_id = good_id;
@@ -79,6 +95,8 @@ public class Goood implements Serializable {
         this.good_desc = good_desc;
         this.status = status;
     }
+
+
 
     public void setPreview(String preview) {
         this.preview = preview;
@@ -206,5 +224,29 @@ public class Goood implements Serializable {
 
     public Integer getStatus() {
         return status;
+    }
+
+    public String getSentence_2() {
+        return sentence_2;
+    }
+
+    public void setSentence_2(String sentence_2) {
+        this.sentence_2 = sentence_2;
+    }
+
+    public String getSentence_3() {
+        return sentence_3;
+    }
+
+    public void setSentence_3(String sentence_3) {
+        this.sentence_3 = sentence_3;
+    }
+
+    public String getSentence_1() {
+        return sentence_1;
+    }
+
+    public void setSentence_1(String sentence_1) {
+        this.sentence_1 = sentence_1;
     }
 }

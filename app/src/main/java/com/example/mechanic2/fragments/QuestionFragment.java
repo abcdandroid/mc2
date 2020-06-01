@@ -197,7 +197,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         isLoading = false;
         resumeDataListener("questionsFetchAll", "null", "null", "null");
         requestQuestion(0, "questionsFetchAll", "null", "null", "null");
-
     }
 
     private void resumeGetData(int lastIdN, String root, String carName, String entranceId, String search) {

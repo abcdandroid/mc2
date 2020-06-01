@@ -65,6 +65,8 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -100,6 +102,19 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     private LottieAnimationView ltPlayPause;
     private TextView percentDone;/**/
     private SeekBar sbProgress;
+
+
+    private ImageView imSen1;
+    private TextView sen1;
+    private ImageView imSen2;
+    private TextView sen2;
+    private ImageView imSen3;
+    private TextView sen3;
+
+
+
+    private TextView priceBtn;
+    private TextView call;
     Goood goood;
     private ExtensiblePageIndicator extensiblePageIndicator;
     String audioAddress;
@@ -130,6 +145,8 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         }
         binder(goood);
         initViewPager();
+
+        app.l(goood.getSentence_1(),goood.getSentence_2(),goood.getSentence_3());
 
         audioAddress = context.getExternalFilesDir("voice/mp3").getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
 
@@ -231,6 +248,9 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         parent = findViewById(R.id.parent);
         desc = findViewById(R.id.desc);
 
+        priceBtn = findViewById(R.id.price);
+        call = findViewById(R.id.call);
+
 
         startDownload = findViewById(R.id.startDownload);
         progressCirculaSound = findViewById(R.id.progressCirculaSound);
@@ -238,7 +258,14 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         ivPlayPause = findViewById(R.id.ivPlayPause);
         sbProgress = findViewById(R.id.sbProgress);
         ltPlayPause = findViewById(R.id.ltPlayPause);
-        price = findViewById(R.id.price);
+
+
+        imSen1 = findViewById(R.id.im_sen1);
+        sen1 = findViewById(R.id.sen1);
+        imSen2 = findViewById(R.id.im_sen2);
+        sen2 = findViewById(R.id.sen2);
+        imSen3 = findViewById(R.id.im_sen3);
+        sen3 = findViewById(R.id.sen3);
 
     }
 
@@ -333,8 +360,27 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     }
 
     void binder(Goood goood) {
+        imSen1.setVisibility(goood.getSentence_1().length()>0?View.VISIBLE:View.GONE);
+        imSen2.setVisibility(goood.getSentence_2().length()>0?View.VISIBLE:View.GONE);
+        imSen3.setVisibility(goood.getSentence_3().length()>0?View.VISIBLE:View.GONE);
+
+        sen1.setVisibility(goood.getSentence_1().length()>0?View.VISIBLE:View.GONE);
+        sen2.setVisibility(goood.getSentence_2().length()>0?View.VISIBLE:View.GONE);
+        sen3.setVisibility(goood.getSentence_3().length()>0?View.VISIBLE:View.GONE);
+
+        NumberFormat formatter = new DecimalFormat("#,###");
+        double myNumber = goood.getPrice();
+        String formattedNumber = formatter.format(myNumber);
+
+        String separatedPrice = formattedNumber + " تومان";
+        priceBtn.setText(separatedPrice);
+
+        sen1.setText(goood.getSentence_1());
+        sen2.setText(goood.getSentence_2());
+        sen3.setText(goood.getSentence_3());
+
+
         desc.setText(goood.getGood_desc());
-        price.setText(goood.getPrice() + "");
         goodName.setText(goood.getGood_id());
         Gson gson = new Gson();
         Car[] cars = gson.fromJson(goood.getSuitable_car(), Car[].class);

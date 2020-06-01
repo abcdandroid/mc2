@@ -971,11 +971,13 @@
             android:layoutDirection="rtl">
 
             <ImageView
+                android:id="@+id/im_sen1"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_nis" />
+                android:src="@drawable/tick_honest2" />
 
             <TextView
+                android:id="@+id/sen1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
@@ -992,11 +994,13 @@
             android:layoutDirection="rtl">
 
             <ImageView
+                android:id="@+id/im_sen2"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_nis" />
+                android:src="@drawable/tick_honest2" />
 
             <TextView
+                android:id="@+id/sen2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
@@ -1013,11 +1017,13 @@
             android:layoutDirection="rtl">
 
             <ImageView
+                android:id="@+id/im_sen3"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@drawable/ic_nis" />
+                android:src="@drawable/tick_honest2" />
 
             <TextView
+                android:id="@+id/sen3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
@@ -1026,17 +1032,46 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
+<LinearLayout
+    android:paddingTop="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/price"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:gravity="center|center_horizontal"
-            android:maxLines="1"
-            android:text="aaa"
-            android:textColor="@color/white" />
+    <TextView
+        android:layout_weight="1"
+        android:paddingRight="24dp"
+        android:paddingLeft="24dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center|center_horizontal"
+        android:maxLines="1"
+        android:text="aaa"
+        android:textSize="20dp"
+        android:textColor="@color/md_green_A200" />
+
+    <TextView
+        android:layout_weight="1"
+        android:paddingRight="24dp"
+        android:paddingLeft="24dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:background="@drawable/btn_submit_store"
+        android:id="@+id/call"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center|center_horizontal"
+        android:maxLines="1"
+        android:text="تماس برای تهیه کالا"
+        android:textColor="@color/white" />
+</LinearLayout>
+
 
     </LinearLayout>
 

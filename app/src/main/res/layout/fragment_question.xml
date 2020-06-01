@@ -38,7 +38,7 @@
         android:background="@color/indigo_700"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-
+<!--
         <RelativeLayout
             app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="scroll|enterAlways"
@@ -103,6 +103,149 @@
                 android:background="@color/grey_10"
                 android:hint="موضوع سوالت چیه؟"
                 android:textColorHint="@color/colorAccent" />
+
+
+        </RelativeLayout>-->
+
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            app:contentInsetStartWithNavigation="0dp"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <RelativeLayout
+                android:id="@+id/submit_filter_parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/car_question_parent"
+                android:layout_alignBottom="@id/good_question_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="4dp"
+                android:background="@drawable/rectangle_inactive_stoke"
+                android:gravity="center"
+                android:paddingLeft="8dp"
+                android:paddingTop="0dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="0dp">
+
+                <TextView
+                    android:id="@+id/submit_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="جستجو کن"
+                    android:textColor="@color/lime_700"
+                    android:textSize="14sp"
+                    android:textStyle="bold|italic"
+                    android:visibility="invisible" />
+
+                <com.github.ybq.android.spinkit.SpinKitView
+                    android:id="@+id/loading"
+                    style="@style/SpinKitView.Large.FadingCircle"
+                    android:layout_width="55dp"
+                    android:layout_height="55dp"
+                    android:layout_centerInParent="true"
+                    android:visibility="visible" />
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/car_question_parent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="4dp"
+                android:layout_toRightOf="@id/submit_filter_parent"
+                android:background="@drawable/rectangle_zero_radius_inactive_stoke"
+                android:completionThreshold="1"
+                android:hint="ماشینت چیه؟"
+                android:layoutDirection="rtl"
+                android:paddingLeft="8dp"
+                android:paddingTop="2dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="2dp"
+                android:textColor="@color/grey_10"
+                android:textColorHint="@color/blue_grey_300"
+                android:textSize="16sp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/car_question"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:completionThreshold="2"
+                    android:hint="@string/ask_car"
+                    android:layoutDirection="rtl"
+                    android:textColor="@color/grey_10"
+                    android:textColorHint="@color/blue_grey_300"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:visibility="invisible"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="0dp"
+                    android:paddingLeft="5dp"
+                    android:id="@+id/reset_car"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_close"
+                    />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/good_question_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/car_question_parent"
+                android:layout_alignLeft="@id/car_question_parent"
+                android:layout_alignRight="@id/car_question_parent"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:background="@drawable/rectangle_zero_radius_inactive_stoke"
+                android:completionThreshold="1"
+                android:layoutDirection="rtl"
+                android:paddingLeft="8dp"
+                android:paddingTop="2dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="2dp">
+
+                <AutoCompleteTextView
+                    android:id="@+id/good_question"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/transparent"
+                    android:completionThreshold="2"
+                    android:hint="@string/ask_good"
+                    android:layoutDirection="rtl"
+                    android:textColor="@color/grey_10"
+                    android:textColorHint="@color/blue_grey_300"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:visibility="invisible"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:paddingRight="0dp"
+                    android:paddingLeft="5dp"
+                    android:id="@+id/reset_good"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_close"
+                    />
+            </RelativeLayout>
 
 
         </RelativeLayout>
