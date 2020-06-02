@@ -38,8 +38,8 @@
         android:background="@color/indigo_700"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-<!--
-        <RelativeLayout
+
+        <!--<RelativeLayout
             app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="scroll|enterAlways"
             android:layout_width="wrap_content"
@@ -181,7 +181,7 @@
                     android:layout_height="match_parent"
                     android:background="@color/transparent"
                     android:completionThreshold="2"
-                    android:hint="@string/ask_car"
+                    android:hint="درباره چه ماشینی سوال داری؟"
                     android:layoutDirection="rtl"
                     android:textColor="@color/grey_10"
                     android:textColorHint="@color/blue_grey_300"
@@ -221,12 +221,12 @@
                 android:paddingBottom="2dp">
 
                 <AutoCompleteTextView
-                    android:id="@+id/good_question"
+                    android:id="@+id/title_question"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/transparent"
                     android:completionThreshold="2"
-                    android:hint="@string/ask_good"
+                    android:hint="موضوع سوالت چیه؟"
                     android:layoutDirection="rtl"
                     android:textColor="@color/grey_10"
                     android:textColorHint="@color/blue_grey_300"

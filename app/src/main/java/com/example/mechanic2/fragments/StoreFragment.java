@@ -29,6 +29,7 @@ import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.downloader.Error;
@@ -120,6 +121,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     RelativeLayout btnShowStokeGoods;
     SweetAlertDialog sweetAlertDialogGoodNotExist;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+
+
     boolean firstRun;
     int i = 0;
     int j = 0;
@@ -150,6 +155,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         loading = inflate.findViewById(R.id.loading);
         resetCar = inflate.findViewById(R.id.reset_car);
         resetGood = inflate.findViewById(R.id.reset_good);
+        swipeRefreshLayout = inflate.findViewById(R.id.swipe_refresh_layout);
         resetCar.setOnClickListener(this);
         resetGood.setOnClickListener(this);
 
@@ -329,6 +335,17 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
+                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue());
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 

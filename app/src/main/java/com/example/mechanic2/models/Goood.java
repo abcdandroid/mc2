@@ -48,7 +48,7 @@ public class Goood implements Serializable {
     private Integer fileSize;
     @SerializedName("price")
     @Expose
-    private Integer price;
+    private String price;
     @SerializedName("warranty")
     @Expose
     private String warranty;
@@ -74,7 +74,7 @@ public class Goood implements Serializable {
     public Goood() {
     }
 
-    public Goood(String preview, String sentence_2, String sentence_3, String sentence_1, String voice, String price_time, String good_id, String suitable_car, Integer is_stock, Integer phone, Integer fileSize, Integer price, String warranty, String company, Integer id, String thumbnails, String made_by, String good_desc, Integer status) {
+    public Goood(String preview, String sentence_2, String sentence_3, String sentence_1, String voice, String price_time, String good_id, String suitable_car, Integer is_stock, Integer phone, Integer fileSize, String price, String warranty, String company, Integer id, String thumbnails, String made_by, String good_desc, Integer status) {
         this.preview = preview;
         this.sentence_2 = sentence_2;
         this.sentence_3 = sentence_3;
@@ -162,11 +162,11 @@ public class Goood implements Serializable {
         return fileSize;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(String  price) {
         this.price = price;
     }
 
-    public Integer getPrice() {
+    public String getPrice() {
         return price;
     }
 

@@ -80,7 +80,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ShowGoodDetailActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener{
+public class ShowGoodDetailActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
     private MyViewPager viewpager;
     private ViewPagerAdapter adapter;
     int ci = 0;
@@ -229,7 +229,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     private void initViewPager() {
         String thumbAddressesInString = goood.getThumbnails();
         String[] splitThumb = thumbAddressesInString.split(",");
-          splitAll = new String[splitThumb.length + 1];
+        splitAll = new String[splitThumb.length + 1];
         splitAll[0] = goood.getPreview();
         System.arraycopy(splitThumb, 0, splitAll, 1, splitThumb.length);
 
@@ -258,7 +258,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
 
         priceBtn = findViewById(R.id.price);
         call = findViewById(R.id.call);
-
 
 
         startDownload = findViewById(R.id.startDownload);
@@ -333,7 +332,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     }
 
 
-
     /**/
     private class SeekBarUpdater implements Runnable {
         @Override
@@ -347,12 +345,12 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
 
     private void renderData(String[] body) {
         for (String url : body) {
-            ShowThumbnailFragment fragment =ShowThumbnailFragment.newInstance(url, new OnViewPagerClickListener() {
+            ShowThumbnailFragment fragment = ShowThumbnailFragment.newInstance(url, new OnViewPagerClickListener() {
                 @Override
                 public void onViewPagerClick(View view) {
-                    Intent intent=new Intent(ShowGoodDetailActivity.this,FullThumbActivity.class);
-                    intent.putExtra("linkList",splitAll);
-                    intent.putExtra("currentItem",viewpager.getCurrentItem());
+                    Intent intent = new Intent(ShowGoodDetailActivity.this, FullThumbActivity.class);
+                    intent.putExtra("linkList", splitAll);
+                    intent.putExtra("currentItem", viewpager.getCurrentItem());
                     ShowGoodDetailActivity.this.startActivity(intent);
                 }
 
@@ -397,13 +395,17 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         sen1.setVisibility(goood.getSentence_1().length() > 0 ? View.VISIBLE : View.GONE);
         sen2.setVisibility(goood.getSentence_2().length() > 0 ? View.VISIBLE : View.GONE);
         sen3.setVisibility(goood.getSentence_3().length() > 0 ? View.VISIBLE : View.GONE);
+        try {
+            NumberFormat formatter = new DecimalFormat("#,###");
+            double myNumber = Integer.parseInt(goood.getPrice());
+            String formattedNumber = formatter.format(myNumber);
 
-        NumberFormat formatter = new DecimalFormat("#,###");
-        double myNumber = goood.getPrice();
-        String formattedNumber = formatter.format(myNumber);
+            String separatedPrice = formattedNumber + " تومان";
+            priceBtn.setText(separatedPrice);
 
-        String separatedPrice = formattedNumber + " تومان";
-        priceBtn.setText(separatedPrice);
+        } catch (NumberFormatException n) {
+            priceBtn.setText(goood.getPrice());
+        }
 
         sen1.setText(goood.getSentence_1());
         sen2.setText(goood.getSentence_2());
