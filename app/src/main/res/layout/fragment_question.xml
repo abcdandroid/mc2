@@ -9,103 +9,16 @@
     android:fitsSystemWindows="true">
 
 
-    <!--    <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            android:layout_height="64dp"
-            android:background="@color/indigo_700">
-
-            <androidx.appcompat.widget.Toolbar
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.example.mechanic2.views.MyTextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:text="@string/hello_world"
-                    android:textColor="@color/grey_10"
-                    android:textSize="14sp" />
-
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>-->
 
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/indigo_700"
+        android:background="@color/indigo_900"
         android:theme="@style/AppTheme.AppBarOverlay">
 
 
-        <!--<RelativeLayout
-            app:contentInsetStartWithNavigation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="10">
-
-            <TextView
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="4dp"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
-                android:paddingLeft="4dp"
-                android:paddingRight="4dp"
-                android:id="@+id/submit_filter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/car_question"
-                android:layout_alignBottom="@id/title_question"
-                android:layout_alignParentLeft="true"
-                android:background="@color/grey_10"
-                android:gravity="center"
-                android:text="جست و جو"
-                android:textColor="@color/colorPrimary" />
-
-            <AutoCompleteTextView
-                android:layoutDirection="rtl"
-                android:textSize="16sp"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="4dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:id="@+id/car_question"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/submit_filter"
-                android:background="@color/grey_10"
-                android:hint="درباره چه ماشینی سوال داری؟"
-                android:textColor="@color/colorPrimary"
-                android:textColorHint="@color/colorAccent" />
-
-            <AutoCompleteTextView
-                android:layoutDirection="rtl"
-                android:textSize="16sp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:id="@+id/title_question"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/car_question"
-                android:layout_alignLeft="@id/car_question"
-                android:layout_alignRight="@id/car_question"
-                android:background="@color/grey_10"
-                android:hint="موضوع سوالت چیه؟"
-                android:textColorHint="@color/colorAccent" />
-
-
-        </RelativeLayout>-->
 
 
         <RelativeLayout
@@ -121,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/car_question_parent"
-                android:layout_alignBottom="@id/good_question_parent"
+                android:layout_alignBottom="@id/title_question_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="4dp"
@@ -204,7 +117,7 @@
 
 
             <RelativeLayout
-                android:id="@+id/good_question_parent"
+                android:id="@+id/title_question_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/car_question_parent"
@@ -238,7 +151,7 @@
                     android:paddingBottom="5dp"
                     android:paddingRight="0dp"
                     android:paddingLeft="5dp"
-                    android:id="@+id/reset_good"
+                    android:id="@+id/reset_title"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_width="wrap_content"
@@ -250,58 +163,72 @@
 
         </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layoutDirection="rtl"
-            android:orientation="horizontal">
 
 
-            <TextView
-                android:layout_marginRight="16sp"
-                android:textSize="12sp"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="مشاهده سوالات بر اساس:"
-                />
-
-            <androidx.appcompat.widget.AppCompatSpinner
-                android:textSize="12sp"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:entries="@array/question_filter"
-                />
 
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:clickable="true"
-                android:layout_weight="1"
-                android:layout_marginTop="4dp"
+
+            <!--  ########3  -->
+
+            <LinearLayout
+                android:layout_weight="3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
                 android:layout_marginBottom="4dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginLeft="8dp"
-                android:paddingTop="2dp"
-                android:paddingBottom="2dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="سوالات من"
-                android:textSize="12sp"
-                android:background="@drawable/btn_round"
-                android:textColor="@color/primaryText"
                 android:gravity="center"
-                />
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_marginRight="16sp"
+                    android:textSize="12sp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="ترتیب سوالات بر اساس:"
+                    />
+
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spinner_filter"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:background="@drawable/btn_inactive_stoke"
+                    android:entries="@array/question_filter"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:textSize="12sp" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/myQuestion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_inactive_stoke"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:padding="4dp"
+                    android:paddingLeft="8dp"
+                    android:paddingRight="8dp"
+                    android:textSize="12sp"
+                    android:text="سوالات من "
+                    android:textColor="@color/grey_10" />
+
+
+            </LinearLayout>
 
 
 
 
 
-        </LinearLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 

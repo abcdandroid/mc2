@@ -30,6 +30,7 @@ import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.QuestionImagesFragment;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.utils.ViewAnimation;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import android.widget.Button;
@@ -57,6 +58,8 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     private SeekBar sbProgress;
     private LinearLayout layerPb;
     private MediaPlayer player = null;
+    private AppBarLayout appbar;
+
 
     private MediaRecorder recorder = null;
     private View lyt_mic;
@@ -72,6 +75,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers);
+        appbar = findViewById(R.id.appbar);
         questionImages = findViewById(R.id.questionImages);
         carName = findViewById(R.id.carName);
         questionText = findViewById(R.id.questionText);
@@ -85,6 +89,9 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         app.l(question.getQ_image_url1().trim() + "**");
         app.l(question.getQ_image_url2().trim() + "**");
         app.l(question.getQ_image_url3().trim() + "**");
+        if(question.getQ_image_url1().trim().length()==0&question.getQ_image_url2().trim().length()==0&question.getQ_image_url3().trim().length()==0){
+            appbar.setVisibility(View.GONE);
+        }
         if (question.getQ_image_url1().trim().length() > 0) {
             adapter.addFragment(QuestionImagesFragment.newInstance(question.getQ_image_url1().trim()));
             app.l("A");
@@ -99,6 +106,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
             adapter.addFragment(QuestionImagesFragment.newInstance(question.getQ_image_url3().trim()));
             app.l("C");
         }
+
         final FloatingActionButton fab_mic = findViewById(R.id.fab_mic);
         final FloatingActionButton fab_call = findViewById(R.id.fab_call);
         fab_add = findViewById(R.id.fab_add);

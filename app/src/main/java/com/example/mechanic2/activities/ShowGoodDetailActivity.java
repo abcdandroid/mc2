@@ -229,14 +229,17 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     private void initViewPager() {
         String thumbAddressesInString = goood.getThumbnails();
         String[] splitThumb = thumbAddressesInString.split(",");
-        splitAll = new String[splitThumb.length + 1];
+        if (splitThumb[0].length() > 0) {
+            app.l(splitThumb[0] + "@@@@@@@");
+            splitAll = new String[splitThumb.length + 1];
+            System.arraycopy(splitThumb, 0, splitAll, 1, splitThumb.length);
+        } else splitAll = new String[1];
         splitAll[0] = goood.getPreview();
-        System.arraycopy(splitThumb, 0, splitAll, 1, splitThumb.length);
-
         renderData(splitAll);
         viewpager.setOffscreenPageLimit(3);
-
-        extensiblePageIndicator.initViewPager(viewpager);
+        if (splitAll.length > 1) {
+            extensiblePageIndicator.initViewPager(viewpager);
+        } else extensiblePageIndicator.setVisibility(View.INVISIBLE);
     }
 
     private void initViews() {

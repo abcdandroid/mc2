@@ -10,7 +10,9 @@ import com.example.mechanic2.models.CountriesAndWarranties;
 import com.example.mechanic2.models.Good;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.models.Job;
+import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.Question;
+import com.example.mechanic2.models.QusetionWithMsg;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +36,9 @@ public interface Api {
     @POST(".")
     Call<String> getDataInString(@QueryMap Map<String, String> map);
 
+    @POST(".")
+    Call<QusetionWithMsg> getQuestionWithMsg(@QueryMap Map<String, String> map);
+
     @GET(".")
     Call<List<AdminMedia>> getAdminMediaInList(@QueryMap Map<String, String> map);
 
@@ -42,6 +47,8 @@ public interface Api {
 
     @GET(".")
     Call<List<Goood>> getGooodList(@QueryMap Map<String, String> map);
+    @GET(".")
+    Call<List<Mechanic>> getMechanicList(@QueryMap Map<String, String> map);
 
     @GET(".")
     Call<List<Ads>> getAdsList(@Query("route") String ads);

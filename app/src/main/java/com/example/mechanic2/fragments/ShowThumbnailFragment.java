@@ -32,7 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * A simple {@link Fragment} subclass.
  */
-public  class ShowThumbnailFragment extends Fragment  {
+public class ShowThumbnailFragment extends Fragment {
     private String url;
     private OnViewPagerClickListener onViewPagerClickListener;
 
@@ -40,13 +40,14 @@ public  class ShowThumbnailFragment extends Fragment  {
     public ShowThumbnailFragment() {
         // Required empty public constructor
     }
-/**/
-    public static ShowThumbnailFragment newInstance(String url,OnViewPagerClickListener onViewPagerClickListener) {
+
+    /**/
+    public static ShowThumbnailFragment newInstance(String url, OnViewPagerClickListener onViewPagerClickListener) {
 
         Bundle args = new Bundle();
         args.putString("url", url);
         args.putParcelable("onClick", onViewPagerClickListener);
-        ShowThumbnailFragment fragment = new ShowThumbnailFragment() ;
+        ShowThumbnailFragment fragment = new ShowThumbnailFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,12 +55,20 @@ public  class ShowThumbnailFragment extends Fragment  {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        url = null;
-        if (getArguments() != null) {
-            url = getArguments().getString("url");
-            app.l(url+"_________");
-            onViewPagerClickListener=getArguments().getParcelable("onClick");
+        try {
+            url = null;
+            if (getArguments() != null && getArguments().getString("url") != null) {
+                url = getArguments().getString("url");
+                app.l(url + "_________");
+            }
+            if (getArguments() != null && getArguments().getParcelable("onClick") != null) {
+                onViewPagerClickListener = getArguments().getParcelable("onClick");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     @Override
@@ -73,12 +82,14 @@ public  class ShowThumbnailFragment extends Fragment  {
 
     private void init(View inflate) {
         ImageView imThumbnail = inflate.findViewById(R.id.imThumbnail);
+        if (onViewPagerClickListener != null) {
             imThumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     onViewPagerClickListener.onViewPagerClick(v);
                 }
             });
+        }
         Glide.with(Objects.requireNonNull(getActivity())).load(url).into(imThumbnail);
     }
 }

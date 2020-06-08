@@ -9,12 +9,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,6 +27,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatSpinner;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -33,13 +40,23 @@ import androidx.transition.Slide;
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.AddQuestionActivity;
+import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
+import com.example.mechanic2.adapters.GoodAutoCompleteAdapter;
+import com.example.mechanic2.adapters.GooodStoreAdapter;
+import com.example.mechanic2.adapters.MySpinnerAdapter;
 import com.example.mechanic2.adapters.QuestionRecyclerAdapter;
 import com.example.mechanic2.adapters.StoreRecyclerAdapter;
+import com.example.mechanic2.adapters.TitleQuestionAutoCompleteAdapter;
 import com.example.mechanic2.app.Application;
+import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.AddQuestionFab;
-import com.example.mechanic2.models.Good;
+import com.example.mechanic2.models.Goood;
+import com.example.mechanic2.models.QusetionWithMsg;
+import com.example.mechanic2.models.Title;
 import com.example.mechanic2.models.Question;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
@@ -51,6 +68,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -68,7 +86,10 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     private List<Question> questions;
     private List<Question> tmpQuestions;
     private QuestionRecyclerAdapter adapter;
+
     private int lastId = 0;
+    private int lastSeenCount = 0;
+
     private boolean isLoading;
     private boolean isFABOpen;
     private Fragment initialFragment;
@@ -79,8 +100,38 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     private ValueAnimator valueAnimator;
     private View transparent_view;
 
+    View view;
 
-    //http://drkamal3.com/Mechanic/index.php?route=getGoodsByCar&carName=%D9%BE%D8%B1%D8%A7%DB%8C%D8%AF
+    private CoordinatorLayout parent;
+    private AppBarLayout appbar;
+    private RelativeLayout submitFilterParent;
+    private TextView submitFilter;
+    private SpinKitView loading;
+    private RelativeLayout carQuestionParent;
+    private AutoCompleteTextView carQuestion;
+    private ImageView resetCar;
+    private RelativeLayout titleQuestionParent;
+    private AutoCompleteTextView titleQuestion;
+    private ImageView resetTitle;
+    private AppCompatSpinner spinnerFilter;
+    private AppCompatTextView myQuestion;
+    TitleQuestionAutoCompleteAdapter titleQuestionAutoCompleteAdapter;
+
+    MySpinnerAdapter filterSpinnerAdapter;
+
+
+    private int selectedCarId;
+    private int selectedTitleId;
+    String filterIdInString = "1";
+
+    private RelativeLayout btnAddQuestion;
+    private RelativeLayout btnShowAllQuestions;
+
+    private boolean isMyQuestionActive = false;
+
+    int i;
+
+    //http://drkamal3.com/Mechanic/index.php?route=getTitlesByCar&carName=%D9%BE%D8%B1%D8%A7%DB%8C%D8%AF
 
     @Nullable
     @Override
@@ -109,9 +160,137 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         recyclerQuestion.setLayoutAnimation(new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left)));
 
 
+        parent = inflate.findViewById(R.id.parent);
+        appbar = inflate.findViewById(R.id.appbar);
+        submitFilterParent = inflate.findViewById(R.id.submit_filter_parent);
+        submitFilter = inflate.findViewById(R.id.submit_filter);
+        loading = inflate.findViewById(R.id.loading);
+        carQuestionParent = inflate.findViewById(R.id.car_question_parent);
+        carQuestion = inflate.findViewById(R.id.car_question);
+        resetCar = inflate.findViewById(R.id.reset_car);
+        titleQuestionParent = inflate.findViewById(R.id.title_question_parent);
+        titleQuestion = inflate.findViewById(R.id.title_question);
+        resetTitle = inflate.findViewById(R.id.reset_title);
+        spinnerFilter = inflate.findViewById(R.id.spinner_filter);
+        myQuestion = inflate.findViewById(R.id.myQuestion);
 
+        resetCar.setOnClickListener(this);
+        resetTitle.setOnClickListener(this);
+        submitFilterParent.setOnClickListener(this);
+        myQuestion.setOnClickListener(this);
+/*
         resumeDataListener("questionsFetchAll", "null", "null", "null");
-        requestQuestion(0, "questionsFetchAll", "null", "null", "null");
+        requestQuestion(0, "questionsFetchAll", "null", "null", "null");*/
+        List<String> filterNames = new ArrayList<>();
+        filterNames.add("جدیدترین");
+        filterNames.add("پربازدیدترین");
+        List<Integer> filterIds = new ArrayList<>();
+        filterIds.add(1);
+        filterIds.add(2);
+
+        filterSpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, filterNames, filterIds, false);
+        spinnerFilter.setAdapter(filterSpinnerAdapter);
+
+
+        spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                i++;
+                if (view != null) {
+                    modifyIds();
+
+                    View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
+                    TextView myTextView = view1.findViewById(R.id.id_spinner);
+                    filterIdInString = myTextView == null ? "1" : myTextView.getText().toString();
+                    if (i > 2) {
+                        loading.setVisibility(View.VISIBLE);
+                        submitFilter.setVisibility(View.INVISIBLE);
+                        app.l("selectedCarId" + selectedCarId + "selectedTitleId" + selectedTitleId + "filterIdInString" + Integer.parseInt(filterIdInString) + "getMyQuestionValue" + getMyQuestionValue());
+                        resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                        getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });/**/
+
+
+        CarAutoCompleteAdapter carAdapter = new CarAutoCompleteAdapter(getActivity(), R.layout.item_show_auto_complete);
+        carQuestion.setAdapter(carAdapter);
+        TitleQuestionAutoCompleteAdapter goodAdapter = new TitleQuestionAutoCompleteAdapter(Application.getContext(), R.layout.item_show_auto_complete);
+        titleQuestion.setAdapter(goodAdapter);
+
+
+        carQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedCarId = Integer.parseInt(((TextView) parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent())).findViewById(R.id.id)).getText().toString());
+            }
+        });
+        titleQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedTitleId = Integer.parseInt(((TextView) parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent())).findViewById(R.id.id)).getText().toString());
+            }
+        });
+
+        recyclerQuestion.setLayoutManager(new LinearLayoutManager(getContext()) {
+            @Override
+            public boolean canScrollVertically() {
+                return super.canScrollVertically();
+            }
+        });
+
+
+        carQuestion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() == 0) {
+                    selectedCarId = 0;
+                    resetCar.setVisibility(View.INVISIBLE);
+                } else resetCar.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        titleQuestion.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().length() == 0) {
+                    selectedTitleId = 0;
+                    resetTitle.setVisibility(View.INVISIBLE);
+                } else resetTitle.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        recyclerQuestion.setLayoutAnimation(new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left)));
+        loading.setVisibility(View.VISIBLE);
+        submitFilter.setVisibility(View.INVISIBLE);
+        resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+        getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+
 
         fab_main_layout.setOnClickListener(this);
         fab_my_layout.setOnClickListener(this);
@@ -162,6 +341,97 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.myQuestion:
+                app.l("selectedCarId:" + selectedCarId);
+                app.l("selectedGoodId:" + selectedTitleId);
+                app.l("warrantyIdInStringInteger:" + Integer.parseInt(filterIdInString));
+                app.l("is_stoke_active:" + getMyQuestionValue());
+/*
+                app.hideKeyboard(carQuestion);
+                app.hideKeyboard(goodQuestion);*/
+                modifyIds();
+                isMyQuestionActive = !isMyQuestionActive;
+                app.l("ci:" + selectedCarId + "ti" + selectedTitleId + "fi" + filterIdInString + "mi" + (getMyQuestionValue()));
+                filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+                if (isMyQuestionActive) {
+                    myQuestion.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
+                    spinnerFilter.setEnabled(false);
+                    spinnerFilter.setClickable(false);
+
+
+                } else {
+                    myQuestion.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
+                    spinnerFilter.setEnabled(true);
+                    spinnerFilter.setClickable(true);
+                }
+
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
+                resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+
+
+                break;
+            case R.id.btn_show_all_questions:
+                sweetAlertDialogQuestionNotExist.dismissWithAnimation();
+                myQuestion.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
+                titleQuestion.setText("");
+                carQuestion.setText("");
+                spinnerFilter.setEnabled(true);
+                spinnerFilter.setClickable(true);
+                isMyQuestionActive = false;
+                myQuestion.setEnabled(true);
+                selectedTitleId = 0;
+                selectedCarId = 0;
+                filterIdInString = "1";
+                loading.setVisibility(View.INVISIBLE);
+                submitFilter.setVisibility(View.VISIBLE);
+                if (spinnerFilter.getSelectedItemPosition() != 0) {
+                    spinnerFilter.setSelection(0);
+                } else if (spinnerFilter.getSelectedItemPosition() == 0) {
+                    resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                    getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                }
+                break;
+            case R.id.btn_add_question:
+                break;
+            case R.id.reset_title:
+                app.hideKeyboard(carQuestion);
+                app.hideKeyboard(titleQuestion);
+                modifyIds();
+                titleQuestion.setHint(getString(R.string.ask_good));
+                titleQuestion.setText("");
+                myQuestion.setEnabled(true);
+                myQuestion.setBackground(getActivity().getDrawable(R.drawable.btn_inactive_stoke));
+                selectedTitleId = 0;
+                app.l("selectedCarId:" + selectedCarId);
+                app.l("selectedTitleId:" + selectedTitleId);
+                app.l("filterIdInString:" + Integer.parseInt(filterIdInString));
+                app.l("getMyQuestionValue:" + (getMyQuestionValue()));
+                app.l("filterIdInString:" + Integer.parseInt(filterIdInString));
+                filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+                resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                break;
+            case R.id.reset_car:
+                app.hideKeyboard(carQuestion);
+                app.hideKeyboard(titleQuestion);
+                carQuestion.setText("");
+                selectedCarId = 0;
+                modifyIds();
+                filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+                resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                break;
+            case R.id.submit_filter_parent:
+                app.hideKeyboard(carQuestion);
+                app.hideKeyboard(titleQuestion);
+                modifyIds();
+                app.l(carQuestion.getText().toString());
+                app.l(carQuestion.getHint().toString());
+                resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                break;
             case R.id.fab_add_layout:
             case R.id.fab_my_layout:
             case R.id.fab_main_layout:
@@ -181,11 +451,11 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 person_fab.playAnimation();
                 break;
         }
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.fab_my_layout:
                 break;
             case R.id.fab_add_layout:
-                startActivityForResult(new Intent(getActivity(), AddQuestionActivity.class),1);
+                startActivityForResult(new Intent(getActivity(), AddQuestionActivity.class), 1);
                 break;
         }
 
@@ -194,117 +464,182 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        isLoading = false;
-        resumeDataListener("questionsFetchAll", "null", "null", "null");
-        requestQuestion(0, "questionsFetchAll", "null", "null", "null");
+        isLoading = false;/*
+        resumeDataListener("questionsFetchAll", "null", "null", "null");*//*
+        requestQuestion(0, "questionsFetchAll", "null", "null", "null");*/
     }
 
-    private void resumeGetData(int lastIdN, String root, String carName, String entranceId, String search) {
 
-        Map<String, String> data = new HashMap<>();
-        data.put("route", root);
-        data.put("lastId", String.valueOf(lastIdN));
-        data.put("carName", carName);
-        data.put("entranceId", entranceId);
-        data.put("search", search);
+    /*-------------------*/
 
-        Application.getApi().getQuestionList(data).enqueue(new Callback<List<Question>>() {
+    SweetAlertDialog sweetAlertDialogQuestionNotExist;
+
+    private void getQuestions(int carId, int titleId, int sortBy, int showMyQuestion) {
+        lastId = 0;
+        offset = 0;
+        questions = new ArrayList<>();
+        tmpQuestions = new ArrayList<>();
+        adapter = new QuestionRecyclerAdapter(questions, getActivity());
+
+
+        Map<String, String> map = new HashMap<>();
+        map.put("route", "getQuestions");
+        map.put("lastId", String.valueOf(lastId));
+        map.put("offset", String.valueOf(offset));
+        map.put("carId", String.valueOf(carId));
+        map.put("titleId", String.valueOf(titleId));
+        map.put("sortBy", String.valueOf(sortBy));
+        map.put("showMyQuestion", String.valueOf(showMyQuestion));
+        map.put("entrance_id", "1");
+
+
+        view = LayoutInflater.from(getContext()).inflate(R.layout.view_question_not_found, null);
+        TextView textView = view.findViewById(R.id.txt);
+        btnAddQuestion = view.findViewById(R.id.btn_add_question);
+        btnShowAllQuestions = view.findViewById(R.id.btn_show_all_questions);
+        String text = textView.getText().toString() + app.getEmojiByUnicode(0x1F614);
+        textView.setText(text);
+        btnAddQuestion.setOnClickListener(QuestionFragment.this);
+        btnShowAllQuestions.setOnClickListener(QuestionFragment.this);
+
+        app.l(lastId + "****" + lastSeenCount + "****" + carId + "****" + titleId + "****" + sortBy + "****" + showMyQuestion);
+        Application.getApi().getQuestionWithMsg(map).enqueue(new Callback<QusetionWithMsg>() {
+            @Override
+            public void onResponse(Call<QusetionWithMsg> call, Response<QusetionWithMsg> response) {
+                loading.setVisibility(View.INVISIBLE);
+                submitFilter.setVisibility(View.VISIBLE);
+                if (response.body() != null && response.body().getQuestion().size() > 0) {
+                    app.l(response.body().getMsg() + "!!!!!getQuestions");
+
+                    if (response.body().getQuestion().get(0).getQ_id() == -2) {
+                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از خودروهای پیشنهادی کلیک کنید").show();
+                        return;
+                    }
+                    if (response.body().getQuestion().get(0).getQ_id() == -3) {
+                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از موضوعات پیشنهادی کلیک کنید").show();
+                        return;
+                    }
+                    if (response.body().getQuestion().get(0).getQ_id() == -4) {
+                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از خودروهای پیشنهادی و یکی از موضوعات پیشنهادی کلیک کنید").show();
+                        return;
+                    }
+
+
+                    questions = response.body().getQuestion();
+                    if (questions != null && questions.size() != 0) {
+                        tmpQuestions.addAll(questions);
+                        QuestionFragment.this.lastId = questions.get(questions.size() - 1).getQ_id();
+                        QuestionFragment.this.lastSeenCount = questions.get(questions.size() - 1).getSeen_count();
+                    } else {
+                        if (questions != null) {
+                            app.t("not found11");
+                            isLoading = false;
+                        /*resumeGooodListener(0, 0, 0, 0, is_stoke_active ? 1 : 0);
+                        getGooods(0, 0, 0, 0, is_stoke_active ? 1 : 0);*/
+
+                        }
+                    }
+                    adapter = new QuestionRecyclerAdapter(tmpQuestions, getActivity());
+                    recyclerQuestion.setAdapter(adapter);
+
+                } else {
+                    app.l(response.body().getMsg()+"@@@@@@@@@@@");
+                    sweetAlertDialogQuestionNotExist = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).hideConfirmButton()
+                            .setCustomView(view);
+                    sweetAlertDialogQuestionNotExist.show();
+                }
+            }
 
             @Override
-            public void onResponse(@NotNull Call<List<Question>> call, @NotNull Response<List<Question>> response) {
-                app.l(new Gson().toJson(response.body()));
-                if (response.body() != null && response.body().size() == 0) {
+            public void onFailure(Call<QusetionWithMsg> call, Throwable t) {
+                app.l(t.getLocalizedMessage() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            }
+        });
+
+    }
+
+    private void resumeGetQuestions(int lastIdN, int offset, int carId, int titleId, int sortBy, int showMyQuestion) {
+
+        Map<String, String> map = new HashMap<>();
+        map.put("route", "getQuestions");
+        map.put("lastId", String.valueOf(lastIdN));
+        map.put("offset", String.valueOf(offset));
+        map.put("carId", String.valueOf(carId));
+        map.put("titleId", String.valueOf(titleId));
+        map.put("sortBy", String.valueOf(sortBy));
+        map.put("showMyQuestion", String.valueOf(showMyQuestion));
+        map.put("entrance_id", SharedPrefUtils.getStringData("entranceId"));
+        app.l("resumeGetQuestions" + lastIdN + "***" + offset + "***" + carId + "***" + titleId + "***" + sortBy + "***" + showMyQuestion);
+        Application.getApi().getQuestionWithMsg(map).enqueue(new Callback<QusetionWithMsg>() {
+            @Override
+            public void onResponse(Call<QusetionWithMsg> call, Response<QusetionWithMsg> response) {
+                app.l(response.body().getMsg()+"!!!!!resumeGetQuestions");
+                if (response.body() != null && response.body().getQuestion().size() == 0) {
                     app.l("f");
                     return;
                 }
-                List<Question> newQuestions = response.body();
+                List<Question> newQuestions = response.body().getQuestion();
+                if (newQuestions != null) {
 
-                app.l(new Gson().toJson(newQuestions) + "**");
-                if (newQuestions != null && newQuestions.size()!=0) {
+                    app.l(newQuestions.get(newQuestions.size() - 1).getQ_id() + "******");
+
+
                     QuestionFragment.this.lastId = newQuestions.get(newQuestions.size() - 1).getQ_id();
+                    QuestionFragment.this.lastSeenCount = newQuestions.get(newQuestions.size() - 1).getSeen_count();
                 }
                 if (newQuestions != null) {
                     tmpQuestions.addAll(newQuestions);
                 }
                 adapter.notifyDataSetChanged();
                 isLoading = false;
+
             }
 
             @Override
-            public void onFailure(Call<List<Question>> call, Throwable t) {
-                app.l(t.getLocalizedMessage());
+            public void onFailure(Call<QusetionWithMsg> call, Throwable t) {
+
             }
         });
+
+
     }
 
-    private void requestQuestion(int lastId, String root, String carName, String entranceId, String search) {
-        lastId = 0;
-        questions = new ArrayList<>();
-        tmpQuestions = new ArrayList<>();
-        adapter = new QuestionRecyclerAdapter(tmpQuestions,getActivity());
-        Map<String, String> data = new HashMap<>();
-        data.put("route", root);
-        data.put("lastId", String.valueOf(lastId));
-        data.put("carName", carName);
-        data.put("entranceId", entranceId);
-        data.put("search", search);
-        Application.getApi().getQuestionList(data).enqueue(new Callback<List<Question>>() {
-            @Override
-            public void onResponse(Call<List<Question>> call, retrofit2.Response<List<Question>> response) {
-                questions = response.body();
-                if (response.body() != null && questions.size()!=0) {
-                    app.l(response.body().toString());
-                }
-                if (questions != null && questions.size()!=0) {
-                    app.l(new Gson().toJson(questions) + "**7");
-                    app.l(new Gson().toJson(response.body()));
-                    tmpQuestions.addAll(questions);
-                    app.l(questions.toString());
-                }
-                if (questions != null && questions.size() != 0) {
-                    QuestionFragment.this.lastId = questions.get(questions.size() - 1).getQ_id();
-                } else {
-                    if (questions != null) {
-                        questions.size();
-           /*               StoreFragment.this.search.setText(SEARCH);
-                            toolbar.setVisibility(View.GONE);
-                            ((View) StoreFragment.this.goodName.getParent()).setVisibility(View.INVISIBLE);
-                            ((View) StoreFragment.this.carName.getParent()).setVisibility(View.INVISIBLE);*/
-
-                        isLoading = false;
-                        resumeDataListener("getStore2", "null", "null", "null");
-                        requestQuestion(0, "questionsFetchAll", "null", "null", "null");
-                    }
-                }
-                adapter = new QuestionRecyclerAdapter(tmpQuestions,getActivity());
-                recyclerQuestion.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFailure(Call<List<Question>> call, Throwable t) {
-                app.l(t.getLocalizedMessage());
-            }
-        });
-    }
-
-    private void resumeDataListener(String root, String carName, String entranceId, String search) {
+    int offset;
+    private void resumeQuestionListener(int carId, int titleId, int sortBy, int showMyQuestion) {
+        isLoading = false;
         recyclerQuestion.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
 
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-
-
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
                 if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == tmpQuestions.size() - 1 && !isLoading) {
                     isLoading = true;
-                    resumeGetData(lastId, root, carName, entranceId, search);
+                    offset++;
+                    app.l("ahmaddddd"+offset+lastId + "&&&&" + lastSeenCount + "&&&&" + carId + "&&&&" + titleId + "&&&&" + sortBy + "&&&&" + showMyQuestion);
+                    resumeGetQuestions(lastId, offset, carId, titleId, sortBy, showMyQuestion);
                 }
             }
         });
+    }/**/
+
+    private void modifyIds() {
+        if (carQuestion.getText().toString().length() == 0 && selectedCarId == 0) {
+            selectedCarId = 0;
+        } else if (carQuestion.getText().toString().length() > 0 && !carQuestion.getText().toString().equals(getString(R.string.all_cars)) && selectedCarId == 0) {
+            selectedCarId = -1;
+        }
+        if (titleQuestion.getText().toString().length() == 0 && selectedTitleId == 0) {
+            selectedTitleId = 0;
+        } else if (titleQuestion.getText().toString().length() > 0 && !titleQuestion.getText().toString().equals(getString(R.string.all_goods)) && selectedTitleId == 0) {
+            selectedTitleId = -1;
+        }
     }
 
-
+    private int getMyQuestionValue() {
+        if (isMyQuestionActive) return 1;
+        else return 0;
+    }
 }

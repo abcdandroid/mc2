@@ -17,15 +17,21 @@
     <string name="enterCarName">خودروی خود را انتخاب کنید</string>
     <string name="search_transition">search_transition</string>
     <string name="all_cars">همه ماشین ها</string>
+    <string name="all_titles">همه موضوعاتا</string>
     <string name="all_goods">همه قطعه ها</string>
+    <string name="all_regions">همه مناطق</string>
+    <string name="all_jobs">همه تخصص ها</string>
     <string name="ask_car">ماشینت چیه؟</string>
     <string name="ask_good">دنبال چه قطعه ای هستی؟</string>
     <string name="luxury_good">کالای لوکس</string>
     <string name="stoke_good">کالای استوک</string>
     <string name="good_not_found">این کالا در حال حاضر\n موجود نمی باشد</string>
+    <string name="question_not_found">این سوال هنوز\n پرسیده نشده</string>
     <string name="show_stoke_goods">نمایش کالای استوک</string>
     <string name="show_luxury_goods">نمایش کالای لوکس</string>
     <string name="show_all_goods">نمایش تمام کالاها</string>
+    <string name="show_all_questions">نمایش تمام سؤالات</string>
+    <string name="add_new_question">ایجاد  پرسش جدید</string>
     <array name="question_filter">
         <item>پربازدیدترین ها</item>
         <item>جدیدترین ها</item>
@@ -36,4 +42,12 @@
         <item>پر پاسخ ترین ها</item>
         <item>پر پاسخ ترین هر پاسخ ترین ها پر پاسخ ترین هر پاسخ ترین ها</item>
     </array>
+
+    <string-array name="mechanic_filter">
+        <item>پیش فرض</item>
+        <item>بیشترین امتیاز</item>
+        <item>نزدکی ترین ها</item>
+    </string-array>
+
+
 </resources>

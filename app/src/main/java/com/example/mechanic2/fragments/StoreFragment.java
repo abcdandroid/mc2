@@ -159,7 +159,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         resetCar.setOnClickListener(this);
         resetGood.setOnClickListener(this);
 
-
         submitFilterParent.setOnClickListener(this);
         SweetAlertDialog loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setTitleText("شکیبا باشید");
         loadingData.setCancelable(false);
@@ -263,10 +262,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             }
         });*/
 
-        initAppbar();
+        stoke.setOnClickListener(this);
         CarAutoCompleteAdapter carAdapter = new CarAutoCompleteAdapter(getActivity(), R.layout.item_show_auto_complete);
         carQuestion.setAdapter(carAdapter);
-        GoodAutoCompleteAdapter goodAdapter = new GoodAutoCompleteAdapter(Application.getContext(), R.layout.item);
+        GoodAutoCompleteAdapter goodAdapter = new GoodAutoCompleteAdapter(Application.getContext(), R.layout.item_show_auto_complete);
         goodQuestion.setAdapter(goodAdapter);
 
         carQuestion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -527,7 +526,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     }
 
     private void initAppbar() {
-        stoke.setOnClickListener(this);
     }
 
 
@@ -673,6 +671,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 carQuestion.setText("");
                 selectedCarId = 0;
                 modifyIds();
+                warrantySpinner.setEnabled(true);
+                countrySpinner.setEnabled(true);
+                countrySpinner.setClickable(true);
+                warrantySpinner.setClickable(true);
                 app.l("selectedCarId:" + selectedCarId);
                 app.l("selectedGoodId:" + selectedGoodId);
                 app.l("warrantyIdInStringInteger:" + Integer.parseInt(warrantyIdInString));
@@ -693,6 +695,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 stoke.setBackground(getActivity().getDrawable(R.drawable.btn_inactive_stoke));
                 stokeState = 0;
                 selectedGoodId = 0;
+                warrantySpinner.setEnabled(true);
+                countrySpinner.setEnabled(true);
+                countrySpinner.setClickable(true);
+                warrantySpinner.setClickable(true);
                 app.l("selectedCarId:" + selectedCarId);
                 app.l("selectedGoodId:" + selectedGoodId);
                 app.l("warrantyIdInStringInteger:" + Integer.parseInt(warrantyIdInString));
@@ -713,6 +719,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 stoke.setEnabled(true);
                 selectedGoodId = 0;
                 selectedCarId = 0;
+                warrantySpinner.setEnabled(true);
+                countrySpinner.setEnabled(true);
+                countrySpinner.setClickable(true);
+                warrantySpinner.setClickable(true);
                 warrantyIdInString = "0";
                 countryIdInString = "0";
                 loading.setVisibility(View.INVISIBLE);
@@ -740,6 +750,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 stokeState = 2;
                 is_stoke_active = false;
                 selectedGoodId = 0;
+                warrantySpinner.setEnabled(true);
+                countrySpinner.setEnabled(true);
+                countrySpinner.setClickable(true);
+                warrantySpinner.setClickable(true);
                 selectedCarId = 0;
                 loading.setVisibility(View.INVISIBLE);
                 submitFilter.setVisibility(View.VISIBLE);
@@ -767,8 +781,8 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 stoke.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
                 countrySpinner.setEnabled(false);
                 countrySpinner.setClickable(false);
-                warrantySpinner.setEnabled(false);
                 warrantySpinner.setClickable(false);
+                warrantySpinner.setEnabled(false);
                 goodQuestion.setText("");
                 carQuestion.setText("");
                 sweetAlertDialogGoodNotExist.dismissWithAnimation();

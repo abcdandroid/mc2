@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.adapters.ViewPagerAdapter;
+import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.ShowThumbnailFragment;
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 
@@ -31,7 +32,10 @@ public class FullThumbActivity extends AppCompatActivity {
         }
         vpThumbnail.setAdapter(adapter);
         vpThumbnail.setCurrentItem(currentItem);
-        ExtensiblePageIndicator extensiblePageIndicator =  findViewById(R.id.flexibleIndicator);
-        extensiblePageIndicator.initViewPager(vpThumbnail);
+        app.l(linkList.length+"2222222");
+        if (linkList.length>1) {
+            ExtensiblePageIndicator extensiblePageIndicator =  findViewById(R.id.flexibleIndicator);
+            extensiblePageIndicator.initViewPager(vpThumbnail);
+        }
     }
 }

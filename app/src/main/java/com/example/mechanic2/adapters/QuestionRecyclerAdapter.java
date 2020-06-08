@@ -2,8 +2,6 @@ package com.example.mechanic2.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,7 +86,7 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
             questionText.setText(question.getQ_text());
 
             answerCount.setText(String.valueOf(question.getAnswerCount()));
-            seenCount.setText(String.valueOf(question.getCount()));
+            seenCount.setText(String.valueOf(question.getSeen_count()));
             if (question.getQ_image_url1().length() > 10) {
                 app.l("position:" + getAdapterPosition() +"****1"+question.getQ_id()+"****"+ question.getQ_image_url1());
                 Glide.with(Application.getContext()).load("http://drkamal3.com/Mechanic/" + question.getQ_image_url1().trim()).into(previewQuestion);
@@ -108,7 +106,7 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
             Map<String, String> map = new HashMap<>();
             map.put("route", "addToCounterQuestion");
             map.put("q_id", String.valueOf(questionList.get(getAdapterPosition()).getQ_id()));
-            map.put("entrance_id", String.valueOf(3));
+            map.put("entrance_id", String.valueOf(6));
             Application.getApi().getDataInString(map).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {

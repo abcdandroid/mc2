@@ -1,208 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:background="@color/blue_grey_50"
     android:id="@+id/parent"
-    android:layout_height="wrap_content">
-
-    <LinearLayout
-        android:visibility="gone"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/carName"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="پراید"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:padding="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/fillet_add_store"
-            android:gravity="center_vertical"
-            />
-
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/questionText"
-            android:textColor="#3900CA"
-            android:layout_margin="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:textSize="16dp"/>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/blue_grey_50"
+    android:orientation="vertical">
 
 
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/answerCount"
-            android:layout_marginRight="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="به این سوال * پاسخ داده شده است!"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            />
-
-    </LinearLayout>
 
     <RelativeLayout
-        android:visibility="visible"
-        android:layout_marginTop="8dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:scaleType="centerCrop"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@color/grey_1000"
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/profile_mechanic"
             android:layout_width="100dp"
-            android:layout_height="56dp"
-            android:layout_alignParentStart="true"
-            android:id="@+id/preview_question"
-            />
-       <com.example.mechanic2.views.MyTextView
-            android:textColor="@color/grey_1000"
+            android:layout_height="100dp"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/ic_all" />
+
+        <ImageView
+            android:src="@drawable/ic_car"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="0dp"
-            android:layoutDirection="rtl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/hello_world"
-            android:textSize="16sp"
-            android:layout_toEndOf="@id/preview_question"
-            style="@style/TextAppearance.Subhead.Bold"
-            android:id="@+id/title_question"
-            />
-
-        <com.example.mechanic2.views.MyTextView
-            android:textStyle="bold"
-            android:textSize="14sp"
-            android:textColor="@color/grey_1000"
-            android:layout_marginEnd="16dp"
-            android:layoutDirection="rtl"
-            android:gravity="right"
-            android:layout_marginStart="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/title_question"
-            android:layout_toEndOf="@id/preview_question"
-            android:text="@string/lorem_simple"
             android:layout_marginBottom="8dp"
-            android:lines="2"
-            android:id="@+id/description_question"
-            android:ellipsize="end"
+            android:id="@+id/im_store_name"
             />
 
-
+        <com.example.mechanic2.views.MyTextView
+            android:text="@string/lorem_simple"
+            android:maxLines="1"
+            android:id="@+id/tv_store_mechanic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/im_store_name"
+            android:layout_toRightOf="@id/profile_mechanic"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_alignTop="@id/im_store_name"
+            android:textSize="16sp"
+            />
 
         <ImageView
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_below="@id/description_question"
-            android:id="@+id/seen_icon"
-            android:layout_alignEnd="@id/description_question"
-            android:tint="@color/grey_1000"
-            android:src="@drawable/ic_remove_red_eye_black_24dp"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_close"
+            android:layout_alignRight="@id/im_store_name"
+            android:layout_below="@id/im_store_name"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/im_job_mechanic"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="0dp"
             />
 
         <com.example.mechanic2.views.MyTextView
-            android:id="@+id/seen_count"
-            android:textColor="@color/grey_1000"
-            android:layout_width="wrap_content"
+            android:text="@string/lorem_simple"
+            android:maxLines="1"
+            android:id="@+id/tv_job_mechanic"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="123"
-            android:layout_toLeftOf="@id/seen_icon"
-            android:layout_below="@id/description_question"
-            android:textSize="12sp"
-            android:layout_marginRight="4dp"
+            android:layout_alignRight="@id/tv_store_mechanic"
+            android:layout_alignTop="@id/im_job_mechanic"
+            android:layout_marginTop="3dp"
+            android:layout_toRightOf="@id/profile_mechanic"
+            android:layout_marginLeft="8dp"
+            android:textSize="12dp"
+            style="@style/TextAppearance.Medium.Bold"
             />
 
 
-        <ImageView
-            android:layout_marginRight="24dp"
-            android:layout_width="16dp"
-            android:layout_height="16dp"
-            android:layout_below="@id/description_question"
-            android:id="@+id/answer_icon"
-            android:layout_toLeftOf="@id/seen_count"
-            android:tint="@color/grey_1000"
-            android:src="@drawable/ic_question_answer_black_24dp"
-            />
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_factory"
+                android:id="@+id/im_region_mechanic"
+                android:layout_alignRight="@id/im_store_name"
+                android:layout_below="@id/im_job_mechanic"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                />
+
 
         <com.example.mechanic2.views.MyTextView
-            android:id="@+id/answer_count"
-            android:textColor="@color/grey_1000"
-            android:layout_width="wrap_content"
+            android:id="@+id/tv_region_mechanic"
+            android:text="@string/lorem_simple"
+            android:maxLines="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="248"
-            android:layout_toLeftOf="@id/answer_icon"
-            android:textSize="12sp"
-            android:layout_marginRight="4dp"
-            android:layout_alignTop="@id/answer_icon"
+            android:layout_alignRight="@id/tv_store_mechanic"
+            android:layout_alignTop="@id/im_region_mechanic"
+            android:layout_marginTop="4dp"
+            android:layout_toRightOf="@id/profile_mechanic"
+            android:layout_marginLeft="8dp"
+            android:textSize="12dp"
+            style="@style/TextAppearance.Medium.Bold"
             />
-
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/car_type"
-            android:textColor="@color/grey_1000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="نوع خودرو:"
-            android:layout_toLeftOf="@id/answer_count"
-            android:textSize="12sp"
-            android:layout_marginRight="24dp"
-            android:layout_alignTop="@id/answer_icon"
-            />
-
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/car_name"
-            android:textColor="@color/grey_1000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="پراید"
-            android:layout_toLeftOf="@id/car_type"
-            android:textSize="12sp"
-            android:layout_marginRight="4dp"
-            android:layout_alignTop="@id/answer_icon"
-            />
-
-
-
 
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/grey_60"
-            android:layout_below="@id/seen_icon"
-            android:layout_toEndOf="@id/preview_question"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:background="@color/secondaryText"
+            android:layout_below="@id/profile_mechanic"
             />
 
     </RelativeLayout>
-
-
-
-
 
 
 </LinearLayout>

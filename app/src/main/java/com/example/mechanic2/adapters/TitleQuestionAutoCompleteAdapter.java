@@ -16,7 +16,8 @@ import androidx.annotation.Nullable;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
-import com.example.mechanic2.models.Good;
+import com.example.mechanic2.models.Car;
+import com.example.mechanic2.models.Title;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -32,8 +33,8 @@ import java.util.ArrayList;
 public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
 
-    private ArrayList<Good> data;
-    private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchGood&lastId=0&search=";
+    private ArrayList<Title> data;
+    private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchTitle&search=";
 
     public TitleQuestionAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
@@ -53,11 +54,9 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
     }
 
     private static class ViewHolder {
-
         private TextView textView;
         private TextView idTv;
         private LinearLayout parent;
-
     }
 
     @NonNull
@@ -65,7 +64,7 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
     public View getView(final int position, View convertView, @NotNull ViewGroup parent) {
 
         ViewHolder mViewHolder;
-        Good good;
+        Title title;
         if (convertView == null) {
             mViewHolder = new ViewHolder();
 
@@ -83,15 +82,11 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
             mViewHolder = (ViewHolder) convertView.getTag();
         }
         if (position <= data.size() - 1)
-            good = data.get(position);
-        else good = new Good("", 0);
-        if (good.getId() == -2) {
-            mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.yellow_900));
-        } else {
-            mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
-        }
-        mViewHolder.textView.setText(good.getName());
-        mViewHolder.idTv.setText(String.valueOf(good.getId()));
+            title = data.get(position);
+        else title = new Title("", 0);
+        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
+        mViewHolder.textView.setText(title.getName());
+        mViewHolder.idTv.setText(String.valueOf(title.getId()));
 
 
         return convertView;
@@ -104,9 +99,8 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
-                ArrayList<Good> suggestions = new ArrayList<>();
-                suggestions.add(new Good(Application.getContext().getResources().getString(R.string.all_goods), 0));
-                suggestions.add(new Good(Application.getContext().getResources().getString(R.string.luxury_good), -2));
+                ArrayList<Title> suggestions = new ArrayList<>();
+                suggestions.add(new Title(Application.getContext().getResources().getString(R.string.all_titles), 0));
                 if (constraint != null) {
                     HttpURLConnection conn = null;
                     InputStream input = null;
@@ -126,7 +120,7 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
 
                         for (int ind = 0; ind < terms.length(); ind++) {
                             JSONObject jsonObject = terms.getJSONObject(ind);
-                            suggestions.add(new Good(jsonObject.getString("name"), jsonObject.getInt("id")));
+                            suggestions.add(new Title(jsonObject.getString("name"), jsonObject.getInt("id")));
                         }
                         results.values = suggestions;
                         results.count = suggestions.size();
@@ -150,8 +144,6 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-
-
                 if (results != null && results.count > 0) {
                     notifyDataSetChanged();
                 } else notifyDataSetInvalidated();
