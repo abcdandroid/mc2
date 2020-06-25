@@ -22,7 +22,7 @@ public class Question implements Serializable {
   private String carName;
   @SerializedName("q_title")
   @Expose
-  private Integer q_title;
+  private String q_title;
   @SerializedName("q_image_url2")
   @Expose
   private String q_image_url2;
@@ -46,7 +46,7 @@ public class Question implements Serializable {
   private String q_image_url3;
   public Question(){
   }
-  public Question(Integer q_entrance_id, Integer q_status, Integer answerCount, String carName, Integer q_title, String q_image_url2, Integer q_id, String q_image_url1, Integer seen_count, String q_text, Integer carId, String q_image_url3){
+  public Question(Integer q_entrance_id, Integer q_status, Integer answerCount, String carName, String q_title, String q_image_url2, Integer q_id, String q_image_url1, Integer seen_count, String q_text, Integer carId, String q_image_url3){
    this.q_entrance_id=q_entrance_id;
    this.q_status=q_status;
    this.answerCount=answerCount;
@@ -84,10 +84,10 @@ public class Question implements Serializable {
   public String getCarName(){
    return carName;
   }
-  public void setQ_title(Integer q_title){
+  public void setQ_title(String q_title){
    this.q_title=q_title;
   }
-  public Integer getQ_title(){
+  public String  getQ_title(){
    return q_title;
   }
   public void setQ_image_url2(String q_image_url2){

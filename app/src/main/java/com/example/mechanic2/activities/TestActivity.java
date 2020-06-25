@@ -11,7 +11,11 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -24,12 +28,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.views.RecorderVisualizerView;
+import com.google.android.material.appbar.AppBarLayout;
 import com.j256.ormlite.stmt.query.In;
 import com.nightonke.wowoviewpager.Animation.ViewAnimation;
 import com.nightonke.wowoviewpager.Animation.WoWoPositionAnimation;
@@ -37,44 +44,87 @@ import com.nightonke.wowoviewpager.Animation.WoWoRotationAnimation;
 import com.nightonke.wowoviewpager.Enum.Ease;
 import com.nightonke.wowoviewpager.WoWoViewPager;
 import com.nightonke.wowoviewpager.WoWoViewPagerAdapter;
+import com.tyorikan.voicerecordingvisualizer.RecordingSampler;
+import com.tyorikan.voicerecordingvisualizer.VisualizerView;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import me.itangqi.waveloadingview.WaveLoadingView;
 
+import static com.loopj.android.http.AsyncHttpClient.LOG_TAG;
+
 public class TestActivity extends AppCompatActivity {
 
-
+/*
     Button getLocationBtn;
     TextView locationText;
 
-    LocationManager locationManager;
 
+    public static final int REPEAT_INTERVAL = 40;
+    LocationManager locationManager;
+    MediaPlayer mediaPlayer;*/
+
+    private AppBarLayout appbar;
+    private MotionLayout ml;
+
+    private Handler mHandler = new Handler();
+    private Handler handler = new Handler(); // Handler for updating the
+    boolean mStartRecording = true;
+    private static String fileName = null;
+    private MediaRecorder recorder = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_mechanic);
+        setContentView(R.layout.activity_test);
 
-/*        getLocationBtn = (Button) findViewById(R.id.getLocationBtn);
-        locationText = (TextView) findViewById(R.id.locationText);
-
-
-        if (ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-        }
-
-
-        *//* *//*
-        getLocationBtn.setOnClickListener(new View.OnClickListener() {
+        appbar = findViewById(R.id.appbar);
+        ml = findViewById(R.id.ml);
+        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
-            public void onClick(View v) {
-                getLocation();
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                float seekPosition = -verticalOffset / (float)appBarLayout.getTotalScrollRange();
+                ml.setProgress(seekPosition);
             }
-        });*/
+        });
+
+
     }
 
+    private void startRecording() {
+        recorder = new MediaRecorder();
+        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        recorder.setOutputFile(fileName);
+        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        try {
+            recorder.prepare();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "prepare() failed");
+        }
+
+        recorder.start();
+    }
+
+    private void stopRecording() {
+        recorder.stop();
+        recorder.release();
+        recorder = null;
+    }
+    private void onRecord(boolean start) {
+        if (start) {
+            startRecording();
+        } else {
+            stopRecording();
+        }
+    }
+
+
+    boolean isRecording;
+/*
     void getLocation() {
         app.l("AAA");
         try {
@@ -118,7 +168,7 @@ public class TestActivity extends AppCompatActivity {
             app.l("DD");
             e.printStackTrace();
         }
-    }
+    }*/
 
 
 }

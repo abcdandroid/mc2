@@ -20,5 +20,10 @@
         android:icon="@drawable/ic_remove_red_eye_black_24dp"
         android:iconTint="@android:color/white"
         android:title="درخواست قطعه" />
+    <item
+        android:id="@+id/main_page"
+        android:icon="@drawable/ic_remove_red_eye_black_24dp"
+        android:iconTint="@android:color/white"
+        android:title="صفحه اصلی" />
 
 </menu>

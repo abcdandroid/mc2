@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.OnViewPagerClickListener;
 
 import java.util.Objects;
 
@@ -21,19 +22,29 @@ import java.util.Objects;
  */
 public class QuestionImagesFragment extends Fragment {
     private ImageView image;
+    private OnViewPagerClickListener onViewPagerClickListener;
 
     public QuestionImagesFragment() {
         // Required empty public constructor
     }
-    public static QuestionImagesFragment newInstance(String imageUri) {
+
+    public static QuestionImagesFragment newInstance(String imageUri, OnViewPagerClickListener onViewPagerClickListener) {
 
         Bundle args = new Bundle();
-        args.putString("imageUri",imageUri);
+        args.putString("imageUri", imageUri);
+        args.putParcelable("onClick", onViewPagerClickListener);
         QuestionImagesFragment fragment = new QuestionImagesFragment();
         fragment.setArguments(args);
         return fragment;
     }
 
+
+    public String getImageUrl() {
+
+        if (getArguments() != null) {
+            return getArguments().getString("imageUri") == null ? "" : getArguments().getString("imageUri");
+        } else return "";
+    }
 
 
     @Override
@@ -43,10 +54,24 @@ public class QuestionImagesFragment extends Fragment {
         View inflate = inflater.inflate(R.layout.fragment_question_images, container, false);
 
         image = inflate.findViewById(R.id.image);
-        if (getArguments() != null) {
-            app.l("http://drkamal3.com/Mechanic/"+getArguments().getString("imageUri"));
-            Glide.with(Objects.requireNonNull(getActivity())).load("http://drkamal3.com/Mechanic/"+getArguments().getString("imageUri")).into(image);
+
+        if (getArguments() != null && getArguments().getParcelable("onClick") != null) {
+            onViewPagerClickListener = getArguments().getParcelable("onClick");
         }
+        if (getArguments() != null) {
+            app.l("http://drkamal3.com/Mechanic/" + getArguments().getString("imageUri"));
+            Glide.with(Objects.requireNonNull(getActivity())).load("http://drkamal3.com/Mechanic/" + getArguments().getString("imageUri")).into(image);
+        }
+
+        image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                app.l("QQQQQQQQrrrrrrrrrr");
+                if (onViewPagerClickListener != null)
+                    onViewPagerClickListener.onViewPagerClick(v);
+                else app.l("QQQQQQQQrrrrrrrrrr+on view is null");
+            }
+        });
         return inflate;
     }
 }

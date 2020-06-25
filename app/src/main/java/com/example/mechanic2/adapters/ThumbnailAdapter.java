@@ -58,7 +58,6 @@ public class ThumbnailAdapter extends RecyclerView.Adapter {
 
         @Override
         public void onClick(View v) {
-
             Intent intent = new Intent(Application.getContext(), FullThumbActivity.class);
             intent.putExtra("currentItem", getAdapterPosition());
             intent.putExtra("linkList", linkList);

@@ -230,7 +230,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         String thumbAddressesInString = goood.getThumbnails();
         String[] splitThumb = thumbAddressesInString.split(",");
         if (splitThumb[0].length() > 0) {
-            app.l(splitThumb[0] + "@@@@@@@");
             splitAll = new String[splitThumb.length + 1];
             System.arraycopy(splitThumb, 0, splitAll, 1, splitThumb.length);
         } else splitAll = new String[1];
@@ -352,6 +351,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onViewPagerClick(View view) {
                     Intent intent = new Intent(ShowGoodDetailActivity.this, FullThumbActivity.class);
+                    intent.putExtra("from","showGoodDetailActivity");
                     intent.putExtra("linkList", splitAll);
                     intent.putExtra("currentItem", viewpager.getCurrentItem());
                     ShowGoodDetailActivity.this.startActivity(intent);

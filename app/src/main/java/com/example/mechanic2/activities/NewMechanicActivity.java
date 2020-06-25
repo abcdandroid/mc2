@@ -27,6 +27,9 @@ import com.example.mechanic2.views.TagView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -265,7 +268,7 @@ public class NewMechanicActivity extends Activity implements View.OnClickListene
             String connector;
 
             if (i == list.size() - 1) connector = "";
-            else connector = "-";
+            else connector = ",";
             jobIds.append(list.get(i).getId()).append(connector);
         }
         return jobIds.toString();
@@ -280,7 +283,7 @@ public class NewMechanicActivity extends Activity implements View.OnClickListene
 
                 String jobIds = "";
                 String selectedJobTitles = SharedPrefUtils.getStringData("jobTitles");
-                if (selectedJobTitles != null && selectedJobTitles.length() != 0) {
+                if (!selectedJobTitles.equals("-1") && selectedJobTitles.length() != 0) {
                     List<String> myList = new ArrayList<>(Arrays.asList(selectedJobTitles.split(" - ")));
                     List<Job> selectedJobsList = new ArrayList<>();
                     for (String jobTitle : myList) {
@@ -303,8 +306,8 @@ public class NewMechanicActivity extends Activity implements View.OnClickListene
                     Call<String> stringCall;
                     Map<String, String> map = new HashMap<>();
                     map.put("route", "addNewMechanic");
-                    map.put("m_entrance_id", "1");
                     map.put("job_ids", jobIds);
+                    map.put("region_id", "1");
                     map.put("address", addressFinal);
                     map.put("name", nameFinal);
                     map.put("store_name", storeNameFinal);
@@ -321,15 +324,30 @@ public class NewMechanicActivity extends Activity implements View.OnClickListene
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
                             if (response.body() != null) {
-                                if (response.body().contains("saved"))
-                                  startActivity(new Intent(NewMechanicActivity.this,MainActivity.class));
-                                else app.l("nok");
-                            } else app.l("nothing");
+
+                                JSONObject jsonObject;
+                                String entranceId;
+                                String jsonString = response.body();
+                                try {
+                                    jsonObject = new JSONObject(jsonString);
+                                    entranceId = jsonObject.getString("entrance_id");
+                                    SharedPrefUtils.saveData("entranceId", entranceId);
+                                    startActivity(new Intent(NewMechanicActivity.this, MainActivity.class));
+                                } catch (JSONException e) {
+                                    SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error connection");
+                                    sweetAlertDialogSendCode.show();
+                                }
+
+                            } else {
+                                SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error connection");
+                                sweetAlertDialogSendCode.show();
+                            }
                         }
 
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
-                            app.l(t.getLocalizedMessage());
+                            SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error connection");
+                            sweetAlertDialogSendCode.show();
                         }
                     });
                 }

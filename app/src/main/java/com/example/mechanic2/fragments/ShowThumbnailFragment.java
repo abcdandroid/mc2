@@ -41,9 +41,7 @@ public class ShowThumbnailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**/
     public static ShowThumbnailFragment newInstance(String url, OnViewPagerClickListener onViewPagerClickListener) {
-
         Bundle args = new Bundle();
         args.putString("url", url);
         args.putParcelable("onClick", onViewPagerClickListener);
@@ -68,7 +66,6 @@ public class ShowThumbnailFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -78,7 +75,6 @@ public class ShowThumbnailFragment extends Fragment {
         return inflate;
     }
 
-    int i;
 
     private void init(View inflate) {
         ImageView imThumbnail = inflate.findViewById(R.id.imThumbnail);

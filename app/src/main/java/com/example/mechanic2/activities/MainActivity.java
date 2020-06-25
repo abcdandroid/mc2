@@ -22,6 +22,7 @@ import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.AdminFragment;
+import com.example.mechanic2.fragments.MainPageFragment;
 import com.example.mechanic2.fragments.MechanicFragment;
 import com.example.mechanic2.fragments.QuestionFragment;
 import com.example.mechanic2.fragments.StoreFragment;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void myAction() {
         app.l("type is " + SharedPrefUtils.getStringData("type"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("searchAction"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("mpd"));
         app.l("main" + isFabPressed);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -61,9 +62,11 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(new AdminFragment());
         adapter.addFragment(new QuestionFragment());
         adapter.addFragment(new StoreFragment());
+        adapter.addFragment(new MainPageFragment());
         viewpager.setOffscreenPageLimit((adapter.getCount() > 1 ? adapter.getCount() - 1 : 1));
         viewpager.setAdapter(adapter);
-        viewpager.setCurrentItem(3);
+        viewpager.setCurrentItem(4);
+        bottomNavigationView.setSelectedItemId(R.id.main_page);
         viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -85,6 +88,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 3:
                         bottomNavigationView.setSelectedItemId(R.id.store);
+                        break;
+                    case 4:
+                        bottomNavigationView.setSelectedItemId(R.id.main_page);
                         break;
                 }
             }
@@ -108,6 +114,9 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.store:
                     viewpager.setCurrentItem(3);
                     break;
+                case R.id.main_page:
+                    viewpager.setCurrentItem(4);
+                    break;
             }
             return false;
         });
@@ -120,12 +129,11 @@ public class MainActivity extends AppCompatActivity {
             int result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
             int result2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int result3 = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
-            int result4 = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
-            if (result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED && result3 == PackageManager.PERMISSION_GRANTED && result4 == PackageManager.PERMISSION_GRANTED) {
+            if (result1 == PackageManager.PERMISSION_GRANTED && result2 == PackageManager.PERMISSION_GRANTED && result3 == PackageManager.PERMISSION_GRANTED) {
                 return true;
             } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.RECORD_AUDIO}, REQUEST_CODE);
             }
         } else {
             return true;
@@ -134,16 +142,17 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
         if (requestCode == REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED && grantResults[3] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 myAction();
             } else {
                 app.t("not granted");
             }
+        } else if (requestCode == MechanicFragment.REQUEST_CODE) {
+            Intent intent = new Intent("forGps");
+            LocalBroadcastManager.getInstance(Application.getContext()).sendBroadcast(intent);
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -153,13 +162,24 @@ public class MainActivity extends AppCompatActivity {
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String searchText = intent.getStringExtra("searchText");
-            if (searchText != null) {
-                if (searchText.equals(StoreFragment.CANCEL_SEARCH))
-                    searchPressed = true;
-                else if (searchText.equals(StoreFragment.SEARCH))
-                    searchPressed = false;
+            if (intent.getIntExtra("field", 0) == 3){
+                viewpager.setCurrentItem(3);
+                bottomNavigationView.setSelectedItemId(R.id.store);
             }
+            else  if (intent.getIntExtra("field", 0) == 1){
+                viewpager.setCurrentItem(0);
+                bottomNavigationView.setSelectedItemId(R.id.mechanics);
+            }
+            else  if (intent.getIntExtra("field", 0) == 2){
+                viewpager.setCurrentItem(2);
+                bottomNavigationView.setSelectedItemId(R.id.questions);
+            }
+            else  if (intent.getIntExtra("field", 0) == 4){
+                viewpager.setCurrentItem(1);
+                bottomNavigationView.setSelectedItemId(R.id.home);
+            }
+
+
         }
     };
 
@@ -171,10 +191,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
-            Intent a = new Intent(Intent.ACTION_MAIN);
-            a.addCategory(Intent.CATEGORY_HOME);
-            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(a);
+        Intent a = new Intent(Intent.ACTION_MAIN);
+        a.addCategory(Intent.CATEGORY_HOME);
+        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(a);
     }
 }

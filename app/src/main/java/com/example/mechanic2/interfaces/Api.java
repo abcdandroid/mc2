@@ -6,11 +6,13 @@ import androidx.annotation.Nullable;
 
 import com.example.mechanic2.models.AdminMedia;
 import com.example.mechanic2.models.Ads;
+import com.example.mechanic2.models.AnswerWithMsg;
 import com.example.mechanic2.models.CountriesAndWarranties;
 import com.example.mechanic2.models.Good;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
+import com.example.mechanic2.models.MechanicWithMsg;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.models.QusetionWithMsg;
 
@@ -47,8 +49,12 @@ public interface Api {
 
     @GET(".")
     Call<List<Goood>> getGooodList(@QueryMap Map<String, String> map);
+
     @GET(".")
     Call<List<Mechanic>> getMechanicList(@QueryMap Map<String, String> map);
+
+    @GET(".")
+    Call<MechanicWithMsg> getMechanicWutMsg(@QueryMap Map<String, String> map);
 
     @GET(".")
     Call<List<Ads>> getAdsList(@Query("route") String ads);
@@ -76,9 +82,16 @@ public interface Api {
             @QueryMap Map<String, String> map,
             @Nullable @Part MultipartBody.Part file);
 
+    @POST(".")
+    Call<String> uploadAudioFile(
+            @QueryMap Map<String, String> map );
+
 
     @GET(".")
     Call<String> sendPhone(@QueryMap Map<String, String> map);
+
+    @GET(".")
+    Call<AnswerWithMsg> getAnswersWithMsg(@QueryMap Map<String, String> map);
 
     @GET(".")
     Call<List<Job>> getJobs(@QueryMap Map<String, String> map);

@@ -68,7 +68,6 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context), mMapView);
         this.mLocationOverlay.enableMyLocation();
         mapController = mMapView.getController();
-
         Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.location);
         mLocationOverlay.setDirectionArrow(icon, icon);
         mLocationOverlay.setPersonIcon(icon);
@@ -159,7 +158,8 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
         //if you make changes to the configuration, use
         //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         //Configuration.getInstance().save(this, prefs);
-        mMapView.onPause();  //needed for compass, my location overlays, v6.0.0 and up
+        //needed for compass, my location overlays, v6.0.0 and up
+        mMapView.onPause();
     }
 
     @Override

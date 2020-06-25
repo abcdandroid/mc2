@@ -25,16 +25,15 @@
             />
 
 
-
         <androidx.appcompat.widget.AppCompatButton
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:layout_margin="32dp"
             android:id="@+id/btn_manage_record"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="32dp"
             android:background="@drawable/fillet_add_store"
+            android:gravity="center"
             android:text="ضبط کن"
             android:textColor="@color/icons" />
 
@@ -47,12 +46,9 @@
             android:layout_marginStart="16dp"
             android:background="@drawable/fillet_remove_store"
             >
-
             <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
-
-
 
                 <ImageView
                     android:layout_width="35dp"
@@ -64,7 +60,6 @@
                     />
 
             </RelativeLayout>
-
 
             <SeekBar
                 android:layout_width="match_parent"

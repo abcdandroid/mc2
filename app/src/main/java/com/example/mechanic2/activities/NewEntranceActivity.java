@@ -46,7 +46,6 @@ public class NewEntranceActivity extends AppCompatActivity {
     SweetAlertDialog sweetAlertDialogSendType;
 
 
-
     WoWoViewPager wowo;
     WoWoViewPager wowoGear;
     private ImageView imgMechanic;
@@ -61,9 +60,6 @@ public class NewEntranceActivity extends AppCompatActivity {
     private LinearLayout txtMechanic1;
     private LinearLayout txtMechanic2;
 
-
-
-    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,9 +113,9 @@ public class NewEntranceActivity extends AppCompatActivity {
 
 
                 ViewAnimation viewAnimationTransitTextMechanic1 = new ViewAnimation(txtMechanic1);
-                viewAnimationTransitTextMechanic1.add(WoWoPositionAnimation.builder().page(0).keepX((imgMechanic.getWidth() - txtMechanic1.getWidth()) / 2).fromY(imgMechanic.getHeight() - txtMechanic1.getHeight()/2 - txtMechanic2.getHeight() / 2 + (wowo.getHeight() - imgMechanic.getHeight()) / 2 ).toY(-imgMechanic.getHeight()).ease(Ease.InOutBack).build());
+                viewAnimationTransitTextMechanic1.add(WoWoPositionAnimation.builder().page(0).keepX((imgMechanic.getWidth() - txtMechanic1.getWidth()) / 2).fromY(imgMechanic.getHeight() - txtMechanic1.getHeight() / 2 - txtMechanic2.getHeight() / 2 + (wowo.getHeight() - imgMechanic.getHeight()) / 2).toY(-imgMechanic.getHeight()).ease(Ease.InOutBack).build());
                 ViewAnimation viewAnimationTransitTextMechanic2 = new ViewAnimation(txtMechanic2);
-                viewAnimationTransitTextMechanic2.add(WoWoPositionAnimation.builder().page(0).keepX((imgMechanic.getWidth() - txtMechanic2.getWidth()) / 2).fromY(imgMechanic.getHeight() + txtMechanic2.getHeight() / 2 + (wowo.getHeight() - imgMechanic.getHeight()) / 2 ).toY(-imgMechanic.getHeight()).ease(Ease.InOutElastic).build());
+                viewAnimationTransitTextMechanic2.add(WoWoPositionAnimation.builder().page(0).keepX((imgMechanic.getWidth() - txtMechanic2.getWidth()) / 2).fromY(imgMechanic.getHeight() + txtMechanic2.getHeight() / 2 + (wowo.getHeight() - imgMechanic.getHeight()) / 2).toY(-imgMechanic.getHeight()).ease(Ease.InOutElastic).build());
 
                 wowo.addAnimation(viewAnimationTransitTextNormal1).setDirection(WoWoViewPager.Horizontal);
                 wowo.addAnimation(viewAnimationTransitTextNormal2);
@@ -131,7 +127,6 @@ public class NewEntranceActivity extends AppCompatActivity {
                 wowo.ready();
             }
         });
-
 
 
         wowoGear.addAnimation(viewAnimationRotateGear);
@@ -212,8 +207,9 @@ public class NewEntranceActivity extends AppCompatActivity {
                     Map<String, String> map = new HashMap<>();
                     map.put("route", "sms");
                     map.put("action", "registration");
-                    map.put("mobile", SharedPrefUtils.getStringData("phoneNumber") == null ? "11111111111" : SharedPrefUtils.getStringData("phoneNumber"));
-                    map.put("type", user_type.equals(USER_TYPE.NORMAL) ? String.valueOf(0) : String.valueOf(1));
+                    map.put("mobile", SharedPrefUtils.getStringData("phoneNumber").equals("-1") ? "11111111111" : SharedPrefUtils.getStringData("phoneNumber"));
+                    //map.put("type", user_type.equals(USER_TYPE.NORMAL) ? String.valueOf(0) : String.valueOf(1));
+                    map.put("type", String.valueOf(user_type.equals(USER_TYPE.NORMAL) ?0:1));
 
                     Application.getApi().getDataInString(map).enqueue(new Callback<String>() {
                         @Override
@@ -257,7 +253,6 @@ public class NewEntranceActivity extends AppCompatActivity {
 
                 /*$mobile = app::get(mobile);
                 $type = app::get(type);*/
-
 
 
             }

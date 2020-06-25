@@ -10,11 +10,14 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
@@ -56,6 +59,7 @@ public class AddQuestionActivity extends AppCompatActivity implements View.OnCli
     private TextInputLayout fieldQuestion;
     private EditText questionText;
 
+    int selectedCarId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +68,6 @@ public class AddQuestionActivity extends AppCompatActivity implements View.OnCli
         images.add(findViewById(R.id.image1));
         images.add(findViewById(R.id.imageProfile));
         images.add(findViewById(R.id.image3));
-
-
         submitQuestion = findViewById(R.id.submitQuestion);
         cancelSend = findViewById(R.id.cancelSend);
 
@@ -75,21 +77,21 @@ public class AddQuestionActivity extends AppCompatActivity implements View.OnCli
         questionText = findViewById(R.id.questionText);
 
         carType.setAdapter(new CarAutoCompleteAdapter(this, R.layout.item_show_auto_complete));
-
+        carType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedCarId = Integer.parseInt(((TextView) parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent())).findViewById(R.id.id)).getText().toString());
+            }
+        });
         images.get(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 current_image = 0;
-
-
                 if (!fill_images[current_image]) {
                     show_dialog();
                 } else {
                     show_delete_dialog();
                 }
-
-
             }
         });
 
@@ -171,19 +173,6 @@ public class AddQuestionActivity extends AppCompatActivity implements View.OnCli
 
                                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                                 startActivityForResult(takePictureIntent, 1);
-                                /* app.l("AAA3");
-                                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP) {
-                                    takePictureIntent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                                } else {
-                                    List<ResolveInfo> resInfoList = getPackageManager().queryIntentActivities(takePictureIntent, PackageManager.MATCH_DEFAULT_ONLY);
-                                    for (ResolveInfo resolveInfo : resInfoList) {
-                                        String packageName = resolveInfo.activityInfo.packageName;
-                                        grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    }
-                                }
-
-                                startActivityForResult(takePictureIntent, 1);*/
-
 
                             }
 
@@ -323,7 +312,8 @@ public class AddQuestionActivity extends AppCompatActivity implements View.OnCli
                 map.put("route", "upload");
                 map.put("entrance_id", "1");
                 map.put("q_text", questionText.getText().toString().trim());
-                map.put("car_name", carType.getText().toString().trim());
+                map.put("car_id", String.valueOf(selectedCarId));
+                map.put("title_id", "1");
                 if (files.size() == 0) {
                     stringCall = Application.getApi().sendQuestion(map);
                 } else
@@ -334,7 +324,7 @@ public class AddQuestionActivity extends AppCompatActivity implements View.OnCli
                     public void onResponse(Call<String> call, Response<String> response) {
                         app.l("WWWWWWWWWWWWWWWWWWW");
                         if (response.body() != null)
-                            app.l(response.body()+"RRRRRRRRRRRRRRRRR");
+                            app.l(response.body() + "RRRRRRRRRRRRRRRRR"+selectedCarId);
                         else app.l("nothing");
                     }
 

@@ -54,6 +54,8 @@ public class MySpinnerAdapter extends ArrayAdapter<String> {
         return createView(position, parent, false, true);
     }
 
+
+
     private View createView(int position, @NonNull ViewGroup parent, boolean mode, boolean isDropdown) {
         LayoutInflater inflater = (LayoutInflater) Application.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

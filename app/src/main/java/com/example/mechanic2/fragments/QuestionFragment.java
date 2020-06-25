@@ -4,7 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -33,6 +36,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.transition.Slide;
@@ -51,6 +55,7 @@ import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.AddQuestionFab;
+import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.models.QusetionWithMsg;
 import com.example.mechanic2.models.Title;
@@ -59,8 +64,11 @@ import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -131,6 +139,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
     int i;
 
+    AdapterView<?> parentAdapterView;
     //http://drkamal3.com/Mechanic/index.php?route=getTitlesByCar&carName=%D9%BE%D8%B1%D8%A7%DB%8C%D8%AF
 
     @Nullable
@@ -187,14 +196,14 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         List<Integer> filterIds = new ArrayList<>();
         filterIds.add(1);
         filterIds.add(2);
-
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiver, new IntentFilter("mpd2"));
         filterSpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, filterNames, filterIds, false);
         spinnerFilter.setAdapter(filterSpinnerAdapter);
-
 
         spinnerFilter.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                QuestionFragment.this.parentAdapterView = parent;
                 i++;
                 if (view != null) {
                     modifyIds();
@@ -202,7 +211,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                     View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
                     TextView myTextView = view1.findViewById(R.id.id_spinner);
                     filterIdInString = myTextView == null ? "1" : myTextView.getText().toString();
-                    if (i > 2) {
+                    if (i > 1) {
                         loading.setVisibility(View.VISIBLE);
                         submitFilter.setVisibility(View.INVISIBLE);
                         app.l("selectedCarId" + selectedCarId + "selectedTitleId" + selectedTitleId + "filterIdInString" + Integer.parseInt(filterIdInString) + "getMyQuestionValue" + getMyQuestionValue());
@@ -211,6 +220,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                     }
                 }
             }
+
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -543,7 +553,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                     recyclerQuestion.setAdapter(adapter);
 
                 } else {
-                    app.l(response.body().getMsg()+"@@@@@@@@@@@");
+                    app.l(response.body().getMsg() + "@@@@@@@@@@@");
                     sweetAlertDialogQuestionNotExist = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).hideConfirmButton()
                             .setCustomView(view);
                     sweetAlertDialogQuestionNotExist.show();
@@ -552,7 +562,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<QusetionWithMsg> call, Throwable t) {
-                app.l(t.getLocalizedMessage() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                app.l(t.getLocalizedMessage() + "tttttt qu");
             }
         });
 
@@ -573,7 +583,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         Application.getApi().getQuestionWithMsg(map).enqueue(new Callback<QusetionWithMsg>() {
             @Override
             public void onResponse(Call<QusetionWithMsg> call, Response<QusetionWithMsg> response) {
-                app.l(response.body().getMsg()+"!!!!!resumeGetQuestions");
+                app.l(response.body().getMsg() + "!!!!!resumeGetQuestions");
                 if (response.body() != null && response.body().getQuestion().size() == 0) {
                     app.l("f");
                     return;
@@ -605,6 +615,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     }
 
     int offset;
+
     private void resumeQuestionListener(int carId, int titleId, int sortBy, int showMyQuestion) {
         isLoading = false;
         recyclerQuestion.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -618,7 +629,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == tmpQuestions.size() - 1 && !isLoading) {
                     isLoading = true;
                     offset++;
-                    app.l("ahmaddddd"+offset+lastId + "&&&&" + lastSeenCount + "&&&&" + carId + "&&&&" + titleId + "&&&&" + sortBy + "&&&&" + showMyQuestion);
+                    app.l("ahmaddddd" + offset + lastId + "&&&&" + lastSeenCount + "&&&&" + carId + "&&&&" + titleId + "&&&&" + sortBy + "&&&&" + showMyQuestion);
                     resumeGetQuestions(lastId, offset, carId, titleId, sortBy, showMyQuestion);
                 }
             }
@@ -642,4 +653,45 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         if (isMyQuestionActive) return 1;
         else return 0;
     }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String detail = intent.getStringExtra("detail");
+            try {
+                JSONObject jsonObject = new JSONObject(detail);
+                Gson gson = new Gson();
+                Car car = gson.fromJson(jsonObject.getString("car"), Car.class);
+                Title title = gson.fromJson(jsonObject.getString("title"), Title.class);
+                filterIdInString = jsonObject.getString("sortBy");
+                int showMyQuestion = jsonObject.getInt("showMyQuestion");
+                carQuestion.setText(car.getName());
+                titleQuestion.setText(title.getName());
+                spinnerFilter.setSelection(Integer.parseInt(filterIdInString)-1);
+
+                isMyQuestionActive = showMyQuestion == 1;
+                filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+                if (isMyQuestionActive) {
+                    myQuestion.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
+                    spinnerFilter.setEnabled(false);
+                    spinnerFilter.setClickable(false);
+
+
+                } else {
+                    myQuestion.setBackground(getResources().getDrawable(R.drawable.btn_inactive_stoke));
+                    spinnerFilter.setEnabled(true);
+                    spinnerFilter.setClickable(true);
+                }
+
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
+                resumeQuestionListener(car.getId(), title.getId(), Integer.parseInt(filterIdInString), getMyQuestionValue());
+                getQuestions(car.getId(), title.getId(), Integer.parseInt(filterIdInString), getMyQuestionValue());
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 }

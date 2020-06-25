@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <EditText
+        android:imeOptions="actionNext"
+        android:id="@+id/et_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_3"
+        android:gravity="top"
+        android:hint="جوابتو برای این سوال بنویس"
+        android:layoutDirection="rtl"
+        android:lines="5"
+        android:padding="@dimen/spacing_middle"
+        android:textDirection="rtl" />
+
+
+    <TextView
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/et_answer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="اگر پاسخ صوتی داری روی دکمه قرمز بزن"
+        android:id="@+id/press_red_button"
+        android:layout_marginTop="16dp"
+        />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:lottie_rawRes="@raw/record"
+        android:layout_below="@id/press_red_button"
+        android:id="@+id/start_record"
+        android:layout_centerHorizontal="true"
+
+        android:layout_marginTop="16dp"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:visibility="invisible"
+        android:id="@+id/recording_waves"
+        android:layout_width="wrap_content"
+        app:lottie_rawRes="@raw/audio_wave"
+        android:layout_height="100dp"
+        android:layout_below="@id/press_red_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        />
+
+    <LinearLayout
+        android:visibility="invisible"
+        android:layout_below="@id/press_red_button"
+        android:id="@+id/layer_pb"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/fillet_remove_store"
+        android:gravity="center_vertical"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/ltPlayPause"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false"
+                app:lottie_rawRes="@raw/play_to_pause"
+                app:lottie_speed="3" />
+
+        </RelativeLayout>
+
+        <SeekBar
+            android:id="@+id/sbProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+
+
+    <RelativeLayout
+        android:visibility="invisible"
+        android:layout_centerInParent="true"
+        android:id="@+id/voice_manager"
+        android:layout_below="@id/recording_waves"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Chronometer
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/chronometerExample"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:gravity="center_horizontal"/>
+
+        <ImageView
+            android:id="@+id/stop"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/chronometerExample"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/stop"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/voice_manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/cancel_answer"
+            android:layout_margin="8dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_height="35dp"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginRight="-4dp"
+            android:background="@drawable/btn_cancel_answer"
+            android:text="  بی خیال"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/send_answer"
+            android:layout_margin="8dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="-4dp"
+            android:layout_marginRight="-4dp"
+            android:background="@drawable/btn_submit_store"
+            android:text="جواب رو بفرس"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/parent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:background="@drawable/mechanic_answer_background"
+    android:orientation="vertical"
+    android:padding="16sp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="16sp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/iv_profile"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"/>
+
+        <com.example.mechanic2.views.MyTextView
+            android:layout_centerVertical="true"
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_toLeftOf="@id/iv_profile"
+            android:maxLines="1"
+            android:text="@string/lorem"
+            android:textSize="20sp" />
+
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/voice_parent"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/fillet_remove_store"
+        android:gravity="center_vertical"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:gravity="center_vertical"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp">
+
+
+            <ImageView
+                android:id="@+id/ivPlayPause"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:alpha="0"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:src="@drawable/play_icon"
+                android:visibility="gone" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/ltPlayPause"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false"
+                app:lottie_rawRes="@raw/play_to_pause"
+                app:lottie_speed="3" />
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:id="@+id/startDownload"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:src="@drawable/ic_arrow_downward_black_24dp"
+                android:visibility="visible" />
+
+
+
+            <TextView
+                android:layout_centerInParent="true"
+                android:id="@+id/percentDone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textSize="12sp" />
+
+
+            <com.hmomeni.progresscircula.ProgressCircula
+                android:id="@+id/progressCirculaSound"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="4dp"
+                app:pgc_indeterminate="false"
+                app:pgc_progress="0"
+                app:pgc_rimColor="@color/colorPrimary"
+                app:pgc_rimWidth="2dp"
+                app:pgc_showProgress="false"
+                android:visibility="gone"
+                app:pgc_speed="4"
+                app:pgc_textColor="#006300" />
+
+        </RelativeLayout>
+
+        <SeekBar
+            android:id="@+id/sbProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+<!--
+    <LinearLayout
+        android:layoutDirection="rtl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="16dp"
+        android:background="@drawable/fillet_remove_store"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/ivPlayPause"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:alpha="0"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:src="@drawable/play_icon"
+                android:visibility="gone" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/ltPlayPause"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:visibility="gone"
+                app:lottie_autoPlay="false"
+                app:lottie_loop="false"
+                app:lottie_rawRes="@raw/play_to_pause"
+                app:lottie_speed="3" />
+
+            <ImageView
+                android:id="@+id/startDownload"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:src="@drawable/ic_arrow_downward_black_24dp"
+                android:visibility="visible" />
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true">
+
+                <TextView
+                    android:id="@+id/percentDone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textSize="12sp" />
+
+
+                <com.hmomeni.progresscircula.ProgressCircula
+                    android:id="@+id/progressCirculaSound"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:layout_margin="4dp"
+                    android:visibility="gone"
+                    app:pgc_indeterminate="false"
+                    app:pgc_progress="0"
+                    app:pgc_rimColor="@color/colorPrimary"
+                    app:pgc_rimWidth="2dp"
+                    app:pgc_showProgress="false"
+                    app:pgc_speed="4"
+                    app:pgc_textColor="#006300" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+
+        <SeekBar
+            android:id="@+id/sbProgress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>-->
+
+    <com.example.mechanic2.views.MyTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/lorem"
+        android:maxLines="5"
+        android:layout_marginTop="16sp"
+        android:layoutDirection="rtl"
+        android:textDirection="rtl"
+        android:textSize="16sp"
+        android:id="@+id/answer"
+        />
+
+    <com.example.mechanic2.views.MyTextView
+        android:id="@+id/read_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="برای مشاهده جزییات کارشناس پاسخ دهنده کلیک کنید"
+        android:textSize="12sp"
+        android:layout_marginTop="24dp"
+        />
+
+
+</LinearLayout>

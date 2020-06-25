@@ -36,8 +36,10 @@ dependencies {
     implementation 'com.loopj.android:android-async-http:1.4.10'
     implementation 'com.hmomeni.progresscircula:progresscircula:0.2.1'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0-beta7'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.navigation:navigation-fragment:2.1.0'
+    implementation 'androidx.navigation:navigation-ui:2.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
@@ -85,7 +87,11 @@ dependencies {
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
     implementation 'info.hoang8f:fbutton:1.0.5'
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.tyorikan:voice-recording-visualizer:1.0.3@aar'
 
+    implementation 'com.github.bogerchan:Nier-Visualizer:v0.1.3'
     implementation 'me.itangqi.waveloadingview:library:0.3.5'
+    implementation 'com.devbrackets.android:exomedia:4.3.0'
+    implementation 'com.linsea:universalvideoview:1.1.0@aar'
 
 }
