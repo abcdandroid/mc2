@@ -1,6 +1,7 @@
 package com.example.mechanic2.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.j256.ormlite.stmt.query.In;
 
 import java.io.Serializable;
 
@@ -29,6 +30,10 @@ public class Movies implements Serializable {
   @Expose
   private String movie_preview;
 
+  @SerializedName("movie_offset")
+  @Expose
+  private Integer movie_offset;
+
   @SerializedName("id")
   @Expose
   private Integer id;
@@ -36,12 +41,13 @@ public class Movies implements Serializable {
     public Movies() {
     }
 
-    public Movies(Integer movie_size, String movie_url, Integer user_id, String movie_desc, String movie_preview, Integer id) {
+    public Movies(Integer movie_size, String movie_url, Integer user_id, String movie_desc, Integer movie_offset, String movie_preview, Integer id) {
         this.movie_size = movie_size;
         this.movie_url = movie_url;
         this.user_id = user_id;
         this.movie_desc = movie_desc;
         this.movie_preview = movie_preview;
+        this.movie_offset = movie_offset;
         this.id = id;
     }
 
@@ -93,9 +99,15 @@ public class Movies implements Serializable {
         this.id = id;
     }
 
+    public Integer getMovie_offset() {
+        return movie_offset;
+    }
 
+    public void setMovie_offset(Integer movie_offset) {
+        this.movie_offset = movie_offset;
+    }
 
-    /*  public Movies(){
+/*  public Movies(){
   }
   public Movies(Integer movie_size,String movie_url){
    this.movie_size=movie_size;

@@ -366,6 +366,9 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
 
                         }
                     }
+                    Intent intent=new Intent("dataCount");
+                    intent.putExtra("ref","mcf");
+                    LocalBroadcastManager.getInstance(MechanicFragment.this.getContext()).sendBroadcast(intent);
                     adapter = new MechanicRecyclerAdapter(tmpMechanics, getActivity());
                     recyclerMechanic.setAdapter(adapter);
 

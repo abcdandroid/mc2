@@ -19,7 +19,6 @@ import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
-import com.example.mechanic2.interfaces.OnTagCrossClickListener;
 import com.example.mechanic2.interfaces.TagMessage;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.views.TagLayoutView;
@@ -126,7 +125,7 @@ public class NewMechanicActivity extends Activity implements View.OnClickListene
         locationFab = findViewById(R.id.locationFab);
         infoFab = findViewById(R.id.info);
         contactMeFab = findViewById(R.id.contactMe);
-        jobTitle = findViewById(R.id.job_title);
+        jobTitle = findViewById(R.id.region_name);
         images.add(findViewById(R.id.image1));
         images.add(findViewById(R.id.image2));
         images.add(findViewById(R.id.image3));

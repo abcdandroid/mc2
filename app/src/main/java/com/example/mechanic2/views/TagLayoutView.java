@@ -100,7 +100,6 @@ public class TagLayoutView extends RelativeLayout {
         this.attrs = attrs;
         View v = inflate(context, R.layout.view_tag_layout, this);
         parent = v.findViewById(R.id.parent);
-
     }
 
 

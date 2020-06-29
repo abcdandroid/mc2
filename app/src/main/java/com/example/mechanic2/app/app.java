@@ -2,6 +2,7 @@ package com.example.mechanic2.app;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Point;
@@ -235,6 +236,18 @@ public class app {
         result.append("}");
 
         return result.toString();
+    }
+
+
+    public static boolean appInstalledOrNot(String uri) {
+        PackageManager pm = Application.getContext().getPackageManager();
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+
+        return false;
     }
 
 }

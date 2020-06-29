@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,10 @@ import com.example.mechanic2.fragments.QuestionFragment;
 import com.example.mechanic2.fragments.StoreFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 101;
@@ -36,12 +41,15 @@ public class MainActivity extends AppCompatActivity {
     boolean searchPressed;
 
     boolean isFabPressed;
+    private SweetAlertDialog sweetAlertDialog;
 
     //پرداخت مبلغ فونت ایران سنس به کار رفته
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
 
         viewpager = findViewById(R.id.viewpager);
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -53,8 +61,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void myAction() {
-        app.l("type is " + SharedPrefUtils.getStringData("type"));
+        app.l("type is " + SharedPrefUtils.getIntData("type"));
+
+        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).setConfirmText("شکیبا باشید");
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.show();
+
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("mpd"));
+        LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver, new IntentFilter("dataCount"));
+
         app.l("main" + isFabPressed);
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
 
@@ -151,30 +166,26 @@ public class MainActivity extends AppCompatActivity {
                 app.t("not granted");
             }
         } else if (requestCode == MechanicFragment.REQUEST_CODE) {
-            Intent intent = new Intent("forGps");
+            Intent intent = new Intent("forGps")  /**/;
             LocalBroadcastManager.getInstance(Application.getContext()).sendBroadcast(intent);
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-
     }
 
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getIntExtra("field", 0) == 3){
+            if (intent.getIntExtra("field", 0) == 3) {
                 viewpager.setCurrentItem(3);
                 bottomNavigationView.setSelectedItemId(R.id.store);
-            }
-            else  if (intent.getIntExtra("field", 0) == 1){
+            } else if (intent.getIntExtra("field", 0) == 1) {
                 viewpager.setCurrentItem(0);
                 bottomNavigationView.setSelectedItemId(R.id.mechanics);
-            }
-            else  if (intent.getIntExtra("field", 0) == 2){
+            } else if (intent.getIntExtra("field", 0) == 2) {
                 viewpager.setCurrentItem(2);
                 bottomNavigationView.setSelectedItemId(R.id.questions);
-            }
-            else  if (intent.getIntExtra("field", 0) == 4){
+            } else if (intent.getIntExtra("field", 0) == 4) {
                 viewpager.setCurrentItem(1);
                 bottomNavigationView.setSelectedItemId(R.id.home);
             }
@@ -182,10 +193,24 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+    int dataCount;
+    BroadcastReceiver dataReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            app.l("fggsdgf3");
+            dataCount++;
+            if (dataCount == 5) {
+                sweetAlertDialog.dismissWithAnimation();
+            }
+            app.l("dataaaccc" + dataCount + intent.getStringExtra("ref"));
+        }
+    };
+
 
     @Override
     protected void onDestroy() {
         LocalBroadcastManager.getInstance(Application.getContext()).unregisterReceiver(broadcastReceiver);
+        LocalBroadcastManager.getInstance(Application.getContext()).unregisterReceiver(dataReceiver);
         super.onDestroy();
     }
 

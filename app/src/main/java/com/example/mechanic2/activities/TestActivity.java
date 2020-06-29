@@ -3,6 +3,8 @@ package com.example.mechanic2.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.icu.util.Measure;
@@ -13,9 +15,14 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
@@ -31,6 +38,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.mechanic2.R;
@@ -75,12 +83,16 @@ public class TestActivity extends AppCompatActivity {
     boolean mStartRecording = true;
     private static String fileName = null;
     private MediaRecorder recorder = null;
+    private Button btn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        appbar = findViewById(R.id.appbar);
+        btn = (Button) findViewById(R.id.btn);
+
+       /* appbar = findViewById(R.id.appbar);
         ml = findViewById(R.id.ml);
         appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
@@ -89,8 +101,35 @@ public class TestActivity extends AppCompatActivity {
                 ml.setProgress(seekPosition);
             }
         });
+*/
+        View.OnClickListener onClickListener = v -> {
+            PackageManager pm = getPackageManager();
+            String url = "https://api.whatsapp.com/send?phone=+989365487593";
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            i.setData(Uri.parse(url));
+            startActivity(i);
+        };
 
 
+
+
+        btn.setOnClickListener(onClickListener);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            app.l("A");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void startRecording() {
@@ -105,7 +144,6 @@ public class TestActivity extends AppCompatActivity {
         } catch (IOException e) {
             Log.e(LOG_TAG, "prepare() failed");
         }
-
         recorder.start();
     }
 
@@ -114,6 +152,7 @@ public class TestActivity extends AppCompatActivity {
         recorder.release();
         recorder = null;
     }
+
     private void onRecord(boolean start) {
         if (start) {
             startRecording();

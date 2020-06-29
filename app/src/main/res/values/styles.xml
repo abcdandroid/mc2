@@ -20,6 +20,25 @@
         <item name="android:fitsSystemWindows">true</item>
 
     </style>
+    <style name="AppThemeWithActionBar" parent="Theme.MaterialComponents.Light">
+        <!--<style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:typeface">monospace</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@transition/custom_transition</item>
+        <item name="android:windowExitTransition">@transition/custom_transition</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/custom_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/custom_transition</item>
+
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:fitsSystemWindows">true</item>
+
+    </style>
 
     <style name="TextAppearance.App.CollapsingToolbar.Expanded" parent="TextAppearance.MaterialComponents.Headline5">
         <item name="android:textColor">?attr/colorOnPrimary</item>

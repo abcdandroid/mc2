@@ -48,6 +48,7 @@
                 android:padding="@dimen/spacing_mlarge">
 
                 <TextView
+                    android:id="@+id/guide_msg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -78,7 +79,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
-                    android:textColor="@color/green_900"
+                    android:textColor="@color/indigo_900"
                     android:textStyle="bold"
                     android:theme="@style/EditText.Grey" />
 

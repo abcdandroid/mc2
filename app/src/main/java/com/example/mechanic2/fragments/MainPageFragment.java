@@ -1,38 +1,40 @@
 package com.example.mechanic2.fragments;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.devbrackets.android.exomedia.core.video.scale.ScaleType;
-import com.devbrackets.android.exomedia.listener.OnPreparedListener;
-import com.devbrackets.android.exomedia.listener.OnVideoSizeChangedListener;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.example.mechanic2.R;
 import com.example.mechanic2.adapters.ViewPagerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
-import com.google.gson.JsonArray;
-import com.universalvideoview.UniversalMediaController;
-import com.universalvideoview.UniversalVideoView;
+import com.google.android.material.navigation.NavigationView;
+import com.mikhaellopez.circularimageview.CircularImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,6 +43,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,19 +66,10 @@ public class MainPageFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MainPageFragment.
-     */
-    public static MainPageFragment newInstance(String param1, String param2) {
+
+    public static MainPageFragment newInstance() {
         MainPageFragment fragment = new MainPageFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,27 +77,15 @@ public class MainPageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int currentOrientation = getResources().getConfiguration().orientation;
-        if (currentOrientation == Configuration.ORIENTATION_LANDSCAPE) {
-            app.l("A");
-            // Landscape
-        } else {
-            app.l("d");
-            // Portrait
-        }
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        getContext().getTheme().applyStyle(R.style.AppThemeWithActionBar, true);
+        setHasOptionsMenu(true);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
         return init(view);
     }
-
 
     private CardView containerP1;
     private ViewPager place1;
@@ -125,8 +107,23 @@ public class MainPageFragment extends Fragment {
     ViewPagerAdapter adapterPlace6;
     ViewPagerAdapter adapterPlace7;
 
+    private Toolbar toolbar;
+    private ListView listView;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
+
+    private ImageView hamburgerButton;
+    String[] titles;
+    int[] images;
+
+
+    private NavigationView navView;
+
+
     private View init(View view) {
 
+
+        mDrawerLayout = view.findViewById(R.id.drawer_layout);
         adapterPlace1 = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapterPlace2 = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapterPlace3 = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
@@ -134,6 +131,25 @@ public class MainPageFragment extends Fragment {
         adapterPlace5 = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapterPlace6 = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapterPlace7 = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+
+
+        hamburgerButton = (ImageView) view.findViewById(R.id.hamburger_button);
+        hamburgerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDrawerLayout.openDrawer(GravityCompat.END);
+            }
+        });
+        navView = view.findViewById(R.id.nav_view);
+        View headerView = navView.getHeaderView(0);
+        CircularImageView circleImageView = headerView.findViewById(R.id.nav_mechanic_image);
+
+        circleImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                app.t("aA");
+            }
+        });
 
 
         containerP1 = view.findViewById(R.id.container_p1);
@@ -157,8 +173,6 @@ public class MainPageFragment extends Fragment {
         place6.setAdapter(adapterPlace6);
         place7.setAdapter(adapterPlace7);
         getData();
-
-        // setupVideoView(view);
         return view;
     }
 
@@ -235,6 +249,9 @@ public class MainPageFragment extends Fragment {
                         }
                     }
 
+                    Intent intent = new Intent("dataCount");
+                    intent.putExtra("ref", "mpf");
+                    LocalBroadcastManager.getInstance(MainPageFragment.this.getContext()).sendBroadcast(intent);
                 } catch (JSONException e) {
                     app.l(e.getLocalizedMessage() + "mmppgg2");
                     e.printStackTrace();
@@ -248,6 +265,76 @@ public class MainPageFragment extends Fragment {
                 app.l(t.getLocalizedMessage() + "mmppgg2");
             }
         });
+    }
+
+    private class MyAdapter extends BaseAdapter {
+
+        private LayoutInflater mInflater;
+
+        public MyAdapter(Context context) {
+            mInflater = LayoutInflater.from(context);
+        }
+
+        @Override
+        public int getCount() {
+            return titles.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view;
+
+            if (convertView == null) {
+                view = mInflater.inflate(R.layout.item_nav_list, null);
+            } else {
+                view = convertView;
+            }
+            TextView textView = view.findViewById(R.id.list_text);
+            ImageView imageView = view.findViewById(R.id.list_image);
+            textView.setText(titles[position]);
+            imageView.setImageResource(images[position]);
+            return view;
+        }
+    }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+            selectItem(position);
+        }
+
+        private void selectItem(int position) {
+
+            switch (position) {
+                case 1:
+                    //open another Activity :D -JFP
+                    mDrawerLayout.closeDrawers();
+                    break;
+                case 2:
+                    //open another Activity :D -JFP
+                    mDrawerLayout.closeDrawers();
+                    break;
+                case 3:
+                    //open another Activity :D -JFP
+                    mDrawerLayout.closeDrawers();
+                    break;
+                case 4:
+                    //open another Activity :D -JFP
+                    mDrawerLayout.closeDrawers();
+                    break;
+            }
+        }
     }
 
   /*  @Override

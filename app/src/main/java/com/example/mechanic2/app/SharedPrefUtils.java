@@ -119,6 +119,15 @@ public class SharedPrefUtils {
            if(entry.getKey().startsWith(startWith)) saveData(entry.getKey(),0);
         }
     }
+    static public void removeDataByArgument(String key) {
+        Map<String, ?> keys = getContext().getSharedPreferences(SharedPrefUtils.PREF_APP, Context.MODE_PRIVATE).getAll();
+
+        for (Map.Entry<String, ?> entry : keys.entrySet()) {
+            if (entry.getKey().equals(key))
+                getSharedPrefEditor(PREF_APP).remove(entry.getKey()).apply();
+        }
+
+    }
 
     static public void saveData(Editor editor) {
         editor.apply();

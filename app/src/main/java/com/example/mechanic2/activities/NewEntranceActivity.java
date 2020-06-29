@@ -224,6 +224,7 @@ public class NewEntranceActivity extends AppCompatActivity {
                                         jsonObject = new JSONObject(jsonString);
                                         entranceId = jsonObject.getString("registerId");
                                         SharedPrefUtils.saveData("entranceId", entranceId);
+                                        SharedPrefUtils.saveData("type", 0);
                                         startActivity(new Intent(NewEntranceActivity.this, MainActivity.class));
                                     }
                                 } catch (JSONException e) {

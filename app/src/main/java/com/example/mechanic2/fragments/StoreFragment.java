@@ -438,6 +438,9 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
                         }
                     }
+                    Intent intent=new Intent("dataCount");
+                    intent.putExtra("ref","stf");
+                    LocalBroadcastManager.getInstance(StoreFragment.this.getContext()).sendBroadcast(intent);
                     adapter = new GooodStoreAdapter(tmpGooods, getActivity());
                     recyclerStore.setAdapter(adapter);
 

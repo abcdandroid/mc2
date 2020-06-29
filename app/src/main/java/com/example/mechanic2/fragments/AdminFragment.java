@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,8 +35,10 @@ import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.models.AdminMedia;
+import com.example.mechanic2.models.Movies;
 import com.google.gson.Gson;
 import com.hmomeni.progresscircula.ProgressCircula;
+import com.j256.ormlite.stmt.query.In;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -203,6 +206,9 @@ public class AdminFragment extends Fragment implements OnClickListener {
                 }
                 adapter = new AdminRecyclerAdapter(getContext(), tmpModels, AdminFragment.this);
                 recyclerAdmin.setAdapter(adapter);
+                Intent intent=new Intent("dataCount");
+                intent.putExtra("ref","adm");
+                LocalBroadcastManager.getInstance(AdminFragment.this.getContext()).sendBroadcast(intent);
             }
 
             @Override
@@ -307,6 +313,11 @@ public class AdminFragment extends Fragment implements OnClickListener {
         });
         SharedPrefUtils.saveData("downloadId**" + adminMedia.getMedia_desc(), downloadId);
 
+
+    }
+
+    @Override
+    public void onDownloadStateClick(Movies movies, View viewHolder) {
 
     }
 

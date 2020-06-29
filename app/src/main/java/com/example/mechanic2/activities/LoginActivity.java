@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -39,7 +40,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends Activity implements View.OnClickListener {
     private TextInputEditText phoneInput;
     private PinView pinView;
     private TextView sendPhone;
@@ -56,6 +57,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * sos     map
      * main page
      * */
+    private TextView guideMsg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,17 +68,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         phoneInput = findViewById(R.id.phoneInput);
         pinView = findViewById(R.id.pinView);
         sendPhone = findViewById(R.id.sendPhone);
+        guideMsg = findViewById(R.id.guide_msg);
         sendCode = findViewById(R.id.sendCode);
         gear = findViewById(R.id.gear2);
         Animation rotation = AnimationUtils.loadAnimation(LoginActivity.this, R.anim.rotate);
         rotation.setFillAfter(true);
         gear.startAnimation(rotation);
-
-
         sendPhone.setOnClickListener(this);
         sendCode.setOnClickListener(this);
-
-
     }
 
 
@@ -88,13 +88,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 if (phoneInput.getText() != null && phoneInput.getText().toString().length() != 11) {
                     SweetAlertDialog sweetAlertDialogInvalidLength = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE);
-                    sweetAlertDialogInvalidLength.setTitleText("phone number is not valid").show();
+                    sweetAlertDialogInvalidLength.setTitleText("شماره همراه وارد شده صحیح نمی باشد").setConfirmText("خب").setConfirmButtonBackgroundColor(getResources().getColor(R.color.indigo_700)).show();
                 } else if (phoneInput.getText() != null && !phoneInput.getText().toString().matches("(09)\\d{9}")) {
                     SweetAlertDialog sweetAlertDialogInvalidPhone = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE);
-                    sweetAlertDialogInvalidPhone.setTitleText("phone number is not valid").show();
+                    sweetAlertDialogInvalidPhone.setTitleText("شماره همراه وارد شده صحیح نمی باشد").setConfirmText("خب").setConfirmButtonBackgroundColor(getResources().getColor(R.color.indigo_700)).show();
                 } else {
 
+                    phoneInput.setEnabled(false);
+                    guideMsg.setText("در حال ارسال کد فعال سازی، لطفا شکیبا باشید.");
 
+
+                    phoneInput.clearFocus();
                     //http://drkamal3.com/Mechanic/index.php?route=sms&action=prepareCode&mobile=147
                     sweetAlertDialogSendPhone = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).setTitleText("لطفا شکیبا باشید");
                     sweetAlertDialogSendPhone.setCancelable(false);
@@ -114,8 +118,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             pinView.setVisibility(View.VISIBLE);
                             sendPhone.setVisibility(View.GONE);
                             sendCode.setVisibility(View.VISIBLE);
-
-                            //app.l(response.body());
                         }
 
                         @Override
@@ -128,7 +130,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.sendCode:
                 if (pinView.getText() != null && pinView.getText().toString().length() != 4) {
                     SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE);
-                    sweetAlertDialog.setTitleText("pin code is not valid").show();
+                    sweetAlertDialog.setTitleText("کد فعال سازی معتبر نمی باشد.").show();
                 } else {
                     //https://drkamal3.com/Mechanic/index.php?route=sms&action=verifyCode&mobile=091232177&code=1622
                     sendPin();
@@ -178,10 +180,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         app.l("EE");
                         try {
                             JSONObject jsonObject = new JSONObject(responseBody);
+
                             String type = jsonObject.getString("type");
                             String entranceId = jsonObject.getString("entranceId");
+                            String mobile = jsonObject.getString("mobile");
+
                             SharedPrefUtils.saveData("entranceId", entranceId);
                             SharedPrefUtils.saveData("type", type);
+                            SharedPrefUtils.saveData("phoneNumber", mobile);
+
                             app.l("QQQ");
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             app.l("WWW");
@@ -211,7 +218,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
         registerBroadcastReceiverSms();
-
     }
 
     @Override

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.motion.widget.MotionLayout;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -15,27 +16,48 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
+import com.downloader.Error;
+import com.downloader.OnDownloadListener;
+import com.downloader.OnPauseListener;
+import com.downloader.OnProgressListener;
+import com.downloader.OnStartOrResumeListener;
+import com.downloader.PRDownloader;
+import com.downloader.Progress;
+import com.downloader.Status;
+import com.downloader.request.DownloadRequest;
+import com.downloader.utils.Utils;
 import com.example.mechanic2.R;
+import com.example.mechanic2.adapters.MechanicMoviesRecyclerAdapter;
 import com.example.mechanic2.adapters.ViewPagerAdapter;
+import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.QuestionImagesFragment;
 import com.example.mechanic2.fragments.ShowThumbnailFragment;
+import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
+import com.example.mechanic2.models.AdminMedia;
 import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
+import com.example.mechanic2.models.Movies;
 import com.example.mechanic2.views.MyTextView;
 import com.example.mechanic2.views.MyViewPager;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.hmomeni.progresscircula.ProgressCircula;
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
+import com.squareup.picasso.Picasso;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
@@ -45,15 +67,17 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 @SuppressLint("ParcelCreator")
-public class ShowMechanicDetailActivity extends AppCompatActivity implements OnViewPagerClickListener {
+public class ShowMechanicDetailActivity extends AppCompatActivity implements OnViewPagerClickListener, OnClickListener {
     private AppBarLayout appbar;
     private CollapsingToolbarLayout collapsingMl;
     private ViewPager mechanicImages;
@@ -140,14 +164,18 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
                     Uri.parse(q));
             startActivity(intent);
         });
+        recyclerMechanicMovies.setLayoutManager(new LinearLayoutManager(this));
+        recyclerMechanicMovies.setLayoutAnimation((new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left))));
+        MechanicMoviesRecyclerAdapter adapter = new MechanicMoviesRecyclerAdapter(this, mechanic.getMovies(), this);
+        recyclerMechanicMovies.setAdapter(adapter);
 
-
-         viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         imageList = new ArrayList<>();
         if (mechanic.getStore_image_1().length() > 0) imageList.add(mechanic.getStore_image_1());
         if (mechanic.getStore_image_2().length() > 0) imageList.add(mechanic.getStore_image_2());
         if (mechanic.getStore_image_3().length() > 0) imageList.add(mechanic.getStore_image_3());
 
+        aboutDesc.setText(mechanic.getAbout());
 
         for (String url : imageList) {
             viewPagerAdapter.addFragment(QuestionImagesFragment.newInstance(url, this));
@@ -160,7 +188,7 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
 
         ArrayList<OverlayItem> overlayArray = new ArrayList<>();
         OverlayItem mapItem = new OverlayItem("", "", startPoint);
-        final Drawable marker = getApplicationContext().getResources().getDrawable(R.drawable.ic_baseline_place_24);
+        final Drawable marker = getApplicationContext().getResources().getDrawable(R.drawable.ic_location_new);
         mapItem.setMarker(marker);
         overlayArray.add(mapItem);
         ItemizedIconOverlay<OverlayItem> anotherItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(getApplicationContext(), overlayArray, null);
@@ -219,10 +247,114 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         intent.putExtra("currentItem", mechanicImages.getCurrentItem());
         intent.putExtra("from", "showMechanicDetailActivity");
 
-        app.l("Eeeeeeeafb"+imageList.toArray().length);
+        app.l("Eeeeeeeafb" + imageList.toArray().length);
 
         startActivity(intent);
 
+
+    }
+
+    @Override
+    public void onDownloadStateClick(AdminMedia movies, View viewHolder) {
+
+    }
+
+    @Override
+    public void onDownloadStateClick(Movies movies, View itemView) {
+        ProgressCircula progressCircula;
+        LottieAnimationView lottieAnimationView;
+        TextView percentDone;
+        progressCircula = itemView.findViewById(R.id.progressCircula);
+        lottieAnimationView = itemView.findViewById(R.id.lottieAnimationView);
+        percentDone = itemView.findViewById(R.id.percentDone);
+        String adminUrl = movies.getMovie_url();
+        String url = movies.getMovie_url();
+        String path = getExternalFilesDir("video/mp4").getAbsolutePath();
+        //String getExternalFilesDir("video/mp4").getAbsolutePath() + adminUrl.substring(adminUrl.lastIndexOf("/"));
+        File file = new File(getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+
+        if (file.exists() && file.length() == movies.getMovie_size()) {
+            app.l("playing");
+            Intent intent = new Intent(this, ExoVideoActivity.class);
+            intent.putExtra("path", getExternalFilesDir("video/mp4").getAbsolutePath() + url.
+                    substring(url.lastIndexOf("/")));
+
+            intent.putExtra("id", movies.getId());
+            startActivity(intent);
+            return;
+        }
+
+        if (!lottieAnimationView.isAnimating()) {
+            lottieAnimationView.resumeAnimation();
+            progressCircula.startRotation();
+        } else {
+            lottieAnimationView.pauseAnimation();
+            progressCircula.stopRotation();
+        }
+
+
+        int downloadId = SharedPrefUtils.getIntData("downloadId**" + movies.getMovie_desc());
+        if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {
+            PRDownloader.pause(downloadId);
+            progressCircula.stopRotation();
+            return;
+        }
+        if (Status.PAUSED == PRDownloader.getStatus(downloadId)) {
+            PRDownloader.resume(downloadId);
+            progressCircula.startRotation();
+            return;
+        }
+
+
+        DownloadRequest downloadRequest = PRDownloader.download(url, path, adminUrl.substring(adminUrl.lastIndexOf("/"))).build();
+        downloadRequest.setOnPauseListener(new OnPauseListener() {
+            @Override
+            public void onPause() {
+                app.l("pause***" + movies.getMovie_desc());
+            }
+        }).setOnProgressListener(new OnProgressListener() {
+            @Override
+            public void onProgress(Progress progress) {
+                int value = (int) (100 * progress.currentBytes / progress.totalBytes);
+                progressCircula.setProgress(value);
+                percentDone.setText(String.valueOf(value) + "%");
+                app.l(String.valueOf(progress.currentBytes));
+            }
+        }).setOnStartOrResumeListener(new OnStartOrResumeListener() {
+            @Override
+            public void onStartOrResume() {
+                app.l("start or resume***" + movies.getMovie_desc());
+            }
+        });
+        downloadId = downloadRequest.start(new OnDownloadListener() {
+            @Override
+            public void onDownloadComplete() {
+                SharedPrefUtils.getSharedPrefEditor(SharedPrefUtils.PREF_APP).remove("downloadId**" + movies.getMovie_desc()).apply();
+                progressCircula.setVisibility(View.GONE);
+                percentDone.setVisibility(View.GONE);
+                lottieAnimationView.setAnimation(R.raw.play_anim);
+                lottieAnimationView.setRepeatCount(0);
+                lottieAnimationView.playAnimation();
+
+                Picasso.get().load("http://drkamal3.com/Mechanic/" + movies.getMovie_preview())
+                        .into(((ImageView) itemView.findViewById(R.id.preview)));
+                ((TextView) itemView.findViewById(R.id.totalSize)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+
+                app.l("completed");
+
+            }
+
+            @Override
+            public void onError(Error error) {
+
+            }
+        });
+        SharedPrefUtils.saveData("downloadId**" + movies.getMovie_desc(), downloadId);
+
+    }
+
+    @Override
+    public void onDownloadCompleteClick(AdminMedia movies, View viewHolder) {
 
     }
 }

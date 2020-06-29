@@ -34,10 +34,17 @@ public class JobAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
     private ArrayList<Job> data;
     private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchJob&search=";
+    private boolean hasAllJobs = true;
 
     public JobAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
         this.data = new ArrayList<>();
+    }
+
+    public JobAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource, boolean hasAllJobs) {
+        super(context, resource);
+        this.data = new ArrayList<>();
+        this.hasAllJobs = hasAllJobs;
     }
 
 
@@ -86,7 +93,7 @@ public class JobAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             job = data.get(position);
         else job = new Job("", 0);
 
-            mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
+        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
 
         mViewHolder.textView.setText(job.getName());
         mViewHolder.idTv.setText(String.valueOf(job.getId()));
@@ -103,7 +110,9 @@ public class JobAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 ArrayList<Job> suggestions = new ArrayList<>();
-                suggestions.add(new Job(Application.getContext().getResources().getString(R.string.all_jobs), 0));
+                if (hasAllJobs)
+                    suggestions.add(new Job(Application.getContext().getResources().getString(R.string.all_jobs), 0));
+
                 if (constraint != null) {
                     HttpURLConnection conn = null;
                     InputStream input = null;
