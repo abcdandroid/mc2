@@ -1,34 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
 
-    <com.example.mechanic2.views.MyTextView
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_gravity="center"
+        android:layout_marginBottom="16sp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/gps_not_enabled"
+        />
+
+    <TextView
         android:id="@+id/request_for_gps"
-        android:layout_width="wrap_content"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="برای اینکه نزدیکترین مکانیکا رو ببینید باید موقعیت مکانی خودتون رو برامون بفرستید" />
+        android:layout_gravity="center"
+        android:text="لطفا به برنامه اجازه دسترسی به موقعیت خود را بدهید."
+        />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/allow_access_gps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_all_goods"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:paddingRight="8dp">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="16dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_baseline_not_listed_location_24"
+            android:tint="@color/white" />
+
+        <com.example.mechanic2.views.MyTextView
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_centerVertical="true"
+
+            android:layout_centerHorizontal="true"
+            android:text="موافقم"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+
+ <!--   <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/request_for_gps"
+        android:orientation="vertical"
         android:layoutDirection="rtl">
 
         <com.example.mechanic2.views.MyTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/allow_access_gps"
-            android:layout_weight="1"
             android:text="موافقم" />
+
+
 
         <com.example.mechanic2.views.MyTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:id="@+id/deny_access_gps"
             android:text="مخالفم" />
     </LinearLayout>
+-->
 
-
-</RelativeLayout>
+</LinearLayout>

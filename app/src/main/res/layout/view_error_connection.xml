@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="16dp"
+    android:orientation="vertical">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center"
+        app:lottie_rawRes="@raw/error_connection"
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        />
+
+
+
+    <TextView
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:text="خطا در برقراری ارتباط"
+        android:textSize="24sp"
+        android:textAllCaps="false"
+        android:textColor="@color/grey_60"
+        android:textStyle="bold" />
+
+    <TextView
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:id="@+id/retry"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/btn_submit_store"
+        android:gravity="center"
+        android:text="تلاش مجدد"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textStyle="bold" />
+
+</LinearLayout>
+

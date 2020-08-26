@@ -1,0 +1,49 @@
+
+P
+java:S1874%"3Remove this use of "NetworkInfo"; it is deprecated.(·Î—ñ8Å¸äÒº.
+P
+java:S1874!"3Remove this use of "isConnected"; it is deprecated.(”­‰±8Å¸äÒº.
+P
+java:S1874&"3Remove this use of "TYPE_MOBILE"; it is deprecated.(ÍãÄ8Å¸äÒº.
+U
+java:S1128"8Remove this unused import 'android.view.LayoutInflater'.(À¯ÑÇ8Òƒ¯Úº.
+Q
+java:S1128"4Remove this unused import 'com.example.mechanic2.R'.(½áÁÉ8Òƒ¯Úº.
+P
+java:S1874&"3Remove this use of "isConnected"; it is deprecated.(ÍãÄ8Å¸äÒº.
+M
+java:S18741"1Remove this use of "TYPE_WIFI"; it is deprecated.(‘ßÆf8Å¸äÒº.
+O
+java:S1874,"3Remove this use of "isConnected"; it is deprecated.(òéİv8Å¸äÒº.
+W
+java:S1118":Add a private constructor to hide the implicit public one.(äû­×8Å¸äÒº.
+U
+java:S18743"3Remove this use of "TYPE_MOBILE"; it is deprecated.(†»åÚùÿÿÿÿ8Å¸äÒº.
+N
+java:S1874,"2Remove this use of "getSubtype"; it is deprecated.(òéİv8Å¸äÒº.
+P
+java:S1874"3Remove this use of "NetworkInfo"; it is deprecated.(â¡Àù8Å¸äÒº.
+L
+java:S1874&"/Remove this use of "getType"; it is deprecated.(ÍãÄ8Å¸äÒº.
+L
+java:S1874!"/Remove this use of "getType"; it is deprecated.(”­‰±8Å¸äÒº.
+P
+java:S1874 "3Remove this use of "NetworkInfo"; it is deprecated.(·Î—ñ8Å¸äÒº.
+U
+java:S1128"3Remove this unused import 'android.graphics.Color'.(øãíòşÿÿÿÿ8¢¢úÙº.
+N
+java:S1874!"1Remove this use of "TYPE_WIFI"; it is deprecated.(”­‰±8Å¸äÒº.
+Y
+java:S1874"<Remove this use of "getActiveNetworkInfo"; it is deprecated.(ŸÓ³×8Å¸äÒº.
+P
+java:S1874"3Remove this use of "NetworkInfo"; it is deprecated.(·Î—ñ8Å¸äÒº.
+K
+java:S1874,"/Remove this use of "getType"; it is deprecated.(òéİv8Å¸äÒº.
+_
+java:S1128"BRemove this unused import 'cn.pedant.SweetAlert.SweetAlertDialog'.(õ”ØÁ8Òƒ¯Úº.
+P
+java:S1874+"3Remove this use of "NetworkInfo"; it is deprecated.(·Î—ñ8Å¸äÒº.
+P
+java:S1128	".Remove this unused import 'android.view.View'.(Ø½­äşÿÿÿÿ8Òƒ¯Úº.
+P
+java:S1874"3Remove this use of "isConnected"; it is deprecated.(Î’·¨8Å¸äÒº.

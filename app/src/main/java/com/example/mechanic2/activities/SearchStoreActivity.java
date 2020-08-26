@@ -57,7 +57,7 @@ public class SearchStoreActivity extends AppCompatActivity implements View.OnCli
         carName = findViewById(R.id.carName);
         goodName = findViewById(R.id.goodName);
         submitSearch = findViewById(R.id.submitSearch);
-        carName.setAdapter(new CarAutoCompleteAdapter(Application.getContext(), R.layout.item_show_auto_complete));
+        carName.setAdapter(new CarAutoCompleteAdapter(Application.getContext(), R.layout.item_show_auto_complete,true));
         carName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

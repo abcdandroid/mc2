@@ -8,6 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/samples"
+        android:textSize="16sp"
+        android:textColor="@color/white"
         android:id="@+id/title"
         />
     <com.example.mechanic2.views.MyTextView

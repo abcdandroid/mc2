@@ -3,7 +3,10 @@ package com.example.mechanic2.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -11,13 +14,16 @@ import androidx.viewpager.widget.ViewPager;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -54,6 +60,7 @@ import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.QuestionImagesFragment;
 import com.example.mechanic2.interfaces.AnswerVoiceOnClickListener;
+import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
 import com.example.mechanic2.models.AnswerWithMsg;
 import com.example.mechanic2.models.Answers;
@@ -63,7 +70,9 @@ import com.example.mechanic2.models.MechanicWithMsg;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.utils.ViewAnimation;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputLayout;
 import com.hmomeni.progresscircula.ProgressCircula;
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 import com.tyorikan.voicerecordingvisualizer.RecordingSampler;
@@ -86,26 +95,29 @@ import retrofit2.Response;
 public class AnswersActivity extends AppCompatActivity implements View.OnClickListener, SeekBar.OnSeekBarChangeListener, AnswerVoiceOnClickListener, OnViewPagerClickListener {
     private ViewPager questionImages;
     private TextView carName;
+    private TextView titleName;
     private TextView questionText;
     private FloatingActionButton addAnswerFab;
-    private CardView cardMic;
-    private CardView cardCall;
+    // private CardView cardMic;
+    //private CardView cardCall;
     private LottieAnimationView ltRecord;
     private AppCompatButton btnManageRecord;
     private ImageView ivPlayPause;
+    private ImageView when_no_image_for_question;
     private SeekBar sbProgress;
     private LinearLayout layerPb;
     private MediaPlayer player = null;
     private AppBarLayout appbar;
+    private CollapsingToolbarLayout collapsingToolbar;
+
 
     private LottieAnimationView ltPlayPause;
 
-    private MediaRecorder recorder = null;
-    private View lyt_mic;
-    private View back_drop;
-    private View lyt_call;
+    private MediaRecorder recorder = null;/*
+    private View lyt_mic;*/
+    //private View lyt_call;
     private boolean rotate = false;
-    FloatingActionButton fab_add;
+    //FloatingActionButton fab_add;
     String fileName;
     Question question;
     private SeekBarUpdater seekBarUpdater;
@@ -121,37 +133,49 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     private TextView pressRedButton;
     private LottieAnimationView startRecord;
     private LottieAnimationView recordingWaves;
-    private RelativeLayout voiceManager;
+    private LinearLayout voiceManager;
     private Chronometer chronometerExample;
+    private Toolbar toolbar;
+
+    private NestedScrollView nestedContent;
+    private SweetAlertDialog sweetAlertDialogErrorConnection;
+    private SweetAlertDialog sweetAlertDialogAnswerNotFound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answers);
 
+        toolbar = findViewById(R.id.toolbar);
+
+        nestedContent = findViewById(R.id.nested_content);
+
 
         appbar = findViewById(R.id.appbar);
+        collapsingToolbar = findViewById(R.id.collapsing_toolbar);
         newAnswer = findViewById(R.id.new_answer);
         newAnswer.setOnClickListener(this);
         extensiblePageIndicator = findViewById(R.id.flexibleIndicator);
         questionImages = findViewById(R.id.questionImages);
         recyclerAnswers = findViewById(R.id.recyclerAnswers);
+        when_no_image_for_question = findViewById(R.id.when_no_image_for_question);
         recyclerAnswers.setLayoutManager(new LinearLayoutManager(this));
         carName = findViewById(R.id.carName);
+        titleName = findViewById(R.id.titleName);
         questionText = findViewById(R.id.questionText);
         question = (Question) getIntent().getSerializableExtra("question");
         questionText.setText(question.getQ_text());
         carName.setText(question.getCarName());
+        titleName.setText(question.getQ_title());
         q_id = question.getQ_id();
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         seekBarUpdater = new SeekBarUpdater();
-        cardMic = findViewById(R.id.card_mic);
-        cardCall = findViewById(R.id.card_call);
-        app.l(question.getQ_image_url1().trim() + "**");
-        app.l(question.getQ_image_url2().trim() + "**");
-        app.l(question.getQ_image_url3().trim() + "**");
         if (question.getQ_image_url1().trim().length() == 0 & question.getQ_image_url2().trim().length() == 0 & question.getQ_image_url3().trim().length() == 0) {
-            appbar.setVisibility(View.GONE);
+            questionImages.setVisibility(View.GONE);
+            when_no_image_for_question.setVisibility(View.VISIBLE);
+        } else {
+            when_no_image_for_question.setVisibility(View.GONE);
+            questionImages.setVisibility(View.VISIBLE);
         }
         if (question.getQ_image_url1().trim().length() > 0) {
             adapter.addFragment(QuestionImagesFragment.newInstance(question.getQ_image_url1().trim(), this));
@@ -174,27 +198,6 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         }
 
 
-        final FloatingActionButton fab_mic = findViewById(R.id.fab_mic);
-        final FloatingActionButton fab_call = findViewById(R.id.fab_call);
-        fab_add = findViewById(R.id.fab_add);
-        back_drop = findViewById(R.id.back_drop);
-        lyt_mic = findViewById(R.id.lyt_mic);
-        lyt_call = findViewById(R.id.lyt_call);
-        ViewAnimation.initShowOut(lyt_mic);
-        ViewAnimation.initShowOut(lyt_call);
-        back_drop.setVisibility(View.GONE);
-
-        fab_add.setOnClickListener(this);
-
-        back_drop.setOnClickListener(this);
-
-        fab_mic.setOnClickListener(this);
-        cardMic.setOnClickListener(this);
-        cardCall.setOnClickListener(this);
-
-        fab_call.setOnClickListener(this);/**/
-
-
         questionImages.setAdapter(adapter);
 
 
@@ -203,21 +206,16 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         } else extensiblePageIndicator.setVisibility(View.INVISIBLE);
 
         recyclerAnswers.setLayoutAnimation(new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left)));
-        resumeAnswerListener(offset);
-        getAnswers();/**/
-    }
 
-    private void toggleFabMode(View v) {
-        rotate = ViewAnimation.rotateFab(v, !rotate);
-        if (rotate) {
-            ViewAnimation.showIn(lyt_mic);
-            ViewAnimation.showIn(lyt_call);
-            back_drop.setVisibility(View.VISIBLE);
-        } else {
-            ViewAnimation.showOut(lyt_mic);
-            ViewAnimation.showOut(lyt_call);
-            back_drop.setVisibility(View.GONE);
-        }
+        app.validateConnection(this, sweetAlertDialogErrorConnection, new ConnectionErrorManager() {
+            @Override
+            public void doAction() {
+                resumeAnswerListener(offset);
+                getAnswers();/**/
+            }
+        });
+
+
     }
 
 
@@ -240,126 +238,14 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         return voice;
     }
 
-    private void showTextDialog() {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
-        dialog.setContentView(R.layout.dialog_add_review);
-        dialog.setCancelable(true);
-
-
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-        final EditText et_post = (EditText) dialog.findViewById(R.id.et_post);
-        dialog.findViewById(R.id.bt_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.findViewById(R.id.bt_submit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Submitted", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        dialog.show();
-        dialog.getWindow().setAttributes(lp);
-    }
-
-    private void showAudioDialog() {
-        final Dialog dialog = new Dialog(this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
-        dialog.setContentView(R.layout.dialog_add_voice);
-        dialog.setCancelable(true);
-        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-        lp.copyFrom(dialog.getWindow().getAttributes());
-        lp.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-
-        fileName = createVoiceFile().getAbsolutePath();
-        ltRecord = dialog.findViewById(R.id.lt_record);
-        btnManageRecord = dialog.findViewById(R.id.btn_manage_record);
-        ivPlayPause = dialog.findViewById(R.id.ivPlayPause);
-        sbProgress = dialog.findViewById(R.id.sbProgress);
-
-        layerPb = dialog.findViewById(R.id.layer_pb);
-        File file = new File(fileName);
-        layerPb.setVisibility(file.exists() && file.length() > 0 ? View.VISIBLE : View.INVISIBLE);
-
-        dialog.findViewById(R.id.bt_cancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //delete file
-                File file = new File(fileName);
-                if (file.exists()) {
-                    app.l(file.delete() ? "ok" : "false");
-                }
-                dialog.dismiss();
-            }
-        });
-
-        dialog.findViewById(R.id.bt_submit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //send file and delete file
-                Map<String, String> data = new HashMap<>();
-                data.put("route", "audioUpload");
-                data.put("a_entrance_id", "1");
-                data.put("q_id", String.valueOf(question.getQ_id()));
-
-                Application.getApi().uploadAudioFile(data, app.prepareAudioPart("recordedAnswer", Uri.parse(fileName))).enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        app.l(response.body());
-                        File file = new File(fileName);
-                        if (file.exists()) {
-                            app.l(file.delete() ? "ok" : "false");
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-                        app.l(t.getLocalizedMessage() + "****" + new File(fileName).length());
-                    }
-                });
-
-
-                dialog.dismiss();
-            }
-        });
-
-
-        btnManageRecord.setOnClickListener(this);
-        ivPlayPause.setOnClickListener(this);
-
-        sbProgress.setOnSeekBarChangeListener(this);
-
-        dialog.show();
-        dialog.getWindow().setAttributes(lp);
-    }
-
     boolean x;
     boolean y;
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.fab_add:
-                toggleFabMode(v);
-                break;
-            case R.id.back_drop:
-                toggleFabMode(fab_add);
-                break;
-            case R.id.fab_mic:
-            case R.id.card_mic:
-                showAudioDialog();
+            case R.id.btn_show_all_goods:
+                finish();
                 break;
             case R.id.btn_manage_record:
                 x = !x;
@@ -369,10 +255,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.ltPlayPause:
                 playVoice(y);
                 break;
-            case R.id.fab_call:
-            case R.id.card_call:
-                showTextDialog();
-                break;
+            case R.id.btn_contact_us:
             case R.id.new_answer:
                 showNewAnswerDialog();
                 break;
@@ -399,8 +282,8 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                 startRecord.setVisibility(View.INVISIBLE);
                 recordingWaves.setVisibility(View.INVISIBLE);
                 voiceManager.setVisibility(View.INVISIBLE);
-
                 File file2 = new File(fileName);
+                app.l("playyerr" + file2.length());
                 layerPb.setVisibility(file2.exists() && file2.length() > 0 ? View.VISIBLE : View.INVISIBLE);
                 break;
             case R.id.cancel_answer:
@@ -409,17 +292,32 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                 sweetAlertDialog.dismissWithAnimation();
                 break;
             case R.id.send_answer:
+
+
+                if (sweetAlertDialogAnswerNotFound != null)
+                    sweetAlertDialogAnswerNotFound.dismiss();
                 Map<String, String> data = new HashMap<>();
                 data.put("route", "audioUpload");
-                data.put("a_entrance_id", "1");
+                data.put("a_entrance_id", SharedPrefUtils.getStringData("entranceId"));
                 data.put("q_id", String.valueOf(question.getQ_id()));
-                data.put("a_text", etAnswer.getText().toString());
+                String answerText = etAnswer.getText().toString();
+                data.put("a_text", answerText);
 
                 Call<String> recordedAnswer;
                 File file1 = new File(fileName);
-                if (file1.length() > 0)
+                if (answerText.length() == 0 && file1.length() == 0) {
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.ERROR_TYPE);
+                    sweetAlertDialog.setTitle("لطفا به سوال پاسخ دهید.");
+                    sweetAlertDialog.hideConfirmButton();
+                    sweetAlertDialog.show();
+                    new Handler().postDelayed(() -> sweetAlertDialog.dismissWithAnimation(), 1500);
+                    return;
+                }
+
+                if (file1.length() > 0) {
+                    app.l("playyerr1Send" + fileName);
                     recordedAnswer = Application.getApi().uploadAudioFile(data, app.prepareAudioPart("recordedAnswer", Uri.parse(fileName)));
-                else recordedAnswer = Application.getApi().uploadAudioFile(data);
+                } else recordedAnswer = Application.getApi().uploadAudioFile(data);
                 recordedAnswer.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
@@ -428,6 +326,17 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                         if (file.exists()) {
                             app.l(file.delete() ? "ok" : "false");
                         }
+
+
+                        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                        sweetAlertDialog.setContentText("پاسخ شما با موفقیت ثبت شد و به زودی منتشر خواهد شد").hideConfirmButton().show();
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        }, 2000);
                     }
 
                     @Override
@@ -451,6 +360,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     private TextView cancelAnswer;
     private TextView sendAnswer;
     SweetAlertDialog sweetAlertDialog;
+    TextInputLayout et_answer_layout;
 
     private void showNewAnswerDialog() {
         sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.CUSTOM_IMAGE_TYPE);
@@ -465,6 +375,8 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         voiceManager = view.findViewById(R.id.voice_manager);
         chronometerExample = view.findViewById(R.id.chronometerExample);
         layerPb = view.findViewById(R.id.layer_pb);
+        et_answer_layout = view.findViewById(R.id.et_answer_layout);
+        et_answer_layout.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/b.ttf"));
 
         ltPlayPause = view.findViewById(R.id.ltPlayPause);
         stop = view.findViewById(R.id.stop);
@@ -486,16 +398,22 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
 
         sweetAlertDialog.setCustomView(view);
         sweetAlertDialog.hideConfirmButton();
+        sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
     }
 
     private void playVoice(boolean y) {
+        app.l("playyerr");
         if (player == null) {
+            app.l("playyerr1" + fileName);
             startMediaPlayer(fileName);
         } else {
+            app.l("playyerr2");
             if (player.isPlaying()) {
+                app.l("playyerr3");
                 player.pause();
             } else {
+                app.l("playyerr4");
                 player.start();
             }
         }
@@ -527,6 +445,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void updatePlayingView() {
+        app.l("updatt");
         sbProgress.setMax(player.getDuration());
         sbProgress.setProgress(player.getCurrentPosition());
         sbProgress.setEnabled(true);
@@ -534,13 +453,11 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         if (player.isPlaying()) {
 
             sbProgress.postDelayed(seekBarUpdater, 100);
-//            ivPlayPause.setImageResource(R.drawable.pause_icon);
-            ltPlayPause.setAnimation(R.raw.play_to_pause);
+            ltPlayPause.setSpeed(3);
         } else {
 
             sbProgress.removeCallbacks(seekBarUpdater);
-            //  ivPlayPause.setImageResource(R.drawable.play_icon);
-            ltPlayPause.setAnimation(R.raw.pause_to_play);
+            ltPlayPause.setSpeed(-3);
         }
         ltPlayPause.playAnimation();
     }
@@ -569,20 +486,20 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void startMediaPlayer(String audioAddress) {
-        player = MediaPlayer.create(Application.getContext(), Uri.parse(audioAddress));
+        File file = new File(audioAddress);
+        app.l("startimgg" + (file.exists() ? "AA" : "BB") + file.length() + "fileName" + file.getName());
+        player = MediaPlayer.create(this, Uri.fromFile(file));
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 releaseMediaPlayer();
-
             }
         });
         player.start();
     }
 
     private void releaseMediaPlayer() {
-        ltPlayPause.setAnimation(R.raw.pause_to_play);
-        ltPlayPause.playAnimation();
+        ltPlayPause.setProgress(0);
         sbProgress.removeCallbacks(seekBarUpdater);
         sbProgress.setEnabled(false);
         sbProgress.setProgress(0);
@@ -642,22 +559,20 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v, Answers answers) {
         ProgressCircula progressCirculaSound;
         ImageView startDownload;
-        ImageView ivPlayPause;
         TextView percentDone;
         LottieAnimationView ltPlayPause;
 
         progressCirculaSound = v.findViewById(R.id.progressCirculaSound);
         startDownload = v.findViewById(R.id.startDownload);
         percentDone = v.findViewById(R.id.percentDone);
-        ivPlayPause = v.findViewById(R.id.ivPlayPause);
         ltPlayPause = v.findViewById(R.id.ltPlayPause);
-        ltPlayPause.setAnimation(R.raw.play_to_pause);
+        ltPlayPause.setProgress(0);
         ltPlayPause.pauseAnimation();
         startDownload.setAlpha(0f);
-        String url = "http://drkamal3.com/Mechanic/" + answers.getA_voice_url();
+        String url = "http://drkamal3.com/Mechanic/" + answers.getAnswer().getA_voice_url();
         String path = getExternalFilesDir("voice/mp3").getAbsolutePath();
 
-        int downloadId = SharedPrefUtils.getIntData("soundDownloadId**" + answers.getA_id());
+        int downloadId = SharedPrefUtils.getIntData("soundDownloadId**" + answers.getAnswer().getA_id());
         if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {
             PRDownloader.pause(downloadId);
             progressCirculaSound.stopRotation();
@@ -679,7 +594,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
             public void onProgress(Progress progress) {
                 int value = (int) (100 * progress.currentBytes / progress.totalBytes);
                 progressCirculaSound.setProgress(value);
-                percentDone.setText(String.valueOf(value) + "%");
+                percentDone.setText(String.valueOf(value).concat("%"));
                 app.l(String.valueOf(progress.currentBytes));
             }
         }).setOnStartOrResumeListener(new OnStartOrResumeListener() {
@@ -691,14 +606,12 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         downloadId = downloadRequest.start(new OnDownloadListener() {
             @Override
             public void onDownloadComplete() {
-                SharedPrefUtils.getSharedPrefEditor(SharedPrefUtils.PREF_APP).remove("soundDownloadId**" + answers.getA_id()).apply();
+                SharedPrefUtils.getSharedPrefEditor(SharedPrefUtils.PREF_APP).remove("soundDownloadId**" + answers.getAnswer().getA_id()).apply();
                 progressCirculaSound.setVisibility(View.GONE);
                 startDownload.setVisibility(View.GONE);
                 percentDone.setVisibility(View.GONE);
-                ivPlayPause.setVisibility(View.VISIBLE);
                 ltPlayPause.setVisibility(View.VISIBLE);
-
-
+                ltPlayPause.setProgress(0);
                 app.l("completed");
             }
 
@@ -707,7 +620,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
 
             }
         });
-        SharedPrefUtils.saveData("soundDownloadId**" + answers.getA_id(), downloadId);
+        SharedPrefUtils.saveData("soundDownloadId**" + answers.getAnswer().getA_id(), downloadId);
 
 
     }
@@ -718,6 +631,10 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     List<Answers> tmpAnswers;
     AnswerRecyclerAdapter adapter;
     boolean isLoading;
+
+
+    private RelativeLayout addAnswer;
+    private RelativeLayout returnToQuestions;
 
     private void getAnswers() {
         offset = 0;
@@ -730,15 +647,17 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         map.put("offset", String.valueOf(offset));
         map.put("q_id", String.valueOf(q_id));
 
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog.setTitle("لطفا شکیبا باشید");
+        sweetAlertDialog.setContentText("در حال دریافت پاسخ");
+        sweetAlertDialog.show();
 
         Application.getApi().getAnswersWithMsg(map).enqueue(new Callback<AnswerWithMsg>() {
             @Override
             public void onResponse(Call<AnswerWithMsg> call, Response<AnswerWithMsg> response) {
+                sweetAlertDialog.dismissWithAnimation();
                 if (response.body() != null && response.body().getAnswers().size() > 0) {
-                    if (response.body().getMsg().equals("zeroSize")) {
-                        new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از خودروهای پیشنهادی کلیک کنید").show();
-                        return;
-                    }
+
                     app.l("answers" + response.body().getAnswers().size());
 
                     answers = response.body().getAnswers();
@@ -746,7 +665,6 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                         tmpAnswers.addAll(answers);
                     } else {
                         if (answers != null) {
-                            app.t("not found11");
                             isLoading = false;
 
                         }
@@ -754,17 +672,63 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                     adapter = new AnswerRecyclerAdapter(AnswersActivity.this, AnswersActivity.this, tmpAnswers, AnswersActivity.this);
                     recyclerAnswers.setAdapter(adapter);
 
-                } else {/*
-                    sweetAlertDialogQuestionNotExist = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).hideConfirmButton()
-                            .setCustomView(view);
-                    sweetAlertDialogQuestionNotExist.show();*/
-                    app.t("not ffound");
+                } else {
+                  /*  View inflate = LayoutInflater.from(AnswersActivity.this).inflate(R.layout.view_answer_not_found, null, false);
+
+                    addAnswer = inflate.findViewById(R.id.add_answer);
+                    returnToQuestions = inflate.findViewById(R.id.return_to_questions);
+
+                    SweetAlertDialog sweetAlertDialog1 = new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.WARNING_TYPE).setCustomView(inflate);
+                    sweetAlertDialog1.hideConfirmButton();
+                    sweetAlertDialog1.show();
+*/
+                    /*-------------*/
+
+                    sweetAlertDialogAnswerNotFound = new SweetAlertDialog(AnswersActivity.this);
+                    View inflateViewAnwerNotFound = LayoutInflater.from(AnswersActivity.this).inflate(R.layout.view_good_not_found, null, false);
+                    LottieAnimationView lottieAnimationView = inflateViewAnwerNotFound.findViewById(R.id.warranty_lt);
+                    lottieAnimationView.setAnimation(R.raw.lt_not_found);
+                    TextView textView = inflateViewAnwerNotFound.findViewById(R.id.txt);
+                    TextView txt_ok = inflateViewAnwerNotFound.findViewById(R.id.txt_ok);
+                    TextView cancel_action = inflateViewAnwerNotFound.findViewById(R.id.cancel_action);
+                    addAnswer = inflateViewAnwerNotFound.findViewById(R.id.btn_contact_us);
+                    returnToQuestions = inflateViewAnwerNotFound.findViewById(R.id.btn_show_all_goods);
+
+                    addAnswer.setOnClickListener(AnswersActivity.this);
+                    returnToQuestions.setOnClickListener(AnswersActivity.this);
+
+                    textView.setText("پاسخی برای این سوال پیدا نشد.\n شما اولین پاسخ رو بدید.");
+                    txt_ok.setText("پاسخ به سوال");
+                    cancel_action.setText("برگشت به تالار سوالات");
+
+
+                    sweetAlertDialogAnswerNotFound.setCustomView(inflateViewAnwerNotFound);
+                    sweetAlertDialogAnswerNotFound.hideConfirmButton();
+                    sweetAlertDialogAnswerNotFound.show();
+
                 }
             }
 
             @Override
             public void onFailure(Call<AnswerWithMsg> call, Throwable t) {
-                app.l(t.getLocalizedMessage() + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                SweetAlertDialog sweetAlertDialog1 = new SweetAlertDialog(AnswersActivity.this);
+                View inflate = LayoutInflater.from(AnswersActivity.this).inflate(R.layout.view_good_not_found, null, false);
+                TextView textView = inflate.findViewById(R.id.txt);
+                TextView txt_ok = inflate.findViewById(R.id.txt_ok);
+                RelativeLayout btn_contact_us = inflate.findViewById(R.id.btn_contact_us);
+                RelativeLayout btn_show_all_goods = inflate.findViewById(R.id.btn_show_all_goods);
+                textView.setText("خطا در دریافت اطلاعات");
+                txt_ok.setText("تلاش مجدد");
+                btn_show_all_goods.setVisibility(View.GONE);
+                btn_contact_us.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        getAnswers();
+                    }
+                });
+
+                sweetAlertDialog1.setCustomView(inflate);
+                sweetAlertDialog1.show();
             }
         });
 
@@ -810,12 +774,14 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
+                app.l("poioi" + dy);
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
                 if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == tmpAnswers.size() - 1 && !isLoading) {
                     isLoading = true;
                     offset++;
                     resumeGetAnswers(offset);
+
                 }
             }
         });

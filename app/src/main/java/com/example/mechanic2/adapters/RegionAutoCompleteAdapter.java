@@ -97,7 +97,7 @@ public class RegionAutoCompleteAdapter extends ArrayAdapter<String> implements F
             region = data.get(position);
         else region = new Region("", 0);
 
-        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
+        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.purple));
 
         mViewHolder.textView.setText(region.getName());
         mViewHolder.idTv.setText(String.valueOf(region.getId()));

@@ -3,10 +3,12 @@ package com.example.mechanic2.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Awesome Pojo Generator
  */
-public class Title {
+public class Title  implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;

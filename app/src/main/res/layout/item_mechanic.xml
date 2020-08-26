@@ -1,115 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:hedgehog="http://schemas.android.com/tools"
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/blue_grey_50"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp">
 
 
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/profile_mechanic"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="16dp"  />
+            android:layout_marginBottom="16dp"
+            android:gravity="top"
+            android:layout_gravity="center"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_mechanic"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/mechanic_avatar"
+                android:tint="@color/purple"
+                app:civ_border_color="@color/purple"
+                app:civ_border_width="1dp" />
 
-        <ImageView
-            android:src="@drawable/ic_car"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
-            android:id="@+id/im_store_name"
-            />
-
-        <com.example.mechanic2.views.MyTextView
-            android:text="@string/lorem_simple"
-            android:maxLines="1"
-            android:id="@+id/tv_store_mechanic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/im_store_name"
-            android:layout_toRightOf="@id/profile_mechanic"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="2dp"
-            android:layout_alignTop="@id/im_store_name"
-            android:textSize="16sp"
-            />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_close"
-            android:layout_alignRight="@id/im_store_name"
-            android:layout_below="@id/im_store_name"
-            android:layout_marginBottom="8dp"
-            android:id="@+id/im_job_mechanic"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="0dp"
-            />
-
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/tv_job_mechanic"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignRight="@id/tv_store_mechanic"
-            android:layout_alignTop="@id/im_job_mechanic"
-            android:layout_marginTop="3dp"
-            android:layout_toRightOf="@id/profile_mechanic"
-            android:layout_marginLeft="8dp"
-            android:textSize="12dp"
-            style="@style/TextAppearance.Medium.Bold"
-            />
-
-
-            <ImageView
-                android:layout_width="24dp"
+            <RatingBar
+                android:layout_marginTop="8dp"
+                android:id="@+id/rate_mechanic"
+                android:layout_below="@id/profile_mechanic"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center_vertical"
+                android:layout_width="wrap_content"
                 android:layout_height="24dp"
-                android:src="@drawable/ic_factory"
-                android:id="@+id/im_region_mechanic"
-                android:layout_alignRight="@id/im_store_name"
-                android:layout_below="@id/im_job_mechanic"
-                android:layout_marginLeft="8dp"
-                android:layout_marginBottom="8dp"
+                android:clickable="false"
+                android:progressDrawable="@drawable/star_shape"
                 />
 
 
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/tv_region_mechanic"
-            android:text="@string/lorem_simple"
-            android:maxLines="1"
+
+        </RelativeLayout>
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignRight="@id/tv_store_mechanic"
-            android:layout_alignTop="@id/im_region_mechanic"
-            android:layout_marginTop="4dp"
-            android:layout_toRightOf="@id/profile_mechanic"
-            android:layout_marginLeft="8dp"
-            android:textSize="12dp"
-            style="@style/TextAppearance.Medium.Bold"
-            />
+            android:orientation="vertical">
 
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/secondaryText"
-            android:layout_below="@id/profile_mechanic"
-            />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layoutDirection="rtl"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="4dp"
+                android:paddingRight="16dp"
 
-    </RelativeLayout>
+                >
+                <ImageView
+                    android:id="@+id/signed_mechanic"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="top"
+                    android:layout_marginLeft="8dp"
+                    android:src="@drawable/normal_answer"
+                    />
+
+                <com.example.mechanic2.views.MyTextView
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/tv_store_mechanic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layoutDirection="rtl"
+                    android:text="@string/lorem_simple"
+                    android:textColor="@color/purple"
+                    android:textDirection="rtl"
+                    android:ellipsize="marquee"
+                    android:textSize="20sp"
+                    android:maxLength="33"
+                    android:textStyle="bold"  />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/im_job_mechanic"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/job_icon" />
+
+                <com.example.mechanic2.views.MyTextView
+                    android:id="@+id/tv_job_mechanic"
+                    style="@style/TextAppearance.Medium.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:maxLines="2"
+                    android:layoutDirection="rtl"
+                    android:textColor="@color/indigo_900"
+                    android:textDirection="rtl"
+                    android:layout_marginTop="8dp"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/im_region_mechanic"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginTop="8dp"
+                    android:tint="@color/indigo_900"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:src="@drawable/location_icon" />
+
+
+                <com.example.mechanic2.views.MyTextView
+                    android:id="@+id/tv_region_mechanic"
+                    style="@style/TextAppearance.Medium.Bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:gravity="center_vertical"
+                    android:layoutDirection="rtl"
+                    android:textColor="@color/indigo_900"
+                    android:textDirection="rtl"
+                    android:textSize="18sp"
+                    android:layout_marginTop="8dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/purple" />
+
+
 
 
 </LinearLayout>

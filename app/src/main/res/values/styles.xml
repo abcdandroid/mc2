@@ -4,8 +4,39 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!--<style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
         <!-- Customize your theme here. -->
+        <item name="colorPrimary">#9C026D</item>
+        <item name="colorPrimaryDark">#6C004B</item>
+        <item name="android:typeface">monospace</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:windowEnterTransition">@transition/custom_transition</item>
+        <item name="android:windowExitTransition">@transition/custom_transition</item>
+        <item name="android:windowSharedElementEnterTransition">@transition/custom_transition</item>
+        <item name="android:windowSharedElementExitTransition">@transition/custom_transition</item>
+
+<!-- -->       <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">#6C004B</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:fitsSystemWindows">true</item>
+
+    </style>
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@color/indigo_900</item>
+        <item name="colorControlActivated">@color/purple</item>
+    </style>
+    <style name="Widget.Design.BottomNavigationView.a"
+        parent="Widget.Design.BottomNavigationView">
+        <item name="android:fontFamily">@font/b</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="AppThemeFullScreen" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!--<style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">-->
+        <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowFullscreen">true</item>
         <item name="android:typeface">monospace</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
@@ -14,7 +45,7 @@
         <item name="android:windowSharedElementEnterTransition">@transition/custom_transition</item>
         <item name="android:windowSharedElementExitTransition">@transition/custom_transition</item>
 
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+<!-- -->       <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:fitsSystemWindows">true</item>

@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -17,12 +16,6 @@ public class Mechanic implements Serializable {
     @SerializedName("address")
     @Expose
     private String address;
-    @SerializedName("job_ids")
-    @Expose
-    private List<String> job_ids;
-    @SerializedName("region_id")
-    @Expose
-    private String region_id;
     @SerializedName("about")
     @Expose
     private String about;
@@ -47,6 +40,9 @@ public class Mechanic implements Serializable {
     @SerializedName("mechanic_image")
     @Expose
     private String mechanic_image;
+    @SerializedName("score_state")
+    @Expose
+    private Integer score_state;
     @SerializedName("name")
     @Expose
     private String name;
@@ -59,19 +55,28 @@ public class Mechanic implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;
+    @SerializedName("job")
+    @Expose
+    private List<Job> job;
+    @SerializedName("region")
+    @Expose
+    private Region region;
     @SerializedName("x_location")
     @Expose
     private String x_location;
 
+    @SerializedName("is_signed")
+    @Expose
+    private Integer is_signed;
+
+
     public Mechanic() {
     }
 
-    public Mechanic(Integer entrance_id, String address, List<String> job_ids, String region_id, String about, String store_image_3, String store_image_2, List<Movies> movies, String y_location, Integer score, String store_image_1, String mechanic_image, String name, String store_name, String phone_number, Integer id, String x_location) {
+    public Mechanic(Integer isSigned,Integer entrance_id, String address, String about, String store_image_3, String store_image_2, List<Movies> movies, String y_location, Integer score, String store_image_1, String mechanic_image, Integer score_state, String name, String store_name, String phone_number, Integer id, List<Job> job, Region region, String x_location) {
+        this.is_signed =isSigned;
         this.entrance_id = entrance_id;
         this.address = address;
-        this.job_ids = job_ids;
-        this.job_ids = job_ids;
-        this.region_id = region_id;
         this.about = about;
         this.store_image_3 = store_image_3;
         this.store_image_2 = store_image_2;
@@ -80,11 +85,22 @@ public class Mechanic implements Serializable {
         this.score = score;
         this.store_image_1 = store_image_1;
         this.mechanic_image = mechanic_image;
+        this.score_state = score_state;
         this.name = name;
         this.store_name = store_name;
         this.phone_number = phone_number;
         this.id = id;
+        this.job = job;
+        this.region = region;
         this.x_location = x_location;
+    }
+
+    public Integer getIs_signed() {
+        return is_signed;
+    }
+
+    public void setIs_signed(int is_signed) {
+        this.is_signed = is_signed;
     }
 
     public void setEntrance_id(Integer entrance_id) {
@@ -101,22 +117,6 @@ public class Mechanic implements Serializable {
 
     public String getAddress() {
         return address;
-    }
-
-    public void setJob_ids(List<String> job_ids) {
-        this.job_ids = job_ids;
-    }
-
-    public List<String> getJob_ids() {
-        return job_ids;
-    }
-
-    public void setRegion_id(String region_id) {
-        this.region_id = region_id;
-    }
-
-    public String getRegion_id() {
-        return region_id;
     }
 
     public void setAbout(String about) {
@@ -183,6 +183,14 @@ public class Mechanic implements Serializable {
         return mechanic_image;
     }
 
+    public void setScore_state(Integer score_state) {
+        this.score_state = score_state;
+    }
+
+    public Integer getScore_state() {
+        return score_state;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -215,40 +223,27 @@ public class Mechanic implements Serializable {
         return id;
     }
 
+    public void setJob(List<Job> job) {
+        this.job = job;
+    }
+
+    public List<Job> getJob() {
+        return job;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public Region getRegion() {
+        return region;
+    }
+
     public void setX_location(String x_location) {
         this.x_location = x_location;
     }
 
     public String getX_location() {
         return x_location;
-    }
-
-    public String toString() {
-        StringBuilder result = new StringBuilder();
-        String newLine = System.getProperty("line.separator");
-
-        result.append(this.getClass().getName());
-        result.append(" Object {");
-        result.append(newLine);
-
-        //determine fields declared in this class only (no fields of superclass)
-        Field[] fields = this.getClass().getDeclaredFields();
-
-        //print field names paired with their values
-        for (Field field : fields) {
-            result.append("  ");
-            try {
-                result.append(field.getName());
-                result.append(": ");
-                //requires access to private field:
-                result.append(field.get(this));
-            } catch (IllegalAccessException ex) {
-                System.out.println(ex);
-            }
-            result.append(newLine);
-        }
-        result.append("}");
-
-        return result.toString();
     }
 }

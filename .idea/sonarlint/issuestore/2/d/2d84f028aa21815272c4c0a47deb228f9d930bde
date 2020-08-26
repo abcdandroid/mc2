@@ -1,0 +1,46 @@
+
+g
+java:S1301"KReplace this "switch" statement by "if" statements to increase readability.(×“¾ñùÿÿÿÿ
+Y	java:S125‘"<This block of commented-out lines of code should be removed.(ª•¡á8±ıÑº.
+Z
+java:S1155‰">Use isEmpty() to check whether the collection is empty or not.(²ãš¾ÿÿÿÿÿ
+>
+java:S1604["(Make this anonymous inner class a lambda(üªó
+r	java:S116/"XRename this field "current_image" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Âæ¹Îşÿÿÿÿ
+C
+java:S1604~"(Make this anonymous inner class a lambda(³Æÿÿÿÿÿ
+A
+java:S5411ƒ"*Use the primitive boolean expression here.(Õ›º˜
+E
+java:S1604"(Make this anonymous inner class a lambda(¦‚şC8î³ÓÑº.
+o
+java:S14506"YRemove the "cancelSend" field and declare it as a local variable in the relevant methods.(ûÙ‰Î
+v
+java:S1450:"[Remove the "fieldCarType" field and declare it as a local variable in the relevant methods.(‹½ÄŒûÿÿÿÿ
+n	java:S117¡"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(±…›¦8î³ÓÑº.
+p	java:S1162"VRename this field "fill_images" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®ã‰Úùÿÿÿÿ
+s
+java:S14505"]Remove the "submitQuestion" field and declare it as a local variable in the relevant methods.(¾Ôİ­
+v
+java:S1450<"[Remove the "questionType" field and declare it as a local variable in the relevant methods.(õ‹Êìÿÿÿÿÿ
+n	java:S128€"LEnd this switch case with an unconditional break, return or throw statement.(£Ş¾Ëşÿÿÿÿ8¥“ûÑº.
+C
+java:S1604n"(Make this anonymous inner class a lambda(»ú¡Åùÿÿÿÿ
+C
+java:S1604U"(Make this anonymous inner class a lambda(†Ù™†úÿÿÿÿ
+C
+java:S1604a"(Make this anonymous inner class a lambda( ˜¼²øÿÿÿÿ
+@
+java:S5411s"*Use the primitive boolean expression here.(Õ›º˜
+N
+java:S1117ƒ"7Rename "map" which hides the field declared at line 52.(îö
+l
+java:S1450;"VRemove the "carType" field and declare it as a local variable in the relevant methods.(€’ï´
+w
+java:S1450="\Remove the "fieldQuestion" field and declare it as a local variable in the relevant methods.(ëåÍşÿÿÿÿ
+^	java:S125¼"<This block of commented-out lines of code should be removed.(ŒÈéÿÿÿÿÿ8ÚêØÑº.
+^
+java:S1192ë"GDefine a constant instead of duplicating this literal "fileNo" 3 times.(ÄäØ½
+@
+java:S5411e"*Use the primitive boolean expression here.(Õ›º˜
+s	java:S1163"YRename this field "address_images" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Âœ°ùÿÿÿÿ

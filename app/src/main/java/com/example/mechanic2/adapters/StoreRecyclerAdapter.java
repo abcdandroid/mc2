@@ -211,6 +211,7 @@ public class StoreRecyclerAdapter extends RecyclerView.Adapter<StoreRecyclerAdap
         StoreViewHolder(@NonNull View itemView) {
             super(itemView);
             preview = itemView.findViewById(R.id.preview);
+            preview.setClipToOutline(true);
             expand = itemView.findViewById(R.id.expand);
             name = itemView.findViewById(R.id.name);
             desc = itemView.findViewById(R.id.desc);

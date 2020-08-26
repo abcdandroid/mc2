@@ -38,12 +38,14 @@ import java.util.List;
 public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
 
+    private final boolean showAllCars;
     private ArrayList<Car> data;
     private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchCar&lastId=0&search=";
 
-    public CarAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
+    public CarAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource, boolean showAllCars) {
         super(context, resource);
         this.data = new ArrayList<>();
+        this.showAllCars = showAllCars;
     }
 
 
@@ -97,7 +99,7 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
         if (position <= data.size() - 1)
             car = data.get(position);
         else car = new Car("", 0);
-        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
+        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.middle_color_dark));
         mViewHolder.textView.setText(car.getName());
         mViewHolder.idTv.setText(String.valueOf(car.getId()));
 
@@ -113,8 +115,8 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 ArrayList<Car> suggestions = new ArrayList<>();
-
-                suggestions.add(new Car(Application.getContext().getResources().getString(R.string.all_cars), 0));
+                if (showAllCars)
+                    suggestions.add(new Car(Application.getContext().getResources().getString(R.string.all_cars), 0));
                 if (constraint != null) {
                     HttpURLConnection conn = null;
                     InputStream input = null;

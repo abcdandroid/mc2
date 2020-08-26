@@ -82,7 +82,7 @@ public class MySpinnerAdapter extends ArrayAdapter<String> {
             arrowSpinner.setVisibility(View.INVISIBLE);
             parentLayout.setGravity(Gravity.RIGHT);
             textView.setPadding(41, 41, 41, 41);
-            ((View) textView.getParent()).setBackgroundColor(Application.getContext().getResources().getColor(R.color.indigo_700));
+            ((View) textView.getParent()).setBackgroundColor(Application.getContext().getResources().getColor(R.color.purple_900));
         }
 
         if (!mode) {

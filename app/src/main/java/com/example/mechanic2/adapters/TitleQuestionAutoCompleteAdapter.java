@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
-import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Title;
 
 import org.jetbrains.annotations.NotNull;
@@ -35,10 +34,12 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
 
     private ArrayList<Title> data;
     private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchTitle&search=";
+    boolean isFromShowQuestions;
 
-    public TitleQuestionAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
+    public TitleQuestionAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource,boolean isFromAddQuestion ) {
         super(context, resource);
         this.data = new ArrayList<>();
+        this.isFromShowQuestions =isFromAddQuestion;
     }
 
 
@@ -84,7 +85,7 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
         if (position <= data.size() - 1)
             title = data.get(position);
         else title = new Title("", 0);
-        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
+        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.purple));
         mViewHolder.textView.setText(title.getName());
         mViewHolder.idTv.setText(String.valueOf(title.getId()));
 
@@ -100,7 +101,10 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
             protected FilterResults performFiltering(CharSequence constraint) {
                 FilterResults results = new FilterResults();
                 ArrayList<Title> suggestions = new ArrayList<>();
-                suggestions.add(new Title(Application.getContext().getResources().getString(R.string.all_titles), 0));
+                suggestions.add(new Title(Application.getContext().getResources().getString(R.string.etc_title), -2));
+                if(isFromShowQuestions){
+                    suggestions.add(new Title(Application.getContext().getResources().getString(R.string.all_titles), 0));
+                }
                 if (constraint != null) {
                     HttpURLConnection conn = null;
                     InputStream input = null;

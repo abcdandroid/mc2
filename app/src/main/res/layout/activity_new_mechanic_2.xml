@@ -2,13 +2,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@drawable/gradient_color"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey_5">
+        >
 
 
         <LinearLayout
@@ -17,201 +18,527 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-
-            <!--choose images-->
-
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center"
-                android:layout_margin="16dp"
-                android:background="@color/grey_10"
-                android:gravity="center"
-                android:layoutDirection="rtl"
-                android:orientation="vertical"
-                app:cardCornerRadius="18dp">
-
-                <RelativeLayout
+                android:orientation="vertical">
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp">
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp"
+                    android:background="@color/grey_10"
+                    android:gravity="center"
+                    android:layoutDirection="rtl"
+                    android:orientation="vertical"
+                    app:cardCornerRadius="18dp">
 
-
-                    <LinearLayout
-                        android:id="@+id/pic_hint"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
+                        android:layout_height="wrap_content"
+                        android:padding="16dp">
 
-                        <ImageView
-                            android:layout_width="@dimen/spacing_mxlarge"
-                            android:layout_height="@dimen/spacing_mxlarge"
-                            android:layout_gravity="center_vertical"
-                            android:background="@android:color/transparent"
-                            android:src="@drawable/pen" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_large"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="16dp"
-                            android:gravity="center_vertical"
-                            android:paddingTop="5sp"
-                            android:text="برای بهتر دیده شدن، چندتا عکس از خودت و مغازت برامون بفرست!"
-                            android:textSize="16dp" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/pic_hint"
-                        android:orientation="vertical">
 
                         <LinearLayout
+                            android:id="@+id/pic_hint"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="16dp">
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
 
-                            <LinearLayout
+                            <ImageView
+                                android:layout_width="@dimen/spacing_mxlarge"
+                                android:layout_height="@dimen/spacing_mxlarge"
+                                android:layout_gravity="center_vertical"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/pen" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="match_parent" />
+
+                            <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-                                <ImageView
-                                    android:id="@+id/image3"
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
-                                    android:src="@drawable/mechanic_store_preview" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="عکس مغازه" />
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="vertical">
-
-
-                                <ImageView
-                                    android:id="@+id/image2"
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
-                                    android:src="@drawable/mechanic_store_preview" />
-
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="عکس مغازه" />
-                            </LinearLayout>
-
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="16dp"
+                                android:gravity="center_vertical"
+                                android:paddingTop="5sp"
+                                android:text="برای بهتر دیده شدن، چندتا عکس از خودت و مغازت برامون بفرست!"
+                                android:textSize="18dp" />
 
                         </LinearLayout>
 
                         <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/pic_hint"
+                            android:orientation="vertical">
 
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/image3"
+                                        android:layout_width="100dp"
+                                        android:layout_height="100dp"
+                                        android:src="@drawable/mechanic_store_preview" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textSize="16sp"
+                                        android:layout_marginTop="8dp"
+                                        android:text="عکس مغازه" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+
+                                    <ImageView
+                                        android:id="@+id/image2"
+                                        android:layout_width="100dp"
+                                        android:layout_height="100dp"
+                                        android:src="@drawable/mechanic_store_preview" />
+
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:textSize="16sp"
+                                        android:text="عکس مغازه" />
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+
+                            <LinearLayout
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+                                    <ImageView
+                                        android:id="@+id/image1"
+                                        android:layout_width="100dp"
+                                        android:layout_height="100dp"
+                                        android:src="@drawable/mechanic_store_preview" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:textSize="16sp"
+                                        android:text="عکس مغازه" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_margin="8dp"
+                                    android:layout_weight="1"
+                                    android:gravity="center"
+                                    android:orientation="vertical">
+
+
+                                    <de.hdodenhof.circleimageview.CircleImageView
+                                        android:id="@+id/imageProfile"
+                                        android:layout_width="100dp"
+                                        android:layout_height="100dp"
+                                        android:src="@drawable/mechanic_face2" />
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="8dp"
+                                        android:textSize="16sp"
+                                        android:text="عکس خودت" />
+                                </LinearLayout>
+
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/spacing_large"
+                    android:layout_marginRight="@dimen/spacing_large"
+                    android:background="@android:color/white"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="2dp">
+
+                    <LinearLayout
+                        android:id="@+id/lyt_form"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layoutDirection="rtl"
+                        android:orientation="vertical"
+                        android:padding="@dimen/spacing_large">
+
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
+                            <ImageView
+                                android:layout_width="@dimen/spacing_mxlarge"
+                                android:layout_height="@dimen/spacing_mxlarge"
+                                android:layout_marginTop="@dimen/spacing_mlarge"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/pen" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="match_parent" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="vertical">
+                                android:background="@color/transparent">
 
-                                <ImageView
-                                    android:id="@+id/image1"
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
-                                    android:src="@drawable/mechanic_store_preview" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/mechanic_name"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="عکس مغازه" />
-                            </LinearLayout>
+                                    android:background="@color/transparent"
+                                    android:hint="نام و نام خانوادگی"
+                                    android:maxLength="30"
+                                    android:textDirection="rtl" />
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/spacing_mxlarge"
+                                android:layout_height="@dimen/spacing_mxlarge"
+                                android:layout_marginTop="@dimen/spacing_mlarge"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/pen" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="match_parent" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_margin="8dp"
-                                android:layout_weight="1"
-                                android:gravity="center"
-                                android:orientation="vertical">
+                                android:background="@color/transparent">
 
-
-                                <de.hdodenhof.circleimageview.CircleImageView
-                                    android:id="@+id/imageProfile"
-                                    android:layout_width="100dp"
-                                    android:layout_height="100dp"
-                                    android:src="@drawable/mechanic_face2" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/mechanic_store_name"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
-                                    android:text="عکس خودت" />
-                            </LinearLayout>
+                                    android:background="@color/transparent"
+                                    android:hint="اسم مغازه"
+                                    android:textDirection="rtl" />
 
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/spacing_mxlarge"
+                                android:layout_height="@dimen/spacing_mxlarge"
+                                android:layout_marginTop="@dimen/spacing_mlarge"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/pen" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="match_parent" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/transparent">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/mechanic_phone"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/transparent"
+                                    android:hint="شماره تلفن همراه"
+                                    android:inputType="phone"
+                                    android:layoutDirection="ltr"
+                                    android:maxLength="11"
+                                    android:text="09"
+                                    android:textDirection="rtl" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
                     </LinearLayout>
-                </RelativeLayout>
+                </androidx.cardview.widget.CardView>
 
-
-            </androidx.cardview.widget.CardView>
-
-            <!--choose images-->
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="@dimen/spacing_large"
-                android:background="@android:color/white"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
-                    android:id="@+id/lyt_form"
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:layoutDirection="rtl"
-                    android:orientation="vertical"
-                    android:padding="@dimen/spacing_large">
+                    app:cardCornerRadius="16dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="16dp">
+                        <LinearLayout
+                            android:id="@+id/job_hint"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_width="@dimen/spacing_mxlarge"
+                                android:layout_height="@dimen/spacing_mxlarge"
+                                android:layout_gravity="center_vertical"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/pen" />
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="match_parent" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="16dp"
+                                android:gravity="center_vertical"
+                                android:paddingTop="5sp"
+                                android:text="تخصصاتو اینجا بنویس. حداکثر 5 تخصص! "
+                                android:textSize="16dp" />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@id/job_hint"
+                            android:orientation="horizontal"
+                            android:padding="8dp">
+                            <LinearLayout
+                                android:id="@+id/job_container"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:animateLayoutChanges="true"
+                                android:orientation="vertical">
+
+                                <com.example.mechanic2.views.JobRow
+                                    android:id="@+id/job_row_1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layoutDirection="rtl"
+                    app:cardCornerRadius="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/spacing_mxlarge"
+                                android:layout_height="@dimen/spacing_mxlarge"
+                                android:layout_marginTop="@dimen/spacing_mlarge"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/pen" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="match_parent" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/transparent">
+
+                                <AutoCompleteTextView
+                                    android:id="@+id/region_name_auto"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/transparent"
+                                    android:hint="منطقه فعالیتت رو انتخاب کن"
+                                    android:includeFontPadding="true"
+                                    android:paddingTop="32dp"
+                                    android:paddingRight="8dp"
+                                    android:paddingBottom="8dp"
+                                    android:textDirection="rtl"
+                                    android:textSize="16sp"
+                                    android:typeface="monospace" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:id="@+id/region_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/spacing_mxlarge"
+                                android:layout_height="@dimen/spacing_mxlarge"
+                                android:layout_marginTop="@dimen/spacing_mlarge"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/pen" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="match_parent" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/transparent">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/region_desc"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/transparent"
+                                    android:hint="ادرس دقیقتو بنویس"
+                                    android:textDirection="rtl" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:id="@+id/map_hint"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:layout_width="@dimen/spacing_mxlarge"
+                                android:layout_height="@dimen/spacing_mxlarge"
+                                android:layout_marginTop="@dimen/spacing_mlarge"
+                                android:background="@android:color/transparent"
+                                android:src="@drawable/pen" />
+
+                            <View
+                                android:layout_width="@dimen/spacing_large"
+                                android:layout_height="match_parent" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_margin="16dp"
+                                android:gravity="center_vertical"
+                                android:paddingTop="5sp"
+                                android:text="آدرس دقیقتو روی نقشه مشخص کن"
+                                android:textSize="16dp" />
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp">
+
+
+                            <org.osmdroid.views.MapView
+                                android:id="@+id/map_thumbnail"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+
+                            <View
+                                android:id="@+id/map_thumbnail_fake"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent" />
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/ltt_lng_value"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:layoutDirection="rtl"
+                    app:cardCornerRadius="16dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:padding="16dp">
 
                         <ImageView
                             android:layout_width="@dimen/spacing_mxlarge"
                             android:layout_height="@dimen/spacing_mxlarge"
-                            android:layout_marginTop="@dimen/spacing_mlarge"
+                            android:layout_gravity="top"
+                            android:layout_marginTop="24dp"
                             android:background="@android:color/transparent"
                             android:src="@drawable/pen" />
 
@@ -219,97 +546,47 @@
                             android:layout_width="@dimen/spacing_large"
                             android:layout_height="match_parent" />
 
-                        <com.google.android.material.textfield.TextInputLayout
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@color/transparent">
+                            android:layout_gravity="top"
+                            android:layout_marginTop="24dp"
+                            android:orientation="vertical">
 
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/mechanic_name"
-                                android:maxLength="30"
+                            <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/transparent"
-                                android:hint="نام و نام خانوادگی"
-                                android:textDirection="rtl" />
+                                android:text="درباره خودت بنویس. مثلا سابقه کار، تعرفه خدمات یا اینکه در خدمات دهی به چه ماشین هایی مهارت بیشتری داری." />
 
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/spacing_mxlarge"
-                            android:layout_height="@dimen/spacing_mxlarge"
-                            android:layout_marginTop="@dimen/spacing_mlarge"
-                            android:background="@android:color/transparent"
-                            android:src="@drawable/pen" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_large"
-                            android:layout_height="match_parent" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/transparent">
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/mechanic_store_name"
+                            <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:background="@color/transparent"
-                                android:hint="اسم مغازه"
-                                android:textDirection="rtl" />
+                                android:background="@color/transparent">
 
-                        </com.google.android.material.textfield.TextInputLayout>
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/mechanic_about"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="top"
+                                    android:background="@color/transparent"
+                                    android:gravity="top"
+                                    android:hint="اینجا بنویس"
+                                    android:lines="10"
+                                    android:maxLines="10"
+                                    android:textDirection="rtl" />
 
-                    </LinearLayout>
+                            </com.google.android.material.textfield.TextInputLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/spacing_mxlarge"
-                            android:layout_height="@dimen/spacing_mxlarge"
-                            android:layout_marginTop="@dimen/spacing_mlarge"
-                            android:background="@android:color/transparent"
-                            android:src="@drawable/pen" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_large"
-                            android:layout_height="match_parent" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/transparent">
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/mechanic_phone"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/transparent"
-                                android:hint="شماره تلفن همراه"
-                                android:inputType="phone"
-                                android:layoutDirection="ltr"
-                                android:maxLength="11"
-                                android:text="09"
-                                android:textDirection="rtl" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
+                        </LinearLayout>
 
                     </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
 
             <androidx.cardview.widget.CardView
+                android:visibility="gone"
+                android:id="@+id/movie_layer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -318,11 +595,11 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:padding="16dp">
 
                     <LinearLayout
-                        android:id="@+id/job_hint"
+                        android:id="@+id/movie_hint"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -330,6 +607,7 @@
                         <ImageView
                             android:layout_width="@dimen/spacing_mxlarge"
                             android:layout_height="@dimen/spacing_mxlarge"
+                            android:layout_marginBottom="18dp"
                             android:layout_gravity="center_vertical"
                             android:background="@android:color/transparent"
                             android:src="@drawable/pen" />
@@ -345,258 +623,27 @@
                             android:layout_margin="16dp"
                             android:gravity="center_vertical"
                             android:paddingTop="5sp"
-                            android:text="تخصصاتو اینجا بنویس. حداکثر 5 تخصص! "
+                            android:text="اینجا می تونی فیلم هایی که برامون فرستادی ببینی."
                             android:textSize="16dp" />
 
                     </LinearLayout>
 
-                    <LinearLayout
+                    <androidx.recyclerview.widget.RecyclerView
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_below="@id/job_hint"
-                        android:orientation="horizontal"
-                        android:padding="8dp">
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/movie_hint"
+                        android:id="@+id/mechanic_movies"
+                        />
 
-
-                        <LinearLayout
-                            android:id="@+id/job_container"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:animateLayoutChanges="true"
-                            android:orientation="vertical">
-
-                            <com.example.mechanic2.views.JobRow
-                                android:id="@+id/job_row_1"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
-
-
-                        </LinearLayout>
-
-
-                    </LinearLayout>
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
 
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
-                android:layoutDirection="rtl"
-                app:cardCornerRadius="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/spacing_mxlarge"
-                            android:layout_height="@dimen/spacing_mxlarge"
-                            android:layout_marginTop="@dimen/spacing_mlarge"
-                            android:background="@android:color/transparent"
-                            android:src="@drawable/pen" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_large"
-                            android:layout_height="match_parent" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/transparent">
-
-                            <AutoCompleteTextView
-                                android:id="@+id/region_name_auto"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/transparent"
-                                android:hint="منطقه فعالیتت رو انتخاب کن"
-                                android:includeFontPadding="true"
-                                android:paddingTop="32dp"
-                                android:paddingRight="8dp"
-                                android:paddingBottom="8dp"
-                                android:textDirection="rtl"
-                                android:textSize="16sp"
-                                android:typeface="monospace" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <TextView
-                            android:id="@+id/region_id"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone" />
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/spacing_mxlarge"
-                            android:layout_height="@dimen/spacing_mxlarge"
-                            android:layout_marginTop="@dimen/spacing_mlarge"
-                            android:background="@android:color/transparent"
-                            android:src="@drawable/pen" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_large"
-                            android:layout_height="match_parent" />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/transparent">
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/region_desc"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@color/transparent"
-                                android:hint="ادرس دقیقتو بنویس"
-                                android:textDirection="rtl" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-
-                    <LinearLayout
-                        android:id="@+id/map_hint"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="@dimen/spacing_mxlarge"
-                            android:layout_height="@dimen/spacing_mxlarge"
-                            android:layout_marginTop="@dimen/spacing_mlarge"
-                            android:background="@android:color/transparent"
-                            android:src="@drawable/pen" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_large"
-                            android:layout_height="match_parent" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="16dp"
-                            android:gravity="center_vertical"
-                            android:paddingTop="5sp"
-                            android:text="آدرس دقیقتو روی نقشه مشخص کن"
-                            android:textSize="16dp" />
-
-                    </LinearLayout>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp">
-
-
-                        <org.osmdroid.views.MapView
-                            android:id="@+id/map_thumbnail"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-
-                        <View
-                            android:id="@+id/map_thumbnail_fake"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/ltt_lng_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
-                android:layoutDirection="rtl"
-                app:cardCornerRadius="16dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="@dimen/spacing_mxlarge"
-                        android:layout_height="@dimen/spacing_mxlarge"
-                        android:layout_gravity="top"
-                        android:layout_marginTop="24dp"
-                        android:background="@android:color/transparent"
-                        android:src="@drawable/pen" />
-
-                    <View
-                        android:layout_width="@dimen/spacing_large"
-                        android:layout_height="match_parent" />
-
-                    <LinearLayout
-                        android:layout_gravity="top"
-                        android:layout_marginTop="24dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="درباره خودت بنویس. مثلا سابقه کار، تعرفه خدمات یا اینکه در خدمات دهی به چه ماشین هایی مهارت بیشتری داری." />
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@color/transparent">
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/mechanic_about"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="top"
-                                android:background="@color/transparent"
-                                android:hint="اینجا بنویس"
-                                android:gravity="top"
-                                android:lines="10"
-                                android:maxLines="10"
-                                android:textDirection="rtl" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-
-
             <LinearLayout
-                android:layoutDirection="rtl"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layoutDirection="rtl"
                 android:orientation="horizontal"
                 android:padding="16dp">
 
@@ -613,13 +660,14 @@
                     android:layout_height="match_parent" />
 
                 <LinearLayout
-                    android:layout_gravity="top"
-                    android:layout_marginTop="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="24dp"
                     android:orientation="vertical">
 
                     <TextView
+                        android:textColor="@color/white"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/send_movie_hint" />
@@ -629,7 +677,6 @@
 
             </LinearLayout>
 
-
             <TextView
                 android:id="@+id/whats_up_intent"
                 android:layout_width="match_parent"
@@ -637,7 +684,7 @@
                 android:layout_margin="16dp"
                 android:background="@drawable/btn_rounded_whatsapp"
                 android:gravity="center"
-                android:padding="24dp"
+                android:padding="12dp"
                 android:text="@string/send_movie"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
@@ -652,11 +699,12 @@
                 android:layout_marginBottom="32dp"
                 android:background="@drawable/btn_rounded_primary"
                 android:gravity="center"
-                android:padding="24dp"
-                android:text="ثبت نام و ورود به برنامه"
+                android:padding="12dp"
+                android:text="ثبت اطلاعات"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />
+
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>

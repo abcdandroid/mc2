@@ -11,85 +11,111 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.models.AdminMedia;
+import com.example.mechanic2.models.Movies;
 import com.hmomeni.progresscircula.ProgressCircula;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.util.List;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import jp.wasabeef.picasso.transformations.BlurTransformation;
 
 public class AdminRecyclerAdapter extends RecyclerView.Adapter<AdminRecyclerAdapter.AdminViewHolder> {
 
     private Context context;
-    private List<AdminMedia> adminMedias;
+    private List<AdminMedia> movies;
     private OnClickListener onClickListener;
 
-    public AdminRecyclerAdapter(Context context, List<AdminMedia> adminMedias, OnClickListener onClickListener) {
+
+    public AdminRecyclerAdapter(Context context, List<AdminMedia> movies, OnClickListener onClickListener) {
         this.context = context;
-        this.adminMedias = adminMedias;
+        this.movies = movies;
         this.onClickListener = onClickListener;
+        app.l("poipoipoioiA"+movies.size());
     }
 
     @NonNull
     @Override
     public AdminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_admin, parent, false);
+        app.l("poipoipoioiB");
+        View view = LayoutInflater.from(context).inflate(R.layout.item_mechanic_movie, parent, false);
         return new AdminViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull AdminViewHolder holder, int position) {
-        holder.onBind(adminMedias.get(position), onClickListener);
+        app.l("poipoipoioiC");
+        holder.onBind(movies.get(position), onClickListener);
     }
 
     @Override
     public int getItemCount() {
-        return adminMedias.size();
+        app.l("poipoipoioiD");
+        return movies.size();
     }
 
     @Override
     public int getItemViewType(int position) {
+        app.l("poipoipoioiE");
         return position;
     }
 
     @Override
     public long getItemId(int position) {
-        return adminMedias.get(position).getId();
+
+        app.l("poipoipoioiF");
+        return movies.get(position).getId();
     }
 
     class AdminViewHolder extends RecyclerView.ViewHolder {
 
         ImageView preview;
-        TextView seenCount;
         TextView totalSize;
         TextView percentDone;
         TextView desc;
         ProgressCircula progressCircula;
         LottieAnimationView lottieAnimationView;
+        private ImageView removeIcon;
+
 
         AdminViewHolder(@NonNull View itemView) {
             super(itemView);
+
             preview = itemView.findViewById(R.id.preview);
-            seenCount = itemView.findViewById(R.id.seenCount);
             totalSize = itemView.findViewById(R.id.totalSize);
             percentDone = itemView.findViewById(R.id.percentDone);
             desc = itemView.findViewById(R.id.desc);
             progressCircula = itemView.findViewById(R.id.progressCircula);
             lottieAnimationView = itemView.findViewById(R.id.lottieAnimationView);
+            removeIcon =  itemView.findViewById(R.id.remove_icon);
+            removeIcon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SweetAlertDialog sweetAlertDialog=new SweetAlertDialog(Application.getContext(),SweetAlertDialog.WARNING_TYPE);
+                    sweetAlertDialog.setTitle("آیا مایل به حذف این فیلم از حافظه گوشی خود هستید؟");
+                    sweetAlertDialog.setConfirmText("خیر");
+                    sweetAlertDialog.setCancelText("بله");
+                    sweetAlertDialog.show();
+                }
+            });
         }
 
-        void onBind(AdminMedia adminMedia, OnClickListener onClickListener) {
+        void onBind(AdminMedia movies, OnClickListener onClickListener) {
 
-            String url = adminMedia.getUrl();
+            app.l("poipoipoioiH");
+            String url = movies.getMovie_url();
 
             File file = new File(context.getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
-            if (file.exists() && file.length() == adminMedia.getFileSize()) {
-                app.l(adminMedia.getMedia_desc() + "file exist");
+            if (file.exists() && file.length() == movies.getMovie_size()) {
+                app.l(movies.getMedia_desc() + "file exist");
                 progressCircula.setVisibility(View.GONE);
                 percentDone.setVisibility(View.GONE);
                 totalSize.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
@@ -103,18 +129,41 @@ public class AdminRecyclerAdapter extends RecyclerView.Adapter<AdminRecyclerAdap
 
                 progressCircula.setVisibility(View.VISIBLE);
                 percentDone.setVisibility(View.VISIBLE);
-                int progress =(int) (tmpFile.length()*100/ adminMedia.getFileSize()) ;
-                app.l(String.valueOf(tmpFile.length())+"**"+adminMedia.getFileSize()+"**"+progress);
+                int progress = (int) (tmpFile.length() * 100 / movies.getMovie_size());
+                app.l(String.valueOf(tmpFile.length()) + "**" + movies.getMovie_size() + "**" + progress);
                 progressCircula.setProgress(progress);
-                percentDone.setText(String.valueOf(progress)+"%");
+                percentDone.setText(String.valueOf(progress) + "%");
             }
 
 
             View itemView = this.itemView;
-            totalSize.setText(String.valueOf(adminMedia.getFileSize()));
-            desc.setText(adminMedia.getMedia_desc());
-            Glide.with(Application.getContext()).load(adminMedia.getPreview()).into(preview);
-            lottieAnimationView.setOnClickListener(v -> onClickListener.onDownloadStateClick(adminMedia, itemView));
+
+            Long movie_size = Long.valueOf(movies.getMovie_size());
+            String movie_size_human_readable = "";
+            DecimalFormat decimalFormat = new DecimalFormat("##.00");
+
+            if (movie_size < 1024)
+                movie_size_human_readable = movie_size + "B";
+            else if (movie_size < 1024 * 1024) {
+                movie_size_human_readable = decimalFormat.format(movie_size / 1024.00) + " کیلوبایت";
+            } else if (movie_size < 1024 * 1024 * 1024)
+                movie_size_human_readable = decimalFormat.format(movie_size / 1048576.00) + " مگابایت";
+            else {
+                movie_size_human_readable = decimalFormat.format(movie_size / 1073741824.00) + " گیگابایت";
+            }
+
+
+            totalSize.setText(movie_size_human_readable);
+            desc.setText(movies.getMedia_desc());
+            //Glide.with(Application.getContext()).load("http://drkamal3.com/Mechanic/"+movies.getMovie_preview()).into(preview);
+            if (file.exists() && file.length() == movies.getMovie_size()) {
+                Picasso.get().load("http://drkamal3.com/Mechanic/" + movies.getMovie_preview())
+                        .into(preview);
+            } else {
+                Picasso.get().load("http://drkamal3.com/Mechanic/" + movies.getMovie_preview())
+                        .transform(new BlurTransformation(context, 25, 1)).into(preview);
+            }
+            lottieAnimationView.setOnClickListener(v -> onClickListener.onDownloadStateClick(movies, itemView));
         }
 
     }

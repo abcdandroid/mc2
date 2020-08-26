@@ -1,0 +1,244 @@
+
+Y
+java:S2259Ó"BA "NullPointerException" could be thrown; "file" is nullable here.(¯ØŒ
+D
+java:S1604Ò"(Make this anonymous inner class a lambda(³Æÿÿÿÿÿ
+?
+java:S1604†"(Make this anonymous inner class a lambda(şŞ¸
+l	java:S117Â"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŒÏåÿÿÿÿÿ
+{
+java:S1450ˆ"_Remove the "mapThumbnailFake" field and declare it as a local variable in the relevant methods.(È¬ŞÃÿÿÿÿÿ
+V
+java:S1128
+";Remove this unused import 'android.graphics.BitmapFactory'.(âàºÍûÿÿÿÿ
+Y
+java:S1117¥"BRename "mechanicPhone" which hides the field declared at line 145.(ß•ğ×
+N
+java:S1128"8Remove this unused import 'androidx.annotation.NonNull'.(ˆÛúÜ
+F
+java:S1068"+Remove this unused "jobHint" private field.(® »ïüÿÿÿÿ
+Z
+java:S1155˜">Use isEmpty() to check whether the collection is empty or not.(²ãš¾ÿÿÿÿÿ
+M
+java:S1128E"7Remove this unused import 'com.google.gson.JsonObject'.(µÊ´½
+`
+java:S1192š"IDefine a constant instead of duplicating this literal "jobNames" 3 times.(üÊ¦Ò
+G
+java:S1874Ö	"0Remove this use of "getColor"; it is deprecated.(Í“‹¼
+2
+java:S3626ê"Remove this redundant jump.(ûÁİ…
+—
+java:S1186Û"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(„ìÒ'
+
+java:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÈŞËıÿÿÿÿ
+F
+java:S1068}"+Remove this unused "picHint" private field.(ÅÂ€üÿÿÿÿ
+?
+java:S1604¼	"(Make this anonymous inner class a lambda(Ô¿¢ò
+V
+java:S1117Ö"?Rename "regionDesc" which hides the field declared at line 135.(òŞï‰
+R	java:S125ç"<This block of commented-out lines of code should be removed.(ú½Îñ
+8	java:S131ì""Add a default case to this switch.(şÀè¨
+f
+java:S1192‘	"JDefine a constant instead of duplicating this literal "video/mp4" 3 times.(å«Œûÿÿÿÿ
+j
+java:S1192•"NDefine a constant instead of duplicating this literal "mechanicPhone" 3 times.(õàÂ›úÿÿÿÿ
+n
+java:S1192‘"RDefine a constant instead of duplicating this literal "mechanicStoreName" 3 times.(ñëÃ ûÿÿÿÿ
+q
+java:S1104õ"ZMake jobRowReceiver a static final constant or non-public and provide accessors if needed.(·¼±
+X
+java:S2259"BA "NullPointerException" could be thrown; "file" is nullable here.(Ø½‰\
+W	java:S125ä"<This block of commented-out lines of code should be removed.(¨Œ¿Ëøÿÿÿÿ
+e
+java:S1192§"IDefine a constant instead of duplicating this literal "regionId" 3 times.(–‹°Êşÿÿÿÿ
+D
+java:S1604ô"(Make this anonymous inner class a lambda(±ŠÓÜıÿÿÿÿ
+g	java:S117¿"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(±…›¦
+M
+java:S5261Ú"1Add explicit curly braces to avoid dangling else.(¨Œ¡Æûÿÿÿÿ
+i
+java:S3776Ü"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(àŠæ¹
+l	java:S117Ÿ"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(óÆÒüÿÿÿÿ
+
+java:S1186æ	"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(ÅÑ„ùÿÿÿÿ
+p
+java:S2293¬"YReplace the type specification in this constructor call with the diamond operator ("<>").(‚œ‹ã
+D
+java:S1604Ä"(Make this anonymous inner class a lambda(»ú¡Åùÿÿÿÿ
+W	java:S125Ú"<This block of commented-out lines of code should be removed.(¨Œ¿Ëøÿÿÿÿ
+K
+java:S1068"/Remove this unused "lttLngValue" private field.(ûÙÓ¥ûÿÿÿÿ
+o
+java:S1128'"TRemove this unused import 'com.bumptech.glide.request.target.BitmapImageViewTarget'.(Ÿûû¶ıÿÿÿÿ
+o
+java:S3776"SRefactor this method to reduce its Cognitive Complexity from 131 to the 15 allowed.(¨Œşÿÿÿÿ
+7
+java:S2129" Remove this "String" constructor(ĞÒé
+G
+java:S1068"+Remove this unused "mapHint" private field.(Îç¤ıÿÿÿÿ
+W	java:S125‚"<This block of commented-out lines of code should be removed.(Œ¹óúÿÿÿÿ
+p
+java:S1450—"YRemove the "movieLayer" field and declare it as a local variable in the relevant methods.(ŞÖÑ 
+`
+java:S1192û"IDefine a constant instead of duplicating this literal "imageNo" 13 times.(ñ¨Ì
+?
+java:S1604á"(Make this anonymous inner class a lambda(Âò«
+S
+java:S1128X"=Remove this unused import 'java.lang.annotation.ElementType'.(’åÕÛ
+A
+java:S5411É"*Use the primitive boolean expression here.(Õ›º˜
+D
+java:S1604²"(Make this anonymous inner class a lambda( ˜¼²øÿÿÿÿ
+g
+java:S1192§"KDefine a constant instead of duplicating this literal "regionName" 3 times.(–‹°Êşÿÿÿÿ
+k	java:S116s"VRename this field "fill_images" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÄÅœ
+—
+java:S1186¸"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(„ìÒ'
+p
+java:S2293ö"YReplace the type specification in this constructor call with the diamond operator ("<>").(‚œ‹ã
+A
+java:S5411¹"*Use the primitive boolean expression here.(Õ›º˜
+M
+java:S2696†"6Make the enclosing method "static" or remove this set.(şŞ¸
+q
+java:S1450"VRemove the "jobHint" field and declare it as a local variable in the relevant methods.(® »ïüÿÿÿÿ
+˜
+java:S1186İ	"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(„Âóú
+s
+java:S1450l"XRemove the "resultUri" field and declare it as a local variable in the relevant methods.(ÕŠÁùûÿÿÿÿ
+2
+java:S3626¤"Remove this redundant jump.(ûÁİ…
+i
+java:S1192"MDefine a constant instead of duplicating this literal "mechanicName" 3 times.(¾Ğç¬ÿÿÿÿÿ
+R	java:S125’	"<This block of commented-out lines of code should be removed.(‰‹Æ 
+m
+java:S1450€"VRemove the "jobRow1" field and declare it as a local variable in the relevant methods.(ŞÏ”Î
+q
+java:S1450}"VRemove the "picHint" field and declare it as a local variable in the relevant methods.(ÅÂ€üÿÿÿÿ
+Y
+java:S1117ê"BRename "mechanicAbout" which hides the field declared at line 146.( Ø“¬
+?
+java:S1604·	"(Make this anonymous inner class a lambda(Ó‹†
+˜
+java:S1186‰"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(±¾ê
+W	java:S125ß"<This block of commented-out lines of code should be removed.(¨Œ¿Ëøÿÿÿÿ
+D
+java:S1604Ä	"(Make this anonymous inner class a lambda(ƒÌ¬ıÿÿÿÿ
+R
+java:S1068‹"6Remove this unused "selectedRegionName" private field.(ÎÉûªıÿÿÿÿ
+A
+java:S1068~"+Remove this unused "lytForm" private field.(è—«Ë
+c
+java:S1128)"MRemove this unused import 'com.bumptech.glide.request.transition.Transition'.(åû…Ñ
+g
+java:S1192‹"KDefine a constant instead of duplicating this literal "mechanicId" 3 times.(²Úš¡üÿÿÿÿ
+l	java:S117ü"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ŒŞşãüÿÿÿÿ
+=	java:S131ó""Add a default case to this switch.(×“¾ñùÿÿÿÿ
+Y
+java:S2259°"BA "NullPointerException" could be thrown; "file" is nullable here.(Áìñş
+b
+java:S1117—"FRename "mechanicStoreName" which hides the field declared at line 144.(ˆÄÒğıÿÿÿÿ
+d	java:S100Ü"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(àŠæ¹
+v
+java:S1450"ZRemove the "lttLngValue" field and declare it as a local variable in the relevant methods.(ûÙÓ¥ûÿÿÿÿ
+u
+java:S1192š"^Define a constant instead of duplicating this literal "http://drkamal3.com/Mechanic/" 4 times.(‰†ÿÑ
+R	java:S125İ"<This block of commented-out lines of code should be removed.(ú½Îñ
+e
+java:S1192°"NDefine a constant instead of duplicating this literal "mechanicAbout" 3 times.(‹‚¢
+l	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÀğÇ¯úÿÿÿÿ
+n	java:S116t"YRename this field "address_images" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ùı•†
+i
+java:S1192Í"MDefine a constant instead of duplicating this literal "mechanicInfo" 6 times.(äõ²ùûÿÿÿÿ
+>
+java:S1481Ó"'Remove this unused "pm" local variable.(ÕÎú£
+H
+java:S5261Ñ"1Add explicit curly braces to avoid dangling else.(å¥‡
+s
+java:S1450‚"\Remove the "whatsUpIntent" field and declare it as a local variable in the relevant methods.(Ü”‘‹
+K
+java:S1128&"5Remove this unused import 'com.bumptech.glide.Glide'.(Ñˆ…Ë
+i
+java:S1192©	"MDefine a constant instead of duplicating this literal "downloadId**" 3 times.(Åßıÿùÿÿÿÿ
+U
+java:S1155ä">Use isEmpty() to check whether the collection is empty or not.(şÃ¾¡
+˜
+java:S1186‚	"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ü”ÂÈ
+^
+java:S1192š"GDefine a constant instead of duplicating this literal "jobIds" 3 times.(üÊ¦Ò
+g
+java:S1192¬"KDefine a constant instead of duplicating this literal "regionDesc" 3 times.(æ¹¾Ëûÿÿÿÿ
+A
+java:S5411×"*Use the primitive boolean expression here.(Õ›º˜
+H
+java:S5261»"1Add explicit curly braces to avoid dangling else.(å¥‡
+—
+java:S1186•"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(„ìÒ'
+i
+java:S3776ò"RRefactor this method to reduce its Cognitive Complexity from 84 to the 15 allowed.(¡é††
+g	java:S117å"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(·‚•ƒ
+U
+java:S1155">Use isEmpty() to check whether the collection is empty or not.(îõ•
+l
+java:S1450~"VRemove the "lytForm" field and declare it as a local variable in the relevant methods.(è—«Ë
+p
+java:S1450|"URemove the "parent" field and declare it as a local variable in the relevant methods.(û¯’¼ÿÿÿÿÿ
+r
+java:S1450"VRemove the "mapHint" field and declare it as a local variable in the relevant methods.(Îç¤ıÿÿÿÿ
+^
+java:S1192Ù"GDefine a constant instead of duplicating this literal "fileNo" 8 times.(È Ù
+O
+java:S1128"9Remove this unused import 'androidx.annotation.Nullable'.(¾Èêš
+f	java:S117ä"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æÃ‚
+J
+java:S1874ó"3Remove this use of "getDrawable"; it is deprecated.(ë­Œˆ
+J
+java:S1874©"3Remove this use of "getDrawable"; it is deprecated.(ë­Œˆ
+i	java:S100´"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œ°æìùÿÿÿÿ
+T
+java:S1854§"=Remove this useless assignment to local variable "timeStamp".(ô»ıÂ
+M
+java:S1854Ó"6Remove this useless assignment to local variable "pm".(ÕÎú£
+H
+java:S5261Œ"1Add explicit curly braces to avoid dangling else.(Ñ”²
+a
+java:S1128("KRemove this unused import 'com.bumptech.glide.request.target.CustomTarget'.(Ô„üè
+A
+java:S5411æ"*Use the primitive boolean expression here.(Õ›º˜
+G
+java:S5261©"1Add explicit curly braces to avoid dangling else.(§ãÖ_
+^
+java:S2259÷"BA "NullPointerException" could be thrown; "file" is nullable here.(ŠĞÓ»şÿÿÿÿ
+L
+java:S1128W"1Remove this unused import 'java.io.OutputStream'.(Ó ³ÿÿÿÿÿ
+]
+java:S1128B"BRemove this unused import 'com.example.mechanic2.models.Warranty'.(ğ‚ïƒûÿÿÿÿ
+m
+java:S11285"RRemove this unused import 'com.example.mechanic2.adapters.JobAutoCompleteAdapter'.(€‹‚üÿÿÿÿ
+d
+java:S1128g"IRemove this unused import 'com.huxq17.download.DownloadProvider.context'.(©Ø˜éşÿÿÿÿ
+E
+java:S1481§".Remove this unused "timeStamp" local variable.(ô»ıÂ
+l	java:S117Á"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(‡£˜óÿÿÿÿÿ
+R	java:S125î"<This block of commented-out lines of code should be removed.(÷Ñš
+m
+java:S11284"RRemove this unused import 'com.example.mechanic2.adapters.CarAutoCompleteAdapter'.(œ‘‚µıÿÿÿÿ
+I
+java:S1199™"-Extract this nested code block into a method.(ÒÌâ–øÿÿÿÿ
+H
+java:S5261›"1Add explicit curly braces to avoid dangling else.(¹Ù¥
+r	java:S116q"XRename this field "current_image" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Âæ¹Îşÿÿÿÿ
+—
+java:S1186ÿ"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(„ìÒ'
+
+java:S1186„"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ê¥¾àûÿÿÿÿ
+2
+java:S3626Ç"Remove this redundant jump.(ûÁİ…
+]
+java:S1117ˆ"ARename "mechanicName" which hides the field declared at line 143.(Ÿæøãÿÿÿÿÿ
+>
+java:S1604»"(Make this anonymous inner class a lambda(¦‚şC
+w
+java:S1450ƒ"`Remove the "submitNewMechanic" field and declare it as a local variable in the relevant methods.(ä¶´
+R	java:S125â"<This block of commented-out lines of code should be removed.(ú½Îñ

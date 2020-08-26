@@ -3,6 +3,7 @@ package com.example.mechanic2.activities;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -12,6 +13,8 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -106,7 +109,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     /**/
     private SeekBarUpdater seekBarUpdater;
     private ImageView startDownload;
-    private ImageView ivPlayPause;
     private ProgressCircula progressCirculaSound;
     private LottieAnimationView ltPlayPause;
     private TextView percentDone;/**/
@@ -120,7 +122,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     private ImageView imSen3;
     private TextView sen3;
 
-
     private TextView priceBtn;
     private TextView call;
     Goood goood;
@@ -128,13 +129,21 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     String audioAddress;
     private TextView price;
     String[] splitAll;
+    LottieAnimationView lottieAnimationView;
+    private int currentCondition;
     private Handler mSeekbarUpdateHandler = new Handler();
     private Runnable mUpdateSeekbar = new Runnable() {
         @Override
         public void run() {
             if (mediaPlayer != null) {
-                sbProgress.setProgress(mediaPlayer.getCurrentPosition());
-                mSeekbarUpdateHandler.postDelayed(this, 50);
+                try {
+                    currentCondition = mediaPlayer.getCurrentPosition();
+                    sbProgress.setProgress(currentCondition);
+                    mSeekbarUpdateHandler.postDelayed(this, 50);
+                } catch (Exception ex) {
+                    mediaPlayer.reset();
+                    currentCondition = mediaPlayer.getCurrentPosition();
+                }
             }
         }
     };
@@ -154,6 +163,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         binder(goood);
         initViewPager();
 
+
         app.l(goood.getSentence_1(), goood.getSentence_2(), goood.getSentence_3());
 
         audioAddress = context.getExternalFilesDir("voice/mp3").getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
@@ -166,16 +176,20 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onCompletion(MediaPlayer mp) {
                     seekBarUpdater = new SeekBarUpdater();
-                    mediaPlayer.seekTo(0);/*
+                    mediaPlayer.seekTo(0);
+                    ltPlayPause.setProgress(0);
+                    lottieAnimationView.pauseAnimation();
+                    lottieAnimationView.setProgress(0);
+                    /*
+
                     mediaPlayer.release();*/
+                    ltPlayPause.setAnimation(R.raw.pplt);
                     if (mediaPlayer.isPlaying()) {
                         sbProgress.postDelayed(seekBarUpdater, 100);
-                        ivPlayPause.setImageResource(R.drawable.pause_icon);
-                        ltPlayPause.setAnimation(R.raw.play_to_pause);
+                        ltPlayPause.setSpeed(-3f);
                     } else {
                         sbProgress.removeCallbacks(seekBarUpdater);
-                        ivPlayPause.setImageResource(R.drawable.play_icon);
-                        ltPlayPause.setAnimation(R.raw.pause_to_play);
+                        ltPlayPause.setSpeed(3);
                     }
                 }
             });
@@ -183,12 +197,10 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             progressCirculaSound.setVisibility(View.GONE);
             percentDone.setVisibility(View.GONE);
             startDownload.setVisibility(View.GONE);
-            ivPlayPause.setVisibility(View.VISIBLE);
             ltPlayPause.setVisibility(View.VISIBLE);
-            ltPlayPause.setAnimation(R.raw.pause_to_play);
-            ltPlayPause.playAnimation();
+            ltPlayPause.setAnimation(R.raw.pplt);
+            ltPlayPause.setProgress(0f);
             sbProgress.setEnabled(false);
-
         }
 
         File tmpFile = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
@@ -197,7 +209,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             progressCirculaSound.setVisibility(View.VISIBLE);
             percentDone.setVisibility(View.VISIBLE);
             startDownload.setAlpha(0f);
-            ivPlayPause.setVisibility(View.GONE);
+
             ltPlayPause.setVisibility(View.GONE);
             int progress = (int) (tmpFile.length() * 100 / goood.getFileSize());
             app.l(progress + "____");
@@ -220,7 +232,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             }
         });/**/
         call.setOnClickListener(this);
-        ivPlayPause.setOnClickListener(this);
+
         ltPlayPause.setOnClickListener(this);
         sbProgress.setOnSeekBarChangeListener(this); /* */
         initComponent();
@@ -244,7 +256,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     private void initViews() {
         extensiblePageIndicator = findViewById(R.id.flexibleIndicator);
         viewpager = findViewById(R.id.viewpager);
-
+        lottieAnimationView = findViewById(R.id.voice_img);
         goodName = findViewById(R.id.good_name);
         carIcon = findViewById(R.id.car_icon);
         suitableCars = findViewById(R.id.suitable_cars);
@@ -265,7 +277,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         startDownload = findViewById(R.id.startDownload);
         progressCirculaSound = findViewById(R.id.progressCirculaSound);
         percentDone = findViewById(R.id.percentDone);
-        ivPlayPause = findViewById(R.id.ivPlayPause);
+
         sbProgress = findViewById(R.id.sbProgress);
         ltPlayPause = findViewById(R.id.ltPlayPause);
 
@@ -318,7 +330,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
                 progressCirculaSound.setVisibility(View.GONE);
                 startDownload.setVisibility(View.GONE);
                 percentDone.setVisibility(View.GONE);
-                ivPlayPause.setVisibility(View.VISIBLE);
+
                 ltPlayPause.setVisibility(View.VISIBLE);
                 sbProgress.setEnabled(true);
 
@@ -351,7 +363,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
                 @Override
                 public void onViewPagerClick(View view) {
                     Intent intent = new Intent(ShowGoodDetailActivity.this, FullThumbActivity.class);
-                    intent.putExtra("from","showGoodDetailActivity");
+                    intent.putExtra("from", "showGoodDetailActivity");
                     intent.putExtra("linkList", splitAll);
                     intent.putExtra("currentItem", viewpager.getCurrentItem());
                     ShowGoodDetailActivity.this.startActivity(intent);
@@ -410,22 +422,23 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             priceBtn.setText(goood.getPrice());
         }
 
-        sen1.setText(goood.getSentence_1());
-        sen2.setText(goood.getSentence_2());
-        sen3.setText(goood.getSentence_3());
+        sen1.setText(goood.getSentence_1().trim());
+        sen2.setText(goood.getSentence_2().trim());
+        sen3.setText(goood.getSentence_3().trim());
 
-        desc.setText(goood.getGood_desc());
-        goodName.setText(goood.getGood_id());
+        desc.setText(goood.getGood_desc().trim());
+        goodName.setText(goood.getGood_id().trim());
         Gson gson = new Gson();
         Car[] cars = gson.fromJson(goood.getSuitable_car(), Car[].class);
         bindCars(cars);
-        companyName.setText(goood.getCompany());
-        countryName.setText(goood.getMade_by());
-        warrantyName.setText(goood.getWarranty());
-        if (goood.getIs_stock() == 0 && goood.getStatus() == 0) {
+        companyName.setText(goood.getCompany().trim());
+        countryName.setText(goood.getMade_by().trim());
+        warrantyName.setText(goood.getWarranty().trim());
+
+        if (goood.getStatus() == 0) {
             stateText.setText("این کالا در حال حاضر موجود نمی باشد");
             stateText.setVisibility(View.VISIBLE);
-            stateIcon.setVisibility(View.VISIBLE);
+            stateIcon.setVisibility(View.INVISIBLE);
         } else if (goood.getIs_stock() == 2 && goood.getStatus() == 1) {
 
             stateText.setVisibility(View.VISIBLE);
@@ -433,7 +446,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             stateText.setTextColor(activity.getResources().getColor(R.color.yellow_900));
 
             stateIcon.setVisibility(View.VISIBLE);
-            stateIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_diamond));
+            stateIcon.setImageDrawable(activity.getDrawable(R.drawable.diamond_ic));
             stateIcon.setColorFilter(activity.getResources().getColor(R.color.yellow_900));
 
 
@@ -442,7 +455,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             stateText.setText(activity.getResources().getString(R.string.stoke_good));
             stateText.setTextColor(activity.getResources().getColor(R.color.red_full));
 
-            stateIcon.setVisibility(View.VISIBLE);
+            stateIcon.setVisibility(View.INVISIBLE);
             stateIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_nis));
             stateIcon.setColorFilter(activity.getResources().getColor(R.color.red_full));
 
@@ -450,6 +463,34 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             stateText.setVisibility(View.INVISIBLE);
             stateIcon.setVisibility(View.INVISIBLE);
         }
+
+
+        /*if (goood.getIs_stock() == 0 && goood.getStatus() == 0) {
+            stateText.setText("این کالا در حال حاضر موجود نمی باشد");
+            stateText.setVisibility(View.VISIBLE);
+            stateIcon.setVisibility(View.VISIBLE);
+        } else if (goood.getIs_stock() == 2 && goood.getStatus() == 1) {
+
+            stateText.setVisibility(View.VISIBLE);
+            stateText.setText(activity.getResources().getString(R.string.luxury_good));
+            stateText.setTextColor(getResources().getColor(R.color.yellow_900));
+            stateIcon.setColorFilter(R.color.yellow_900);
+            stateIcon.setVisibility(View.VISIBLE);
+            stateIcon.setImageDrawable(activity.getDrawable(R.drawable.diamond_ic));
+
+        } else if (goood.getIs_stock() == 1 && goood.getStatus() == 1) {
+            stateText.setVisibility(View.VISIBLE);
+            stateText.setText(activity.getResources().getString(R.string.stoke_good));
+            stateText.setTextColor(activity.getResources().getColor(R.color.red_full));
+
+            stateIcon.setVisibility(View.INVISIBLE);
+            stateIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_nis));
+            stateIcon.setColorFilter(activity.getResources().getColor(R.color.red_full));
+
+        } else if (goood.getIs_stock() == 0 && goood.getStatus() == 1) {
+            stateText.setVisibility(View.INVISIBLE);
+            stateIcon.setVisibility(View.INVISIBLE);
+        }*/
 
     }
 
@@ -464,11 +505,11 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             String connector;
 
             if (i == cars.length - 1) connector = "";
-            else connector = "* ";
-            carsText.append(cars[i].getName()).append(connector);
+            else connector = " * ";
+            carsText.append(cars[i].getName().trim()).append(connector);
         }
 
-        suitableCars.setText(carsText.toString());
+        suitableCars.setText(carsText.toString().trim());
     }
 
     /**/
@@ -476,14 +517,17 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         sbProgress.setMax(mediaPlayer.getDuration());
         sbProgress.setProgress(mediaPlayer.getCurrentPosition());
         sbProgress.setEnabled(true);
+        ltPlayPause.setAnimation(R.raw.pplt);
         if (mediaPlayer.isPlaying()) {
+            ltPlayPause.setSpeed(3);
+            lottieAnimationView.playAnimation();
             sbProgress.postDelayed(mUpdateSeekbar, 100);
-            ivPlayPause.setImageResource(R.drawable.pause_icon);
-            ltPlayPause.setAnimation(R.raw.play_to_pause);
+
         } else {
+            lottieAnimationView.pauseAnimation();
+            ltPlayPause.setSpeed(-3);
             sbProgress.removeCallbacks(mUpdateSeekbar);
-            ivPlayPause.setImageResource(R.drawable.play_icon);
-            ltPlayPause.setAnimation(R.raw.pause_to_play);
+
         }
         ltPlayPause.playAnimation();
     }
@@ -491,7 +535,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ivPlayPause:
+
             case R.id.ltPlayPause: {
 
                 if (mediaPlayer == null) {
@@ -555,6 +599,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     }
 
     private void releaseMediaPlayer() {
+        mediaPlayer.stop();
         mediaPlayer = null;
     }
 
@@ -571,7 +616,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     @Override
     public void onBackPressed() {
         if (mediaPlayer != null) {
-            mediaPlayer.stop();
             releaseMediaPlayer();
         }
         super.onBackPressed();

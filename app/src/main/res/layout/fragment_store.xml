@@ -6,25 +6,24 @@
     android:id="@+id/parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/icons"
+    android:background="@color/white"
     android:fitsSystemWindows="true">
-
-
 
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/indigo_900"
+        android:background="@drawable/gradient_color"
         android:theme="@style/AppTheme.AppBarOverlay">
 
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="10"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             app:contentInsetStartWithNavigation="0dp"
             app:layout_scrollFlags="scroll|enterAlways">
 
@@ -37,12 +36,12 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="4dp"
-                android:background="@drawable/rectangle_inactive_stoke"
+                android:background="@drawable/ripple_nav_button"
                 android:gravity="center"
-                android:paddingLeft="8dp"
-                android:paddingTop="0dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="0dp">
+                android:paddingLeft="16dp"
+                android:paddingTop="8dp"
+                android:paddingRight="16dp"
+                android:paddingBottom="8dp">
 
                 <TextView
                     android:id="@+id/submit_filter"
@@ -50,16 +49,17 @@
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:text="جستجو کن"
-                    android:textColor="@color/lime_700"
-                    android:textSize="14sp"
-                    android:textStyle="bold|italic"
+                    android:gravity="center"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
                     android:visibility="invisible" />
 
                 <com.github.ybq.android.spinkit.SpinKitView
                     android:id="@+id/loading"
                     style="@style/SpinKitView.Large.FadingCircle"
-                    android:layout_width="55dp"
-                    android:layout_height="55dp"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
                     android:layout_centerInParent="true"
                     android:visibility="visible" />
 
@@ -71,33 +71,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginBottom="5dp"
                 android:layout_toRightOf="@id/submit_filter_parent"
-                android:background="@drawable/rectangle_zero_radius_inactive_stoke"
+                android:background="@drawable/btn_white"
                 android:completionThreshold="1"
                 android:hint="ماشینت چیه؟"
                 android:layoutDirection="rtl"
                 android:paddingLeft="8dp"
-                android:paddingTop="2dp"
+                android:paddingTop="8dp"
                 android:paddingRight="8dp"
-                android:paddingBottom="2dp"
-                android:textColor="@color/grey_10"
-                android:textColorHint="@color/blue_grey_300"
-                android:textSize="16sp">
+                android:paddingBottom="8dp" >
 
                 <AutoCompleteTextView
                     android:id="@+id/car_question"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/reset_car"
+                    android:layout_marginLeft="4dp"
                     android:background="@color/transparent"
                     android:completionThreshold="2"
                     android:hint="@string/ask_car"
                     android:layoutDirection="rtl"
                     android:textColor="@color/grey_10"
-                    android:textColorHint="@color/blue_grey_300"
-                    android:textSize="16sp" />
+                    android:textColorHint="@color/deep_purple_100"
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:id="@+id/reset_car"
@@ -117,31 +116,33 @@
             <RelativeLayout
                 android:id="@+id/good_question_parent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@id/car_question_parent"
-                android:layout_alignLeft="@id/car_question_parent"
-                android:layout_alignRight="@id/car_question_parent"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:background="@drawable/rectangle_zero_radius_inactive_stoke"
+                android:layout_alignStart="@id/car_question_parent"
+                android:layout_alignEnd="@id/car_question_parent"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/btn_white"
                 android:completionThreshold="1"
                 android:layoutDirection="rtl"
                 android:paddingLeft="8dp"
-                android:paddingTop="2dp"
+                android:paddingTop="8dp"
                 android:paddingRight="8dp"
-                android:paddingBottom="2dp">
+                android:paddingBottom="8dp">
 
                 <AutoCompleteTextView
                     android:id="@+id/good_question"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/reset_good"
+                    android:layout_marginLeft="4dp"
                     android:background="@color/transparent"
                     android:completionThreshold="2"
                     android:hint="@string/ask_good"
                     android:layoutDirection="rtl"
                     android:textColor="@color/grey_10"
-                    android:textColorHint="@color/blue_grey_300"
-                    android:textSize="16sp" />
+                    android:textColorHint="@color/deep_purple_100"
+                    android:textSize="18sp" />
 
                 <ImageView
                     android:id="@+id/reset_good"
@@ -161,10 +162,12 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="2dp"
             android:gravity="center"
             android:layoutDirection="rtl"
             android:orientation="horizontal">
@@ -177,8 +180,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/btn_inactive_stoke"
-                android:entries="@array/question_filter"
+                android:background="@drawable/btn_white"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:textSize="12sp" />
@@ -190,8 +192,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_weight="1"
-                android:background="@drawable/btn_inactive_stoke"
-                android:entries="@array/question_filter"
+                android:background="@drawable/btn_white"
                 android:paddingTop="2dp"
                 android:paddingBottom="2dp"
                 android:textSize="12sp" />
@@ -207,7 +208,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="4dp"
                 android:layout_weight="1"
-                android:background="@drawable/btn_inactive_stoke"
+                android:background="@drawable/btn_white"
                 android:clickable="true"
                 android:gravity="center"
                 android:paddingLeft="12sp"
@@ -216,7 +217,7 @@
                 android:paddingBottom="4dp"
                 android:text="استوک"
                 android:textColor="@color/grey_10"
-                android:textSize="12sp" />
+                android:textSize="16sp" />
 
 
         </LinearLayout>

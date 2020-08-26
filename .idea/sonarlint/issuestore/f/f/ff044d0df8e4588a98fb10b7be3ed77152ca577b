@@ -1,0 +1,135 @@
+
+Q
+java:S1874Ô"3Remove this use of "getDrawable"; it is deprecated.(ì¯í·8£¾Ñº.
+V
+java:S1128";Remove this unused import 'android.graphics.BitmapFactory'.(âàºÍûÿÿÿÿ
+Ÿ
+java:S1186‡"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(«û³±8£¾Ñº.
+D	java:S131¡""Add a default case to this switch.(×“¾ñùÿÿÿÿ8£¾Ñº.
+a
+java:S1128&"FRemove this unused import 'androidx.fragment.app.FragmentTransaction'.(¦İÚ¿şÿÿÿÿ
+
+java:S1450r"bRemove the "titleQuestionParent" field and declare it as a local variable in the relevant methods.(©«½‰8ÑíÑº.
+g
+java:S11289"LRemove this unused import 'com.example.mechanic2.interfaces.AddQuestionFab'.(Ú¿Ä¾ıÿÿÿÿ
+z
+java:S1450Y"]Remove the "fab_add_layout" field and declare it as a local variable in the relevant methods.(®ûÖ8íÒ§Ñº.
+Y	java:S125Í"<This block of commented-out lines of code should be removed.(Óñ·Ç8£¾Ñº.
+T
+java:S1128<">Remove this unused import 'com.example.mechanic2.models.Good'.(Êê½è
+F
+java:S1185ÿ"(Remove this method to simply inherit it.(Šèä8£¾Ñº.
+\
+java:S1128;"ARemove this unused import 'com.example.mechanic2.models.Country'.(”ÖÎ‡øÿÿÿÿ
+Ÿ
+java:S1186§"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(±¾ê8£¾Ñº.
+z
+java:S1450€"]Remove the "btnAddQuestion" field and declare it as a local variable in the relevant methods.(é­…K8ÑíÑº.
+j
+java:S1192Æ"GDefine a constant instead of duplicating this literal "sortBy" 4 times.(¿¦”Çøÿÿÿÿ8£¾Ñº.
+n
+java:S11280"SRemove this unused import 'com.example.mechanic2.adapters.GoodAutoCompleteAdapter'.(ªØ§ıÿÿÿÿ
+Q
+java:S1874Ø"3Remove this use of "getDrawable"; it is deprecated.(Ùè³ü8å¡Ñº.
+k
+java:S1450k"URemove the "appbar" field and declare it as a local variable in the relevant methods.(­¹‚ä
+_
+java:S1128"=Remove this unused import 'android.animation.ObjectAnimator'.(õ¶—Èıÿÿÿÿ8®¾¨Ñº.
+I
+java:S1128"4Remove this unused import 'android.graphics.Bitmap'.(¾ì
+u
+java:S3776£"RRefactor this method to reduce its Cognitive Complexity from 19 to the 15 allowed.(¨÷ù©ıÿÿÿÿ8ÑíÑº.
+Ÿ
+java:S1186š"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(«û³±8£¾Ñº.
+J
+java:S1128"4Remove this unused import 'android.widget.EditText'.(†Å›Ú
+r
+java:S1192Ç"ODefine a constant instead of duplicating this literal "showMyQuestion" 4 times.(ªœŒ´ÿÿÿÿÿ8£¾Ñº.
+Z
+java:S1128"?Remove this unused import 'android.graphics.drawable.Drawable'.(Á‰º„ùÿÿÿÿ
+Q
+java:S1874Ÿ"3Remove this use of "getDrawable"; it is deprecated.(Ùè³ü8£¾Ñº.
+Q
+java:S1874æ"3Remove this use of "getDrawable"; it is deprecated.(Ùè³ü8£¾Ñº.
+K
+java:S1604ğ"(Make this anonymous inner class a lambda(Ôºöêüÿÿÿÿ8£¾Ñº.
+Y	java:S125¿"<This block of commented-out lines of code should be removed.(ƒ‰¡“8£¾Ñº.
+Y	java:S125ô"<This block of commented-out lines of code should be removed.(Ú»¦ü8£¾Ñº.
+J
+java:S1068d"-Remove this unused "isFABOpen" private field.(º°ñ 8ãªÑº.
+¤
+java:S1186ä"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹Æº×şÿÿÿÿ8£¾Ñº.
+D	java:S131Æ""Add a default case to this switch.(×“¾ñùÿÿÿÿ8£¾Ñº.
+n	java:S116Y"YRename this field "fab_add_layout" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®ûÖ
+S
+java:S1128"7Remove this unused import 'android.animation.Animator'.(İŸéN8®¾¨Ñº.
+Y	java:S125°"<This block of commented-out lines of code should be removed.(çİ“8£¾Ñº.
+n
+java:S1301¡"KReplace this "switch" statement by "if" statements to increase readability.(×“¾ñùÿÿÿÿ8£¾Ñº.
+Q
+java:S1874š"3Remove this use of "getDrawable"; it is deprecated.(ì¯í·8£¾Ñº.
+a
+java:S1155Ÿ">Use isEmpty() to check whether the collection is empty or not.(¦á½ùÿÿÿÿ8Ğß¨Ñº.
+p
+java:S3776¸"RRefactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.(×ù¾‚8£¾Ñº.
+Z
+java:S1128"8Remove this unused import 'android.widget.LinearLayout'.(çîšçúÿÿÿÿ8×µ¢Ñº.
+U
+java:S1068Z"3Remove this unused "fragmentManager" private field.(î›äÿÿÿÿÿ8ãªÑº.
+b
+java:S11281"MRemove this unused import 'com.example.mechanic2.adapters.GooodStoreAdapter'.(ı¤ıN
+K
+java:S1604ö"(Make this anonymous inner class a lambda(ªòÛªûÿÿÿÿ8£¾Ñº.
+Y
+java:S1128H">Remove this unused import 'org.jetbrains.annotations.NotNull'.(éš®ïøÿÿÿÿ
+Q
+java:S1874ı"3Remove this use of "getDrawable"; it is deprecated.(Ùè³ü8£¾Ñº.
+Ÿ
+java:S1186”"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(±¾ê8£¾Ñº.
+N
+java:S1068e"3Remove this unused "initialFragment" private field.(å¿’÷ùÿÿÿÿ
+\
+java:S1128"FRemove this unused import 'android.animation.AnimatorListenerAdapter'.(®ÃÙ»
+S
+java:S1068f"1Remove this unused "valueAnimator" private field.(Äùœİøÿÿÿÿ8ÑíÑº.
+\
+java:S1155Ú">Use isEmpty() to check whether the collection is empty or not.(Ë˜à8Ğß¨Ñº.
+L
+java:S1128*"6Remove this unused import 'androidx.transition.Slide'.(‹¡¬õ
+k
+java:S11284"PRemove this unused import 'com.example.mechanic2.adapters.StoreRecyclerAdapter'.(„¹©İùÿÿÿÿ
+x
+java:S1450"bRemove the "btnShowAllQuestions" field and declare it as a local variable in the relevant methods.(éåÿi
+^	java:S125¯"<This block of commented-out lines of code should be removed.(ÃÍŠ‰üÿÿÿÿ8£¾Ñº.
+]
+java:S1128A"BRemove this unused import 'com.example.mechanic2.models.Warranty'.(ğ‚ïƒûÿÿÿÿ
+L
+java:S1128"1Remove this unused import 'android.view.Gravity'.(ÎÎÎıÿÿÿÿ
+y
+java:S1450Z"^Remove the "fragmentManager" field and declare it as a local variable in the relevant methods.(î›äÿÿÿÿÿ
+}
+java:S1450o"`Remove the "carQuestionParent" field and declare it as a local variable in the relevant methods.(²ğ‘³8ÑíÑº.
+Ÿ
+java:S1186µ"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(õÇŠ±8£¾Ñº.
+Y
+java:S1117è";Rename "detail" which hides the field declared at line 134.(ç²8£¾Ñº.
+Q
+java:S1874÷"3Remove this use of "getDrawable"; it is deprecated.(ì¯í·8£¾Ñº.
+j
+java:S1192‹"GDefine a constant instead of duplicating this literal "detail" 3 times.(Êë…Ğúÿÿÿÿ8ÑíÑº.
+A
+java:S1068X"%Remove this unused "x" private field.(³™ì8®¾¨Ñº.
+R
+java:S1068o"5Remove this unused "carQuestionParent" private field.(²ğ‘³8ÑíÑº.
+\
+java:S1155ì">Use isEmpty() to check whether the collection is empty or not.(üàÁ¼8Ğß¨Ñº.
+M
+java:S1128F"7Remove this unused import 'com.google.gson.JsonObject'.(µÊ´½
+T
+java:S1068r"7Remove this unused "titleQuestionParent" private field.(©«½‰8ÑíÑº.
+w
+java:S1450l"aRemove the "submitFilterParent" field and declare it as a local variable in the relevant methods.(¿çæÖ
+d
+java:S1128,"BRemove this unused import 'com.airbnb.lottie.LottieAnimationView'.(éøñ˜úÿÿÿÿ8ÑíÑº.
+r
+java:S1450j"URemove the "parent" field and declare it as a local variable in the relevant methods.(©¤Û¶8ÑíÑº.

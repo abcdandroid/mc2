@@ -77,7 +77,7 @@ public class AddQuestionFragment extends Fragment implements View.OnClickListene
 
         keyboardManger= () -> new EditText[]{questionText, carType};
 
-        CarAutoCompleteAdapter adapter = new CarAutoCompleteAdapter(Objects.requireNonNull(getContext()), android.R.layout.simple_expandable_list_item_1);
+        CarAutoCompleteAdapter adapter = new CarAutoCompleteAdapter(Objects.requireNonNull(getContext()), android.R.layout.simple_expandable_list_item_1,false);
         carType.setAdapter(adapter);
 
         AdapterView.OnItemClickListener l = (parent, view, position, id) -> {

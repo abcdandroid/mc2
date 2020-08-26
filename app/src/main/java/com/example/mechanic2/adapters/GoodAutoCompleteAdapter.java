@@ -89,7 +89,7 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
         if (good.getId() == -2) {
             mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.yellow_900));
         } else {
-            mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
+            mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.middle_color_dark));
         }
         mViewHolder.textView.setText(good.getName());
         mViewHolder.idTv.setText(String.valueOf(good.getId()));

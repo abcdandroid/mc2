@@ -7,12 +7,15 @@ import androidx.annotation.Nullable;
 import com.example.mechanic2.models.AdminMedia;
 import com.example.mechanic2.models.Ads;
 import com.example.mechanic2.models.AnswerWithMsg;
+import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.CountriesAndWarranties;
+import com.example.mechanic2.models.Etcetera;
 import com.example.mechanic2.models.Good;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.MechanicWithMsg;
+import com.example.mechanic2.models.Movies;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.models.QusetionWithMsg;
 
@@ -101,6 +104,13 @@ public interface Api {
 
     @GET(".")
     Call<Void> addToSold(@QueryMap Map<String, String> map);
+
+    @GET(".")
+    Call<List<Movies>> getMechanicMovies(@QueryMap Map<String, String> map);
+
+
+    @GET(".")
+    Call<Etcetera> getEtcetera(@QueryMap Map<String, String> map);
 
 
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/indigo_700</color>
-    <color name="colorPrimaryDark">@color/indigo_900</color>
+    <color name="colorPrimary">@color/light_purple</color>
+    <color name="colorPrimaryDark">@color/purple</color>
     <color name="primaryLight">@color/indigo_500</color>
     <color name="colorAccent">@color/blue_grey_500</color>
     <color name="primaryText">@color/grey_900</color>
@@ -180,6 +180,8 @@
     <color name="indigo_A200">#536DFE</color>
     <color name="indigo_A400">#3D5AFE</color>
     <color name="indigo_A700">#304FFE</color>
+    <color name="purple">#6C004B</color>
+    <color name="light_purple">#87005E</color>
 
     <color name="cyan_50">#E0F7FA</color>
     <color name="cyan_100">#B2EBF2</color>
@@ -252,7 +254,7 @@
     <color name="purple_A200">#E040FB</color>
     <color name="purple_A400">#D500F9</color>
     <color name="purple_A700">#AA00FF</color>
-
+    <color name="middle_color_dark">#53018C</color>
     <color name="blue_50">#E3F2FD</color>
     <color name="blue_100">#BBDEFB</color>
     <color name="blue_200">#90CAF9</color>

@@ -8,5 +8,6 @@ import com.example.mechanic2.models.Movies;
 public interface OnClickListener {
     void onDownloadStateClick(AdminMedia adminMedia, View viewHolder);
     void onDownloadStateClick(Movies movies, View viewHolder);
-    void onDownloadCompleteClick(AdminMedia adminMedia, View viewHolder);
+    void onRemoveClick(Movies movies, View viewHolder);
+
 }

@@ -2,6 +2,7 @@ package com.example.mechanic2.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,8 @@ import com.example.mechanic2.views.MyTextView;
 import com.google.gson.Gson;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.GooodViewHolder> {
     private List<Goood> gooodList;
@@ -77,7 +80,7 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
     }
 
     class GooodViewHolder extends RecyclerView.ViewHolder {
-        private ImageView preview;
+        private CircleImageView preview;
         private MyTextView goodName;
         private ImageView carIcon;
         private MyTextView suitableCars;
@@ -107,40 +110,40 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
             stateIcon = itemView.findViewById(R.id.state_icon);
             stateText = itemView.findViewById(R.id.state_text);
             parent = itemView.findViewById(R.id.parent);
-            parent.setOnClickListener(new View.OnClickListener() {
+            new Handler().postDelayed(new Runnable() {
                 @Override
-                public void onClick(View v) {
+                public void run() {
+                    int status = gooodList.get(getAdapterPosition()).getStatus();
+                    if (status == 1)
+                        parent.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                app.l(status);
+                                Intent intent = new Intent(activity, ShowGoodDetailActivity.class);
 
-                    Intent intent = new Intent(activity, ShowGoodDetailActivity.class);
+                                intent.putExtra("good", gooodList.get(getAdapterPosition()));
 
-                    intent.putExtra("good", gooodList.get(getAdapterPosition()));
-/*
-                    Pair<View, String> pair0 = Pair.create(parent, ViewCompat.getTransitionName(parent));
-                    Pair<View, String> pair1 = Pair.create(itemView.findViewById(R.id.preview), "img");
+                                activity.startActivity(intent/*, optionsCompat.toBundle()*/);
 
-                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
-                            pair1,pair1
-                    );*/
-
-                    activity.startActivity(intent/*, optionsCompat.toBundle()*/);
-
+                            }
+                        });
                 }
-            });
+            }, 100);
         }
 
         void binder(Goood goood) {
             Glide.with(activity).load(goood.getPreview()).into(preview);
-            goodName.setText(goood.getGood_id());
+            goodName.setText(goood.getGood_id().trim());
             Gson gson = new Gson();
             Car[] cars = gson.fromJson(goood.getSuitable_car(), Car[].class);
             bindCars(cars);
-            companyName.setText(goood.getCompany());
-            countryName.setText(goood.getMade_by());
-            warrantyName.setText(goood.getWarranty());
-            if (goood.getIs_stock() == 0 && goood.getStatus() == 0) {
+            companyName.setText(goood.getCompany().trim());
+            countryName.setText(goood.getMade_by().trim());
+            warrantyName.setText(goood.getWarranty().trim());
+            if (goood.getStatus() == 0) {
                 stateText.setText("این کالا در حال حاضر موجود نمی باشد");
                 stateText.setVisibility(View.VISIBLE);
-                stateIcon.setVisibility(View.VISIBLE);
+                stateIcon.setVisibility(View.INVISIBLE);
                 readMore.setVisibility(View.INVISIBLE);
             } else if (goood.getIs_stock() == 2 && goood.getStatus() == 1) {
 
@@ -149,7 +152,7 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
                 stateText.setTextColor(activity.getResources().getColor(R.color.yellow_900));
 
                 stateIcon.setVisibility(View.VISIBLE);
-                stateIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_diamond));
+                stateIcon.setImageDrawable(activity.getDrawable(R.drawable.diamond_ic));
                 stateIcon.setColorFilter(activity.getResources().getColor(R.color.yellow_900));
 
                 readMore.setVisibility(View.VISIBLE);
@@ -159,7 +162,7 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
                 stateText.setText(activity.getResources().getString(R.string.stoke_good));
                 stateText.setTextColor(activity.getResources().getColor(R.color.red_full));
 
-                stateIcon.setVisibility(View.VISIBLE);
+                stateIcon.setVisibility(View.INVISIBLE);
                 stateIcon.setImageDrawable(activity.getDrawable(R.drawable.ic_nis));
                 stateIcon.setColorFilter(activity.getResources().getColor(R.color.red_full));
 
@@ -176,18 +179,18 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
             StringBuilder carsText = new StringBuilder();
 
             if (cars.length == 1) {
-                suitableCars.setText(cars[0].getName());
+                suitableCars.setText(cars[0].getName().trim());
                 return;
             }
             for (int i = 0; i < cars.length; i++) {
                 String connector;
 
                 if (i == cars.length - 1) connector = "";
-                else connector = "* ";
-                carsText.append(cars[i].getName()).append(connector);
+                else connector = " * ";
+                carsText.append(cars[i].getName().trim()).append(connector);
             }
 
-            suitableCars.setText(carsText.toString());
+            suitableCars.setText(carsText.toString().trim());
         }
     }
 

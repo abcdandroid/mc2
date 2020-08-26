@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
     android:scrollbars="none">
+
 
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:paddingTop="16dp"
-        android:paddingBottom="36dp">
+        android:gravity="center">
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/warranty_lt"
+            android:layout_width="64dp"
+            app:lottie_speed="0.8"
+            android:layout_height="64dp"
+            app:lottie_autoPlay="true"
+            android:layout_centerHorizontal="true"
+            app:lottie_loop="true"
+            app:lottie_rawRes="@raw/lt_warrning"
+            android:layout_marginBottom="16dp"
+            />
 
         <com.example.mechanic2.views.MyTextView
+            android:layout_below="@id/warranty_lt"
             android:id="@+id/txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="@string/good_not_found"
-            android:textSize="16dp" />
+            android:textSize="20sp" />
 
         <RelativeLayout
-            android:id="@+id/btn_show_all_goods"
+            android:id="@+id/btn_contact_us"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/txt"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/btn_all_goods"
+            android:background="@drawable/btn_submit_store"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="8dp"
-                android:src="@drawable/ic_all"
-                android:tint="@color/light_green_800" />
 
             <com.example.mechanic2.views.MyTextView
                 style="@style/TextAppearance.Medium.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/txt_ok"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="8dp"
-                android:text="@string/show_all_goods"
-                android:textColor="@color/light_green_800" />
+                android:text="تماس جهت تهیه کالا"
+                android:textColor="@color/white" />
 
         </RelativeLayout>
 
+
+
         <RelativeLayout
-            android:id="@+id/btn_show_luxury_goods"
+            android:id="@+id/btn_show_all_goods"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn_show_all_goods"
+            android:layout_below="@id/btn_contact_us"
             android:layout_alignLeft="@id/btn_show_all_goods"
             android:layout_alignRight="@id/btn_show_all_goods"
             android:layout_marginBottom="16dp"
-            android:background="@drawable/btn_luxury_goods"
+            android:background="@drawable/btn_active_stoke"
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
 
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="8dp"
-                android:src="@drawable/ic_diamond"
-                android:tint="@color/yellow_900" />
 
             <com.example.mechanic2.views.MyTextView
                 style="@style/TextAppearance.Medium.Bold"
@@ -87,70 +87,12 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_margin="8dp"
-                android:text="@string/show_luxury_goods"
-                android:textColor="@color/yellow_900" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/btn_show_stoke_goods"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_show_luxury_goods"
-            android:layout_alignLeft="@id/btn_show_all_goods"
-            android:layout_alignRight="@id/btn_show_all_goods"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/btn_stoke_goods"
-            android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-            <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="8dp"
-                android:src="@drawable/ic_nis"
-                android:tint="@color/red_A700" />
-
-            <com.example.mechanic2.views.MyTextView
-                style="@style/TextAppearance.Medium.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="8dp"
-                android:text="@string/show_stoke_goods"
-                android:textColor="@color/red_A700" />
+                android:id="@+id/cancel_action"
+                android:text="بی خیال"
+                android:textColor="@color/white" />
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/btn_request_goods"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btn_show_stoke_goods"
-            android:layout_alignLeft="@id/btn_show_all_goods"
-            android:layout_alignRight="@id/btn_show_all_goods"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/btn_request_goods"
-            android:gravity="center"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp">
-
-
-            <com.example.mechanic2.views.MyTextView
-                android:gravity="center"
-                style="@style/TextAppearance.Medium.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_margin="8dp"
-                android:text="تماس با کارشناس جهت دریافت کالا"
-                android:textColor="@color/indigo_900" />
-
-        </RelativeLayout>
 
 
     </RelativeLayout>

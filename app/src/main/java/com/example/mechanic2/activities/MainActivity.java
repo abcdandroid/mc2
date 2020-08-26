@@ -6,30 +6,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.mechanic2.R;
-import com.example.mechanic2.adapters.ViewPagerAdapter;
 import com.example.mechanic2.app.Application;
+import com.example.mechanic2.app.Connectivity;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.AdminFragment;
+import com.example.mechanic2.fragments.AdminFragment2;
 import com.example.mechanic2.fragments.MainPageFragment;
 import com.example.mechanic2.fragments.MechanicFragment;
 import com.example.mechanic2.fragments.QuestionFragment;
 import com.example.mechanic2.fragments.StoreFragment;
+import com.example.mechanic2.interfaces.UpdateNavBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -42,100 +48,107 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isFabPressed;
     private SweetAlertDialog sweetAlertDialog;
+    private int type;
+    private String mechanicInfo;
+
+    public static UpdateNavBar updateNavBar;
 
     //پرداخت مبلغ فونت ایران سنس به کار رفته
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar=findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-
-        viewpager = findViewById(R.id.viewpager);
+       /* viewpager = findViewById(R.id.viewpager);
+        viewpager.setOffscreenPageLimit(1);*/
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         if (checkPermission())
-            myAction();
-
+            myAction(); /**/
     }
 
 
     private void myAction() {
-        app.l("type is " + SharedPrefUtils.getIntData("type"));
-
-        sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).setConfirmText("شکیبا باشید");
-        sweetAlertDialog.setCancelable(false);
-        sweetAlertDialog.show();
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("mpd"));
-        LocalBroadcastManager.getInstance(this).registerReceiver(dataReceiver, new IntentFilter("dataCount"));
-
-        app.l("main" + isFabPressed);
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-        adapter.addFragment(new MechanicFragment());
-        adapter.addFragment(new AdminFragment());
-        adapter.addFragment(new QuestionFragment());
-        adapter.addFragment(new StoreFragment());
-        adapter.addFragment(new MainPageFragment());
-        viewpager.setOffscreenPageLimit((adapter.getCount() > 1 ? adapter.getCount() - 1 : 1));
-        viewpager.setAdapter(adapter);
-        viewpager.setCurrentItem(4);
+        app.l("starteddd5");
+        this.type = SharedPrefUtils.getIntData("type");
+        this.mechanicInfo = SharedPrefUtils.getStringData("mechanicInfo");
+        LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("mp"));
         bottomNavigationView.setSelectedItemId(R.id.main_page);
-        viewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        loadMainPageFragment(type, mechanicInfo);
+
+
+            bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+                item.setChecked(true);
+                switch (item.getItemId()) {
+                    case R.id.mechanics:
+                        app.loadFragment(this, new MechanicFragment());
+                        break;
+                    case R.id.home:
+                        app.loadFragment(this, new AdminFragment());
+                        break;
+                    case R.id.questions:
+                        app.loadFragment(this, new QuestionFragment());
+                        break;
+                    case R.id.store:
+                        app.loadFragment(this, new StoreFragment());
+                        break;
+                    case R.id.main_page:
+                        loadMainPageFragment(type, mechanicInfo);
+                        break;
+                }
+                return false;
+            });
+        //bottomNavigationView.setSelectedItemId(R.id.main_page);
+        updateNavBar = new UpdateNavBar() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                switch (position) {
+            public void setSelectedItem(int field) {
+                switch (field) {
                     case 0:
                         bottomNavigationView.setSelectedItemId(R.id.mechanics);
                         break;
                     case 1:
-                        bottomNavigationView.setSelectedItemId(R.id.home);
+                        bottomNavigationView.setSelectedItemId(R.id.questions);
                         break;
                     case 2:
-                        bottomNavigationView.setSelectedItemId(R.id.questions);
+                        bottomNavigationView.setSelectedItemId(R.id.main_page);
                         break;
                     case 3:
                         bottomNavigationView.setSelectedItemId(R.id.store);
                         break;
                     case 4:
-                        bottomNavigationView.setSelectedItemId(R.id.main_page);
+                        bottomNavigationView.setSelectedItemId(R.id.home);
                         break;
                 }
             }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            item.setChecked(true);
-            switch (item.getItemId()) {
-                case R.id.mechanics:
-                    viewpager.setCurrentItem(0);
-                    break;
-                case R.id.home:
-                    viewpager.setCurrentItem(1);
-                    break;
-                case R.id.questions:
-                    viewpager.setCurrentItem(2);
-                    break;
-                case R.id.store:
-                    viewpager.setCurrentItem(3);
-                    break;
-                case R.id.main_page:
-                    viewpager.setCurrentItem(4);
-                    break;
-            }
-            return false;
-        });
+        };
+        app.l("starteddd6");
     }
+
+    private void loadMainPageFragment(int type, String mechanicInfo) {
+        MainPageFragment mainPageFragment1;
+        if (type == 0 || (type == 1 && mechanicInfo.equals("-1"))) {
+            mainPageFragment1 = new MainPageFragment(type);
+        } else if (type == 1 && !mechanicInfo.equals("-1")) {
+            mainPageFragment1 = new MainPageFragment(type, mechanicInfo);
+        } else mainPageFragment1 = new MainPageFragment(type);
+
+        app.loadFragment(this, mainPageFragment1);
+    }
+
+/*    private void loadMainPageFragment(int type, String mechanicInfo) {
+        MainPageFragment mainPageFragment;
+        if (type == 0 || (type == 1 && mechanicInfo.equals("-1"))) {
+            mainPageFragment = MainPageFragment.newInstance(type);
+        } else if (type == 1 && !mechanicInfo.equals("-1")) {
+            mainPageFragment = MainPageFragment.newInstance(type, mechanicInfo);
+        } else mainPageFragment = MainPageFragment.newInstance(type);
+
+        app.loadFragment(this,mainPageFragment);
+    }*/
 
     private Boolean checkPermission() {
 
@@ -159,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        app.l("ppoottmm" + requestCode);
         if (requestCode == REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 myAction();
@@ -166,59 +180,79 @@ public class MainActivity extends AppCompatActivity {
                 app.t("not granted");
             }
         } else if (requestCode == MechanicFragment.REQUEST_CODE) {
-            Intent intent = new Intent("forGps")  /**/;
+            app.l("fgps" + grantResults[grantResults.length - 1]);
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Intent intent = new Intent("forGps")  /**/;
+                LocalBroadcastManager.getInstance(Application.getContext()).sendBroadcast(intent);
+            }
+        } else if (requestCode == ShowMechanicDetailActivity.CALL_REQUEST_CODE) {
+            app.l("ppoottmm1");
+            Intent intent = new Intent("forCall")  /**/;
             LocalBroadcastManager.getInstance(Application.getContext()).sendBroadcast(intent);
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
-    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getIntExtra("field", 0) == 3) {
-                viewpager.setCurrentItem(3);
-                bottomNavigationView.setSelectedItemId(R.id.store);
-            } else if (intent.getIntExtra("field", 0) == 1) {
-                viewpager.setCurrentItem(0);
-                bottomNavigationView.setSelectedItemId(R.id.mechanics);
-            } else if (intent.getIntExtra("field", 0) == 2) {
-                viewpager.setCurrentItem(2);
-                bottomNavigationView.setSelectedItemId(R.id.questions);
-            } else if (intent.getIntExtra("field", 0) == 4) {
-                viewpager.setCurrentItem(1);
-                bottomNavigationView.setSelectedItemId(R.id.home);
-            }
-
-
-        }
-    };
-    int dataCount;
-    BroadcastReceiver dataReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            app.l("fggsdgf3");
-            dataCount++;
-            if (dataCount == 5) {
-                sweetAlertDialog.dismissWithAnimation();
-            }
-            app.l("dataaaccc" + dataCount + intent.getStringExtra("ref"));
-        }
-    };
-
-
-    @Override
-    protected void onDestroy() {
-        LocalBroadcastManager.getInstance(Application.getContext()).unregisterReceiver(broadcastReceiver);
-        LocalBroadcastManager.getInstance(Application.getContext()).unregisterReceiver(dataReceiver);
-        super.onDestroy();
-    }
 
     @Override
     public void onBackPressed() {
-        Intent a = new Intent(Intent.ACTION_MAIN);
-        a.addCategory(Intent.CATEGORY_HOME);
-        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(a);
+        int id = bottomNavigationView.getSelectedItemId();
+        if (id == R.id.main_page) {
+            Intent a = new Intent(Intent.ACTION_MAIN);
+            a.addCategory(Intent.CATEGORY_HOME);
+            a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(a);
+        } else {
+            bottomNavigationView.setSelectedItemId(R.id.main_page);
+            loadMainPageFragment(type, mechanicInfo);
+        }
+
     }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            bottomNavigationView.setVisibility(View.GONE);
+
+        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+            bottomNavigationView.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+    private int selected = 5;
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            selected = intent.getIntExtra("selected", 0);
+            String detail = intent.getStringExtra("detail");
+            Menu menu = bottomNavigationView.getMenu();
+            menu.getItem(selected).setChecked(true);
+
+//            switch (selected) {
+//                case 0:
+//                    bottomNavigationView.setSelectedItemId(R.id.mechanics);
+//                    break;
+//                case 1:
+//                    bottomNavigationView.setSelectedItemId(R.id.questions);
+//                    break;
+//                case 2:
+//                    bottomNavigationView.setSelectedItemId(R.id.main_page);
+//                    break;
+//                case 3:
+//                    bottomNavigationView.setSelectedItemId(R.id.store);
+//                    break;
+//                case 4:
+//                    bottomNavigationView.setSelectedItemId(R.id.home);
+//                    break;
+//            }
+        }
+    };
+
+
 }

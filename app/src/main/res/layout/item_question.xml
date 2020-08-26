@@ -2,92 +2,41 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/blue_grey_50"
+    android:background="@color/white"
     android:id="@+id/parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:visibility="gone"
-        android:gravity="center_vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/carName"
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="پراید"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:padding="16dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/fillet_add_store"
-            android:gravity="center_vertical"
-            />
-
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/questionText"
-            android:textColor="#3900CA"
-            android:layout_margin="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:textSize="16dp"/>
-
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/answerCount"
-            android:layout_marginRight="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="به این سوال * پاسخ داده شده است!"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            />
-
-    </LinearLayout>
 
     <RelativeLayout
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="4dp"
         android:visibility="visible"
         android:layout_marginTop="8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <ImageView
-            android:scaleType="centerCrop"
+            android:scaleType="center"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@color/grey_1000"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:background="@drawable/image_corner_maker"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_alignParentStart="true"
             android:id="@+id/preview_question"
+            android:src="@drawable/wrench_q"
             />
        <com.example.mechanic2.views.MyTextView
-            android:textColor="@color/grey_1000"
+            android:textColor="@color/purple"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginTop="2dp"
             android:layoutDirection="rtl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/hello_world"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:layout_toEndOf="@id/preview_question"
             style="@style/TextAppearance.Subhead.Bold"
             android:id="@+id/title_question"
@@ -95,7 +44,7 @@
 
         <com.example.mechanic2.views.MyTextView
             android:textStyle="bold"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textColor="@color/grey_1000"
             android:layout_marginEnd="16dp"
             android:layoutDirection="rtl"
@@ -106,13 +55,11 @@
             android:layout_below="@id/title_question"
             android:layout_toEndOf="@id/preview_question"
             android:text="@string/lorem_simple"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="32dp"
             android:lines="2"
             android:id="@+id/description_question"
             android:ellipsize="end"
             />
-
-
 
         <ImageView
             android:layout_width="16dp"
@@ -120,19 +67,20 @@
             android:layout_below="@id/description_question"
             android:id="@+id/seen_icon"
             android:layout_alignEnd="@id/description_question"
-            android:tint="@color/grey_1000"
+            android:tint="@color/indigo_900"
             android:src="@drawable/ic_remove_red_eye_black_24dp"
             />
 
         <com.example.mechanic2.views.MyTextView
             android:id="@+id/seen_count"
-            android:textColor="@color/grey_1000"
+            android:textColor="@color/indigo_900"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="123"
             android:layout_toLeftOf="@id/seen_icon"
-            android:layout_below="@id/description_question"
-            android:textSize="12sp"
+            android:layout_alignTop="@id/seen_icon"
+            android:textSize="14sp"
+            android:layout_marginTop="-3dp"
             android:layout_marginRight="4dp"
             />
 
@@ -144,25 +92,26 @@
             android:layout_below="@id/description_question"
             android:id="@+id/answer_icon"
             android:layout_toLeftOf="@id/seen_count"
-            android:tint="@color/grey_1000"
+            android:tint="@color/indigo_900"
             android:src="@drawable/ic_question_answer_black_24dp"
             />
 
         <com.example.mechanic2.views.MyTextView
             android:id="@+id/answer_count"
-            android:textColor="@color/grey_1000"
+            android:textColor="@color/indigo_900"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="248"
+            android:layout_marginTop="-3dp"
             android:layout_toLeftOf="@id/answer_icon"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:layout_marginRight="4dp"
             android:layout_alignTop="@id/answer_icon"
             />
 
         <com.example.mechanic2.views.MyTextView
             android:id="@+id/car_type"
-            android:textColor="@color/grey_1000"
+            android:textColor="@color/indigo_900"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="نوع خودرو:"
@@ -174,14 +123,15 @@
 
         <com.example.mechanic2.views.MyTextView
             android:id="@+id/car_name"
-            android:textColor="@color/grey_1000"
+            android:textColor="@color/indigo_900"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="پراید"
             android:layout_toLeftOf="@id/car_type"
-            android:textSize="12sp"
+            android:textSize="14sp"
             android:layout_marginRight="4dp"
-            android:layout_alignTop="@id/answer_icon"
+            android:layout_alignBaseline="@id/car_type"
+            android:textStyle="bold"
             />
 
 

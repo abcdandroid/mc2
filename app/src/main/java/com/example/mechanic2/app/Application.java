@@ -38,14 +38,16 @@ public class Application extends android.app.Application {
 
     @Override
     public void onCreate() {
+
         super.onCreate();
         context = this;
+        app.l("tttApppp");
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         BlurKit.init(this);
         String iran_yekan = "fonts/b.ttf";
         FontOverride.setDefaultFont(this, "MONOSPACE", iran_yekan);
-
 
         Gson gson = new GsonBuilder().setLenient().create();
 

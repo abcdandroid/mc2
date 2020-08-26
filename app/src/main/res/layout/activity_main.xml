@@ -4,22 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activities.MainActivity">
 
-
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@id/bottomNavigationView" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
-        app:menu="@menu/bottom_list"
         android:layout_height="wrap_content"
-        android:background="@color/indigo_700"
-        android:layout_alignParentBottom="true" />
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/gradient_color"
+        app:itemIconTint="@color/grey_10"
+        app:itemTextAppearanceActive="@style/Widget.Design.BottomNavigationView.a"
+        app:itemTextAppearanceInactive="@style/Widget.Design.BottomNavigationView.a"
+        app:itemTextColor="@color/grey_10"
+        app:menu="@menu/bottom_list" />
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/bottomNavigationView"
+        android:background="@color/grey_10" />
+
 
 </RelativeLayout>

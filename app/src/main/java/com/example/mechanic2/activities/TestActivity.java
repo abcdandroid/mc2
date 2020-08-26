@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.icu.util.Measure;
 import android.location.Address;
@@ -18,6 +19,7 @@ import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,7 +27,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
@@ -41,10 +45,21 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.devbrackets.android.exomedia.listener.OnPreparedListener;
+import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.OnTagCrossClickListener;
+import com.example.mechanic2.models.Job;
+import com.example.mechanic2.models.Mechanic;
+import com.example.mechanic2.models.MechanicWithMsg;
+import com.example.mechanic2.models.Movies;
+import com.example.mechanic2.models.Region;
 import com.example.mechanic2.views.RecorderVisualizerView;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.j256.ormlite.stmt.query.In;
 import com.nightonke.wowoviewpager.Animation.ViewAnimation;
 import com.nightonke.wowoviewpager.Animation.WoWoPositionAnimation;
@@ -55,159 +70,36 @@ import com.nightonke.wowoviewpager.WoWoViewPagerAdapter;
 import com.tyorikan.voicerecordingvisualizer.RecordingSampler;
 import com.tyorikan.voicerecordingvisualizer.VisualizerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.function.Consumer;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import kotlin.jvm.internal.Lambda;
 import me.itangqi.waveloadingview.WaveLoadingView;
 
 import static com.loopj.android.http.AsyncHttpClient.LOG_TAG;
 
-public class TestActivity extends AppCompatActivity {
+public class TestActivity extends Activity {
 
-/*
-    Button getLocationBtn;
-    TextView locationText;
-
-
-    public static final int REPEAT_INTERVAL = 40;
-    LocationManager locationManager;
-    MediaPlayer mediaPlayer;*/
-
-    private AppBarLayout appbar;
-    private MotionLayout ml;
-
-    private Handler mHandler = new Handler();
-    private Handler handler = new Handler(); // Handler for updating the
-    boolean mStartRecording = true;
-    private static String fileName = null;
-    private MediaRecorder recorder = null;
-    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_test);
-
-        btn = (Button) findViewById(R.id.btn);
-
-       /* appbar = findViewById(R.id.appbar);
-        ml = findViewById(R.id.ml);
-        appbar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                float seekPosition = -verticalOffset / (float)appBarLayout.getTotalScrollRange();
-                ml.setProgress(seekPosition);
-            }
-        });
-*/
-        View.OnClickListener onClickListener = v -> {
-            PackageManager pm = getPackageManager();
-            String url = "https://api.whatsapp.com/send?phone=+989365487593";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-        };
-
-
-
-
-        btn.setOnClickListener(onClickListener);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void onClick(View view) {
+        startActivity(new Intent(TestActivity.this,SecondTestActivity.class));
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            app.l("A");
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void startRecording() {
-        recorder = new MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        recorder.setOutputFile(fileName);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-
-        try {
-            recorder.prepare();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "prepare() failed");
-        }
-        recorder.start();
-    }
-
-    private void stopRecording() {
-        recorder.stop();
-        recorder.release();
-        recorder = null;
-    }
-
-    private void onRecord(boolean start) {
-        if (start) {
-            startRecording();
-        } else {
-            stopRecording();
-        }
-    }
-
-
-    boolean isRecording;
-/*
-    void getLocation() {
-        app.l("AAA");
-        try {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 0.001f, new LocationListener() {
-                @Override
-                public void onLocationChanged(Location location) {
-                    String text1 = "Latitude: " + location.getLatitude() + "\n Longitude: " + location.getLongitude();
-                    locationText.setText(text1);
-                    app.l(text1);
-
-                    try {
-                        Geocoder geocoder = new Geocoder(TestActivity.this, Locale.getDefault());
-                        List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-                        String text = locationText.getText() + "\n" + addresses.get(0).getAddressLine(0) + ", " +
-                                addresses.get(0).getAddressLine(1) + ", " + addresses.get(0).getAddressLine(2);
-                        locationText.setText(text);
-                        app.l(addresses.size() + "size");
-                        app.l("AAA");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
-                    app.l(status + "BBB");
-                }
-
-                @Override
-                public void onProviderEnabled(String provider) {
-                    app.l(provider + "CCC");
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-                    Toast.makeText(TestActivity.this, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
-                }
-            });
-        } catch (SecurityException e) {
-            app.l("DD");
-            e.printStackTrace();
-        }
-    }*/
 
 
 }

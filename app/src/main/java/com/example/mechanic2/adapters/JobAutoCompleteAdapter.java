@@ -93,7 +93,7 @@ public class JobAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             job = data.get(position);
         else job = new Job("", 0);
 
-        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.blue_400));
+        mViewHolder.parent.setBackgroundColor(Application.getContext().getResources().getColor(R.color.purple));
 
         mViewHolder.textView.setText(job.getName());
         mViewHolder.idTv.setText(String.valueOf(job.getId()));

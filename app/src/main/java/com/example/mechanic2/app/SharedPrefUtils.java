@@ -41,7 +41,7 @@ public class SharedPrefUtils {
      * @return the int data
      */
     static public int getIntData( String key) {
-        return  getContext().getSharedPreferences(PREF_APP, Context.MODE_PRIVATE).getInt(key, 0);
+        return  getContext().getSharedPreferences(PREF_APP, Context.MODE_PRIVATE).getInt(key, -1);
     }
 
     /**
@@ -126,6 +126,10 @@ public class SharedPrefUtils {
             if (entry.getKey().equals(key))
                 getSharedPrefEditor(PREF_APP).remove(entry.getKey()).apply();
         }
+
+    }
+    static public void clear() {
+         getSharedPrefEditor(PREF_APP).clear().apply();
 
     }
 

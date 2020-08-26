@@ -1,0 +1,141 @@
+
+t
+java:S1450i"YRemove the "personIcon" field and declare it as a local variable in the relevant methods.(©÷âëùÿÿÿÿ
+{
+java:S1450x"eRemove the "recyclerMechanicMovies" field and declare it as a local variable in the relevant methods.(ÒĞÜ²
+J
+java:S1874Ñ"3Remove this use of "getDrawable"; it is deprecated.(ë­Œˆ
+h
+java:S1128Y"SRemove this unused import 'jp.wasabeef.picasso.transformations.BlurTransformation'.(õ‰²2
+G
+java:S1874"0Remove this use of "getColor"; it is deprecated.(Í“‹¼
+S
+java:S1128M"=Remove this unused import 'org.osmdroid.views.MapController'.(‚œŠƒ
+
+java:S1186°"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ú˜Í¤üÿÿÿÿ
+V	java:S110^"<This class has 9 parents which is greater than 5 authorized.(îîÒ‰üÿÿÿÿ
+l
+java:S1450m"VRemove the "jobIcon" field and declare it as a local variable in the relevant methods.(¯Ë¨õ
+?
+java:S1604ÿ"(Make this anonymous inner class a lambda(Ó‹†
+h
+java:S1128:"RRemove this unused import 'com.example.mechanic2.fragments.ShowThumbnailFragment'.(˜£©
+f
+java:S1450c"QRemove the "ml" field and declare it as a local variable in the relevant methods.(©°•?
+n
+java:S1450v"XRemove the "aboutDesc" field and declare it as a local variable in the relevant methods.(ÍÔˆò
+C
+java:S1068q"-Remove this unused "phoneIcon" private field.(èüûç
+R
+java:S11282"7Remove this unused import 'com.downloader.utils.Utils'.(óÅ±»úÿÿÿÿ
+f
+java:S1450d"PRemove the "b" field and declare it as a local variable in the relevant methods.(”ÀÖ
+I
+java:S1068o".Remove this unused "regionIcon" private field.(úŠõŞûÿÿÿÿ
+I
+java:S1068~".Remove this unused "startPoint" private field.( õ•°üÿÿÿÿ
+f
+java:S1192Ø"JDefine a constant instead of duplicating this literal "video/mp4" 3 times.(å«Œûÿÿÿÿ
+n
+java:S3252“"WUse static access with "androidx.core.content.ContextCompat" for "checkSelfPermission".(¡ì¯ı
+s
+java:S1450k"XRemove the "storeIcon" field and declare it as a local variable in the relevant methods.(·®éşÿÿÿÿ
+C
+java:S1068s"-Remove this unused "scoreIcon" private field.(£ŸŠ¯
+u
+java:S1450"^Remove the "btnCallMechanic" field and declare it as a local variable in the relevant methods.(¶ÒÀ’
+s
+java:S1450e"XRemove the "storeName" field and declare it as a local variable in the relevant methods.(í•³Ôıÿÿÿÿ
+p
+java:S1450h"URemove the "myInfo" field and declare it as a local variable in the relevant methods.(åñ±ôøÿÿÿÿ
+t
+java:S1450o"YRemove the "regionIcon" field and declare it as a local variable in the relevant methods.(úŠõŞûÿÿÿÿ
+?
+java:S1604„"(Make this anonymous inner class a lambda(Ô¿¢ò
+
+java:S1186Ê"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(äáêÜüÿÿÿÿ
+q
+java:S1450{"\Remove the "mapController" field and declare it as a local variable in the relevant methods.(äµŸ}
+q
+java:S1450u"VRemove the "myAbout" field and declare it as a local variable in the relevant methods.(œ¹“Âÿÿÿÿÿ
+˜
+java:S1186¥"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(„Âóú
+r
+java:S1450g"\Remove the "nestedContent" field and declare it as a local variable in the relevant methods.(¨ğ›
+K
+java:S1068`"0Remove this unused "collapsingMl" private field.(ù£Áıÿÿÿÿ
+[
+java:S1117Ì"?Rename "startPoint" which hides the field declared at line 126.(ä÷ùÿÿÿÿ
+G
+java:S1068g"1Remove this unused "nestedContent" private field.(¨ğ›
+i
+java:S1192ñ"MDefine a constant instead of duplicating this literal "downloadId**" 3 times.(Åßıÿùÿÿÿÿ
+n
+java:S1450|"XRemove the "mapParent" field and declare it as a local variable in the relevant methods.(Ò…Øü
+E
+java:S1068h"*Remove this unused "myInfo" private field.(åñ±ôøÿÿÿÿ
+g
+java:S1450f"QRemove the "ll" field and declare it as a local variable in the relevant methods.( íÔ³
+?
+java:S1604ğ"(Make this anonymous inner class a lambda(í›ûõ
+Z
+java:S1128C"DRemove this unused import 'com.example.mechanic2.views.MyViewPager'.(µüúø
+H
+java:S1068k"-Remove this unused "storeIcon" private field.(·®éşÿÿÿÿ
+t
+java:S1450~"YRemove the "startPoint" field and declare it as a local variable in the relevant methods.( õ•°üÿÿÿÿ
+]
+java:S11286"BRemove this unused import 'com.example.mechanic2.app.Application'.(¤ç©„ıÿÿÿÿ
+R	java:S125Ù"<This block of commented-out lines of code should be removed.(‰‹Æ 
+G
+java:S1128"1Remove this unused import 'android.app.Activity'.(‡ÊÍÆ
+q
+java:S1450j"[Remove the "mechanicName" field and declare it as a local variable in the relevant methods.(ƒİóÎ
+r
+java:S1450w"WRemove the "myMovies" field and declare it as a local variable in the relevant methods.(Úøš úÿÿÿÿ
+v
+java:S1450`"[Remove the "collapsingMl" field and declare it as a local variable in the relevant methods.(ù£Áıÿÿÿÿ
+I
+java:S1068i".Remove this unused "personIcon" private field.(©÷âëùÿÿÿÿ
+n
+java:S1450s"XRemove the "scoreIcon" field and declare it as a local variable in the relevant methods.(£ŸŠ¯
+H
+java:S1128T"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ
+j
+java:S1450„"SRemove the "view" field and declare it as a local variable in the relevant methods.(ØÊ»¶
+X
+java:S1128>"=Remove this unused import 'com.example.mechanic2.models.Car'.(Ûàÿ·øÿÿÿÿ
+w
+java:S1450l"\Remove the "storeNameMain" field and declare it as a local variable in the relevant methods.(Ÿ×†Ñıÿÿÿÿ
+s
+java:S1450r"XRemove the "phoneName" field and declare it as a local variable in the relevant methods.(êÂŞşÿÿÿÿ
+p
+java:S2293Ô"YReplace the type specification in this constructor call with the diamond operator ("<>").(ª¨âÇ
+A
+java:S1068m"+Remove this unused "jobIcon" private field.(¯Ë¨õ
+P
+java:S1068}"5Remove this unused "mapControllerFull" private field.(ƒÈúÿÿÿÿ
+G
+java:S1068w",Remove this unused "myMovies" private field.(Úøš úÿÿÿÿ
+J
+java:S1481ì"3Remove this unused "denyAccessCall" local variable.(’•×
+C
+java:S1068|"-Remove this unused "mapParent" private field.(Ò…Øü
+{
+java:S1450b"`Remove the "flexibleIndicator" field and declare it as a local variable in the relevant methods.( áäèùÿÿÿÿ
+|
+java:S1450y"aRemove the "mechanicMapPreview" field and declare it as a local variable in the relevant methods.(…’å†øÿÿÿÿ
+S
+java:S1128"=Remove this unused import 'android.view.animation.Animation'.(õò©²
+n
+java:S1450t"XRemove the "scoreName" field and declare it as a local variable in the relevant methods.(Ãî¸Ñ
+k
+java:S1450_"URemove the "appbar" field and declare it as a local variable in the relevant methods.(­¹‚ä
+F
+java:S1068u"+Remove this unused "myAbout" private field.(œ¹“Âÿÿÿÿÿ
+t
+java:S1450p"YRemove the "regionName" field and declare it as a local variable in the relevant methods.(°Å¥§ùÿÿÿÿ
+D
+java:S1604Œ"(Make this anonymous inner class a lambda(ƒÌ¬ıÿÿÿÿ
+n
+java:S1450q"XRemove the "phoneIcon" field and declare it as a local variable in the relevant methods.(èüûç

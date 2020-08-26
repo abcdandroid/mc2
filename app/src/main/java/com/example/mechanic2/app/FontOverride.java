@@ -7,8 +7,7 @@ import java.lang.reflect.Field;
 
 public final class FontOverride {
 
-    public static void setDefaultFont(Context context,
-                                      String staticTypefaceFieldName, String fontAssetName) {
+    public static void setDefaultFont(Context context, String staticTypefaceFieldName, String fontAssetName) {
         final Typeface newTypeface = Typeface.createFromAsset(context.getAssets(),
                 fontAssetName);
         try {

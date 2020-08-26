@@ -1,0 +1,45 @@
+
+X	java:S125c"<This block of commented-out lines of code should be removed.(åœø‘8€¹¹­¹.
+d
+java:S1192¯"MDefine a constant instead of duplicating this literal "downloadId**" 3 times.(®ŸÍ–
+R	java:S125•"<This block of commented-out lines of code should be removed.(Ñ¨
+>
+java:S1068I"(Remove this unused "data" private field.(œñÏ˜
+˜
+java:S1186ğ"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Ã‹ùë
+U
+java:S1155§">Use isEmpty() to check whether the collection is empty or not.(Ñ×ò¬
+U
+java:S1155ƒ">Use isEmpty() to check whether the collection is empty or not.(Û×¸—
+X
+java:S11287"BRemove this unused import 'cn.pedant.SweetAlert.SweetAlertDialog'.(õ”ØÁ
+]
+java:S1128)"BRemove this unused import 'com.example.mechanic2.models.Question'.(¤ƒçÇşÿÿÿÿ
+
+java:S1186ë"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(Êóåùÿÿÿÿ
+a
+java:S1128"KRemove this unused import 'com.example.mechanic2.activities.VideoActivity'.(™¯º˜
+D
+java:S1604Ê"(Make this anonymous inner class a lambda(ƒÌ¬ıÿÿÿÿ
+4
+java:S1128!"Remove this duplicated import.(ŒÀ¥—
+?
+java:S1604Â"(Make this anonymous inner class a lambda(Ô¿¢ò
+˜
+java:S1186á"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(„Âóú
+F
+java:S1068C"0Remove this unused "requestQueue" private field.(©¯Í€
+?
+java:S1604½"(Make this anonymous inner class a lambda(Ó‹†
+U
+java:S1155…">Use isEmpty() to check whether the collection is empty or not.(êè¥
+i
+java:S1128""SRemove this unused import 'com.example.mechanic2.adapters.QuestionRecyclerAdapter'.(™ãˆÂ
+E
+java:S1068A"*Remove this unused "lastId" private field.(‰ÙöÃøÿÿÿÿ
+G
+java:S1874Ü"0Remove this use of "getColor"; it is deprecated.(‰ø˜ğ
+Y
+java:S1128/">Remove this unused import 'org.jetbrains.annotations.NotNull'.(éš®ïøÿÿÿÿ
+a
+java:S1192”"JDefine a constant instead of duplicating this literal "video/mp4" 3 times.(şŒ¤Ã

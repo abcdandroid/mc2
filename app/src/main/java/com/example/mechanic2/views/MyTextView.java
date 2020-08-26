@@ -35,10 +35,7 @@ public class MyTextView extends androidx.appcompat.widget.AppCompatTextView {
             this.setTypeface(tf);
         }
 
-
     }
-
-
 
 
 }

@@ -1,0 +1,27 @@
+
+w
+Gapp/src/main/java/com/example/mechanic2/activities/AnswersActivity.java,b\d\bdb86f99fea4e230b0efc5d68123da5278640350
+{
+Kapp/src/main/java/com/example/mechanic2/fragments/MainPageItemFragment.java,a\9\a9e8921fe6f2499dc3c37f6b2e8cfca176a6abb2
+u
+Eapp/src/main/java/com/example/mechanic2/fragments/AdminFragment2.java,5\0\50c61da1d23b08f27a3823f86f80f8f7c84160b3
+t
+Dapp/src/main/java/com/example/mechanic2/fragments/AdminFragment.java,c\3\c3838b991f81bcf5d85df3315862983327a23186
+‚
+Rapp/src/main/java/com/example/mechanic2/activities/ShowMechanicDetailActivity.java,5\8\58215f4eee9962fcb0bd20c01538d863ce4a6470
+t
+Dapp/src/main/java/com/example/mechanic2/activities/MainActivity.java,e\5\e5cbc140751d06623ea02e1604e013c4d056a9e6
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+w
+Gapp/src/main/java/com/example/mechanic2/fragments/MainPageFragment.java,f\c\fc51f128d0b7e9d8c968cdce379114ab581ac624
+w
+Gapp/src/main/java/com/example/mechanic2/fragments/QuestionFragment.java,f\f\ff044d0df8e4588a98fb10b7be3ed77152ca577b
+|
+Lapp/src/main/java/com/example/mechanic2/activities/NewMechanicActivity2.java,e\8\e82f6cb016ee137df70c13c00b88bea864fdfff3
+{
+Kapp/src/main/java/com/example/mechanic2/activities/AddQuestionActivity.java,2\d\2d84f028aa21815272c4c0a47deb228f9d930bde
+m
+=app/src/main/java/com/example/mechanic2/app/Connectivity.java,5\6\565d553cf5db95598c1e59df9729a14038b781e3
+v
+Fapp/src/main/java/com/example/mechanic2/activities/SplashActivity.java,9\9\99f7f5ef2f4f08255a6173aec0ee628f6ae68e0e

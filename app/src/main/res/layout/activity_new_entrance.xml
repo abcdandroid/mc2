@@ -16,7 +16,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/spacing_large"
         android:layout_marginBottom="-30dp"
-        android:background="#0CF44336"
         android:src="@drawable/gearr" />
 
 
@@ -27,13 +26,14 @@
         android:layout_alignParentBottom="true" />
 
     <com.nightonke.wowoviewpager.WoWoViewPager
+        android:background="@drawable/gradient_color"
         android:id="@+id/wowo"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/radioGroupUserType"
         android:layout_alignParentTop="true"
-        android:background="@color/indigo_900"
         app:wowo_scrollDuration="3000" />
+
 
     <ImageView
         android:id="@+id/img_mechanic"
@@ -232,19 +232,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/submit"
-        android:layout_margin="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:orientation="horizontal">
 
         <RadioButton
             android:id="@+id/mechanic_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginRight="5dp"
             android:layout_weight="1"
             android:background="@drawable/rbtn_selector"
             android:button="@null"
+            android:textSize="16sp"
             android:checked="true"
             android:gravity="center"
             android:padding="5dp"
@@ -255,28 +258,31 @@
             android:id="@+id/normal_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:background="@drawable/rbtn_selector"
             android:button="@null"
             android:gravity="center"
             android:padding="5dp"
             android:text="کاربر معمولی هستم"
+            android:textSize="16sp"
             android:textColor="@drawable/rbtn_textcolor_selector" />
     </RadioGroup>
 
     <TextView
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:id="@+id/submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/gear2"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/btn_rounded_primary"
+        android:background="@drawable/btn_register"
         android:gravity="center"
         android:padding="16dp"
         android:text="تکمیل اطلاعات"
         android:textColor="@android:color/white"
-        android:textSize="16dp" />
+        android:textSize="18dp" />
 
 
 </RelativeLayout>

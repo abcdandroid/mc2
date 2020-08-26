@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grey_10"
     android:fitsSystemWindows="true"
     tools:context=".activities.AnswersActivity">
 
@@ -25,24 +26,34 @@
             app:titleEnabled="false">
 
             <RelativeLayout
-                android:fitsSystemWindows="true"
-                app:layout_collapseMode="parallax"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:fitsSystemWindows="true"
+                android:orientation="vertical"
+                app:layout_collapseMode="parallax">
 
 
                 <com.example.mechanic2.views.MyViewPager
                     android:id="@+id/questionImages"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:background="@drawable/gradient_color" />
+                <ImageView
+                    android:background="@drawable/gradient_color"
+                    android:id="@+id/when_no_image_for_question"
+                    android:src="@drawable/wrench_q"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="center"
+                    />
 
                 <com.merhold.extensiblepageindicator.ExtensiblePageIndicator
                     android:id="@+id/flexibleIndicator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="130dp"
+                    android:layout_marginBottom="85dp"
                     app:indicatorActiveColor="@color/red_full"
                     app:indicatorInactiveColor="@color/grey_10"
                     app:indicatorPadding="8dp"
@@ -57,8 +68,16 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/fillet_add_store"
+        android:background="@drawable/gradient_color"
+        android:contentInsetStart="0dp"
+        android:contentInsetLeft="0dp"
+        android:contentInsetEnd="0dp"
+        android:contentInsetRight="0dp"
         android:elevation="4dp"
+        app:contentInsetEnd="0dp"
+        app:contentInsetLeft="0dp"
+        app:contentInsetRight="0dp"
+        app:contentInsetStart="0dp"
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom"
         app:layout_collapseMode="pin"
@@ -76,197 +95,115 @@
             android:orientation="vertical"
             android:textDirection="rtl">
 
-            <TextView
-                android:id="@+id/carName"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginRight="16dp"
-                android:text="@string/hello_world"
-                android:textColor="@color/icons" />
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_marginRight="2dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/carNamePlace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="نام خودرو:  "
+                        android:textColor="@color/white"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/carName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/carNamePlace"
+                        android:layout_toLeftOf="@id/carNamePlace"
+                        android:text="@string/hello_world"
+                        android:textColor="@color/white"
+                        android:textSize="18dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_gravity="left"
+                    android:gravity="left"
+                    android:layout_marginLeft="2dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/titleNamePlace"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="موضوع سوال:  "
+                        android:textColor="@color/white"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_alignBaseline="@id/titleNamePlace"
+                        android:id="@+id/titleName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toLeftOf="@id/titleNamePlace"
+                        android:gravity="left"
+                        android:text="@string/hello_world"
+                        android:textColor="@color/white"
+                        android:textSize="18dp" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="4dp"
+                android:background="@color/white" />
 
             <TextView
                 android:id="@+id/questionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:textColor="@color/icons" />
+                android:text="@string/hello_world"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
 
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
-
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nested_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerAnswers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/blue_grey_100"
+        android:layout_marginTop="100dp"
+        android:layout_marginBottom="64dp"
+        android:background="@color/grey_10"
         android:clipToPadding="false"
         android:scrollbars="none"
         android:scrollingCache="true"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="100dp" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerAnswers"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </LinearLayout>
-
-    </androidx.core.widget.NestedScrollView>
-
-
-    <View
-        android:id="@+id/back_drop"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/overlay_dark_30"
-        android:clickable="true"
-        android:fitsSystemWindows="true" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom|right"
-        android:gravity="end|right"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:id="@+id/lyt_mic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_mic"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end|right"
-                android:layout_margin="@dimen/spacing_middle"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="2dp"
-                app:contentPadding="@dimen/spacing_medium"
-                app:rippleColor="@android:color/black">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="پاسخ صوتی"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    app:rippleColor="@android:color/black" />
-
-            </androidx.cardview.widget.CardView>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_mic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_middle"
-                android:layout_marginEnd="@dimen/spacing_smlarge"
-                android:layout_marginBottom="@dimen/spacing_middle"
-                android:clickable="true"
-                android:focusable="true"
-                android:tint="@color/grey_80"
-                app:backgroundTint="@android:color/white"
-                app:fabSize="mini"
-                app:rippleColor="@android:color/black"
-                app:srcCompat="@drawable/ic_mic" />
-
-            <View
-                android:layout_width="@dimen/spacing_xmedium"
-                android:layout_height="0dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lyt_call"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_call"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end|right"
-                android:layout_margin="@dimen/spacing_middle"
-                app:cardBackgroundColor="@android:color/white"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="2dp"
-                app:contentPadding="@dimen/spacing_medium"
-                app:rippleColor="@android:color/black">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:text="پاسخ متنی"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                    app:rippleColor="@android:color/black" />
-
-            </androidx.cardview.widget.CardView>
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_call"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_middle"
-                android:layout_marginRight="@dimen/spacing_smlarge"
-                android:layout_marginBottom="@dimen/spacing_middle"
-                android:clickable="true"
-                android:tint="@color/grey_80"
-                app:backgroundTint="@android:color/white"
-                app:fabSize="mini"
-                app:rippleColor="@android:color/black"
-                app:srcCompat="@drawable/ic_call" />
-
-            <View
-                android:layout_width="@dimen/spacing_xmedium"
-                android:layout_height="0dp" />
-
-        </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_smlarge"
-            android:layout_marginTop="@dimen/spacing_middle"
-            android:layout_marginRight="@dimen/spacing_smlarge"
-            android:layout_marginBottom="@dimen/spacing_middle"
-            android:clickable="true"
-            app:backgroundTint="@color/colorPrimary"
-            app:fabSize="normal"
-            app:rippleColor="@android:color/white"
-            app:srcCompat="@drawable/ic_add" />
-
-    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/new_answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:id="@+id/new_answer"
+        android:layout_gravity="bottom|right"
         android:layout_margin="16dp"
-        />
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/deep_orange_A700"
+        app:fabSize="normal"
+        app:layout_behavior=".app.ScrollAwareFABBehavior"
+        app:tint="@color/teal_50" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

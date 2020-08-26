@@ -1,103 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <EditText
-        android:imeOptions="actionNext"
-        android:id="@+id/et_answer"
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
+        android:layout_margin="4dp"
         android:layout_height="wrap_content"
-        android:background="@color/grey_3"
-        android:gravity="top"
-        android:hint="جوابتو برای این سوال بنویس"
+        app:counterEnabled="true"
         android:layoutDirection="rtl"
-        android:lines="5"
-        android:padding="@dimen/spacing_middle"
-        android:textDirection="rtl" />
+        android:textDirection="rtl"
+        android:gravity="left"
+        app:counterMaxLength="400"
+        android:hint="جوابتو برای این سوال بنویس"
+        android:id="@+id/et_answer_layout" >
+
+        <EditText
+            android:background="@color/white"
+            android:maxLength="400"
+            android:layout_gravity="left"
+            android:gravity="top"
+            android:id="@+id/et_answer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:lines="5" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
 
 
     <TextView
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/et_answer"
+        android:id="@+id/press_red_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="اگر پاسخ صوتی داری روی دکمه قرمز بزن"
-        android:id="@+id/press_red_button"
+        android:layout_below="@id/et_answer_layout"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="16dp"
-        />
+        android:text="اگر پاسخ صوتی داری روی دکمه قرمز بزن" />
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/start_record"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        app:lottie_rawRes="@raw/record"
         android:layout_below="@id/press_red_button"
-        android:id="@+id/start_record"
         android:layout_centerHorizontal="true"
-
         android:layout_marginTop="16dp"
-        app:lottie_loop="true"
+
         app:lottie_autoPlay="true"
-        />
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/record" />
 
     <com.airbnb.lottie.LottieAnimationView
-        android:visibility="invisible"
         android:id="@+id/recording_waves"
         android:layout_width="wrap_content"
-        app:lottie_rawRes="@raw/audio_wave"
         android:layout_height="100dp"
         android:layout_below="@id/press_red_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        app:lottie_loop="true"
+        android:visibility="invisible"
         app:lottie_autoPlay="true"
-        />
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/audio_wave" />
 
     <LinearLayout
-        android:visibility="invisible"
-        android:layout_below="@id/press_red_button"
         android:id="@+id/layer_pb"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/press_red_button"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="50dp"
         android:background="@drawable/fillet_remove_store"
         android:gravity="center_vertical"
         android:layoutDirection="rtl"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
         <RelativeLayout
-            android:gravity="center_vertical"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="8dp">
+            android:layout_marginRight="8dp"
+            android:gravity="center_vertical">
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/ltPlayPause"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_centerInParent="true"
                 android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:tint="@color/white"
                 app:lottie_autoPlay="false"
                 app:lottie_loop="false"
-                app:lottie_rawRes="@raw/play_to_pause"
-                app:lottie_speed="3" />
+                app:lottie_rawRes="@raw/pplt"
+                app:lottie_speed="3"
+                app:tint="@color/white" />
 
         </RelativeLayout>
 
         <SeekBar
             android:id="@+id/sbProgress"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:progressTint="@color/white"
+            android:thumbTint="@color/white" />
 
 
     </LinearLayout>
 
 
+    <LinearLayout
+        android:id="@+id/voice_manager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/recording_waves"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
+        <Chronometer
+            android:id="@+id/chronometerExample"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-2dp"
+            android:layout_marginRight="4dp"
 
+            android:layout_weight="0.5"
+            android:gravity="right"
+            android:textSize="20sp" />
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_weight="0.5"
+
+            android:gravity="left">
+
+            <ImageView
+                android:id="@+id/stop"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_gravity="left"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="4dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/stop" />
+        </FrameLayout>
+
+    </LinearLayout>
+    <!--
     <RelativeLayout
         android:visibility="invisible"
         android:layout_centerInParent="true"
@@ -125,26 +180,26 @@
             android:src="@drawable/stop"
             />
 
-    </RelativeLayout>
+    </RelativeLayout>-->
 
     <LinearLayout
-        android:layout_marginTop="16dp"
-        android:layout_below="@id/voice_manager"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/voice_manager"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal">
 
 
         <TextView
             android:id="@+id/cancel_answer"
-            android:layout_margin="8dp"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:gravity="center"
             android:layout_height="35dp"
+            android:layout_margin="8dp"
             android:layout_marginLeft="-4dp"
             android:layout_marginRight="-4dp"
+            android:layout_weight="1"
             android:background="@drawable/btn_cancel_answer"
+            android:gravity="center"
             android:text="  بی خیال"
             android:textAllCaps="false"
             android:textColor="@color/white"
@@ -152,21 +207,20 @@
 
         <TextView
             android:id="@+id/send_answer"
-            android:layout_margin="8dp"
-            android:gravity="center"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="35dp"
+            android:layout_margin="8dp"
             android:layout_marginLeft="-4dp"
             android:layout_marginRight="-4dp"
+            android:layout_weight="1"
             android:background="@drawable/btn_submit_store"
+            android:gravity="center"
             android:text="جواب رو بفرس"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
     </LinearLayout>
-
 
 
 </RelativeLayout>

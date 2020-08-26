@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.AnswersActivity;
 import com.example.mechanic2.app.Application;
+import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.views.MyTextView;
@@ -81,6 +82,7 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
             previewQuestion = convertView.findViewById(R.id.preview_question);
             seenCount = convertView.findViewById(R.id.seen_count);
             titleQuestion = convertView.findViewById(R.id.title_question);
+            previewQuestion.setClipToOutline(true);
             parent.setOnClickListener(this);
         }
 
@@ -88,7 +90,7 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
 
             carName.setText(question.getCarName());
             questionText.setText(question.getQ_text());
-            //titleQuestion.setText(question.getQ_title());
+            titleQuestion.setText(question.getQ_title());
             answerCount.setText(String.valueOf(question.getAnswerCount()));
             seenCount.setText(String.valueOf(question.getSeen_count()));
             if (question.getQ_image_url1().length() > 10) {
@@ -110,7 +112,7 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
             Map<String, String> map = new HashMap<>();
             map.put("route", "addToCounterQuestion");
             map.put("q_id", String.valueOf(questionList.get(getAdapterPosition()).getQ_id()));
-            map.put("entrance_id", String.valueOf(7));
+            map.put("entrance_id", SharedPrefUtils.getStringData("entranceId"));
             Application.getApi().getDataInString(map).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {

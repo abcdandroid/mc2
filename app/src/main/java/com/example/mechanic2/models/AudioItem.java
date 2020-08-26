@@ -1,6 +1,8 @@
 package com.example.mechanic2.models;
 
-public class AudioItem {
+import java.io.Serializable;
+
+public class AudioItem  implements Serializable {
     private Integer audioResId;
     private String audioAddress;
 

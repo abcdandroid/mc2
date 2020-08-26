@@ -1,422 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?><!--
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="gone"
-    tools:context=".activities.ShowGoodDetailActivity">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/indigo_900"
-        android:layoutDirection="ltr">
-
-
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewpager"
-            android:layout_width="match_parent"
-            android:layout_height="220dp" />
-
-
-        <com.merhold.extensiblepageindicator.ExtensiblePageIndicator
-            android:id="@+id/flexibleIndicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/viewpager"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="8dp"
-            app:indicatorActiveColor="@color/red_full"
-            app:indicatorInactiveColor="@color/grey_10"
-            app:indicatorPadding="8dp"
-            app:indicatorRadius="4dp" />
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/parent_good_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/flexibleIndicator"
-            android:layout_marginLeft="@dimen/spacing_smlarge"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="@dimen/spacing_smlarge"
-            android:layout_marginBottom="4dp"
-            app:cardCornerRadius="8dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="4dp">
-
-                <RelativeLayout
-                    android:id="@+id/parent_state_icon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true"
-                        android:tint="@color/orange_400"
-                        android:visibility="invisible"
-                        />
-
-                    <ImageView
-                        android:id="@+id/state_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_centerInParent="true"
-                        android:src="@drawable/ic_nis"
-                        android:tint="@android:color/holo_red_dark"
-                        android:visibility="invisible" />
-
-                </RelativeLayout>
-
-
-                <com.example.mechanic2.views.Mycom.example.mechanic2.views.MyTextView
-                    android:id="@+id/good_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true"
-                    android:layout_alignParentEnd="true"
-                    android:gravity="center"
-                    android:maxLines="5"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/grey_60"
-                    android:textStyle="bold" />
-
-
-            </RelativeLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/parent_car_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/parent_good_name"
-            android:layout_marginLeft="@dimen/spacing_smlarge"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="@dimen/spacing_smlarge"
-            android:layout_marginBottom="4dp"
-            app:cardCornerRadius="8dp">
-
-            <LinearLayout
-
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layoutDirection="rtl"
-                android:orientation="horizontal"
-                android:padding="4dp">
-
-                <com.airbnb.lottie.LottieAnimationView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center_vertical"
-                    app:lottie_autoPlay="true"
-                    app:lottie_loop="true"
-                    app:lottie_rawRes="@raw/car" />
-
-                <View
-                    android:layout_width="@dimen/spacing_middle"
-                    android:layout_height="0dp" />
-
-                <com.example.mechanic2.views.Mycom.example.mechanic2.views.MyTextView
-                    android:id="@+id/suitable_cars"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
-                    android:maxLines="10"
-                    android:text="@string/lorem_simple"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                    android:textColor="@color/grey_60"
-                    android:textStyle="bold" />
-
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-
-        <LinearLayout
-            android:id="@+id/country_warranty_parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/parent_car_name"
-            android:layout_marginLeft="@dimen/spacing_smlarge"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="@dimen/spacing_smlarge"
-            android:layout_marginBottom="4dp"
-            android:orientation="vertical">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:layout_weight="1"
-                android:visibility="visible"
-                app:cardCornerRadius="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
-                    android:layoutDirection="rtl"
-                    android:orientation="horizontal"
-                    android:padding="4dp">
-
-                    <RelativeLayout
-                        android:layout_width="40dp"
-                        android:layout_height="40dp">
-
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/lottie_warranty_second"
-                            android:layout_width="38dp"
-                            android:layout_height="38dp"
-                            android:layout_centerInParent="true"
-                            app:lottie_autoPlay="true"
-                            app:lottie_loop="true"
-                            app:lottie_rawRes="@raw/wave2" />
-
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:id="@+id/lottie_warranty_first"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerInParent="true"
-                            app:lottie_autoPlay="true"
-                            app:lottie_loop="true"
-                            app:lottie_rawRes="@raw/check" />
-
-
-                    </RelativeLayout>
-
-
-                    <View
-                        android:layout_width="@dimen/spacing_middle"
-                        android:layout_height="0dp" />
-
-
-                    <com.example.mechanic2.views.Mycom.example.mechanic2.views.MyTextView
-                        android:id="@+id/warranty_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="92776"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                        android:textColor="@color/grey_60"
-                        android:textStyle="bold" />
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <View
-                android:layout_width="@dimen/spacing_middle"
-                android:layout_height="0dp" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:layout_weight="1"
-                android:visibility="visible"
-                app:cardCornerRadius="8dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layoutDirection="rtl"
-                    android:orientation="horizontal"
-                    android:padding="4dp">
-
-                    <RelativeLayout
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical">
-
-                        <ImageView
-                            android:id="@+id/gear2"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:layout_centerInParent="true"
-                            android:src="@drawable/gearr2"
-                            android:tint="#FFA727" />
-
-                    </RelativeLayout>
-
-                    <View
-                        android:layout_width="@dimen/spacing_middle"
-                        android:layout_height="0dp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:gravity="center_vertical"
-                        android:layoutDirection="rtl"
-                        android:orientation="horizontal">
-
-                        <com.example.mechanic2.views.Mycom.example.mechanic2.views.MyTextView
-                            android:id="@+id/company_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="52791"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:textColor="@color/grey_60"
-                            android:textStyle="bold" />
-
-                        <View
-                            android:layout_width="@dimen/spacing_middle"
-                            android:layout_height="0dp" />
-
-                        <com.example.mechanic2.views.Mycom.example.mechanic2.views.MyTextView
-                            android:id="@+id/country_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Viewer"
-                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                            android:textColor="@color/grey_60"
-                            android:textStyle="bold" />
-
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/country_warranty_parent"
-            android:layout_marginLeft="@dimen/spacing_smlarge"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="@dimen/spacing_smlarge"
-            android:layout_marginBottom="4dp"
-            android:visibility="visible"
-            app:cardCornerRadius="8dp">
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:padding="16dp"
-                android:paddingLeft="@dimen/spacing_middle"
-                android:paddingRight="@dimen/spacing_middle">
-
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-
-                    <ImageView
-                        android:id="@+id/ivPlayPause"
-                        android:layout_width="35dp"
-                        android:layout_height="35dp"
-                        android:alpha="0"
-                        android:paddingTop="4dp"
-                        android:paddingBottom="4dp"
-                        android:src="@drawable/play_lottie"
-                        android:visibility="gone" />
-
-                    <com.airbnb.lottie.LottieAnimationView
-                        android:id="@+id/ltPlayPause"
-                        android:layout_width="25dp"
-                        android:layout_height="25dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="4dp"
-                        android:visibility="gone"
-                        app:lottie_autoPlay="false"
-                        app:lottie_loop="false"
-                        app:lottie_rawRes="@raw/play_to_pause"
-                        app:lottie_speed="3" />
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:src="@drawable/play_lottie"
-                            android:visibility="invisible" />
-
-                        <com.airbnb.lottie.LottieAnimationView
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            app:lottie_autoPlay="true"
-                            app:lottie_loop="true"
-                            app:lottie_rawRes="@raw/p_lottie" />
-
-                    </RelativeLayout>
-
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true">
-
-                        <com.example.mechanic2.views.MyTextView
-                            android:id="@+id/percentDone"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:textSize="12sp" />
-
-
-                        <com.hmomeni.progresscircula.ProgressCircula
-                            android:id="@+id/progressCirculaSound"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_centerInParent="true"
-                            android:layout_margin="4dp"
-                            android:visibility="gone"
-                            app:pgc_indeterminate="false"
-                            app:pgc_progress="0"
-                            app:pgc_rimColor="@color/colorPrimary"
-                            app:pgc_rimWidth="2dp"
-                            app:pgc_showProgress="false"
-                            app:pgc_speed="4"
-                            app:pgc_textColor="#006300" />
-                    </RelativeLayout>
-                </RelativeLayout>
-
-
-                <SeekBar
-                    android:id="@+id/sbProgress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-
-    </RelativeLayout>
-</ScrollView>-->
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_10"
+    android:background="@drawable/gradient_color"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="256dp"
+        android:layout_height="500dp"
         android:fitsSystemWindows="true"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -447,7 +40,7 @@
         android:id="@+id/nested_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="-35dp"
+        android:layout_marginTop="-64dp"
         android:clipToPadding="false"
         android:scrollbars="none"
         android:scrollingCache="true"
@@ -471,154 +64,17 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="@dimen/spacing_large"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@android:color/white"
-                app:cardCornerRadius="2dp"
-                app:cardElevation="2dp">
-                <!--
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="vertical"
-                                    android:paddingLeft="@dimen/spacing_large"
-                                    android:paddingRight="@dimen/spacing_large"
-                                    android:paddingBottom="@dimen/spacing_large">
-
-                                    <com.example.mechanic2.views.MyTextView
-                                        android:id="@+id/good_name"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="?attr/actionBarSize"
-                                        android:gravity="center_vertical"
-                                        android:text="Facilities"
-                                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                                        android:textColor="@color/grey_80" />
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:minHeight="@dimen/spacing_xmlarge"
-                                        android:orientation="horizontal">
-
-                                        <ImageButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="@dimen/spacing_xmlarge"
-                                            android:background="@android:color/transparent"
-                                            android:tint="@color/grey_40"
-                                            />
-
-                                        <View
-                                            android:layout_width="@dimen/spacing_middle"
-                                            android:layout_height="0dp" />
-
-                                        <com.example.mechanic2.views.MyTextView
-                                            android:id="@+id/suitable_cars"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center_vertical"
-                                            android:minHeight="@dimen/spacing_xmlarge"
-                                            android:text="Food &amp; Cafe"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                                            android:textColor="@color/grey_40" />
-
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:minHeight="@dimen/spacing_xmlarge"
-                                        android:orientation="horizontal">
-
-                                        <ImageButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="@dimen/spacing_xmlarge"
-                                            android:background="@android:color/transparent"
-                                            android:tint="@color/grey_40"
-                                            />
-
-                                        <View
-                                            android:layout_width="@dimen/spacing_middle"
-                                            android:layout_height="0dp" />
-
-                                        <com.example.mechanic2.views.MyTextView
-                                            android:id="@+id/warranty_name"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center_vertical"
-                                            android:minHeight="@dimen/spacing_xmlarge"
-                                            android:text="Fresh Air"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                                            android:textColor="@color/grey_40" />
-
-                                    </LinearLayout>
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:layout_gravity="center_vertical"
-                                        android:gravity="center_vertical"
-                                        android:layoutDirection="rtl"
-                                        android:orientation="horizontal">
-
-                                        <com.example.mechanic2.views.MyTextView
-                                            android:id="@+id/company_name"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="52791"
-                                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                                            android:textColor="@color/grey_60"
-                                            android:textStyle="bold" />
-
-                                        <View
-                                            android:layout_width="@dimen/spacing_middle"
-                                            android:layout_height="0dp" />
-
-                                        <com.example.mechanic2.views.MyTextView
-                                            android:id="@+id/country_name"
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="wrap_content"
-                                            android:text="Viewer"
-                                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
-                                            android:textColor="@color/grey_60"
-                                            android:textStyle="bold" />
-
-
-                                    </LinearLayout>
-
-                                    <LinearLayout
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:minHeight="@dimen/spacing_xmlarge"
-                                        android:orientation="horizontal">
-
-                                        <ImageButton
-                                            android:layout_width="wrap_content"
-                                            android:layout_height="@dimen/spacing_xmlarge"
-                                            android:background="@android:color/transparent"
-                                            android:tint="@color/grey_40"
-                                            />
-
-                                        <View
-                                            android:layout_width="@dimen/spacing_middle"
-                                            android:layout_height="0dp" />
-
-                                        <com.example.mechanic2.views.MyTextView
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center_vertical"
-                                            android:minHeight="@dimen/spacing_xmlarge"
-                                            android:text="Cozy Canopy"
-                                            android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                                            android:textColor="@color/grey_40" />
-
-                                    </LinearLayout>
-
-
-                                </LinearLayout>-->
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp">
 
 
                     <com.example.mechanic2.views.MyTextView
@@ -629,53 +85,50 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginBottom="24dp"
+                        android:layout_marginBottom="12dp"
                         android:layoutDirection="rtl"
-                        android:text="@string/hello_world"
-                        android:textColor="@color/grey_1000"
-                        android:textSize="16sp"
+                        android:textColor="@color/purple"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
                         android:transitionName="nameTxt" />
 
                     <ImageView
                         android:id="@+id/car_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="14sp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_below="@id/good_name"
                         android:layout_alignRight="@id/good_name"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_car3"
-                        android:tint="@color/indigo_400"
+                        android:tint="@color/indigo_900"
                         android:transitionName="carT" />
 
                     <com.example.mechanic2.views.MyTextView
                         android:id="@+id/suitable_cars"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/car_icon"
+                        android:layout_alignTop="@id/car_icon"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="8dp"
                         android:layout_toStartOf="@id/car_icon"
                         android:ellipsize="end"
-                        android:gravity="right"
                         android:layoutDirection="rtl"
-                        android:lines="1"
-                        android:textColor="@color/grey_1000"
-                        android:textSize="12sp"
+                        android:textColor="@color/indigo_900"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:transitionName="scT" />
 
 
                     <ImageView
                         android:id="@+id/factory_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:layout_below="@id/car_icon"
-                        android:layout_alignLeft="@id/car_icon"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/suitable_cars"
                         android:layout_alignRight="@id/car_icon"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="12dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_factory2"
-                        android:tint="@color/indigo_400"
+                        android:tint="@color/indigo_900"
                         android:transitionName="factoryT" />
 
 
@@ -683,16 +136,17 @@
                         android:id="@+id/company_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/factory_icon"
+                        android:layout_alignRight="@id/suitable_cars"
                         android:layout_alignBottom="@id/factory_icon"
                         android:layout_marginStart="20dp"
-                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="-4dp"
                         android:layout_toStartOf="@id/factory_icon"
                         android:ellipsize="end"
-                        android:gravity="right"
+                        android:gravity="bottom"
                         android:layoutDirection="rtl"
-                        android:lines="1"
-                        android:textColor="@color/grey_1000"
-                        android:textSize="12sp"
+                        android:textColor="@color/indigo_900"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:transitionName="cT" />
 
@@ -700,30 +154,28 @@
                         android:id="@+id/country_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignTop="@id/factory_icon"
                         android:layout_alignBottom="@id/company_name"
                         android:layout_marginStart="20dp"
                         android:layout_toLeftOf="@id/company_name"
                         android:ellipsize="end"
-                        android:gravity="right"
+                        android:gravity="bottom"
                         android:layoutDirection="rtl"
-                        android:lines="1"
-                        android:textColor="@color/grey_1000"
-                        android:textSize="12sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
+                        android:textColor="@color/indigo_900"
                         android:transitionName="cnT" />
 
 
                     <ImageView
                         android:id="@+id/warranty_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="22dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_below="@id/factory_icon"
-                        android:layout_alignLeft="@id/car_icon"
                         android:layout_alignRight="@id/car_icon"
-                        android:layout_marginTop="8dp"
-                        android:scaleType="fitXY"
+                        android:layout_marginTop="18dp"
                         android:src="@drawable/ic_warranty"
-                        android:tint="@color/indigo_400"
+                        android:tint="@color/indigo_900"
                         android:transitionName="warrantyT" />
 
 
@@ -731,30 +183,26 @@
                         android:id="@+id/warranty_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/warranty_icon"
+                        android:layout_alignTop="@id/warranty_icon"
                         android:layout_marginStart="20dp"
-                        android:layout_marginEnd="8dp"
-                        android:layout_toStartOf="@id/factory_icon"
+                        android:layout_alignRight="@id/suitable_cars"
                         android:ellipsize="end"
-                        android:gravity="right"
                         android:layoutDirection="rtl"
-                        android:lines="1"
-                        android:textColor="@color/grey_1000"
-                        android:textSize="12sp"
+                        android:textColor="@color/indigo_900"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         android:transitionName="wT" />
 
                     <ImageView
+
                         android:id="@+id/state_icon"
-                        android:layout_width="20dp"
-                        android:layout_height="22dp"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_below="@id/warranty_icon"
-                        android:layout_alignLeft="@id/car_icon"
                         android:layout_alignRight="@id/car_icon"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="18dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_nis"
-                        android:tint="@color/red_full"
                         android:transitionName="stokeT" />
 
 
@@ -762,16 +210,18 @@
                         android:id="@+id/state_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/state_icon"
+                        android:layout_alignRight="@id/suitable_cars"
+                        android:layout_alignTop="@id/state_icon"
+                        android:layout_marginTop="2dp"
                         android:layout_marginStart="20dp"
-                        android:layout_marginEnd="8dp"
                         android:layout_toStartOf="@id/factory_icon"
                         android:ellipsize="end"
-                        android:gravity="right"
+                        android:gravity="bottom"
                         android:layoutDirection="rtl"
                         android:lines="1"
+                        android:text="@string/hello_world"
                         android:textColor="#ff0000"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         android:transitionName="sT" />
 
@@ -791,11 +241,11 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="@dimen/spacing_large"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@android:color/white"
-                app:cardCornerRadius="2dp"
-                app:cardElevation="8dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="10dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -807,18 +257,42 @@
                     android:paddingRight="@dimen/spacing_large"
                     android:paddingBottom="@dimen/spacing_large">
 
-                    <com.example.mechanic2.views.MyTextView
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:text="توضیح صوتی"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="@color/grey_80"
-                        android:textSize="16dp" />
+                        android:layout_marginTop="4dp"
+                        android:layoutDirection="rtl"
+                        android:orientation="horizontal">
+
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/voice_img"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            app:lottie_rawRes="@raw/voice_description"
+                            app:lottie_speed="0.5"
+                            android:rotation="180"
+                            app:lottie_loop="true" />
+
+
+                        <com.example.mechanic2.views.MyTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginTop="4dp"
+                            android:ellipsize="end"
+                            android:gravity="bottom"
+                            android:layoutDirection="rtl"
+                            android:text="توضیح صوتی"
+                            android:textColor="@color/purple"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:transitionName="sT" />
+                    </LinearLayout>
+
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center_vertical"
                         android:layout_marginTop="16dp"
                         android:background="@drawable/fillet_remove_store"
@@ -827,11 +301,11 @@
                         android:orientation="horizontal">
 
                         <RelativeLayout
-                            android:gravity="center_vertical"
-                            android:layout_width="50dp"
-                            android:layout_height="50dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
-                            android:layout_marginRight="8dp">
+                            android:layout_marginRight="8dp"
+                            android:gravity="center_vertical">
 
 
                             <ImageView
@@ -842,61 +316,70 @@
                                 android:paddingTop="4dp"
                                 android:paddingBottom="4dp"
                                 android:src="@drawable/play_icon"
+                                android:tint="@color/white"
                                 android:visibility="gone" />
 
                             <com.airbnb.lottie.LottieAnimationView
                                 android:id="@+id/ltPlayPause"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
                                 android:layout_centerInParent="true"
                                 android:layout_centerVertical="true"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:tint="@color/white"
                                 android:visibility="gone"
                                 app:lottie_autoPlay="false"
                                 app:lottie_loop="false"
-                                app:lottie_rawRes="@raw/play_to_pause"
-                                app:lottie_speed="3" />
+                                app:lottie_rawRes="@raw/pplt"
+                                app:lottie_speed="3"
+                                app:tint="@color/white" />
 
                             <ImageView
-                                android:layout_centerInParent="true"
                                 android:id="@+id/startDownload"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_centerInParent="true"
                                 android:paddingTop="4dp"
                                 android:paddingBottom="4dp"
                                 android:src="@drawable/ic_arrow_downward_black_24dp"
+                                android:tint="@color/white"
                                 android:visibility="visible" />
 
 
+                            <TextView
+                                android:id="@+id/percentDone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_centerVertical="true"
+                                android:textColor="@color/white"
+                                android:textSize="14sp" />
 
-                                <TextView
-                                    android:layout_centerInParent="true"
-                                    android:id="@+id/percentDone"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_centerVertical="true"
-                                    android:textSize="12sp" />
 
-
-                                <com.hmomeni.progresscircula.ProgressCircula
-                                    android:id="@+id/progressCirculaSound"
-                                    android:layout_width="50dp"
-                                    android:layout_height="50dp"
-                                    android:layout_margin="4dp"
-                                    app:pgc_indeterminate="false"
-                                    app:pgc_progress="0"
-                                    app:pgc_rimColor="@color/colorPrimary"
-                                    app:pgc_rimWidth="2dp"
-                                    app:pgc_showProgress="false"
-                                    android:visibility="gone"
-                                    app:pgc_speed="4"
-                                    app:pgc_textColor="#006300" />
+                            <com.hmomeni.progresscircula.ProgressCircula
+                                android:id="@+id/progressCirculaSound"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_margin="4dp"
+                                android:backgroundTint="@color/white"
+                                android:visibility="gone"
+                                app:pgc_indeterminate="false"
+                                app:pgc_progress="0"
+                                app:pgc_rimColor="@color/white"
+                                app:pgc_rimWidth="2dp"
+                                app:pgc_showProgress="false"
+                                app:pgc_speed="4"
+                                app:pgc_textColor="@color/white" />
 
                         </RelativeLayout>
 
                         <SeekBar
                             android:id="@+id/sbProgress"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="wrap_content"
+                            android:progressTint="@color/white"
+                            android:thumbTint="@color/white" />
 
 
                     </LinearLayout>
@@ -912,27 +395,32 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/spacing_large"
-                android:layout_marginRight="@dimen/spacing_large"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@android:color/white"
-                app:cardCornerRadius="2dp"
-                app:cardElevation="2dp">
+                app:cardCornerRadius="10dp"
+                android:layout_marginBottom="24dp"
+                app:cardElevation="10dp">
 
                 <LinearLayout
+                    android:layout_marginBottom="24dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:paddingLeft="@dimen/spacing_large"
-                    android:paddingRight="@dimen/spacing_large"
-                    android:paddingBottom="@dimen/spacing_large">
+                    android:paddingRight="@dimen/spacing_large" >
 
+
+                    <!--desc-->
                     <com.example.mechanic2.views.MyTextView
                         android:layout_width="match_parent"
                         android:layout_height="?attr/actionBarSize"
                         android:gravity="center_vertical"
                         android:text="توضیحات"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
                         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-                        android:textColor="@color/grey_80" />
+                        android:textColor="@color/purple" />
 
                     <com.example.mechanic2.views.MyTextView
                         android:id="@+id/desc"
@@ -941,7 +429,11 @@
                         android:gravity="center_vertical"
                         android:text="@string/lorem_simple"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-                        android:textColor="@color/grey_40" />
+                        android:textColor="@color/indigo_900"
+                        android:textStyle="bold"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="24dp"
+                        />
 
                 </LinearLayout>
 
@@ -955,124 +447,131 @@
 
     </androidx.core.widget.NestedScrollView>
 
-    <LinearLayout
-        android:id="@+id/ll"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/indigo_700"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <LinearLayout
+            android:id="@+id/ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="16dp"
-            android:layoutDirection="rtl">
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:background="@drawable/transparent_gradiant_color"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/im_sen1"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/tick_honest2" />
 
-            <TextView
-                android:id="@+id/sen1"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:maxLines="1"
-                android:text="@string/lorem_simple"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layoutDirection="rtl">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="16dp"
-            android:layoutDirection="rtl">
+                <ImageView
+                    android:id="@+id/im_sen1"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/tick_honest2" />
 
-            <ImageView
-                android:id="@+id/im_sen2"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/tick_honest2" />
+                <TextView
+                    android:id="@+id/sen1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:maxLines="1"
+                    android:text="@string/lorem_simple"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/sen2"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:maxLines="1"
-                android:text="@string/lorem_simple"
-                android:textColor="@color/white" />
-        </LinearLayout>
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="16dp"
+                android:layoutDirection="rtl">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:layout_marginRight="16dp"
-            android:layoutDirection="rtl">
+                <ImageView
+                    android:id="@+id/im_sen2"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/tick_honest2" />
 
-            <ImageView
-                android:id="@+id/im_sen3"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/tick_honest2" />
+                <TextView
+                    android:id="@+id/sen2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:maxLines="1"
+                    android:text="@string/lorem_simple"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/sen3"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:maxLines="1"
-                android:text="@string/lorem_simple"
-                android:textColor="@color/white" />
+                android:layout_marginTop="4dp"
+                android:layout_marginRight="16dp"
+                android:layoutDirection="rtl">
+
+                <ImageView
+                    android:id="@+id/im_sen3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/tick_honest2" />
+
+                <TextView
+                    android:id="@+id/sen3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:maxLines="1"
+                    android:text="@string/lorem_simple"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp">
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:gravity="center|center_horizontal"
+                    android:maxLines="1"
+                    android:paddingLeft="24dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="24dp"
+                    android:paddingBottom="8dp"
+                    android:textColor="@color/md_green_A200"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/call"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/btn_submit_store"
+                    android:gravity="center|center_horizontal"
+                    android:maxLines="1"
+                    android:paddingLeft="24dp"
+                    android:paddingTop="8dp"
+                    android:paddingRight="24dp"
+                    android:paddingBottom="8dp"
+                    android:text="تماس برای تهیه کالا"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+
         </LinearLayout>
+    </RelativeLayout>
 
-<LinearLayout
-    android:paddingTop="8dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <TextView
-        android:layout_weight="1"
-        android:paddingRight="24dp"
-        android:paddingLeft="24dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:id="@+id/price"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center|center_horizontal"
-        android:maxLines="1"
-        android:text="aaa"
-        android:textSize="20dp"
-        android:textColor="@color/md_green_A200" />
-
-    <TextView
-        android:layout_weight="1"
-        android:paddingRight="24dp"
-        android:paddingLeft="24dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:background="@drawable/btn_submit_store"
-        android:id="@+id/call"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center|center_horizontal"
-        android:maxLines="1"
-        android:text="تماس برای تهیه کالا"
-        android:textColor="@color/white" />
-</LinearLayout>
-
-
-    </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

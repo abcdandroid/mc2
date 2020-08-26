@@ -2,6 +2,7 @@ package com.example.mechanic2.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -13,23 +14,19 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
+import com.example.mechanic2.activities.ShowMechanicDetailActivity;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.AnswerVoiceOnClickListener;
-import com.example.mechanic2.interfaces.VoiceOnClickListener;
-import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Answers;
+import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.views.MyTextView;
-import com.google.gson.Gson;
 import com.hmomeni.progresscircula.ProgressCircula;
-import com.mikhaellopez.circularimageview.CircularImageView;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
@@ -69,6 +66,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
 
     @Override
     public void onBindViewHolder(@NonNull AnswerViewHolder holder, int position) {
+
         if (position == currentPlayingPosition) {
 
             playingHolder = holder;
@@ -83,9 +81,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
         holder.sbProgress.removeCallbacks(seekBarUpdater);
         holder.sbProgress.setEnabled(false);
         holder.sbProgress.setProgress(0);
-        holder.ivPlayPause.setImageResource(R.drawable.play_icon);
-        holder.ltPlayPause.setAnimation(R.raw.pause_to_play);
-        holder.ltPlayPause.playAnimation();
+        holder.ltPlayPause.setProgress(0);
     }
 
 
@@ -95,12 +91,10 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
         playingHolder.sbProgress.setEnabled(true);
         if (mediaPlayer.isPlaying()) {
             playingHolder.sbProgress.postDelayed(seekBarUpdater, 100);
-            playingHolder.ivPlayPause.setImageResource(R.drawable.pause_icon);
-            playingHolder.ltPlayPause.setAnimation(R.raw.play_to_pause);
+            playingHolder.ltPlayPause.setSpeed(3f);
         } else {
             playingHolder.sbProgress.removeCallbacks(seekBarUpdater);
-            playingHolder.ivPlayPause.setImageResource(R.drawable.play_icon);
-            playingHolder.ltPlayPause.setAnimation(R.raw.pause_to_play);
+            playingHolder.ltPlayPause.setSpeed(-3f);
         }
         playingHolder.ltPlayPause.playAnimation();
     }
@@ -131,7 +125,6 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
     class AnswerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, SeekBar.OnSeekBarChangeListener {
 
         private ImageView startDownload;
-        private ImageView ivPlayPause;
         private ProgressCircula progressCirculaSound;
         private LottieAnimationView ltPlayPause;
         private TextView percentDone;
@@ -142,60 +135,72 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
         private MyTextView readMore;
         private MyTextView answer;
         private LinearLayout voiceParent;
+        private MyTextView storeName;
 
 
         AnswerViewHolder(@NonNull View itemView) {
             super(itemView);
+            storeName = itemView.findViewById(R.id.store_name);
             startDownload = itemView.findViewById(R.id.startDownload);
             voiceParent = itemView.findViewById(R.id.voice_parent);
             parent = itemView.findViewById(R.id.parent);
             answer = itemView.findViewById(R.id.answer);
             progressCirculaSound = itemView.findViewById(R.id.progressCirculaSound);
             percentDone = itemView.findViewById(R.id.percentDone);
-            ivPlayPause = itemView.findViewById(R.id.ivPlayPause);
             sbProgress = itemView.findViewById(R.id.sbProgress);
             ltPlayPause = itemView.findViewById(R.id.ltPlayPause);
-
+            ltPlayPause.setProgress(0f);
             ivProfile = itemView.findViewById(R.id.iv_profile);
             name = itemView.findViewById(R.id.name);
             readMore = itemView.findViewById(R.id.read_more);
+
+
+
         }
 
         private void bindView(Answers answer) {
             app.l("ansss:" + answer);
-            voiceParent.setVisibility(answer.getA_voice_url().length() == 0 ? View.GONE : View.VISIBLE);
+            voiceParent.setVisibility(answer.getAnswer().getA_voice_url().length() == 0 ? View.GONE : View.VISIBLE);
 
             if (answer.getType() == 0) {
-                parent.setBackground(activity.getDrawable((R.drawable.noraml_answer_background)));
-                name.setText("کاربر معمولی");
+                name.setText("کاربر آنلاین مکانیک");
+                storeName.setVisibility(View.GONE);
+                readMore.setVisibility(View.GONE);
             } else {
-                parent.setBackground(activity.getDrawable((R.drawable.mechanic_answer_background)));
-                name.setText(answer.getStore_name());
+                storeName.setVisibility(View.VISIBLE);
+                storeName.setText(answer.getMechanic().getStore_name());
+                name.setText(answer.getMechanic().getName());
+                readMore.setVisibility(View.VISIBLE);
+                parent.setOnClickListener(this);
             }
-            readMore.setVisibility(answer.getType() == 0 ? View.GONE : View.VISIBLE);
-            app.l(answer.getMechanic_image() == null ? "a" + getAdapterPosition() : "b" + getAdapterPosition());
-            if (answer.getMechanic_image() == null) {
-                ivProfile.setImageDrawable(activity.getDrawable(R.drawable.ic_car3));
+
+
+            if ((answer.getMechanic().getMechanic_image() == null || answer.getMechanic().getMechanic_image().length() == 0) && answer.getType() == 1) {
+                ivProfile.setImageDrawable(activity.getDrawable(R.drawable.mechanic_avatar));
+            } else if (answer.getMechanic().getMechanic_image() == null && answer.getType() == 0) {
+                ivProfile.setImageDrawable(activity.getDrawable(R.drawable.profile_normal_user));
             } else
-                Glide.with(activity).load("http://drkamal3.com/Mechanic/" + answer.getMechanic_image()).into(ivProfile);
+                Glide.with(activity).load("http://drkamal3.com/Mechanic/" + answer.getMechanic().getMechanic_image()).into(ivProfile);
 
-            this.answer.setText(answer.getA_text());
+            this.answer.setText(answer.getAnswer().getA_text());
 
-            if (answer.getA_voice_url().equals("")) voiceParent.setVisibility(View.GONE);
+            if (answer.getAnswer().getA_voice_url().equals(""))
+                voiceParent.setVisibility(View.GONE);
 
-            if (answer.getA_text().equals("")) this.answer.setVisibility(View.GONE);
+            if (answer.getAnswer().getA_text().equals("")) this.answer.setVisibility(View.GONE);
 
-            String url = answer.getA_voice_url();
+            String url = answer.getAnswer().getA_voice_url();
+
 
             if (url.length() > 0) {
                 File file = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
-                if (file.exists() && file.length() == answer.getFileSize()) {
+                if (file.exists() && file.length() == answer.getAnswer().getFileSize()) {
                     progressCirculaSound.setVisibility(View.GONE);
                     percentDone.setVisibility(View.GONE);
                     startDownload.setVisibility(View.GONE);
-                    ivPlayPause.setVisibility(View.VISIBLE);
                     ltPlayPause.setVisibility(View.VISIBLE);
+                    ltPlayPause.setProgress(0);
                 }
 
                 File tmpFile = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
@@ -203,16 +208,15 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
                     progressCirculaSound.setVisibility(View.VISIBLE);
                     percentDone.setVisibility(View.VISIBLE);
                     startDownload.setAlpha(0f);
-                    ivPlayPause.setVisibility(View.GONE);
                     ltPlayPause.setVisibility(View.GONE);
-                    int progress = (int) (tmpFile.length() * 100 / answer.getFileSize());
+                    int progress = (int) (tmpFile.length() * 100 / answer.getAnswer().getFileSize());
                     progressCirculaSound.setProgress(progress);
                     percentDone.setText(String.valueOf(progress) + "%");
                 }
 
 
                 if (mediaPlayer != null && playingHolder != null) {
-                    playingHolder.ltPlayPause.setAnimation(mediaPlayer.isPlaying() ? R.raw.play_to_pause : R.raw.pause_to_play);
+                    //playingHolder.ltPlayPause.setAnimation(mediaPlayer.isPlaying() ? R.raw.play_to_pause : R.raw.pause_to_play);
                     playingHolder.ltPlayPause.pauseAnimation();
                 }
 
@@ -223,7 +227,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
                         voiceOnClickListener.onClick(itemView, answer);
                     }
                 });
-                ivPlayPause.setOnClickListener(this);
+
                 ltPlayPause.setOnClickListener(this);
                 sbProgress.setOnSeekBarChangeListener(this);
             }
@@ -233,7 +237,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-                case R.id.ivPlayPause:
+
                 case R.id.ltPlayPause: {
                     if (getAdapterPosition() == currentPlayingPosition) {
 
@@ -256,11 +260,23 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
                         }
                         playingHolder = this;
 
-                        startMediaPlayer(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + answerList.get(getAdapterPosition()).getA_voice_url().substring(answerList.get(getAdapterPosition()).getA_voice_url().lastIndexOf("/")));
+                        startMediaPlayer(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().substring(answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().lastIndexOf("/")));
                     }
                     updatePlayingView();
                 }
                 break;
+                case R.id.parent:
+                    app.l("RRTTef"+answerList.get(getAdapterPosition()).getMechanic().getIs_signed());
+
+                    Answers answers = answerList.get(getAdapterPosition());
+                    /**/
+                    Mechanic mechanic = answers.getMechanic();
+                    Intent intent = new Intent(activity, ShowMechanicDetailActivity.class);
+                    intent.putExtra("mechanic", mechanic);
+                    activity.startActivity(intent);/**/
+
+
+                    break;
             }
         }
 
@@ -297,6 +313,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
         if (null != playingHolder) {
             updateNonPlayingView(playingHolder);
         }
+
         mediaPlayer.release();
         mediaPlayer = null;
         currentPlayingPosition = -1;

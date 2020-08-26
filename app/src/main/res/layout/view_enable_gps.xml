@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"
+        app:lottie_rawRes="@raw/gps_not_enabled"
+        />
+
+    <TextView
+        android:textSize="18sp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="لطفا gps خود را فعال کنید"
+        />
+
+    <RelativeLayout
+        android:id="@+id/gps_intent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_all_goods"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp" >
+
+        <com.example.mechanic2.views.MyTextView
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="روشن کردن gps"
+            android:textColor="@color/white" />
+
+    </RelativeLayout>
+</LinearLayout>

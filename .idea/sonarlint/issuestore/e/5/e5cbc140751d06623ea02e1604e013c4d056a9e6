@@ -1,0 +1,15 @@
+
+Q	java:S1259"<This block of commented-out lines of code should be removed.(•Õë³
+X	java:S125_"<This block of commented-out lines of code should be removed.(™õ¡ä8àÅ³Ğº.
+X	java:S110%"<This class has 9 parents which is greater than 5 authorized.(²Ú±8óŠÓº.
+J
+java:S1068,"4Remove this unused "sweetAlertDialog" private field.(ô®–
+e
+java:S1128"CRemove this unused import 'com.example.mechanic2.app.Connectivity'.(’ÌÄ÷úÿÿÿÿ8ÚĞ©Úº.
+a
+java:S1128"FRemove this unused import 'androidx.fragment.app.FragmentTransaction'.(¦İÚ¿şÿÿÿÿ
+f
+java:S1128"KRemove this unused import 'com.example.mechanic2.fragments.AdminFragment2'.(Šïˆúÿÿÿÿ
+E
+java:S5411="*Use the primitive boolean expression here.(æ¦Ëâúÿÿÿÿ
+]	java:S125o"<This block of commented-out lines of code should be removed.(Ëßëıûÿÿÿÿ8àÅ³Ğº.

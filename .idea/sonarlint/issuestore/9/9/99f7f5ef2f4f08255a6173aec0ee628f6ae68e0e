@@ -1,0 +1,13 @@
+
+O
+java:S1128"-Remove this unused import 'android.os.Build'.(ãÇ¤Úıÿÿÿÿ8Ø‹ƒßº.
+v
+java:S1450"TRemove the "retry" field and declare it as a local variable in the relevant methods.(»Òâ¯ÿÿÿÿÿ8ÅŞº.
+{
+java:S1450"YRemove the "dataIntent" field and declare it as a local variable in the relevant methods.(ØÿŒãıÿÿÿÿ8¿ßÔÛº.
+{
+java:S1450"YRemove the "wifiIntent" field and declare it as a local variable in the relevant methods.(ÇóÕÜÿÿÿÿÿ8¿ßÔÛº.
+W
+java:S1128":Remove this unused import 'android.content.ComponentName'.(½‹æŠ8Ø‹ƒßº.
+`
+java:S1128">Remove this unused import 'com.example.mechanic2.BuildConfig'.(³Ÿ˜®üÿÿÿÿ8ÇùŞº.

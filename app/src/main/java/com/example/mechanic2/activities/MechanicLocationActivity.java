@@ -68,17 +68,19 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
         this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context), mMapView);
         this.mLocationOverlay.enableMyLocation();
         mapController = mMapView.getController();
-        Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_location_new);
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_baseline_location_on_40);
         mLocationOverlay.setDirectionArrow(icon, icon);
         mLocationOverlay.setPersonIcon(icon);
         mMapView.getOverlays().add(this.mLocationOverlay);
-        app.l(SharedPrefUtils.getDoubleData("ltt") + "@@" + SharedPrefUtils.getDoubleData("lng"));
-        GeoPoint startPoint = new GeoPoint(SharedPrefUtils.getDoubleData("ltt"), SharedPrefUtils.getDoubleData("lng"));
+        //app.l(SharedPrefUtils.getDoubleData("ltt") + "@@" + SharedPrefUtils.getDoubleData("lng"));
+
+        GeoPoint startPoint = new GeoPoint(Double.parseDouble(SharedPrefUtils.getStringData("ltt")), Double.parseDouble(SharedPrefUtils.getStringData("lng")));
+
         mapController.setCenter(startPoint);
-        if (SharedPrefUtils.getDoubleData("ltt") != 0 && SharedPrefUtils.getDoubleData("lng") != 0) {
+        if (!SharedPrefUtils.getStringData("ltt").equals("-1") && !SharedPrefUtils.getStringData("lng").equals("-1")) {
             ArrayList<OverlayItem> overlayArray = new ArrayList<>();
             OverlayItem mapItem = new OverlayItem("", "", startPoint);
-            final Drawable marker = getApplicationContext().getResources().getDrawable(R.drawable.ic_location_new);
+            final Drawable marker = getApplicationContext().getResources().getDrawable(R.drawable.ic_baseline_location_on_40);
             mapItem.setMarker(marker);
             overlayArray.add(mapItem);
             anotherItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(getApplicationContext(), overlayArray, null);
@@ -105,7 +107,7 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                     mMapView.getOverlays().remove(mLocationOverlay);
                     mMapView.getOverlays().add(overlay1);
                 }
-                final Drawable marker = getApplicationContext().getResources().getDrawable(R.drawable.ic_location_new);
+                final Drawable marker = getApplicationContext().getResources().getDrawable(R.drawable.ic_baseline_location_on_40);
                 Projection proj = mapView.getProjection();
                 GeoPoint loc = (GeoPoint) proj.fromPixels((int) e.getX(), (int) e.getY());
                 String longitude = Double.toString(((double) loc.getLongitudeE6()) / 1000000);
@@ -201,8 +203,8 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
             }
             app.l(latitude + "(((" + longitude);
 
-            SharedPrefUtils.saveData("ltt", latitude);
-            SharedPrefUtils.saveData("lng", longitude);
+            SharedPrefUtils.saveData("ltt", String.valueOf(latitude));
+            SharedPrefUtils.saveData("lng", String.valueOf(longitude));
             finish();
         }
     }
@@ -227,7 +229,7 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                 mMapView.getOverlays().remove(mLocationOverlay);
                 mMapView.getOverlays().add(myOverLay);
             }
-            final Drawable marker = getApplicationContext().getResources().getDrawable(R.drawable.ic_location_new);
+            final Drawable marker = getApplicationContext().getResources().getDrawable(R.drawable.ic_baseline_location_on_40);
             Projection proj = mapView.getProjection();
             GeoPoint loc = (GeoPoint) proj.fromPixels((int) e.getX(), (int) e.getY());
             String longitude = Double.toString(((double) loc.getLongitudeE6()) / 1000000);

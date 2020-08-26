@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mechanic 2</string>
+    <string name="app_name">آنلاین مکانیک</string>
     <string name="hello_world">سلام دنیا !!!</string>
     <string name="lorem"><u> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</u></string>
     <string name="qt"><u>aaa</u></string>
@@ -17,7 +17,8 @@
     <string name="enterCarName">خودروی خود را انتخاب کنید</string>
     <string name="search_transition">search_transition</string>
     <string name="all_cars">همه ماشین ها</string>
-    <string name="all_titles">همه موضوعاتا</string>
+    <string name="all_titles">همه موضوعات</string>
+    <string name="etc_title">متفرقه</string>
     <string name="all_goods">همه قطعه ها</string>
     <string name="all_regions">همه مناطق</string>
     <string name="all_jobs">همه تخصص ها</string>
@@ -25,7 +26,7 @@
     <string name="ask_good">دنبال چه قطعه ای هستی؟</string>
     <string name="luxury_good">کالای لوکس</string>
     <string name="stoke_good">کالای استوک</string>
-    <string name="good_not_found">این کالا در حال حاضر\n موجود نمی باشد</string>
+    <string name="good_not_found">متأسفانه این کالا در حال حاضر\n موجود نمی باشد</string>
     <string name="question_not_found">این سوال هنوز\n پرسیده نشده</string>
     <string name="show_stoke_goods">نمایش کالای استوک</string>
     <string name="show_luxury_goods">نمایش کالای لوکس</string>
@@ -46,7 +47,7 @@
     <string-array name="mechanic_filter">
         <item>پیش فرض</item>
         <item>بیشترین امتیاز</item>
-        <item>نزدکی ترین ها</item>
+        <item>نزدیک ترین ها</item>
     </string-array>
     <string name="title_activity_second_test">SecondTestActivity</string>
     <!-- Strings used for fragments for navigation -->

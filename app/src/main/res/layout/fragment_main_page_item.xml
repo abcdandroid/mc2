@@ -1,49 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/parent"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="240dp"
-    android:background="@color/green_700"
+    android:layout_height="300dp"
+    android:layout_gravity="center"
+    android:gravity="center"
     tools:context=".fragments.MainPageItemFragment">
-    <RelativeLayout
-        android:id="@+id/parent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="@color/red_A700" />
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/image_view"
-            android:gravity="right"
-            android:padding="4dp"
-            android:text="@string/title_activity_second_test"
-            android:textSize="16dp" />
 
-        <com.example.mechanic2.views.MyTextView
-            android:id="@+id/desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/title"
-            android:gravity="right"
-            android:padding="4dp"
-            android:text="@string/title_activity_second_test"
-            android:textSize="12dp" />
-    </RelativeLayout>
-
-
-
-    <com.devbrackets.android.exomedia.ui.widget.VideoView
-        android:id="@+id/video_view"
+    <ImageView
+        android:id="@+id/image_view"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        app:useDefaultControls="true" />
+        android:layout_height="270dp"
+        android:scaleType="centerCrop" />
 
+    <com.example.mechanic2.views.MyTextView
+        android:id="@+id/title"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:maxLines="2"
+        android:padding="8dp"
+        android:gravity="center"
+        android:textColor="@color/indigo_900"
+        android:textSize="18sp" />
 
-
-</RelativeLayout>
+</LinearLayout>

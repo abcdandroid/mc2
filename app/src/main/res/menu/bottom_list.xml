@@ -2,28 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/mechanics"
-        android:icon="@drawable/ic_remove_red_eye_black_24dp"
+        android:icon="@drawable/mechnic_nav"
         android:iconTint="@android:color/white"
-        android:title="مکانیک" />
+        android:title="گاراژ" />
     <item
-        android:id="@+id/home"
-        android:icon="@drawable/ic_remove_red_eye_black_24dp"
+        android:id="@+id/questions"
+        android:icon="@drawable/question_mark"
+        android:iconTint="@android:color/white"
+        android:title="پرسش و پاسخ" />
+    <item
+        android:id="@+id/main_page"
+        android:icon="@drawable/home"
         android:iconTint="@android:color/white"
         android:title="خانه" />
     <item
-        android:id="@+id/questions"
-        android:icon="@drawable/ic_remove_red_eye_black_24dp"
-        android:iconTint="@android:color/white"
-        android:title="تالار سوالات" />
-    <item
         android:id="@+id/store"
-        android:icon="@drawable/ic_remove_red_eye_black_24dp"
+        android:icon="@drawable/request_nav"
         android:iconTint="@android:color/white"
-        android:title="درخواست قطعه" />
+        android:title="لوازم یدکی" />
     <item
-        android:id="@+id/main_page"
-        android:icon="@drawable/ic_remove_red_eye_black_24dp"
+        android:id="@+id/home"
+        android:icon="@drawable/movie_nav"
         android:iconTint="@android:color/white"
-        android:title="صفحه اصلی" />
+        android:title="فیلم آموزشی" />
 
 </menu>

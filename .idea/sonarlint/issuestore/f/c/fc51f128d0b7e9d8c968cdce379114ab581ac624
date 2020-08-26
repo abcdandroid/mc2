@@ -1,0 +1,118 @@
+
+D
+java:S1604"(Make this anonymous inner class a lambda(ˆú—ıøÿÿÿÿ
+C
+java:S1068G".Remove this unused "ARG_PARAM2" private field.(’øë5
+H
+java:S1068œ",Remove this unused "listView" private field.(¯¤½ñûÿÿÿÿ
+s
+java:S1450¥"\Remove the "whatsUpIntent" field and declare it as a local variable in the relevant methods.(Ü”‘‹
+Q
+java:S2209¼"5Change this instance-reference to a static reference.(â‰šÿÿÿÿÿ
+I
+java:S1068F".Remove this unused "ARG_PARAM1" private field.(ìæ”æÿÿÿÿÿ
+l
+java:S1450‹"URemove the "place2" field and declare it as a local variable in the relevant methods.(˜âºç
+e
+java:S1192¹"IDefine a constant instead of duplicating this literal "view_url" 7 times.(ñ¡ãùÿÿÿÿ
+r
+java:S1450¤"[Remove the "navStoreName" field and declare it as a local variable in the relevant methods.(’²ë
+_
+java:S1128>"IRemove this unused import 'de.hdodenhof.circleimageview.CircleImageView'.(­³Ø™
+c
+java:S1128"HRemove this unused import 'androidx.appcompat.view.ContextThemeWrapper'.(ó¼¼úúÿÿÿÿ
+L
+java:S1128"6Remove this unused import 'android.view.MenuInflater'.(¥ñ´Ò
+H
+java:S1068L"-Remove this unused "videoView" private field.(²‡ÖØüÿÿÿÿ
+n
+java:S3776©"RRefactor this method to reduce its Cognitive Complexity from 63 to the 15 allowed.(ÀÃ¯ÿúÿÿÿÿ
+Q
+java:S1068N"6Remove this unused "currentOrientation" private field.(«šÈéùÿÿÿÿ
+u
+java:S1450£"^Remove the "navMechanicName" field and declare it as a local variable in the relevant methods.(½¹”ä
+b
+java:S1192Å"KDefine a constant instead of duplicating this literal "image_desc" 6 times.(ŸÊ¡
+L
+java:S1068"0Remove this unused "containerP67" private field.(‹—ë£şÿÿÿÿ
+=	java:S131""Add a default case to this switch.(×“¾ñùÿÿÿÿ
+N
+java:S1128	"8Remove this unused import 'androidx.annotation.NonNull'.(ˆÛúÜ
+H
+java:S1128"2Remove this unused import 'android.view.MenuItem'.(Ğ¬Ó‘
+r
+java:S1450©"VRemove the "biKhial" field and declare it as a local variable in the relevant methods.(Æ”™³şÿÿÿÿ
+R
+java:S1128"7Remove this unused import 'android.widget.FrameLayout'.(ºÍ‹Ùúÿÿÿÿ
+t
+java:S1450V"^Remove the "circleImageView" field and declare it as a local variable in the relevant methods.(øË
+t
+java:S1450 "^Remove the "hamburgerButton" field and declare it as a local variable in the relevant methods.(ØÛ›l
+D
+java:S1604õ"(Make this anonymous inner class a lambda(õòáöÿÿÿÿÿ
+M
+java:S1128"7Remove this unused import 'android.view.WindowManager'.(Ü³‹Å
+b
+java:S1128+"LRemove this unused import 'com.example.mechanic2.adapters.ViewPagerAdapter'.(“ éÂ
+L
+java:S2209»"5Change this instance-reference to a static reference.(Ôåøö
+B
+java:S1068›"+Remove this unused "toolbar" private field.(ş®º—
+?
+java:S1604Á"(Make this anonymous inner class a lambda(ù“Œ»
+V	java:S125g"<This block of commented-out lines of code should be removed.(Éßşÿÿÿÿ
+]
+java:S1192¶"FDefine a constant instead of duplicating this literal "field" 7 times.(¡´Ã«
+b
+java:S1192Á"FDefine a constant instead of duplicating this literal "place" 6 times.(ª İ×ûÿÿÿÿ
+r
+java:S1450ª"VRemove the "signOut" field and declare it as a local variable in the relevant methods.(·Åëüÿÿÿÿ
+L
+java:S2209Ê"5Change this instance-reference to a static reference.(Ôåøö
+r
+java:S1450­"VRemove the "navView" field and declare it as a local variable in the relevant methods.(ÿ˜ïÈùÿÿÿÿ
+R
+java:S1128"7Remove this unused import 'android.widget.BaseAdapter'.(ŒŸà“ıÿÿÿÿ
+F
+java:S1068M"0Remove this unused "cachedHeight" private field.(·µçœ
+n
+java:S1450¦"WRemove the "editInfo" field and declare it as a local variable in the relevant methods.(ÔóØ
+o
+java:S1450§"XRemove the "contactUs" field and declare it as a local variable in the relevant methods.(İ±ûµ
+X
+java:S1128="BRemove this unused import 'cn.pedant.SweetAlert.SweetAlertDialog'.(õ”ØÁ
+]
+java:S11280"BRemove this unused import 'com.example.mechanic2.models.Warranty'.(ğ‚ïƒûÿÿÿÿ
+A
+java:S1068I"+Remove this unused "mParam1" private field.(•Íï‘
+Q
+java:S1068™"5Remove this unused "coordinatorLayout" private field.(†šÒÓúÿÿÿÿ
+d
+java:S1128
+"IRemove this unused import 'androidx.appcompat.app.ActionBarDrawerToggle'.(Èš¦·ÿÿÿÿÿ
+M
+java:S1128"7Remove this unused import 'android.widget.AdapterView'.(¶¾éæ
+A
+java:S1068J"+Remove this unused "mParam2" private field.(¡ˆ€ 
+d
+java:S1192ú"HDefine a constant instead of duplicating this literal "mmppgg2" 3 times.(¶€®˜úÿÿÿÿ
+^
+java:S1192Å"GDefine a constant instead of duplicating this literal "params" 6 times.(ŸÊ¡
+|
+java:S1450™"`Remove the "coordinatorLayout" field and declare it as a local variable in the relevant methods.(†šÒÓúÿÿÿÿ
+L
+java:S1068Œ"0Remove this unused "containerP34" private field.(Ù¦´‘øÿÿÿÿ
+J
+java:S1128"4Remove this unused import 'android.content.Context'.(©Ê‰è
+m
+java:S1450¨"VRemove the "aboutUs" field and declare it as a local variable in the relevant methods.(Îœ˜ÿ
+b
+java:S1192Ä"LDefine a constant instead of duplicating this literal "image_title" 6 times.(‡e
+q
+java:S1450‰"URemove the "place1" field and declare it as a local variable in the relevant methods.( è°”şÿÿÿÿ
+b
+java:S1192¸"KDefine a constant instead of duplicating this literal "visibility" 7 times.(ÑÛ”›
+w
+java:S1450Œ"[Remove the "containerP34" field and declare it as a local variable in the relevant methods.(Ù¦´‘øÿÿÿÿ
+w
+java:S1450"[Remove the "containerP67" field and declare it as a local variable in the relevant methods.(‹—ë£şÿÿÿÿ

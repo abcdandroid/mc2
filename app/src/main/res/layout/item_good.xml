@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
-    android:background="@color/grey_3"
+    android:background="@color/white"
     android:transitionName="pT"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
     android:orientation="horizontal">
 
 
     <RelativeLayout
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="8dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp">
+        android:layout_height="wrap_content" >
 
-        <ImageView
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/purple"
             android:transitionName="img"
             android:id="@+id/preview"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
             android:layout_alignParentStart="true"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="16dp"
-            android:background="@color/grey_1000"
             android:scaleType="centerCrop" />
 
         <com.example.mechanic2.views.MyTextView
@@ -31,24 +38,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
+            android:textStyle="bold"
             android:layout_marginTop="0dp"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:layout_toEndOf="@id/preview"
             android:layoutDirection="rtl"
             android:text="@string/hello_world"
-            android:textColor="@color/grey_1000"
-            android:textSize="16sp" />
+            android:textColor="@color/purple"
+            android:textSize="20sp" />
 
         <ImageView
-            android:tint="@color/indigo_400"
+            android:tint="@color/indigo_900"
             android:transitionName="carT"
             android:id="@+id/car_icon"
-            android:layout_width="20dp"
-            android:layout_height="14sp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_below="@id/good_name"
             android:layout_alignRight="@id/good_name"
-            android:scaleType="fitXY"
             android:src="@drawable/ic_car3" />
 
         <com.example.mechanic2.views.MyTextView
@@ -56,30 +63,31 @@
             android:id="@+id/suitable_cars"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/car_icon"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="8dp"
             android:layout_toStartOf="@id/car_icon"
             android:layout_toEndOf="@id/preview"
             android:ellipsize="end"
-            android:gravity="right"
+            android:layout_alignBottom="@id/car_icon"
+            android:gravity="center|right"
             android:layoutDirection="rtl"
             android:lines="1"
-            android:textColor="@color/grey_1000"
-            android:textSize="12sp"
-            android:textStyle="bold" />
+            android:text="@string/hello_world"
+            android:textColor="@color/indigo_900"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
 
 
         <ImageView
-            android:tint="@color/indigo_400"
+            android:tint="@color/indigo_900"
             android:transitionName="factoryT"
             android:id="@+id/factory_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_below="@id/car_icon"
             android:layout_alignLeft="@id/car_icon"
             android:layout_alignRight="@id/car_icon"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_factory2" />
 
@@ -88,17 +96,17 @@
             android:id="@+id/company_name"
             android:transitionName="cT"
             android:layout_width="wrap_content"
+            android:text="@string/hello_world"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/factory_icon"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="8dp"
+            android:layout_alignRight="@id/suitable_cars"
             android:layout_toStartOf="@id/factory_icon"
             android:ellipsize="end"
             android:gravity="right"
             android:layoutDirection="rtl"
             android:lines="1"
-            android:textColor="@color/grey_1000"
-            android:textSize="12sp"
+            android:textColor="@color/indigo_900"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <com.example.mechanic2.views.MyTextView
@@ -107,27 +115,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/company_name"
-            android:layout_marginStart="20dp"
+            android:text="@string/hello_world"
+            android:layout_marginRight="12dp"
             android:layout_toLeftOf="@id/company_name"
+            android:layout_toRightOf="@id/preview"
             android:ellipsize="end"
+            android:layout_marginLeft="8dp"
             android:gravity="right"
             android:layoutDirection="rtl"
             android:lines="1"
-            android:textColor="@color/grey_1000"
-            android:textSize="12sp"
+            android:textColor="@color/indigo_900"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
 
         <ImageView
-            android:tint="@color/indigo_400"
+            android:tint="@color/indigo_900"
             android:transitionName="warrantyT"
             android:id="@+id/warranty_icon"
-            android:layout_width="20dp"
-            android:layout_height="22dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_below="@id/factory_icon"
             android:layout_alignLeft="@id/car_icon"
             android:layout_alignRight="@id/car_icon"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_warranty" />
 
@@ -137,27 +148,28 @@
             android:id="@+id/warranty_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/hello_world"
             android:layout_alignBottom="@id/warranty_icon"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="8dp"
+            android:layout_alignRight="@id/suitable_cars"
             android:layout_toStartOf="@id/factory_icon"
             android:ellipsize="end"
             android:gravity="right"
             android:layoutDirection="rtl"
             android:lines="1"
-            android:textColor="@color/grey_1000"
-            android:textSize="12sp"
+            android:layout_marginBottom="2dp"
+            android:textColor="@color/indigo_900"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <ImageView
             android:transitionName="stokeT"
             android:id="@+id/state_icon"
-            android:layout_width="20dp"
-            android:layout_height="22dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:layout_alignLeft="@id/car_icon"
             android:layout_alignRight="@id/car_icon"
             android:layout_alignBottom="@id/read_more"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="-3dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_nis"
             android:tint="@color/red_full" />
@@ -167,17 +179,19 @@
             android:transitionName="sT"
             android:id="@+id/state_text"
             android:layout_width="wrap_content"
+            android:text="@string/hello_world"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/state_icon"
+            android:layout_alignParentBottom="true"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="8dp"
             android:layout_toStartOf="@id/factory_icon"
             android:ellipsize="end"
-            android:gravity="right"
+            android:paddingBottom="4dp"
+            android:gravity="top|right"
             android:layoutDirection="rtl"
             android:lines="1"
             android:textColor="#ff0000"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <com.example.mechanic2.views.MyTextView
@@ -185,8 +199,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/warranty_icon"
-            android:layout_marginStart="20dp"
             android:layout_marginTop="16dp"
+            android:layout_marginStart="20dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:gravity="right"
@@ -194,8 +209,8 @@
             android:lines="1"
             android:maxLength="35"
             android:text="برای مشاهده جزییات کلیک کنید"
-            android:textColor="@color/grey_1000"
-            android:textSize="12sp"
+            android:textColor="@color/purple"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
         <View
@@ -203,7 +218,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/read_more"
             android:layout_marginTop="8dp"
-            android:background="@color/grey_60" />
+            android:background="@color/purple" />
     </RelativeLayout>
 
 </LinearLayout>

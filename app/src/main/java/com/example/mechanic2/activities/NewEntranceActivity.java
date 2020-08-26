@@ -197,7 +197,7 @@ public class NewEntranceActivity extends AppCompatActivity {
 
 
                 if (user_type.equals(USER_TYPE.MECHANIC)) {
-                    startActivity(new Intent(NewEntranceActivity.this, NewMechanicActivity.class));
+                    startActivity(new Intent(NewEntranceActivity.this, NewMechanicActivity2.class));
                 } else if (user_type.equals(USER_TYPE.NORMAL)) {
 
                     sweetAlertDialogSendType = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.PROGRESS_TYPE);

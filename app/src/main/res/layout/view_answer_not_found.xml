@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+<!--
+    <com.airbnb.lottie.LottieAnimationView
+        app:lottie_loop="true"
+        app:lottie_autoPlay="true"
+        android:layout_width="128dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16sp"
+        android:layout_height="128dp"
+        app:lottie_rawRes="@raw/no_answer_lottie"
+        />-->
+
+    <TextView
+        android:textSize="16sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="پاسخی برای این سوال پیدا نشد.\n شما اولین پاسخ رو بدید" />
+
+
+
+    <RelativeLayout
+        android:id="@+id/add_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_all_goods"
+        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:src="@drawable/answer_add"
+            android:tint="@color/light_green_800" />
+
+        <com.example.mechanic2.views.MyTextView
+            style="@style/TextAppearance.Medium.Bold"
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:text="پاسخ به سوال"
+            android:textColor="@color/light_green_800" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/return_to_questions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_show_all_goods"
+        android:layout_alignLeft="@id/btn_show_all_goods"
+        android:layout_alignRight="@id/btn_show_all_goods"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/btn_luxury_goods"
+        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:src="@drawable/question_mark"
+            android:tint="@color/yellow_900" />
+
+        <com.example.mechanic2.views.MyTextView
+            android:textSize="12sp"
+            style="@style/TextAppearance.Medium.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="8dp"
+            android:text="برگشت به تالار سوالات"
+            android:textColor="@color/yellow_900" />
+    </RelativeLayout>
+
+</LinearLayout>

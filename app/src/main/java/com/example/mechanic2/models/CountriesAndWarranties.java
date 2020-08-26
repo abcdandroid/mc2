@@ -1,11 +1,13 @@
 package com.example.mechanic2.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 import java.util.List;
 /**
  * Awesome Pojo Generator
  * */
-public class CountriesAndWarranties{
+public class CountriesAndWarranties implements Serializable {
   @SerializedName("countries")
   @Expose
   private List<Country> countries;

@@ -5,14 +5,19 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.chaos.view.PinView;
@@ -21,6 +26,8 @@ import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.Smsbroadcastreciver;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.AlertAction;
+import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.google.android.gms.auth.api.phone.SmsRetriever;
 import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -80,70 +87,115 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 
     SweetAlertDialog sweetAlertDialogSendPhone;
+    SweetAlertDialog connectionSweetAlertDialog;
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.sendPhone:
+                sendPhone();
+                break;
+            case R.id.sendCode:
+                if (pinView.getText() != null && pinView.getText().toString().length() != 4) {
 
-                if (phoneInput.getText() != null && phoneInput.getText().toString().length() != 11) {
-                    SweetAlertDialog sweetAlertDialogInvalidLength = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE);
-                    sweetAlertDialogInvalidLength.setTitleText("شماره همراه وارد شده صحیح نمی باشد").setConfirmText("خب").setConfirmButtonBackgroundColor(getResources().getColor(R.color.indigo_700)).show();
-                } else if (phoneInput.getText() != null && !phoneInput.getText().toString().matches("(09)\\d{9}")) {
-                    SweetAlertDialog sweetAlertDialogInvalidPhone = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE);
-                    sweetAlertDialogInvalidPhone.setTitleText("شماره همراه وارد شده صحیح نمی باشد").setConfirmText("خب").setConfirmButtonBackgroundColor(getResources().getColor(R.color.indigo_700)).show();
-                } else {
-
-                    phoneInput.setEnabled(false);
-                    guideMsg.setText("در حال ارسال کد فعال سازی، لطفا شکیبا باشید.");
-
-
-                    phoneInput.clearFocus();
-                    //http://drkamal3.com/Mechanic/index.php?route=sms&action=prepareCode&mobile=147
-                    sweetAlertDialogSendPhone = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).setTitleText("لطفا شکیبا باشید");
-                    sweetAlertDialogSendPhone.setCancelable(false);
-                    sweetAlertDialogSendPhone.show();
-
-                    Map<String, String> data = new HashMap<>();
-                    data.put("route", "sms");
-                    data.put("action", "prepareCode");
-                    data.put("mobile", phoneInput.getText().toString().trim());
-
-                    Application.getApi().sendPhone(data).enqueue(new Callback<String>() {
+                    showAlertDialog("کد فعال سازی معتبر نمی باشد.", new AlertAction() {
                         @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            sweetAlertDialogSendPhone.dismissWithAnimation();
-                            phoneInput.setActivated(false);
-                            phoneInput.setInputType(InputType.TYPE_NULL);
-                            pinView.setVisibility(View.VISIBLE);
-                            sendPhone.setVisibility(View.GONE);
-                            sendCode.setVisibility(View.VISIBLE);
+                        public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                            pinView.setText("");
+                            sweetAlertDialog.dismissWithAnimation();
                         }
+                    });
 
+                } else {
+                    //https://drkamal3.com/Mechanic/index.php?route=sms&action=verifyCode&mobile=091232177&code=1622
+                    app.validateConnection(this, connectionSweetAlertDialog, new ConnectionErrorManager() {
                         @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-                            app.l(t.getLocalizedMessage());
+                        public void doAction() {
+                            sendPin();
                         }
                     });
                 }
                 break;
-            case R.id.sendCode:
-                if (pinView.getText() != null && pinView.getText().toString().length() != 4) {
-                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE);
-                    sweetAlertDialog.setTitleText("کد فعال سازی معتبر نمی باشد.").show();
-                } else {
-                    //https://drkamal3.com/Mechanic/index.php?route=sms&action=verifyCode&mobile=091232177&code=1622
-                    sendPin();
-                }
-                break;
         }
+    }
+
+    private void sendPhone() {
+        if (phoneInput.getText() != null && (phoneInput.getText().toString().length() != 11 || !phoneInput.getText().toString().matches("(09)[1239]\\d{8}"))) {
+            showAlertDialog("لطفا شماره همراه خود را \nبه درستی وارد کنید.", new AlertAction() {
+                @Override
+                public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.dismissWithAnimation();
+                    phoneInput.setText("");
+                }
+            });
+
+        } else {
+            app.validateConnection(this, connectionSweetAlertDialog, new ConnectionErrorManager() {
+                @Override
+                public void doAction() {
+                    sendPhoneMakeConnection();
+                }
+            });
+        }
+    }
+
+    private void sendPhoneMakeConnection() {
+        phoneInput.setEnabled(false);
+        guideMsg.setText("در حال ارسال کد فعال سازی\n لطفا شکیبا باشید.");
+
+
+        phoneInput.clearFocus();
+        //http://drkamal3.com/Mechanic/index.php?route=sms&action=prepareCode&mobile=147
+        sweetAlertDialogSendPhone = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).setTitleText("لطفا شکیبا باشید");
+        sweetAlertDialogSendPhone.setCancelable(false);
+        sweetAlertDialogSendPhone.show();
+
+        Map<String, String> data = new HashMap<>();
+        data.put("route", "sms");
+        data.put("action", "prepareCode");
+        data.put("mobile", phoneInput.getText().toString().trim());
+
+        Application.getApi().sendPhone(data).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                app.l(response.body() + "smsmsmsmsm");
+                sweetAlertDialogSendPhone.dismissWithAnimation();
+                phoneInput.setActivated(false);
+                phoneInput.setInputType(InputType.TYPE_NULL);
+                pinView.setVisibility(View.VISIBLE);
+                sendPhone.setVisibility(View.GONE);
+                sendCode.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                app.l(t.getLocalizedMessage());
+            }
+        });
+    }
+
+    private void showAlertDialog(String msg, AlertAction alertAction) {
+        SweetAlertDialog sweetAlertDialogInvalidLength = new SweetAlertDialog(LoginActivity.this);
+        View view = LayoutInflater.from(this).inflate(R.layout.view_good_not_found, null);
+        ((TextView) view.findViewById(R.id.txt)).setText(msg);
+        view.findViewById(R.id.btn_show_all_goods).setVisibility(View.GONE);
+        TextView txtOk = view.findViewById(R.id.txt_ok);
+        txtOk.setText("خب");
+        view.findViewById(R.id.btn_contact_us).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertAction.doOnClick(sweetAlertDialogInvalidLength);
+            }
+        });
+        sweetAlertDialogInvalidLength.setCustomView(view);
+        sweetAlertDialogInvalidLength.hideConfirmButton();
+        sweetAlertDialogInvalidLength.show();
     }
 
 
     SweetAlertDialog sweetAlertDialogSendCode;
 
     private void sendPin() {
-
         sweetAlertDialogSendCode = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).setTitleText("لطفا شکیبا باشید");
         sweetAlertDialogSendCode.setCancelable(false);
         sweetAlertDialogSendCode.show();
@@ -159,23 +211,30 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             public void onResponse(Call<String> call, Response<String> response) {
                 sweetAlertDialogSendCode.dismissWithAnimation();
                 String responseBody = response.body();
-
-                app.l("EE"+responseBody);
+                app.l("EE" + responseBody);
                 if (responseBody != null) {
                     if (responseBody.equals("registrationStep1")) {
                         SharedPrefUtils.saveData("phoneNumber", phoneNumber);
                         startActivity(new Intent(LoginActivity.this, NewEntranceActivity.class));
                     } else if (responseBody.equals("errorCode")) {
-                        new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE).setTitleText("error code").show();
+                        showAlertDialog("کد وارد شده صحیح نمی باشد.", new AlertAction() {
+                            @Override
+                            public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                            }
+                        });
                     } else if (responseBody.equals("time out")) {
-                        new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.ERROR_TYPE).setTitleText("time out").show();
+                        showAlertDialog("برای ورود به برنامه مجددا شماره خود را وارد کنید.", new AlertAction() {
+                            @Override
+                            public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                                phoneInput.setActivated(true);
+                                phoneInput.setInputType(InputType.TYPE_CLASS_PHONE);
+                                pinView.setVisibility(View.GONE);
+                                sendPhone.setVisibility(View.VISIBLE);
+                                sendCode.setVisibility(View.GONE);
 
-                        phoneInput.setActivated(true);
-                        phoneInput.setInputType(InputType.TYPE_CLASS_PHONE);
-                        pinView.setVisibility(View.GONE);
-                        sendPhone.setVisibility(View.VISIBLE);
-                        sendCode.setVisibility(View.GONE);
-
+                            }
+                        });
                     } else if (responseBody.contains("entranceId")) {
                         app.l("EE");
                         try {
@@ -184,32 +243,48 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                             String type = jsonObject.getString("type");
                             String entranceId = jsonObject.getString("entranceId");
                             String mobile = jsonObject.getString("mobile");
+                            if (Integer.parseInt(type) == 1) {
+                                String mechanicInfo = jsonObject.getString("mechanicInfo");
+                                SharedPrefUtils.saveData("mechanicInfo", mechanicInfo);
+                            }
 
                             SharedPrefUtils.saveData("entranceId", entranceId);
-                            SharedPrefUtils.saveData("type", type);
+                            SharedPrefUtils.saveData("type", Integer.parseInt(type));
                             SharedPrefUtils.saveData("phoneNumber", mobile);
 
-                            app.l("QQQ");
+
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
-                            app.l("WWW");
+
                         } catch (JSONException e) {
                             app.l(e.getLocalizedMessage());
-                            SweetAlertDialog sweetAlertDialogSendCode2 = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error json parsing");
-                            sweetAlertDialogSendCode2.show();
+                            showAlertDialog("خطا در ارسال اطلاعات", new AlertAction() {
+                                @Override
+                                public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismissWithAnimation();
+                                }
+                            });
                         }
                     }
                 } else if (response.body() == null) {
-                    SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error connection");
-                    sweetAlertDialogSendCode.show();
+                    showAlertDialog("خطا در ارسال اطلاعات", new AlertAction() {
+                        @Override
+                        public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+
                 }
-
-
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(LoginActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error connection");
-                sweetAlertDialogSendCode.show();
+                app.l(t.getLocalizedMessage() + "EE");
+                showAlertDialog("خطا در ارسال اطلاعات", new AlertAction() {
+                    @Override
+                    public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                });
             }
         });
     }
@@ -288,8 +363,33 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         Matcher matcher = pattern.matcher(message);
         if (matcher.find()) {
             pinView.setText(matcher.group(0));
-            sendPin();
-            ;
+            app.validateConnection(this, connectionSweetAlertDialog, new ConnectionErrorManager() {
+                @Override
+                public void doAction() {
+                    sendPin();
+                }
+            });
+
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        if (pinView.getVisibility() == View.VISIBLE) {
+            phoneInput.setActivated(true);
+            phoneInput.requestFocus();
+            phoneInput.setEnabled(true);
+            phoneInput.setInputType(InputType.TYPE_CLASS_PHONE);
+            pinView.setVisibility(View.GONE);
+            sendPhone.setVisibility(View.VISIBLE);
+            sendCode.setVisibility(View.GONE);
+            guideMsg.setText("لطفا شماره تلفن همراه \n خود را وارد نمایید.");
+        } else
+            super.onBackPressed();
+
+    }
+
+
 }
+
+
