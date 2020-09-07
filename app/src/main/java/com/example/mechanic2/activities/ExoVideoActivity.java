@@ -41,7 +41,8 @@ public class ExoVideoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        videoView.pause();
+        videoView.release();
         super.onBackPressed();
     }
 

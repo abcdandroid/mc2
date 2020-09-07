@@ -906,10 +906,28 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                     i.setData(Uri.parse(url));
                     startActivity(i);
                 } else {
-                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-                    sweetAlertDialog.setTitle("لطفا قبل از ارسال فیلم برنامه واتساپ را نصب کنید.");
-                    sweetAlertDialog.setConfirmText("خب");
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE);
+                    sweetAlertDialog.hideConfirmButton();
+                    View viewErrorConnection = LayoutInflater.from(this).inflate(R.layout.view_error_connection, null);
+                    TextView retry = viewErrorConnection.findViewById(R.id.retry);
+                    TextView msg = viewErrorConnection.findViewById(R.id.msg);
+                    LottieAnimationView lt=viewErrorConnection.findViewById(R.id.lt);
+
+                    msg.setText("لطفا قبل از ارسال فیلم برنامه واتساپ را نصب کنید.");
+                    retry.setText("خب");
+                    lt.setVisibility(View.GONE);
+
+                    SweetAlertDialog finalSweetAlertDialog = sweetAlertDialog;
+                    retry.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+
+                    sweetAlertDialog.setCustomView(viewErrorConnection);
                     sweetAlertDialog.show();
+
                 }
                 break;
             case R.id.map_thumbnail_fake:

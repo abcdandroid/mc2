@@ -36,6 +36,7 @@ import com.example.mechanic2.adapters.QuestionRecyclerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.models.AdminMedia;
 import com.example.mechanic2.models.Movies;
@@ -92,43 +93,15 @@ public class AdminFragment extends Fragment implements OnClickListener {
         recyclerAdmin = inflate.findViewById(R.id.recyclerAdmin);
         recyclerAdmin.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerAdmin.setLayoutAnimation(new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left)));
-        resumeMediaListener();
-        getAdminMedias();
-        return inflate;
-    }
-/*
-    public void requestMedia(int lastId) {
-        Map<String, String> data = new HashMap<>();
-        data.put("route", "getAdminMedias");
-        data.put("offset", String.valueOf(lastId));
-
-        Application.getApi().getAdminMediaInList(data).enqueue(new Callback<List<AdminMedia>>() {
+        app.validateConnection(getActivity(), null, new ConnectionErrorManager() {
             @Override
-            public void onResponse(Call<List<AdminMedia>> call, retrofit2.Response<List<AdminMedia>> response) {
-                models = response.body();
-                app.l(new Gson().toJson(response.body()));
-                if (models != null) {
-                    tmpModels.addAll(models);
-                }
-                if (models != null) {
-                    AdminFragment.this.lastId = models.get(models.size() - 1).getId();
-                }
-                adapter = new NewAdminAdapter()(getContext(), tmpModels, AdminFragment.this);
-                recyclerAdmin.setAdapter(adapter);
-                Intent intent=new Intent("dataCount");
-                intent.putExtra("ref","adm");
-                LocalBroadcastManager.getInstance(AdminFragment.this.getContext()).sendBroadcast(intent);
-            }
-
-            @Override
-            public void onFailure(Call<List<AdminMedia>> call, Throwable t) {
-                app.l(t.getLocalizedMessage());
+            public void doAction() {
+                resumeMediaListener();
+                getAdminMedias();
             }
         });
-        //------------------------------
-
-
-    }*/
+        return inflate;
+    }
 
 
 

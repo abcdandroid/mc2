@@ -31,7 +31,7 @@ public class MyEditText extends androidx.appcompat.widget.AppCompatEditText {
     {
         if (!isInEditMode())
         {
-            Typeface tf=Typeface.createFromAsset(getContext().getAssets(),"b.ttf");
+            Typeface tf=Typeface.createFromAsset(getContext().getAssets(),"fonts/b.ttf");
             this.setTypeface(tf);
         }
 

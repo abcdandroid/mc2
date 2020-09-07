@@ -1,12 +1,14 @@
 package com.example.mechanic2.fragments;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -19,6 +21,8 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -35,36 +39,66 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.LoginActivity;
+import com.example.mechanic2.activities.MainActivity;
 import com.example.mechanic2.activities.NewMechanicActivity2;
 import com.example.mechanic2.adapters.MyFragmentStatePagerAdapter;
 import com.example.mechanic2.adapters.ViewPagerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.models.Mechanic;
+import com.example.mechanic2.models.ViewpagerData;
 import com.example.mechanic2.models.Warranty;
+import com.example.mechanic2.views.MyTextView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.nightonke.wowoviewpager.WoWoViewPager;
+import com.zhpan.indicator.IndicatorView;
+import com.zhpan.indicator.enums.IndicatorSlideMode;
+import com.zhpan.indicator.enums.IndicatorStyle;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.ObservableEmitter;
+import io.reactivex.rxjava3.core.ObservableOnSubscribe;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Function;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import pl.pzienowicz.autoscrollviewpager.AutoScrollViewPager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+
+import static com.example.mechanic2.app.Connectivity.isConnected;
 
 
 public class MainPageFragment extends Fragment implements View.OnClickListener {
@@ -88,6 +122,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     private CircularImageView circleImageView;
     int mechanicId;
     private Mechanic mechanic;
+    private Timer timer;
 
 
     public MainPageFragment() {
@@ -105,6 +140,53 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (MainActivity.etcetera.get(0).getMessage().equals(String.valueOf(1))) {
+            LottieAnimationView warrantyLt;
+            MyTextView txt;
+            RelativeLayout btnContactUs;
+            MyTextView txtOk;
+            RelativeLayout btnShowAllGoods;
+            MyTextView cancelAction;
+
+            SweetAlertDialog exitDialog = new SweetAlertDialog(getContext());
+            View view1 = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
+            exitDialog.setCustomView(view1);
+            exitDialog.hideConfirmButton();
+
+            warrantyLt = view1.findViewById(R.id.warranty_lt);
+            txt = view1.findViewById(R.id.txt);
+            btnContactUs = view1.findViewById(R.id.btn_contact_us);
+            txtOk = view1.findViewById(R.id.txt_ok);
+            btnShowAllGoods = view1.findViewById(R.id.btn_show_all_goods);
+            cancelAction = view1.findViewById(R.id.cancel_action);
+
+            warrantyLt.setVisibility(View.GONE);
+
+            txt.setText("نسخخه جدیدی از برنامه اومده");
+
+            txtOk.setText("آپدیت کن");
+
+            cancelAction.setVisibility(View.GONE);
+            btnShowAllGoods.setVisibility(View.INVISIBLE);
+
+            btnContactUs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = MainActivity.etcetera.get(1).getMessage();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    getActivity().startActivity(i);
+                }
+            });
+
+            exitDialog.show();
+        }
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
         return init(view);
@@ -112,22 +194,26 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
     private RelativeLayout parent;
     private CardView containerP1;
-    private ViewPager place1;
-    private CardView containerP2;
-    private ViewPager place2;
     private LinearLayout containerP34;
-    private ViewPager place3;
-    private ViewPager place4;
-    private VideoView place5VideoView;
+    private CardView containerP2;
+    private AutoScrollViewPager place1;
+    private AutoScrollViewPager place2;
+    private AutoScrollViewPager place3;
+    private AutoScrollViewPager place4;
+    private AutoScrollViewPager place6;
+    private AutoScrollViewPager place7;
     private LinearLayout containerP67;
-    private ViewPager place6;
-    private ViewPager place7;
+    private VideoView place5VideoView;
+
+
     MyFragmentStatePagerAdapter adapterPlace1;
     MyFragmentStatePagerAdapter adapterPlace2;
     MyFragmentStatePagerAdapter adapterPlace3;
     MyFragmentStatePagerAdapter adapterPlace4;
     MyFragmentStatePagerAdapter adapterPlace6;
     MyFragmentStatePagerAdapter adapterPlace7;
+
+
     private CoordinatorLayout coordinatorLayout;
 
     private Toolbar toolbar;
@@ -146,14 +232,12 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     private LinearLayout aboutUs;
     private LinearLayout biKhial;
     private LinearLayout signOut;
-
-
     private NavigationView navView;
 
     private AppBarLayout appbar;
 
-    private View init(View view) {
 
+    private View init(View view) {
         adapterPlace1 = new MyFragmentStatePagerAdapter(getActivity().getSupportFragmentManager(), 0);
         adapterPlace2 = new MyFragmentStatePagerAdapter(getActivity().getSupportFragmentManager(), 0);
         adapterPlace3 = new MyFragmentStatePagerAdapter(getActivity().getSupportFragmentManager(), 0);
@@ -178,7 +262,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         aboutUs = view.findViewById(R.id.about_us);
         biKhial = view.findViewById(R.id.bi_khial);
         signOut = view.findViewById(R.id.sign_out);
-
 
         whatsUpIntent.setOnClickListener(this);
         editInfo.setOnClickListener(this);
@@ -241,6 +324,51 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                 else {
                     SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getContext());
                     View inflate = LayoutInflater.from(getContext()).inflate(R.layout.normal_user_info, null);
+                    sweetAlertDialog.hideConfirmButton();
+                    LinearLayout editInfoNormalUser = inflate.findViewById(R.id.edit_info);
+                    LinearLayout contactUsNormalUser = inflate.findViewById(R.id.contact_us);
+                    LinearLayout aboutUsNormalUser = inflate.findViewById(R.id.about_us);
+                    LinearLayout signOutNormalUser = inflate.findViewById(R.id.sign_out);
+
+                    editInfoNormalUser.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intentCall = new Intent(Intent.ACTION_DIAL);
+                            intentCall.setData(Uri.parse("tel:" + MainActivity.etcetera.get(2).getMessage()));
+                            startActivity(intentCall);
+                        }
+                    });
+                    contactUsNormalUser.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            Uri uri = Uri.parse("http://instagram.com/_u/abc");
+                            Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+
+                            likeIng.setPackage("com.instagram.android");
+
+                            try {
+                                startActivity(likeIng);
+                            } catch (ActivityNotFoundException e) {
+                                startActivity(new Intent(Intent.ACTION_VIEW,
+                                        Uri.parse("http://instagram.com/abc")));
+                            }
+
+                        }
+                    });
+                    aboutUsNormalUser.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            app.t("c");
+                        }
+                    });
+                    signOutNormalUser.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            showExitDialog(sweetAlertDialog);
+                        }
+                    });
+
                     sweetAlertDialog.setCustomView(inflate);
                     sweetAlertDialog.hideConfirmButton();
                     sweetAlertDialog.show();
@@ -285,8 +413,79 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         place4.setAdapter(adapterPlace4);
         place6.setAdapter(adapterPlace6);
         place7.setAdapter(adapterPlace7);
-        getData();
+
+        place1.startAutoScroll(7100);
+        place2.startAutoScroll(200);
+        place3.startAutoScroll(300);
+        place4.startAutoScroll(400);
+        place6.startAutoScroll(600);
+        place7.startAutoScroll(700);
+
+
+        place1.setInterval(3000);
+        place2.setInterval(3000);
+        place3.setInterval(3000);
+        place4.setInterval(3000);
+        place6.setInterval(3000);
+        place7.setInterval(3000);
+
+        app.validateConnection(getActivity(), null, new ConnectionErrorManager() {
+            @Override
+            public void doAction() {
+                getData();
+            }
+        });
+
         return view;
+    }
+
+    private void showExitDialog(SweetAlertDialog sweetAlertDialog) {
+        LottieAnimationView warrantyLt;
+        MyTextView txt;
+        RelativeLayout btnContactUs;
+        MyTextView txtOk;
+        RelativeLayout btnShowAllGoods;
+        MyTextView cancelAction;
+
+        SweetAlertDialog exitDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE);
+        View view1 = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
+        exitDialog.setCustomView(view1);
+        exitDialog.hideConfirmButton();
+
+
+        warrantyLt = view1.findViewById(R.id.warranty_lt);
+        txt = view1.findViewById(R.id.txt);
+        btnContactUs = view1.findViewById(R.id.btn_contact_us);
+        txtOk = view1.findViewById(R.id.txt_ok);
+        btnShowAllGoods = view1.findViewById(R.id.btn_show_all_goods);
+        cancelAction = view1.findViewById(R.id.cancel_action);
+
+        warrantyLt.setVisibility(View.GONE);
+
+        txt.setText("آیا مطمئن به خروج از برنامه هستید؟");
+
+        txtOk.setText("نه، دستم خورد.");
+        cancelAction.setText("آره، میخوام برم.");
+
+        btnContactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sweetAlertDialog != null)
+                    sweetAlertDialog.dismiss();
+                exitDialog.dismissWithAnimation();
+            }
+        });
+
+        btnShowAllGoods.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPrefUtils.clear();
+                Objects.requireNonNull(getActivity()).finish();
+                getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
+
+            }
+        });
+        exitDialog.show();
     }
 
 
@@ -296,13 +495,29 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         Map<String, String> map = new HashMap<>();
         map.put("route", "getMainPageData");
         Application.getApi().getDataInString(map).enqueue(new Callback<String>() {
+            private ViewpagerData[] viewpagerData;
+
+            private void viewPagerInfo(ViewpagerData viewpagerData, AutoScrollViewPager viewPager) {
+                if (viewpagerData.getChangeState() == 1) {
+                    viewPager.startAutoScroll();
+                    viewPager.setInterval(viewpagerData.getIntervalTime());
+                    viewPager.setDirection(AutoScrollViewPager.Direction.LEFT);
+                    //viewPager.setScrollBarFadeDuration(1000);
+                    viewPager.setScrollDurationFactor(viewpagerData.getDelayTime());
+                } else viewPager.stopAutoScroll();
+            }
+
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 if (loadingData != null)
                     loadingData.dismissWithAnimation();
                 try {
                     if (response.body() != null) {
-                        JSONArray jsonArray = new JSONArray(response.body());
+                        JSONObject jsonObjectMain = new JSONObject(response.body());
+                        JSONArray jsonArray = jsonObjectMain.getJSONArray("mainPageData");
+                        String jsonArrayViewPager = jsonObjectMain.getString("viewpagerData");
+                        viewpagerData = new Gson().fromJson(jsonArrayViewPager.toString(), ViewpagerData[].class);
+                        app.l("pdofmv" + viewpagerData[0].getChangeState());
                         app.l(jsonArray.length() + "jleng");
                         int len = jsonArray.length();
                         for (int i = 0; i < len; i++) {
@@ -369,6 +584,17 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                             }
                         }
 
+
+                        viewPagerInfo(viewpagerData[0], place1);
+                        viewPagerInfo(viewpagerData[1], place2);
+                        viewPagerInfo(viewpagerData[2], place3);
+                        viewPagerInfo(viewpagerData[3], place4);
+                        viewPagerInfo(viewpagerData[4], place6);
+                        viewPagerInfo(viewpagerData[5], place7);
+
+
+                        //showGuide();
+
                         Intent intent = new Intent("dataCount");
                         intent.putExtra("ref", "mpf");
                         LocalBroadcastManager.getInstance(MainPageFragment.this.getContext()).sendBroadcast(intent);
@@ -389,6 +615,39 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         });
     }
 
+   /* private void showGuide() {
+        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/b.ttf");
+
+        new MaterialTapTargetPrompt.Builder(MainPageFragment.this)
+                .setTarget(R.id.hamburger_button)
+                .setPrimaryText("مشاهده اطلاعات").setPrimaryTextTypeface(tf).setSecondaryTextTypeface(tf)
+                .setSecondaryText("اینجا می تونی اطلاعات خودتو ببینی و اگه خواستی برامون فیلم بفرستی")
+                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                    @Override
+                    public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                        if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED) {
+                            // User has pressed the prompt target
+                            app.t("Abc");
+                        }
+                    }
+                })
+                .setTarget(R.id.container_p1)
+                .setPrimaryText("یه بنر با اطلاعات به روز").setPrimaryTextTypeface(tf).setSecondaryTextTypeface(tf)
+                .setSecondaryText("اینجا همیشه به روز میشه و تو می تونی از این قسمت به جاهای دیگه برنامه بری")
+                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
+                    @Override
+                    public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
+                        if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED) {
+                            // User has pressed the prompt target
+                            app.t("Abc");
+                        }
+                    }
+                })
+                .show();
+
+    }*/
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -404,21 +663,68 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.whats_up_intent:
-                app.l("b");
+                if (app.appInstalledOrNot("com.whatsapp")) {
+                    PackageManager pm = getActivity().getPackageManager();
+                    String url = "https://api.whatsapp.com/send?phone=" + MainActivity.etcetera.get(4).getMessage();
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+                    startActivity(i);
+                } else {
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE);
+                    sweetAlertDialog.hideConfirmButton();
+                    View viewErrorConnection = LayoutInflater.from(getContext()).inflate(R.layout.view_error_connection, null);
+                    TextView retry = viewErrorConnection.findViewById(R.id.retry);
+                    TextView msg = viewErrorConnection.findViewById(R.id.msg);
+                    LottieAnimationView lt = viewErrorConnection.findViewById(R.id.lt);
+
+                    msg.setText("لطفا قبل از ارسال فیلم برنامه واتساپ را نصب کنید.");
+                    retry.setText("خب");
+                    lt.setVisibility(View.GONE);
+
+                    SweetAlertDialog finalSweetAlertDialog = sweetAlertDialog;
+                    retry.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+
+                    sweetAlertDialog.setCustomView(viewErrorConnection);
+                    sweetAlertDialog.show();
+
+                }
                 break;
+
             case R.id.contact_us:
-                app.l("c");
+                Intent intentCall = new Intent(Intent.ACTION_DIAL);
+                intentCall.setData(Uri.parse("tel:" + MainActivity.etcetera.get(2).getMessage()));
+                startActivity(intentCall);
+
                 break;
             case R.id.about_us:
                 app.l("d");
                 break;
             case R.id.bi_khial:
-                app.l("e");
+
+                Uri uri = Uri.parse("http://instagram.com/_u/abc");
+                Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
+
+                likeIng.setPackage("com.instagram.android");
+
+                try {
+                    startActivity(likeIng);
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("http://instagram.com/abc")));
+                }
+
                 break;
             case R.id.sign_out:
-                SharedPrefUtils.clear();
+                //add r u sure? dialog
+                /*SharedPrefUtils.clear();
                 Objects.requireNonNull(getActivity()).finish();
-                getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));*/
+                showExitDialog(null);
                 break;
         }
     }
@@ -437,8 +743,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
 
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) place5VideoView.getLayoutParams();
-            params.width = params.MATCH_PARENT;
-            params.height = params.MATCH_PARENT;
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
             params.rightMargin = 0;
             params.leftMargin = 0;
             params.bottomMargin = 0;
@@ -452,7 +758,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
             place5VideoView.showControls();
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) place5VideoView.getLayoutParams();
-            params.width = params.MATCH_PARENT;
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params.height = place5VideoViewHeight;
             params.rightMargin = place5VideoViewMR;
             params.leftMargin = place5VideoViewML;
@@ -463,4 +769,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             place5VideoView.setLayoutParams(params);
         }
     }
+
+
 }

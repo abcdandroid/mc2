@@ -58,6 +58,7 @@ import com.example.mechanic2.adapters.StoreRecyclerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.interfaces.OnGoodClickListener;
 import com.example.mechanic2.interfaces.VoiceOnClickListener;
 import com.example.mechanic2.models.Car;
@@ -203,51 +204,57 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         warrantySpinner.setVisibility(View.GONE);
         countrySpinner.setVisibility(View.GONE);
         stoke.setVisibility(View.GONE);
-        Application.getApi().getCountriesAndWarranties(map).enqueue(new Callback<CountriesAndWarranties>() {
+        app.validateConnection(getActivity(), null, new ConnectionErrorManager() {
             @Override
-            public void onResponse(Call<CountriesAndWarranties> call, Response<CountriesAndWarranties> response) {
-                if (loadingData != null)
-                    loadingData.dismissWithAnimation();
-                List<Country> countries = response.body().getCountries();
-                List<Warranty> warranties = response.body().getWarranties();
-                List<String> countryNames = new ArrayList<>();
-                List<Integer> countryIds = new ArrayList<>();
-                List<String> warrantyNames = new ArrayList<>();
-                List<Integer> warrantyIds = new ArrayList<>();
-                for (Country countries1 : countries) {
-                    countryNames.add(countries1.getName());
-                    countryIds.add(countries1.getId());
-                }
-                for (Warranty warranty1 : warranties) {
-                    warrantyNames.add(warranty1.getName());
-                    warrantyIds.add(warranty1.getId());
-                }
-                if (getContext() != null) {
-                    countrySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, countryNames, countryIds, false);
-                    warrantySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, warrantyNames, warrantyIds, false);
-                    warrantySpinner.setAdapter(warrantySpinnerAdapter);
-                    countrySpinner.setAdapter(countrySpinnerAdapter);
-                }
-                stoke.setVisibility(View.VISIBLE);
-                countrySpinner.setVisibility(View.VISIBLE);
-                warrantySpinner.setVisibility(View.VISIBLE);
-                if (detail == null) {
-                    fromConfig = false;
-                } else {
-                    fromConfig = true;
-                    configureStoreWithDetail(detail);
-                }
+            public void doAction() {
+
+                Application.getApi().getCountriesAndWarranties(map).enqueue(new Callback<CountriesAndWarranties>() {
+                    @Override
+                    public void onResponse(Call<CountriesAndWarranties> call, Response<CountriesAndWarranties> response) {
+                        if (loadingData != null)
+                            loadingData.dismissWithAnimation();
+                        List<Country> countries = response.body().getCountries();
+                        List<Warranty> warranties = response.body().getWarranties();
+                        List<String> countryNames = new ArrayList<>();
+                        List<Integer> countryIds = new ArrayList<>();
+                        List<String> warrantyNames = new ArrayList<>();
+                        List<Integer> warrantyIds = new ArrayList<>();
+                        for (Country countries1 : countries) {
+                            countryNames.add(countries1.getName());
+                            countryIds.add(countries1.getId());
+                        }
+                        for (Warranty warranty1 : warranties) {
+                            warrantyNames.add(warranty1.getName());
+                            warrantyIds.add(warranty1.getId());
+                        }
+                        if (getContext() != null) {
+                            countrySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, countryNames, countryIds, false);
+                            warrantySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, warrantyNames, warrantyIds, false);
+                            warrantySpinner.setAdapter(warrantySpinnerAdapter);
+                            countrySpinner.setAdapter(countrySpinnerAdapter);
+                        }
+                        stoke.setVisibility(View.VISIBLE);
+                        countrySpinner.setVisibility(View.VISIBLE);
+                        warrantySpinner.setVisibility(View.VISIBLE);
+                        if (detail == null) {
+                            fromConfig = false;
+                        } else {
+                            fromConfig = true;
+                            configureStoreWithDetail(detail);
+                        }
 
 
-                app.l("step 3");/*
+                        app.l("step 3");/*
                 resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
                 getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));*/
-            }
+                    }
 
-            @Override
-            public void onFailure(Call<CountriesAndWarranties> call, Throwable t) {
-                loadingData.dismissWithAnimation();
+                    @Override
+                    public void onFailure(Call<CountriesAndWarranties> call, Throwable t) {
+                        loadingData.dismissWithAnimation();
 
+                    }
+                });
             }
         });
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -266,8 +273,12 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                         app.l("step 5");
                         loading.setVisibility(View.VISIBLE);
                         submitFilter.setVisibility(View.INVISIBLE);
-                        resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                        getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
+                        app.validateConnection(getActivity(), null, new ConnectionErrorManager() {
+                            @Override
+                            public void doAction() {
+                                getGoodsPackage();
+                            }
+                        });
                     }
                 }
             }
@@ -292,8 +303,13 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     if (i > loaderLimiter) {
                         loading.setVisibility(View.VISIBLE);
                         submitFilter.setVisibility(View.INVISIBLE);
-                        resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                        getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
+                        app.validateConnection(getActivity(), null, new ConnectionErrorManager() {
+                            @Override
+                            public void doAction() {
+
+                                getGoodsPackage();
+                            }
+                        });
                     }
                 }
             }
@@ -399,7 +415,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     resetCar.setVisibility(View.INVISIBLE);
                 } else {
                     resetCar.setVisibility(View.VISIBLE);
-                    if ((!carQuestion.getText().toString().equals("همه ماشین ها") || (car != null && !carQuestion.getText().toString().equals(car.getName()))) && selectedCarId==0) {
+                    if ((!carQuestion.getText().toString().equals("همه ماشین ها") || (car != null && !carQuestion.getText().toString().equals(car.getName()))) && selectedCarId == 0) {
                         app.l("AAA1");
                         selectedCarId = -1;
                     }
@@ -424,7 +440,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     resetGood.setVisibility(View.INVISIBLE);
                 } else {
                     resetGood.setVisibility(View.VISIBLE);
-                    if ((!goodQuestion.getText().toString().equals("همه قطعه ها") || (good != null && !goodQuestion.getText().toString().equals(good.getName()))) && selectedGoodId==0) {
+                    if ((!goodQuestion.getText().toString().equals("همه قطعه ها") || (good != null && !goodQuestion.getText().toString().equals(good.getName()))) && selectedGoodId == 0) {
                         selectedGoodId = -1;
                         app.l("BBB2");
                     }
@@ -442,8 +458,12 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             public void onRefresh() {
                 loading.setVisibility(View.VISIBLE);
                 submitFilter.setVisibility(View.INVISIBLE);
-                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
+                app.validateConnection(getActivity(), null, new ConnectionErrorManager() {
+                    @Override
+                    public void doAction() {
+                        getGoodsPackage();
+                    }
+                });
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -459,7 +479,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     private void modifyIds() {
         if (carQuestion.getText().toString().length() == 0 && selectedCarId == 0) {
             selectedCarId = 0;
-        } else if (carQuestion.getText().toString().length() > 0 && (!carQuestion.getText().toString().equals(getString(R.string.all_cars)) && (car != null && !carQuestion.getText().toString().equals(car.getName()))) && selectedCarId==0) {
+        } else if (carQuestion.getText().toString().length() > 0 && (!carQuestion.getText().toString().equals(getString(R.string.all_cars)) && (car != null && !carQuestion.getText().toString().equals(car.getName()))) && selectedCarId == 0) {
             selectedCarId = -1;
             app.l("AAA2");
         }
@@ -468,7 +488,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         } else if (
                 goodQuestion.getText().toString().length() > 0 &&
                         (!goodQuestion.getText().toString().equals(getString(R.string.all_goods)) && !goodQuestion.getText().toString().equals(getString(R.string.luxury_good)) && (good != null && !goodQuestion.getText().toString().equals(good.getName())))
-                        && selectedGoodId==0
+                        && selectedGoodId == 0
         ) {
 
             if (goodQuestion.getText().toString().length() > 0) app.l("rtyCCC");
@@ -785,8 +805,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
                 loading.setVisibility(View.VISIBLE);
                 submitFilter.setVisibility(View.INVISIBLE);
-                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
+                getGoodsPackage();
 
 
                 break;
@@ -794,10 +813,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 app.hideKeyboard(carQuestion);
                 app.hideKeyboard(goodQuestion);
                 modifyIds();
-
-
-                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));/**/
+                getGoodsPackage();
                 break;
             case R.id.btn_contact_us:
                 if (sweetAlertDialogGoodNotExist != null)
@@ -821,8 +837,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 }
                 countrySpinnerAdapter.disableAdapter(is_stoke_active);
                 warrantySpinnerAdapter.disableAdapter(is_stoke_active);
-                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));/**/
+                getGoodsPackage();
                 break;
             case R.id.reset_good:
                 app.hideKeyboard(carQuestion);
@@ -849,8 +864,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     warrantySpinnerAdapter.disableAdapter(is_stoke_active);
                 }
 
-                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));/**/
+                getGoodsPackage();
                 break;
             case R.id.btn_show_all_goods:
                 sweetAlertDialogGoodNotExist.dismissWithAnimation();
@@ -884,13 +898,23 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     warrantySpinner.setSelection(0);
                     countrySpinner.setSelection(0);
                 } else if (countrySpinner.getSelectedItemPosition() == 0 && warrantySpinner.getSelectedItemPosition() == 0) {
-                    resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                    getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));/**/
+                    getGoodsPackage();
                 }
                 break;
 
 
         }
+    }
+
+    private void getGoodsPackage() {
+        app.validateConnection(getActivity(), null, new ConnectionErrorManager() {
+            @Override
+            public void doAction() {
+
+                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
+                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));/**/
+            }
+        });
     }
 
 
@@ -974,8 +998,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
             if (warrantyIdInString.equals("0") && countryIdInString.equals("0")) {
 
-                resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
+                getGoodsPackage();
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -513,34 +513,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:background="?android:attr/selectableItemBackground"
-                    android:id="@+id/bi_khial"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="2dp"
-                    android:gravity="center_vertical"
-                    android:layoutDirection="rtl"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="24dp"
-                        android:src="@drawable/bi_khial" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:textColor="@color/indigo_900"
-                        android:text="بی خیال"
-                        android:textAllCaps="false"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
 
 
             </LinearLayout>

@@ -87,7 +87,7 @@ public interface Api {
 
     @POST(".")
     Call<String> uploadAudioFile(
-            @QueryMap Map<String, String> map );
+            @QueryMap Map<String, String> map);
 
 
     @GET(".")
@@ -110,7 +110,7 @@ public interface Api {
 
 
     @GET(".")
-    Call<Etcetera> getEtcetera(@QueryMap Map<String, String> map);
+    Call<List<Etcetera>> getEtcetera(@QueryMap Map<String, String> map);
 
 
 }

@@ -18,26 +18,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
-import com.example.mechanic2.app.Connectivity;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.AdminFragment;
-import com.example.mechanic2.fragments.AdminFragment2;
 import com.example.mechanic2.fragments.MainPageFragment;
 import com.example.mechanic2.fragments.MechanicFragment;
 import com.example.mechanic2.fragments.QuestionFragment;
 import com.example.mechanic2.fragments.StoreFragment;
 import com.example.mechanic2.interfaces.UpdateNavBar;
+import com.example.mechanic2.models.Etcetera;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -54,26 +59,40 @@ public class MainActivity extends AppCompatActivity {
     public static UpdateNavBar updateNavBar;
 
     //پرداخت مبلغ فونت ایران سنس به کار رفته
+    public static List<Etcetera> etcetera;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar=findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-       /* viewpager = findViewById(R.id.viewpager);
-        viewpager.setOffscreenPageLimit(1);*/
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        bottomNavigationView.setSelectedItemId(R.id.main_page);
+        if (checkPermission()) {
+            Map<String, String> map = new HashMap<>();
+            map.put("route", "getEtcData");
+            Application.getApi().getEtcetera(map).enqueue(new Callback<List<Etcetera>>() {
+                @Override
+                public void onResponse(Call<List<Etcetera>> call, Response<List<Etcetera>> response) {
+                    etcetera=response.body();
+                    myAction(); /**/
+                }
 
-        if (checkPermission())
-            myAction(); /**/
+                @Override
+                public void onFailure(Call<List<Etcetera>> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
 
     private void myAction() {
-        app.l("starteddd5");
+
+
         this.type = SharedPrefUtils.getIntData("type");
         this.mechanicInfo = SharedPrefUtils.getStringData("mechanicInfo");
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("mp"));
@@ -81,27 +100,27 @@ public class MainActivity extends AppCompatActivity {
         loadMainPageFragment(type, mechanicInfo);
 
 
-            bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-                item.setChecked(true);
-                switch (item.getItemId()) {
-                    case R.id.mechanics:
-                        app.loadFragment(this, new MechanicFragment());
-                        break;
-                    case R.id.home:
-                        app.loadFragment(this, new AdminFragment());
-                        break;
-                    case R.id.questions:
-                        app.loadFragment(this, new QuestionFragment());
-                        break;
-                    case R.id.store:
-                        app.loadFragment(this, new StoreFragment());
-                        break;
-                    case R.id.main_page:
-                        loadMainPageFragment(type, mechanicInfo);
-                        break;
-                }
-                return false;
-            });
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            item.setChecked(true);
+            switch (item.getItemId()) {
+                case R.id.mechanics:
+                    app.loadFragment(this, new MechanicFragment());
+                    break;
+                case R.id.home:
+                    app.loadFragment(this, new AdminFragment());
+                    break;
+                case R.id.questions:
+                    app.loadFragment(this, new QuestionFragment());
+                    break;
+                case R.id.store:
+                    app.loadFragment(this, new StoreFragment());
+                    break;
+                case R.id.main_page:
+                    loadMainPageFragment(type, mechanicInfo);
+                    break;
+            }
+            return false;
+        });
         //bottomNavigationView.setSelectedItemId(R.id.main_page);
         updateNavBar = new UpdateNavBar() {
             @Override
@@ -136,7 +155,11 @@ public class MainActivity extends AppCompatActivity {
             mainPageFragment1 = new MainPageFragment(type, mechanicInfo);
         } else mainPageFragment1 = new MainPageFragment(type);
 
-        app.loadFragment(this, mainPageFragment1);
+
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.container, mainPageFragment1);
+        fragmentTransaction.commitAllowingStateLoss();
+
     }
 
 /*    private void loadMainPageFragment(int type, String mechanicInfo) {

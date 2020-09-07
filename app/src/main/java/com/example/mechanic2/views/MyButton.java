@@ -31,7 +31,7 @@ public class MyButton extends androidx.appcompat.widget.AppCompatButton {
     {
         if (!isInEditMode())
         {
-            Typeface tf=Typeface.createFromAsset(getContext().getAssets(),"b.ttf");
+            Typeface tf=Typeface.createFromAsset(getContext().getAssets(),"fonts/b.ttf");
             this.setTypeface(tf);
         }
 

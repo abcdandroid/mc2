@@ -95,6 +95,9 @@ dependencies {
     implementation 'com.devbrackets.android:exomedia:4.3.0'
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     implementation 'com.hedgehog.ratingbar:app:1.1.2'
-
-
+    implementation 'com.github.pzienowicz:androidx-auto-scroll-view-pager:1.1.0'
+    implementation 'com.github.zhpanvip:viewpagerindicator:1.0.4'
+    implementation 'uk.co.samuelwall:material-tap-target-prompt:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.6'
 }

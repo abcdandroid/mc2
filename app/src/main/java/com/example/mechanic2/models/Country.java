@@ -1,13 +1,10 @@
 package com.example.mechanic2.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.io.Serializable;
-
 /**
  * Awesome Pojo Generator
  * */
-public class Country implements Serializable {
+public class Country{
   @SerializedName("name")
   @Expose
   private String name;
@@ -16,7 +13,7 @@ public class Country implements Serializable {
   private Integer id;
   public Country(){
   }
-  public Country(String name, Integer id){
+  public Country(String name,Integer id){
    this.name=name;
    this.id=id;
   }
