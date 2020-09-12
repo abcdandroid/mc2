@@ -1,11 +1,6 @@
 package com.example.mechanic2.activities;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -14,11 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.chaos.view.PinView;
 import com.example.mechanic2.R;
@@ -56,14 +51,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     Smsbroadcastreciver smsbroadcastreciver;
     static final int Codeintentforresult = 1;
 
-    /*
-     * moarefi mechanic
-     * video haye amoozeshi
-     * forushgah mahsulat
-     * talar porsesh pasokh
-     * sos     map
-     * main page
-     * */
+
     private TextView guideMsg;
 
 
@@ -107,7 +95,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     });
 
                 } else {
-                    //https://drkamal3.com/Mechanic/index.php?route=sms&action=verifyCode&mobile=091232177&code=1622
+
                     app.validateConnection(this, connectionSweetAlertDialog, new ConnectionErrorManager() {
                         @Override
                         public void doAction() {
@@ -145,7 +133,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
 
         phoneInput.clearFocus();
-        //http://drkamal3.com/Mechanic/index.php?route=sms&action=prepareCode&mobile=147
+
         sweetAlertDialogSendPhone = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).setTitleText("لطفا شکیبا باشید");
         sweetAlertDialogSendPhone.setCancelable(false);
         sweetAlertDialogSendPhone.show();
@@ -158,7 +146,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         Application.getApi().sendPhone(data).enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                app.l(response.body() + "smsmsmsmsm");
+
                 sweetAlertDialogSendPhone.dismissWithAnimation();
                 phoneInput.setActivated(false);
                 phoneInput.setInputType(InputType.TYPE_NULL);
@@ -169,7 +157,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                app.l(t.getLocalizedMessage());
+
             }
         });
     }
@@ -211,7 +199,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             public void onResponse(Call<String> call, Response<String> response) {
                 sweetAlertDialogSendCode.dismissWithAnimation();
                 String responseBody = response.body();
-                app.l("EE" + responseBody);
+
                 if (responseBody != null) {
                     if (responseBody.equals("registrationStep1")) {
                         SharedPrefUtils.saveData("phoneNumber", phoneNumber);
@@ -236,7 +224,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                             }
                         });
                     } else if (responseBody.contains("entranceId")) {
-                        app.l("EE");
+
                         try {
                             JSONObject jsonObject = new JSONObject(responseBody);
 
@@ -256,7 +244,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                         } catch (JSONException e) {
-                            app.l(e.getLocalizedMessage());
+
                             showAlertDialog("خطا در ارسال اطلاعات", new AlertAction() {
                                 @Override
                                 public void doOnClick(SweetAlertDialog sweetAlertDialog) {
@@ -278,7 +266,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                app.l(t.getLocalizedMessage() + "EE");
+
                 showAlertDialog("خطا در ارسال اطلاعات", new AlertAction() {
                     @Override
                     public void doOnClick(SweetAlertDialog sweetAlertDialog) {
@@ -302,25 +290,25 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     void registerBroadcastReceiverSms() {
-        app.l("aa");
+
         smsbroadcastreciver = new Smsbroadcastreciver();
         smsbroadcastreciver.smsbroadcastlistner = new Smsbroadcastreciver.smsbroadcastlistner() {
             @Override
             public void onsucess(Intent intent) {
-                app.l("register");
+
                 startActivityForResult(intent, Codeintentforresult);
             }
 
             @Override
             public void error() {
-                app.l("error");
+
             }
         };
-        app.l("uu");
+
         IntentFilter intentFilter = new IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION);
-        app.l("vv");
+
         registerReceiver(smsbroadcastreciver, intentFilter);
-        app.l("ww");
+
     }
 
     void Start() {
@@ -328,12 +316,12 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         client.startSmsUserConsent("50004000142663").addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                app.l("client A");
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                app.l("client B");
+
 
             }
         });
@@ -342,23 +330,23 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        app.l("result A");
+
 
         if (requestCode == Codeintentforresult) {
-            app.l("result B");
+
 
             if (resultCode == RESULT_OK && data != null) {
-                app.l("result C");
+
 
                 String message = data.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE);
-                app.l(message);
+
                 getOtpFromMessage(message);
             }
         }
     }
 
     private void getOtpFromMessage(String message) {
-        app.l("opt");
+
         Pattern pattern = Pattern.compile("(|^)\\d{4}");
         Matcher matcher = pattern.matcher(message);
         if (matcher.find()) {
@@ -388,7 +376,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
             super.onBackPressed();
 
     }
-
 
 }
 

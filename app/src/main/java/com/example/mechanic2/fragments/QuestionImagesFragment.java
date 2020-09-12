@@ -1,31 +1,25 @@
 package com.example.mechanic2.fragments;
 
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
+import androidx.fragment.app.Fragment;
+
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
+import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
 
-/**
- * A simple {@link Fragment} subclass.
- */
 public class QuestionImagesFragment extends Fragment {
     private ImageView image;
     private OnViewPagerClickListener onViewPagerClickListener;
 
     public QuestionImagesFragment() {
-        // Required empty public constructor
+
     }
 
     public static QuestionImagesFragment newInstance(String imageUri, OnViewPagerClickListener onViewPagerClickListener) {
@@ -50,7 +44,7 @@ public class QuestionImagesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View inflate = inflater.inflate(R.layout.fragment_question_images, container, false);
 
         image = inflate.findViewById(R.id.image);
@@ -59,17 +53,17 @@ public class QuestionImagesFragment extends Fragment {
             onViewPagerClickListener = getArguments().getParcelable("onClick");
         }
         if (getArguments() != null) {
-            app.l("http://drkamal3.com/Mechanic/" + getArguments().getString("imageUri"));
-            Glide.with(Objects.requireNonNull(getActivity())).load("http://drkamal3.com/Mechanic/" + getArguments().getString("imageUri")).into(image);
+
+            Picasso.get().load(getString(R.string.drweb) + getArguments().getString("imageUri")).into(image);
         }
 
         image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                app.l("QQQQQQQQrrrrrrrrrr");
+
                 if (onViewPagerClickListener != null)
                     onViewPagerClickListener.onViewPagerClick(v);
-                else app.l("QQQQQQQQrrrrrrrrrr+on view is null");
+
             }
         });
         return inflate;

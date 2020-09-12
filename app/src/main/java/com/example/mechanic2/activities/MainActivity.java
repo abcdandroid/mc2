@@ -35,14 +35,9 @@ import com.example.mechanic2.interfaces.UpdateNavBar;
 import com.example.mechanic2.models.Etcetera;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -58,8 +53,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static UpdateNavBar updateNavBar;
 
-    //پرداخت مبلغ فونت ایران سنس به کار رفته
+
     public static List<Etcetera> etcetera;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,21 +68,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.main_page);
         if (checkPermission()) {
-            Map<String, String> map = new HashMap<>();
-            map.put("route", "getEtcData");
-            Application.getApi().getEtcetera(map).enqueue(new Callback<List<Etcetera>>() {
-                @Override
-                public void onResponse(Call<List<Etcetera>> call, Response<List<Etcetera>> response) {
-                    etcetera=response.body();
-                    myAction(); /**/
-                }
-
-                @Override
-                public void onFailure(Call<List<Etcetera>> call, Throwable t) {
-
-                }
-            });
+            myAction();
+            etcetera = SplashActivity.etcetera;
         }
+
+
     }
 
 
@@ -96,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
         this.type = SharedPrefUtils.getIntData("type");
         this.mechanicInfo = SharedPrefUtils.getStringData("mechanicInfo");
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("mp"));
-        bottomNavigationView.setSelectedItemId(R.id.main_page);
-        loadMainPageFragment(type, mechanicInfo);
+       loadMainPageFragment(type, mechanicInfo);
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -121,7 +106,13 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
-        //bottomNavigationView.setSelectedItemId(R.id.main_page);
+
+        if (getIntent().getBooleanExtra("linked", false)) {
+            bottomNavigationView.setSelectedItemId(R.id.questions);
+        } else
+            bottomNavigationView.setSelectedItemId(R.id.main_page);
+
+
         updateNavBar = new UpdateNavBar() {
             @Override
             public void setSelectedItem(int field) {
@@ -144,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
-        app.l("starteddd6");
+
     }
 
     private void loadMainPageFragment(int type, String mechanicInfo) {
@@ -155,23 +146,11 @@ public class MainActivity extends AppCompatActivity {
             mainPageFragment1 = new MainPageFragment(type, mechanicInfo);
         } else mainPageFragment1 = new MainPageFragment(type);
 
-
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.container, mainPageFragment1);
         fragmentTransaction.commitAllowingStateLoss();
-
     }
 
-/*    private void loadMainPageFragment(int type, String mechanicInfo) {
-        MainPageFragment mainPageFragment;
-        if (type == 0 || (type == 1 && mechanicInfo.equals("-1"))) {
-            mainPageFragment = MainPageFragment.newInstance(type);
-        } else if (type == 1 && !mechanicInfo.equals("-1")) {
-            mainPageFragment = MainPageFragment.newInstance(type, mechanicInfo);
-        } else mainPageFragment = MainPageFragment.newInstance(type);
-
-        app.loadFragment(this,mainPageFragment);
-    }*/
 
     private Boolean checkPermission() {
 
@@ -195,23 +174,19 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        app.l("ppoottmm" + requestCode);
+
         if (requestCode == REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
                 myAction();
             } else {
-                app.t("not granted");
+
             }
         } else if (requestCode == MechanicFragment.REQUEST_CODE) {
-            app.l("fgps" + grantResults[grantResults.length - 1]);
+
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Intent intent = new Intent("forGps")  /**/;
+                Intent intent = new Intent("forGps");
                 LocalBroadcastManager.getInstance(Application.getContext()).sendBroadcast(intent);
             }
-        } else if (requestCode == ShowMechanicDetailActivity.CALL_REQUEST_CODE) {
-            app.l("ppoottmm1");
-            Intent intent = new Intent("forCall")  /**/;
-            LocalBroadcastManager.getInstance(Application.getContext()).sendBroadcast(intent);
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
@@ -257,23 +232,7 @@ public class MainActivity extends AppCompatActivity {
             Menu menu = bottomNavigationView.getMenu();
             menu.getItem(selected).setChecked(true);
 
-//            switch (selected) {
-//                case 0:
-//                    bottomNavigationView.setSelectedItemId(R.id.mechanics);
-//                    break;
-//                case 1:
-//                    bottomNavigationView.setSelectedItemId(R.id.questions);
-//                    break;
-//                case 2:
-//                    bottomNavigationView.setSelectedItemId(R.id.main_page);
-//                    break;
-//                case 3:
-//                    bottomNavigationView.setSelectedItemId(R.id.store);
-//                    break;
-//                case 4:
-//                    bottomNavigationView.setSelectedItemId(R.id.home);
-//                    break;
-//            }
+
         }
     };
 

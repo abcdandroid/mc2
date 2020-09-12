@@ -1,4 +1,6 @@
-package com.example.mechanic2.fragments;import android.content.Intent;
+package com.example.mechanic2.fragments;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +18,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.android.volley.RequestQueue;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.OnPauseListener;
@@ -27,12 +28,8 @@ import com.downloader.Progress;
 import com.downloader.Status;
 import com.downloader.request.DownloadRequest;
 import com.example.mechanic2.R;
-import com.example.mechanic2.activities.AnswersActivity;
 import com.example.mechanic2.activities.ExoVideoActivity;
-import com.example.mechanic2.activities.VideoActivity;
 import com.example.mechanic2.adapters.NewAdminAdapter;
-import com.example.mechanic2.adapters.NewAdminAdapter;
-import com.example.mechanic2.adapters.QuestionRecyclerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
@@ -40,13 +37,8 @@ import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.models.AdminMedia;
 import com.example.mechanic2.models.Movies;
-import com.example.mechanic2.models.Question;
-import com.google.gson.Gson;
 import com.hmomeni.progresscircula.ProgressCircula;
-import com.j256.ormlite.stmt.query.In;
 import com.squareup.picasso.Picasso;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -61,12 +53,13 @@ import retrofit2.Response;
 
 public class AdminFragment extends Fragment implements OnClickListener {
 
+    public final String OFFSET = "offset";
+    public final String GET_ADMIN_MEDIAS_FROM_APARAT_API = "getAdminMediasFromAparatApi";
     private RecyclerView recyclerAdmin;
 
 
     private int lastId = 0;
     private NewAdminAdapter adapter;
-    private RequestQueue requestQueue;
     private List<AdminMedia> adminMedias;
 
 
@@ -121,19 +114,19 @@ public class AdminFragment extends Fragment implements OnClickListener {
         String adminUrl = adminMedia.getMovie_url();
         String url = adminMedia.getMovie_url();
         String path = getActivity().getExternalFilesDir("video/mp4").getAbsolutePath();
-        //String path = getActivity().getExternalFilesDir("video/mp4").getAbsolutePath() + adminUrl.substring(adminUrl.lastIndexOf("/"));
+
         File file = new File(getActivity().getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
-        app.l(file.getAbsolutePath() + "adfadfbbhhf");
-        app.l("file.length():"+file.length()+"adminMedia.getMovie_size():"+adminMedia.getMovie_size()+"file.length() - adminMedia.getMovie_size(): "+ (file.length() - adminMedia.getMovie_size()));
+
+
         if (file.exists() &&(file.length() - adminMedia.getMovie_size() == -8 || file.length() - adminMedia.getMovie_size() == 0 )) {
 
             Picasso.get().load(adminMedia.getMovie_preview())
                     .into(preview);
             Intent intent = new Intent(getActivity(), ExoVideoActivity.class);
-            intent.putExtra("path", getActivity().getExternalFilesDir("video/mp4").getAbsolutePath() + url.
+            intent.putExtra(getString(R.string.path), getActivity().getExternalFilesDir(getString(R.string.videomp4)).getAbsolutePath() + url.
                     substring(url.lastIndexOf("/")));
-            intent.putExtra("id", adminMedia.getId());
+            intent.putExtra(getString(R.string.id), adminMedia.getId());
             getActivity().startActivity(intent);
             return;
         }
@@ -147,7 +140,7 @@ public class AdminFragment extends Fragment implements OnClickListener {
         }
 
 
-        int downloadId = SharedPrefUtils.getIntData("downloadId**" + adminMedia.getMedia_desc());
+        int downloadId = SharedPrefUtils.getIntData(getString(R.string.ab) + adminMedia.getMedia_desc());
         if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {
             PRDownloader.pause(downloadId);
             progressCircula.stopRotation();
@@ -164,7 +157,7 @@ public class AdminFragment extends Fragment implements OnClickListener {
         downloadRequest.setOnPauseListener(new OnPauseListener() {
             @Override
             public void onPause() {
-                app.l("pause***" + adminMedia.getMedia_desc());
+
             }
         }).setOnProgressListener(new OnProgressListener() {
             @Override
@@ -172,12 +165,12 @@ public class AdminFragment extends Fragment implements OnClickListener {
                 int value = (int) (100 * progress.currentBytes / progress.totalBytes);
                 progressCircula.setProgress(value);
                 percentDone.setText(String.valueOf(value) + "%");
-                app.l(String.valueOf(progress.currentBytes));
+
             }
         }).setOnStartOrResumeListener(new OnStartOrResumeListener() {
             @Override
             public void onStartOrResume() {
-                app.l("start or resume***" + adminMedia.getMedia_desc());
+
             }
         });
         downloadId = downloadRequest.start(new OnDownloadListener() {
@@ -186,14 +179,14 @@ public class AdminFragment extends Fragment implements OnClickListener {
 
                 Picasso.get().load(adminMedia.getMovie_preview())
                         .into(preview);
-                SharedPrefUtils.getSharedPrefEditor(SharedPrefUtils.PREF_APP).remove("downloadId**" + adminMedia.getMedia_desc()).apply();
+                SharedPrefUtils.getSharedPrefEditor(SharedPrefUtils.PREF_APP).remove(getString(R.string.ab) + adminMedia.getMedia_desc()).apply();
                 progressCircula.setVisibility(View.GONE);
                 percentDone.setVisibility(View.GONE);
-                lottieAnimationView.setAnimation(R.raw.play_anim);
+                lottieAnimationView.setAnimation(R.raw.play_main2);
                 lottieAnimationView.setRepeatCount(0);
                 lottieAnimationView.playAnimation();
                 ((TextView) itemView.findViewById(R.id.totalSize)).setTextColor(getActivity().getResources().getColor(android.R.color.holo_green_dark));
-                app.l("completed");
+
             }
 
             @Override
@@ -201,7 +194,7 @@ public class AdminFragment extends Fragment implements OnClickListener {
 
             }
         });
-        SharedPrefUtils.saveData("downloadId**" + adminMedia.getMedia_desc(), downloadId);
+        SharedPrefUtils.saveData(getString(R.string.ab) + adminMedia.getMedia_desc(), downloadId);
 
 
     }
@@ -227,13 +220,13 @@ public class AdminFragment extends Fragment implements OnClickListener {
         tmpModels = new ArrayList<>();
         adapter = new NewAdminAdapter(getContext(), adminMedias, this);
         Map<String, String> map = new HashMap<>();
-        map.put("route", "getAdminMediasFromAparatApi");
-        map.put("offset", String.valueOf(offset));
+        map.put(getString(R.string.rt), GET_ADMIN_MEDIAS_FROM_APARAT_API);
+        map.put(OFFSET, String.valueOf(offset));
 
         Application.getApi().getAdminMediaInList(map).enqueue(new Callback<List<AdminMedia>>() {
             @Override
             public void onResponse(Call<List<AdminMedia>> call, Response<List<AdminMedia>> response) {
-                app.l(new Gson().toJson(response.body()) + "adfafbbg");
+
                 sweetAlertDialog.dismissWithAnimation();
                 if (response.body() != null && response.body().size() > 0) {
                     adminMedias = response.body();
@@ -241,22 +234,22 @@ public class AdminFragment extends Fragment implements OnClickListener {
                         tmpModels.addAll(adminMedias);
                     } else {
                         if (adminMedias != null) {
-                            app.t("not found11");
+
                             isLoading = false;
                         }
                     }
-                    Intent intent = new Intent("dataCount");
+                    Intent intent = new Intent(getString(R.string.dc));
                     intent.putExtra("ref", "qsf");
                     LocalBroadcastManager.getInstance(AdminFragment.this.getContext()).sendBroadcast(intent);
                     adapter = new NewAdminAdapter(getContext(), tmpModels, AdminFragment.this);
                     recyclerAdmin.setAdapter(adapter);
 
-                } else app.t("connection error1");
+                }
             }
 
             @Override
             public void onFailure(Call<List<AdminMedia>> call, Throwable t) {
-                app.t("connection error2");
+
             }
         });
 
@@ -264,17 +257,17 @@ public class AdminFragment extends Fragment implements OnClickListener {
 
     private void resumeGetMedias(int offset) {
 
-        app.l("poipoipoioiBB");
+
         Map<String, String> map = new HashMap<>();
-        map.put("route", "getAdminMediasFromAparatApi");
-        map.put("offset", String.valueOf(offset));
+        map.put(getString(R.string.rt), GET_ADMIN_MEDIAS_FROM_APARAT_API);
+        map.put(OFFSET, String.valueOf(offset));
         Application.getApi().getAdminMediaInList(map).enqueue(new Callback<List<AdminMedia>>() {
             @Override
             public void onResponse(Call<List<AdminMedia>> call, Response<List<AdminMedia>> response) {
                 if (response.body() != null && response.body().size() == 0) {
                     return;
                 }
-                app.l("poipoipoioiBB" + new Gson().toJson(response.body()));
+
                 List<AdminMedia> newMedias = response.body();
                 if (newMedias != null) {
                     tmpModels.addAll(newMedias);
@@ -285,7 +278,7 @@ public class AdminFragment extends Fragment implements OnClickListener {
 
             @Override
             public void onFailure(Call<List<AdminMedia>> call, Throwable t) {
-                app.t("connection error3");
+
             }
         });
 
@@ -295,7 +288,7 @@ public class AdminFragment extends Fragment implements OnClickListener {
     int offset;
 
     private void resumeMediaListener() {
-        app.l("poipoipoioiCC");
+
         isLoading = false;
         recyclerAdmin.addOnScrollListener(new RecyclerView.OnScrollListener() {
 

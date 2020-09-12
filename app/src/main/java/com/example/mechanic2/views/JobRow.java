@@ -117,7 +117,7 @@ public class JobRow extends LinearLayout {
 
                 Intent intent = new Intent("fromJobRow");
                 intent.putExtra("jobId", idHolder.getText().toString());
-                intent.putExtra("jobName", jobTitle.getText().toString());/**/
+                intent.putExtra("jobName", jobTitle.getText().toString());
                 LocalBroadcastManager.getInstance(context).sendBroadcast(intent);
             }
         });

@@ -219,7 +219,7 @@
                         android:gravity="bottom"
                         android:layoutDirection="rtl"
                         android:lines="1"
-                        android:text="@string/hello_world"
+
                         android:textColor="#ff0000"
                         android:textSize="18sp"
                         android:textStyle="bold"
@@ -282,7 +282,7 @@
                             android:ellipsize="end"
                             android:gravity="bottom"
                             android:layoutDirection="rtl"
-                            android:text="توضیح صوتی"
+                            android:text="@string/voice_desc"
                             android:textColor="@color/purple"
                             android:textSize="18sp"
                             android:textStyle="bold"
@@ -427,7 +427,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="@string/lorem_simple"
                         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
                         android:textColor="@color/indigo_900"
                         android:textStyle="bold"
@@ -479,8 +478,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:maxLines="1"
-                    android:text="@string/lorem_simple"
                     android:textColor="@color/white" />
             </LinearLayout>
 
@@ -502,8 +499,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:maxLines="1"
-                    android:text="@string/lorem_simple"
                     android:textColor="@color/white" />
             </LinearLayout>
 
@@ -525,8 +520,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:maxLines="1"
-                    android:text="@string/lorem_simple"
                     android:textColor="@color/white" />
             </LinearLayout>
 
@@ -565,7 +558,7 @@
                     android:paddingTop="8dp"
                     android:paddingRight="24dp"
                     android:paddingBottom="8dp"
-                    android:text="تماس برای تهیه کالا"
+                    android:text="@string/call_to_order"
                     android:textColor="@color/white" />
             </LinearLayout>
 

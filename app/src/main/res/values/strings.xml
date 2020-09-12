@@ -2,7 +2,6 @@
     <string name="app_name">آنلاین مکانیک</string>
     <string name="hello_world">سلام دنیا !!!</string>
     <string name="lorem"><u> لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ، و با استفاده از طراحان گرافیک است، چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است، و برای شرایط فعلی تکنولوژی مورد نیاز، و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد، کتابهای زیادی در شصت و سه درصد گذشته حال و آینده، شناخت فراوان جامعه و متخصصان را می طلبد، تا با نرم افزارها شناخت بیشتری را برای طراحان رایانه ای علی الخصوص طراحان خلاقی، و فرهنگ پیشرو در زبان فارسی ایجاد کرد، در این صورت می توان امید داشت که تمام و دشواری موجود در ارائه راهکارها، و شرایط سخت تایپ به پایان رسد و زمان مورد نیاز شامل حروفچینی دستاوردهای اصلی، و جوابگوی سوالات پیوسته اهل دنیای موجود طراحی اساسا مورد استفاده قرار گیرد.</u></string>
-    <string name="qt"><u>aaa</u></string>
     <string name="normal_desc_1">مکانیکای باحال و مشتی شهرتو بشناس و باهاشون در ارتباط باش</string>
     <string name="normal_desc_2">اگر سوالی درباره خرابی ماشینت داری از  مکانیکای حرفه ای ما بپرس</string>
     <string name="normal_desc_3">قطعات یدکی رو از ما با بهترین قیمت و کیفیت به صورت آنلاین سفارش بده</string>
@@ -12,10 +11,6 @@
     <string name="mechanic_desc_2">همکاری با ما هیچ هزینه ای برات نداره و ثبت نام هم خیلی آسونه</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="content_description_end_icon">contetn desc end icon</string>
-    <string name="enterCarName">خودروی خود را انتخاب کنید</string>
-    <string name="search_transition">search_transition</string>
     <string name="all_cars">همه ماشین ها</string>
     <string name="all_titles">همه موضوعات</string>
     <string name="etc_title">متفرقه</string>
@@ -27,12 +22,6 @@
     <string name="luxury_good">کالای لوکس</string>
     <string name="stoke_good">کالای استوک</string>
     <string name="good_not_found">متأسفانه این کالا در حال حاضر\n موجود نمی باشد</string>
-    <string name="question_not_found">این سوال هنوز\n پرسیده نشده</string>
-    <string name="show_stoke_goods">نمایش کالای استوک</string>
-    <string name="show_luxury_goods">نمایش کالای لوکس</string>
-    <string name="show_all_goods">نمایش تمام کالاها</string>
-    <string name="show_all_questions">نمایش تمام سؤالات</string>
-    <string name="add_new_question">ایجاد  پرسش جدید</string>
     <array name="question_filter">
         <item>پربازدیدترین ها</item>
         <item>جدیدترین ها</item>
@@ -49,19 +38,87 @@
         <item>بیشترین امتیاز</item>
         <item>نزدیک ترین ها</item>
     </string-array>
-    <string name="title_activity_second_test">SecondTestActivity</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="navigation_drawer_open">nav_open</string>
-    <string name="navigation_drawer_close">nav_close</string>
     <string name="send_movie">ارسال فیلم از طریق واتساپ</string>
     <string name="send_movie_hint">از خودت یا کارهایی که انجام دادی فیلم بگیر و اون رو برای ما ارسال کن. ما بعد از بررسی و تدوین فیلم، اون رو توی صفحه اختصاصی خودت به نمایش میذاریم. می تونی این کار رو هر وقت که دوس داشتی از منوی تنظیمات انجام بدی.</string>
+    <string name="khob">خب</string>
+    <string name="send_answer">جواب رو بفرس</string>
+    <string name="cancellation">بی خیال</string>
+    <string name="write_ur_answer_here">جوابتو برای این سوال بنویس</string>
+    <string name="voice_answer">اگر پاسخ صوتی داری روی دکمه قرمز بزن</string>
+    <string name="carname">نام خودرو:</string>
+    <string name="questiontitle">موضوع سوال:</string>
+    <string name="insert_phone_number">لطفا شماره تلفن همراه\nخود را وارد نمایید.</string>
+    <string name="phone_number">شماره همراه</string>
+    <string name="phone_number_hint">شماره همراه</string>
+    <string name="confirm_phone">تایید شماره همراه</string>
+    <string name="send_code">ارسال کد فعال سازی</string>
+    <string name="confirm_location">تایید موقعیت</string>
+    <string name="i_am_mechanic">کاربر مکانیک هستم</string>
+    <string name="i_am_normal">کاربر معمولی هستم</string>
+    <string name="confirm_info">تکمیل اطلاعات</string>
+    <string name="send_image">برای بهتر دیده شدن، چندتا عکس از خودت و مغازت برامون بفرست!</string>
+    <string name="store_image">عکس مغازه</string>
+    <string name="your_image">عکس خودت</string>
+    <string name="name_lastname">نام و نام خانوادگی</string>
+    <string name="store_name">اسم مغازه</string>
+    <string name="your_phone">شماره تلفن همراه</string>
+    <string name="_09">09</string>
+    <string name="add_job">تخصصاتو اینجا بنویس. حداکثر 5 تخصص!</string>
+    <string name="choose_region">منطقه فعالیتت رو انتخاب کن</string>
+    <string name="write_address">ادرس دقیقتو بنویس</string>
+    <string name="locate_on_map">آدرس دقیقتو روی نقشه مشخص کن</string>
+    <string name="info_desc">درباره خودت بنویس. مثلا سابقه کار، تعرفه خدمات یا اینکه در خدمات دهی به چه ماشین هایی مهارت بیشتری داری.</string>
+    <string name="write_here">اینجا بنویس</string>
+    <string name="show_movies">اینجا می تونی فیلم هایی که برامون فرستادی ببینی.</string>
+    <string name="confirm_mechanic_data">ثبت اطلاعات</string>
+    <string name="voice_desc">توضیح صوتی</string>
+    <string name="call_to_order">تماس برای تهیه کالا</string>
+    <string name="choose_car">ماشینت چیه؟ یکی رو انتخاب کن!!!</string>
+    <string name="choose_car_desc">اسم ماشینی رو که دربارش سوال داری توی کادر پایین بنویس.</string>
+    <string name="question_desc">موضوع سوالت رو در کادر پایین بنویس.مثلا گیربکس، موتور، جلوبندی یا ...)</string>
+    <string name="question_title">موضوع سوالت رو اینجا بنویس</string>
+    <string name="write_question">متن سوالت رو اینجا بنویس.</string>
+    <string name="drk">http://drkamal3.com/Mechanic/index.php/</string>
+    <string name="q_text">q_text</string>
+    <string name="a">سوال شما با موفقیت ثبت شد و به زودی منتشر خواهد شد</string>
+    <string name="entranceId">entranceId</string>
+    <string name="entrance_id">entrance_id</string>
+    <string name="upload">upload</string>
+    <string name="route">route</string>
+    <string name="در_حال_ثبت_سوال_شما">در حال ثبت سوال شما</string>
+    <string name="car_id">car_id</string>
+    <string name="title_id">title_id</string>
+    <string name="NAME_">NAME_</string>
+    <string name="ttf">fonts/b.ttf</string>
+    <string name="offset">offset</string>
+    <string name="getAdminMediasFromAparatApi">getAdminMediasFromAparatApi</string>
+    <string name="path">path</string>
+    <string name="videomp4">video/mp4</string>
+    <string name="id">id</string>
+    <string name="ab">downloadId**</string>
+
+    <string name="rt">route</string>
+    <string name="dc">dataCount</string>
+    <string name="q1">media_desc</string>
+    <string name="dkc"><![CDATA[http://drkamal3.com/Mechanic/index.php?route=searchCar&lastId=0&search=]]></string>
+    <string name="pth">path</string>
+    <string name="drmm">http://drkamal3.com/Mechanic/</string>
+    <string name="acgu"><![CDATA[http://drkamal3.com/Mechanic/index.php?route=searchGood&lastId=0&search=]]></string>
+    <string name="jaa"><![CDATA[http://drkamal3.com/Mechanic/index.php?route=searchJob&search=]]></string>
+    <string name="inspa">com.instagram.android</string>
+    <string name="insweb">http://instagram.com/</string>
+    <string name="insapp">http://instagram.com/_u/</string>
+    <string name="wha">https://api.whatsapp.com/send?phone=</string>
+    <string name="insabc">http://instagram.com/_u/</string>
+    <string name="inweb">http://instagram.com/</string>
+    <string name="insap">com.instagram.android</string>
+    <string name="drmo">http://drkamal3.com/Mechanic/</string>
+    <string name="drweb">http://drkamal3.com/Mechanic/</string>
+    <string name="wha_send_mov">https://api.whatsapp.com/send?phone=</string>
+    <string name="sRe"><![CDATA[http://drkamal3.com/Mechanic/index.php?route=searchRegion&search=]]></string>
+    <string name="atqr"><![CDATA[http://drkamal3.com/Mechanic/index.php?route=searchTitle&search=]]></string>
 
 
 </resources>

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.mechanic2.R;
-import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.models.AdminMedia;
@@ -97,17 +96,17 @@ public class NewAdminAdapter extends RecyclerView.Adapter<NewAdminAdapter.AdminV
 
         void onBind(AdminMedia movies, OnClickListener onClickListener) {
 
-            app.l("poipoipoioiH");
+
             String url = movies.getMovie_url();
 
             File file = new File(context.getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
             if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0 )) {
-                app.l(movies.getMedia_desc() + "file exist");
+
                 progressCircula.setVisibility(View.GONE);
                 percentDone.setVisibility(View.GONE);
                 totalSize.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
-                lottieAnimationView.setAnimation(R.raw.play_anim);
+                lottieAnimationView.setAnimation(R.raw.play_main2);
                 lottieAnimationView.pauseAnimation();
                 lottieAnimationView.setProgress(0.99f);
             }
@@ -117,7 +116,7 @@ public class NewAdminAdapter extends RecyclerView.Adapter<NewAdminAdapter.AdminV
                 progressCircula.setVisibility(View.VISIBLE);
                 percentDone.setVisibility(View.VISIBLE);
                 int progress = (int) (tmpFile.length() * 100 / movies.getMovie_size());
-                app.l(String.valueOf(tmpFile.length()) + "**" + movies.getMovie_size() + "**" + progress);
+
                 progressCircula.setProgress(progress);
                 percentDone.setText(String.valueOf(progress) + "%");
             }
@@ -140,15 +139,15 @@ public class NewAdminAdapter extends RecyclerView.Adapter<NewAdminAdapter.AdminV
             }
             totalSize.setText(movie_size_human_readable);
             desc.setText(movies.getMedia_desc());
-            //Glide.with(Application.getContext()).load("http://drkamal3.com/Mechanic/"+movies.getMovie_preview()).into(preview);
+
 
             preview.setImageBitmap(null);
             if (file.exists() && file.length() - movies.getMovie_size() == 0) {
-                app.l(movies.getMovie_preview()+"oitjd");
+
                 Picasso.get().load(  movies.getMovie_preview())
                         .into(preview);
             } else {
-                app.l(movies.getMovie_preview()+"oitjd");
+
                 Picasso.get().load(movies.getMovie_preview())
                         .transform(new BlurTransformation(context, 25, 1)).into(preview);
             }

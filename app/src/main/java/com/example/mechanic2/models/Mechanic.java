@@ -6,9 +6,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * Awesome Pojo Generator
- */
+
 public class Mechanic implements Serializable {
     @SerializedName("entrance_id")
     @Expose

@@ -104,6 +104,7 @@
                 android:orientation="horizontal">
 
                 <RelativeLayout
+                    android:layout_weight="1"
                     android:layout_marginRight="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -112,26 +113,36 @@
                         android:id="@+id/carNamePlace"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="نام خودرو:  "
+                        android:text="@string/carname"
                         android:textColor="@color/white"
-                        android:textSize="14dp" />
+                        android:textSize="14sp" />
 
                     <TextView
+                        android:text="@string/lorem"
+                        android:maxLines="2"
                         android:id="@+id/carName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/carNamePlace"
-                        android:layout_toLeftOf="@id/carNamePlace"
-                        android:text="@string/hello_world"
+                        android:layout_below="@id/carNamePlace"
                         android:textColor="@color/white"
-                        android:textSize="18dp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginLeft="6dp"
+
+                    />
+
 
                 <RelativeLayout
                     android:layout_gravity="left"
-                    android:gravity="left"
+                    android:layout_weight="1"
+                    android:gravity="right"
                     android:layout_marginLeft="2dp"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <TextView
@@ -139,20 +150,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="left"
-                        android:text="موضوع سوال:  "
+                        android:text="@string/questiontitle"
                         android:textColor="@color/white"
                         android:textSize="14sp" />
 
                     <TextView
-                        android:layout_alignBaseline="@id/titleNamePlace"
                         android:id="@+id/titleName"
+                        android:text="@string/lorem"
+                        android:maxLines="2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toLeftOf="@id/titleNamePlace"
-                        android:gravity="left"
-                        android:text="@string/hello_world"
+                        android:layout_below="@id/titleNamePlace"
+                        android:gravity="right"
                         android:textColor="@color/white"
-                        android:textSize="18dp" />
+                        android:textSize="18sp" />
                 </RelativeLayout>
 
             </LinearLayout>
@@ -174,7 +185,6 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="16dp"
                 android:layout_marginBottom="16dp"
-                android:text="@string/hello_world"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 
@@ -196,6 +206,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/new_answer"
+        app:layout_behavior=".app.ScrollAwareFABBehavior"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
@@ -203,7 +214,6 @@
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/deep_orange_A700"
         app:fabSize="normal"
-        app:layout_behavior=".app.ScrollAwareFABBehavior"
         app:tint="@color/teal_50" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

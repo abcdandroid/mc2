@@ -1,44 +1,31 @@
 package com.example.mechanic2.fragments;
 
 import android.content.Intent;
-import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
-import com.devbrackets.android.exomedia.ui.widget.VideoView;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.AnswersActivity;
-import com.example.mechanic2.activities.MainActivity;
 import com.example.mechanic2.activities.ShowGoodDetailActivity;
 import com.example.mechanic2.activities.ShowMechanicDetailActivity;
 import com.example.mechanic2.app.app;
-import com.example.mechanic2.interfaces.UpdateNavBar;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.views.MyTextView;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -46,7 +33,7 @@ import org.json.JSONObject;
 public class MainPageItemFragment extends Fragment implements View.OnClickListener {
 
 
-    // TODO: Rename and change types of parameters
+
     private String titleArg;
     private String descArg;
     private String imageUrlArg;
@@ -59,7 +46,7 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
     private LinearLayout parent;
 
     public MainPageItemFragment() {
-        // Required empty public constructor
+
     }
 
     public MainPageItemFragment(int field, String title, String desc, String imageUrl, String JsonParams) {
@@ -70,37 +57,13 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
     }
 
 
-/*    public static MainPageItemFragment newInstance(int field, String title, String desc, String imageUrl, String JsonParams) {
-        MainPageItemFragment fragment = new MainPageItemFragment();
-        Bundle args = new Bundle();
-        args.putString("title", title);
-        args.putString("desc", desc);
-        args.putString("imageUrl", imageUrl);
-        args.putString("JsonParams", JsonParams);
-        args.putInt("field", field);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            titleArg = getArguments().getString("title");
-            imageUrlArg = getArguments().getString("imageUrl");
-            jsonParamsArg = getArguments().getString("JsonParams");
-            field = getArguments().getInt("field");
-            app.l(imageUrlArg+"jleng");
-        }
-
-
-    }*/
 
     String detail;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        app.l(desc + "jleng" + "onCreateView");
+
         View inflate = inflater.inflate(R.layout.fragment_main_page_item, container, false);
         imageView = inflate.findViewById(R.id.image_view);
         title = inflate.findViewById(R.id.title);
@@ -124,7 +87,7 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
                 title.setText(Html.fromHtml(titleArg));
             }
         }
-        //title.setText(titleArg);
+
         return inflate;
     }
 
@@ -148,7 +111,7 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
 
                 case 3:
                     app.loadFragment((AppCompatActivity) getActivity(), StoreFragment.newInstance(detail));
-                    //MainActivity.updateNavBar.setSelectedItem(3);
+
 
                     break;
                 case 7:
@@ -159,7 +122,7 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
                     break;
                 case 2:
                     app.loadFragment((AppCompatActivity) getActivity(), QuestionFragment.newInstance(detail));
-                    //MainActivity.updateNavBar.setSelectedItem(1);
+
                     break;
                 case 6:
                     Intent intentQuestion = new Intent(getActivity(), AnswersActivity.class);
@@ -169,7 +132,7 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
                     break;
                 case 1:
                     app.loadFragment((AppCompatActivity) getActivity(), MechanicFragment.newInstance(detail));
-                    //MainActivity.updateNavBar.setSelectedItem(0);
+
                     break;
                 case 5:
                     Intent intentMechanic = new Intent(getActivity(), ShowMechanicDetailActivity.class);
@@ -179,7 +142,7 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
                     break;
                 case 4:
                     app.loadFragment((AppCompatActivity) getActivity(), new AdminFragment());
-                    //MainActivity.updateNavBar.setSelectedItem(4);
+
                     break;
             }
 
@@ -187,5 +150,5 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
     }
 
 
-    /**/
+
 }

@@ -1,18 +1,6 @@
 package com.example.mechanic2.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
@@ -21,16 +9,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.ArrayAdapter;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,7 +21,15 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.downloader.Error;
@@ -52,8 +43,6 @@ import com.downloader.Status;
 import com.downloader.request.DownloadRequest;
 import com.example.mechanic2.R;
 import com.example.mechanic2.adapters.AnswerRecyclerAdapter;
-import com.example.mechanic2.adapters.MechanicRecyclerAdapter;
-import com.example.mechanic2.adapters.StoreRecyclerAdapter;
 import com.example.mechanic2.adapters.ViewPagerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
@@ -64,20 +53,13 @@ import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
 import com.example.mechanic2.models.AnswerWithMsg;
 import com.example.mechanic2.models.Answers;
-import com.example.mechanic2.models.Good;
-import com.example.mechanic2.models.Mechanic;
-import com.example.mechanic2.models.MechanicWithMsg;
 import com.example.mechanic2.models.Question;
-import com.example.mechanic2.utils.ViewAnimation;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.hmomeni.progresscircula.ProgressCircula;
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
-import com.tyorikan.voicerecordingvisualizer.RecordingSampler;
-
-import android.widget.Button;
 
 import java.io.File;
 import java.io.IOException;
@@ -98,8 +80,8 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     private TextView titleName;
     private TextView questionText;
     private FloatingActionButton addAnswerFab;
-    // private CardView cardMic;
-    //private CardView cardCall;
+
+
     private LottieAnimationView ltRecord;
     private AppCompatButton btnManageRecord;
     private ImageView ivPlayPause;
@@ -113,11 +95,10 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
 
     private LottieAnimationView ltPlayPause;
 
-    private MediaRecorder recorder = null;/*
-    private View lyt_mic;*/
-    //private View lyt_call;
+    private MediaRecorder recorder = null;
+
     private boolean rotate = false;
-    //FloatingActionButton fab_add;
+
     String fileName;
     Question question;
     private SeekBarUpdater seekBarUpdater;
@@ -167,7 +148,9 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         questionText.setText(question.getQ_text());
         carName.setText(question.getCarName());
         titleName.setText(question.getQ_title());
+
         q_id = question.getQ_id();
+
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         seekBarUpdater = new SeekBarUpdater();
         if (question.getQ_image_url1().trim().length() == 0 & question.getQ_image_url2().trim().length() == 0 & question.getQ_image_url3().trim().length() == 0) {
@@ -179,17 +162,17 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         }
         if (question.getQ_image_url1().trim().length() > 0) {
             adapter.addFragment(QuestionImagesFragment.newInstance(question.getQ_image_url1().trim(), this));
-            app.l("A");
+
         }
 
         if (question.getQ_image_url2().trim().length() > 0) {
             adapter.addFragment(QuestionImagesFragment.newInstance(question.getQ_image_url2().trim(), this));
-            app.l("B");
+
         }
 
         if (question.getQ_image_url3().trim().length() > 0) {
             adapter.addFragment(QuestionImagesFragment.newInstance(question.getQ_image_url3().trim(), this));
-            app.l("C");
+
         }
 
         imageUrl = new String[adapter.getCount()];
@@ -211,7 +194,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void doAction() {
                 resumeAnswerListener(offset);
-                getAnswers();/**/
+                getAnswers();
             }
         });
 
@@ -227,9 +210,9 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         File voice = null;
         try {
             voice = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".3gp",         /* suffix */
-                    storageDir      /* directory */
+                    imageFileName,
+                    ".3gp",
+                    storageDir
             );
         } catch (IOException e) {
             e.printStackTrace();
@@ -247,10 +230,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.btn_show_all_goods:
                 finish();
                 break;
-            case R.id.btn_manage_record:
-                x = !x;
-                recordVoice(x);
-                break;
+
             case R.id.ivPlayPause:
             case R.id.ltPlayPause:
                 playVoice(y);
@@ -283,7 +263,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                 recordingWaves.setVisibility(View.INVISIBLE);
                 voiceManager.setVisibility(View.INVISIBLE);
                 File file2 = new File(fileName);
-                app.l("playyerr" + file2.length());
+
                 layerPb.setVisibility(file2.exists() && file2.length() > 0 ? View.VISIBLE : View.INVISIBLE);
                 break;
             case R.id.cancel_answer:
@@ -315,16 +295,16 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                 }
 
                 if (file1.length() > 0) {
-                    app.l("playyerr1Send" + fileName);
+
                     recordedAnswer = Application.getApi().uploadAudioFile(data, app.prepareAudioPart("recordedAnswer", Uri.parse(fileName)));
                 } else recordedAnswer = Application.getApi().uploadAudioFile(data);
                 recordedAnswer.enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
-                        app.l(response.body());
+
                         File file = new File(fileName);
                         if (file.exists()) {
-                            app.l(file.delete() ? "ok" : "false");
+
                         }
 
 
@@ -341,7 +321,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        app.l(t.getLocalizedMessage() + "ffffffff" + new File(fileName).length());
+
                     }
                 });
                 sweetAlertDialog.dismissWithAnimation();
@@ -403,49 +383,28 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void playVoice(boolean y) {
-        app.l("playyerr");
+
+
+
         if (player == null) {
-            app.l("playyerr1" + fileName);
+
             startMediaPlayer(fileName);
         } else {
-            app.l("playyerr2");
+
             if (player.isPlaying()) {
-                app.l("playyerr3");
+
                 player.pause();
             } else {
-                app.l("playyerr4");
+
                 player.start();
             }
         }
         updatePlayingView();
     }
 
-    private void recordVoice(boolean x) {
-        if (x) {
-            File file = new File(fileName);
-            if (file.exists()) {
-                if (file.delete()) {
-                    layerPb.setVisibility(View.INVISIBLE);
-                }
-            }
-            ltRecord.playAnimation();
-            btnManageRecord.setText("تموم شد");
-            startRecording(fileName);
-        } else {
-            ltRecord.cancelAnimation();
-            ltRecord.setProgress(0f);
-            btnManageRecord.setText("یکی دیگه ضبط کن");
-            stopRecording();
-
-            File file = new File(fileName);
-            layerPb.setVisibility(file.exists() && file.length() > 0 ? View.VISIBLE : View.INVISIBLE);
-        }
-
-
-    }
 
     private void updatePlayingView() {
-        app.l("updatt");
+
         sbProgress.setMax(player.getDuration());
         sbProgress.setProgress(player.getCurrentPosition());
         sbProgress.setEnabled(true);
@@ -473,7 +432,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         try {
             recorder.prepare();
         } catch (IOException e) {
-            app.l(e.getMessage());
+
         }
 
         recorder.start();
@@ -487,7 +446,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
 
     private void startMediaPlayer(String audioAddress) {
         File file = new File(audioAddress);
-        app.l("startimgg" + (file.exists() ? "AA" : "BB") + file.length() + "fileName" + file.getName());
+
         player = MediaPlayer.create(this, Uri.fromFile(file));
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
@@ -537,7 +496,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onViewPagerClick(View view) {
         Intent intent = new Intent(AnswersActivity.this, FullThumbActivity.class);
-        app.l(imageUrl.length + imageUrl[0] + "QAZZZZ");
+
         intent.putExtra("from", "answerActivity");
         intent.putExtra("linkList", imageUrl);
         intent.putExtra("currentItem", questionImages.getCurrentItem());
@@ -569,7 +528,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         ltPlayPause.setProgress(0);
         ltPlayPause.pauseAnimation();
         startDownload.setAlpha(0f);
-        String url = "http://drkamal3.com/Mechanic/" + answers.getAnswer().getA_voice_url();
+        String url = getString(R.string.drweb) + answers.getAnswer().getA_voice_url();
         String path = getExternalFilesDir("voice/mp3").getAbsolutePath();
 
         int downloadId = SharedPrefUtils.getIntData("soundDownloadId**" + answers.getAnswer().getA_id());
@@ -595,7 +554,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                 int value = (int) (100 * progress.currentBytes / progress.totalBytes);
                 progressCirculaSound.setProgress(value);
                 percentDone.setText(String.valueOf(value).concat("%"));
-                app.l(String.valueOf(progress.currentBytes));
+
             }
         }).setOnStartOrResumeListener(new OnStartOrResumeListener() {
             @Override
@@ -612,7 +571,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                 percentDone.setVisibility(View.GONE);
                 ltPlayPause.setVisibility(View.VISIBLE);
                 ltPlayPause.setProgress(0);
-                app.l("completed");
+
             }
 
             @Override
@@ -646,19 +605,18 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         map.put("route", "getAnswers");
         map.put("offset", String.valueOf(offset));
         map.put("q_id", String.valueOf(q_id));
-
         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.setTitle("لطفا شکیبا باشید");
         sweetAlertDialog.setContentText("در حال دریافت پاسخ");
         sweetAlertDialog.show();
-
         Application.getApi().getAnswersWithMsg(map).enqueue(new Callback<AnswerWithMsg>() {
             @Override
             public void onResponse(Call<AnswerWithMsg> call, Response<AnswerWithMsg> response) {
                 sweetAlertDialog.dismissWithAnimation();
                 if (response.body() != null && response.body().getAnswers().size() > 0) {
 
-                    app.l("answers" + response.body().getAnswers().size());
+
+
 
                     answers = response.body().getAnswers();
                     if (answers != null && answers.size() != 0) {
@@ -673,16 +631,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                     recyclerAnswers.setAdapter(adapter);
 
                 } else {
-                  /*  View inflate = LayoutInflater.from(AnswersActivity.this).inflate(R.layout.view_answer_not_found, null, false);
 
-                    addAnswer = inflate.findViewById(R.id.add_answer);
-                    returnToQuestions = inflate.findViewById(R.id.return_to_questions);
-
-                    SweetAlertDialog sweetAlertDialog1 = new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.WARNING_TYPE).setCustomView(inflate);
-                    sweetAlertDialog1.hideConfirmButton();
-                    sweetAlertDialog1.show();
-*/
-                    /*-------------*/
 
                     sweetAlertDialogAnswerNotFound = new SweetAlertDialog(AnswersActivity.this);
                     View inflateViewAnwerNotFound = LayoutInflater.from(AnswersActivity.this).inflate(R.layout.view_good_not_found, null, false);
@@ -705,7 +654,6 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                     sweetAlertDialogAnswerNotFound.setCustomView(inflateViewAnwerNotFound);
                     sweetAlertDialogAnswerNotFound.hideConfirmButton();
                     sweetAlertDialogAnswerNotFound.show();
-
                 }
             }
 
@@ -740,14 +688,17 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         map.put("route", "getAnswers");
         map.put("offset", String.valueOf(offset));
         map.put("q_id", String.valueOf(q_id));
-        app.l("QQWWrr");
+
 
         Application.getApi().getAnswersWithMsg(map).enqueue(new Callback<AnswerWithMsg>() {
             @Override
             public void onResponse(Call<AnswerWithMsg> call, Response<AnswerWithMsg> response) {
-                app.l("MMECRES" + response.body().getMsg());
+
+
+
+
                 if (response.body() != null && response.body().getAnswers().size() == 0) {
-                    app.l("MMECRES" + response.body().getMsg());
+
                     return;
                 }
                 List<Answers> newAnswers = response.body().getAnswers();
@@ -761,7 +712,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onFailure(Call<AnswerWithMsg> call, Throwable t) {
-                app.l("MMMEC" + t.getLocalizedMessage());
+
             }
         });
 
@@ -774,7 +725,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                app.l("poioi" + dy);
+
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
 
                 if (linearLayoutManager != null && linearLayoutManager.findLastCompletelyVisibleItemPosition() == tmpAnswers.size() - 1 && !isLoading) {
@@ -785,6 +736,14 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
-    }/**/
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        if (player != null)
+            releaseMediaPlayer();
+        adapter.killMedia();
+        super.onBackPressed();
+    }
 }

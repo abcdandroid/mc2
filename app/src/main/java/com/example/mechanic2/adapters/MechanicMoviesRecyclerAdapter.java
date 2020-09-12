@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
@@ -104,10 +103,10 @@ public class MechanicMoviesRecyclerAdapter extends RecyclerView.Adapter<Mechanic
             String url = movies.getMovie_url();
 
             File file = new File(context.getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
-            app.l("file.length():"+file.length()+"movies.getMovie_size():"+movies.getMovie_size()+"file.length() - movies.getMovie_size(): "+ (file.length() - movies.getMovie_size()));
+
 
             if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0 )) {
-                app.l(movies.getMovie_desc() + "file exist");
+
                 progressCircula.setVisibility(View.GONE);
                 percentDone.setVisibility(View.GONE);
                 totalSize.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
@@ -122,7 +121,7 @@ public class MechanicMoviesRecyclerAdapter extends RecyclerView.Adapter<Mechanic
                 progressCircula.setVisibility(View.VISIBLE);
                 percentDone.setVisibility(View.VISIBLE);
                 int progress = (int) (tmpFile.length() * 100 / movies.getMovie_size());
-                app.l(String.valueOf(tmpFile.length()) + "**" + movies.getMovie_size() + "**" + progress);
+
                 progressCircula.setProgress(progress);
                 percentDone.setText(String.valueOf(progress) + "%");
             }
@@ -147,7 +146,7 @@ public class MechanicMoviesRecyclerAdapter extends RecyclerView.Adapter<Mechanic
 
             totalSize.setText(movie_size_human_readable);
             desc.setText(movies.getMovie_desc());
-            //Glide.with(Application.getContext()).load("http://drkamal3.com/Mechanic/"+movies.getMovie_preview()).into(preview);
+
             if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0 )) {
                 Picasso.get().load( movies.getMovie_preview())
                         .into(preview);

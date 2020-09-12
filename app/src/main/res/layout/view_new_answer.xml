@@ -13,7 +13,7 @@
         android:textDirection="rtl"
         android:gravity="left"
         app:counterMaxLength="400"
-        android:hint="جوابتو برای این سوال بنویس"
+        android:hint="@string/write_ur_answer_here"
         android:id="@+id/et_answer_layout" >
 
         <EditText
@@ -38,7 +38,7 @@
         android:layout_below="@id/et_answer_layout"
         android:layout_alignParentRight="true"
         android:layout_marginTop="16dp"
-        android:text="اگر پاسخ صوتی داری روی دکمه قرمز بزن" />
+        android:text="@string/voice_answer" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/start_record"
@@ -152,35 +152,7 @@
         </FrameLayout>
 
     </LinearLayout>
-    <!--
-    <RelativeLayout
-        android:visibility="invisible"
-        android:layout_centerInParent="true"
-        android:id="@+id/voice_manager"
-        android:layout_below="@id/recording_waves"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
 
-        <Chronometer
-            android:layout_marginRight="8dp"
-            android:layout_centerVertical="true"
-            android:id="@+id/chronometerExample"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:gravity="center_horizontal"/>
-
-        <ImageView
-            android:id="@+id/stop"
-            android:layout_marginLeft="8dp"
-            android:layout_toRightOf="@id/chronometerExample"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/stop"
-            />
-
-    </RelativeLayout>-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -200,7 +172,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn_cancel_answer"
             android:gravity="center"
-            android:text="  بی خیال"
+            android:text="@string/cancellation"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textStyle="bold" />
@@ -215,7 +187,7 @@
             android:layout_weight="1"
             android:background="@drawable/btn_submit_store"
             android:gravity="center"
-            android:text="جواب رو بفرس"
+            android:text="@string/send_answer"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textStyle="bold" />

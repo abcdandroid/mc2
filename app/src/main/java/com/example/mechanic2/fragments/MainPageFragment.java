@@ -1,17 +1,21 @@
 package com.example.mechanic2.fragments;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -19,99 +23,44 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.viewpager.widget.ViewPager;
-
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.bumptech.glide.Glide;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.LoginActivity;
-import com.example.mechanic2.activities.MainActivity;
 import com.example.mechanic2.activities.NewMechanicActivity2;
+import com.example.mechanic2.activities.SplashActivity;
 import com.example.mechanic2.adapters.MyFragmentStatePagerAdapter;
-import com.example.mechanic2.adapters.ViewPagerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.ViewpagerData;
-import com.example.mechanic2.models.Warranty;
 import com.example.mechanic2.views.MyTextView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.nightonke.wowoviewpager.WoWoViewPager;
-import com.zhpan.indicator.IndicatorView;
-import com.zhpan.indicator.enums.IndicatorSlideMode;
-import com.zhpan.indicator.enums.IndicatorStyle;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import de.hdodenhof.circleimageview.CircleImageView;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.ObservableEmitter;
-import io.reactivex.rxjava3.core.ObservableOnSubscribe;
-import io.reactivex.rxjava3.core.Observer;
-import io.reactivex.rxjava3.core.Scheduler;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import pl.pzienowicz.autoscrollviewpager.AutoScrollViewPager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
-
-import static com.example.mechanic2.app.Connectivity.isConnected;
 
 
 public class MainPageFragment extends Fragment implements View.OnClickListener {
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
-    private VideoView videoView;
-    private int cachedHeight;
-    private int currentOrientation;
     private int type;
     private String mechanicInfo;
     private int place5VideoViewHeight;
@@ -122,11 +71,10 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     private CircularImageView circleImageView;
     int mechanicId;
     private Mechanic mechanic;
-    private Timer timer;
 
 
     public MainPageFragment() {
-        // Required empty public constructor
+
     }
 
     public MainPageFragment(int type) {
@@ -142,7 +90,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (MainActivity.etcetera.get(0).getMessage().equals(String.valueOf(1))) {
+
+        if (SplashActivity.etcetera != null && SplashActivity.etcetera.get(0).getMessage().equals(String.valueOf(1))) {
             LottieAnimationView warrantyLt;
             MyTextView txt;
             RelativeLayout btnContactUs;
@@ -174,7 +123,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             btnContactUs.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String url = MainActivity.etcetera.get(1).getMessage();
+                    String url = SplashActivity.etcetera.get(1).getMessage();
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     getActivity().startActivity(i);
@@ -284,12 +233,12 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                 navMechanicName.setText(SharedPrefUtils.getStringData("mechanicName"));
 
             } else {
-                app.l(mechanicInfo + "mechanicInfofff");
+
                 mechanic = new Gson().fromJson(mechanicInfo, Mechanic.class);
                 mechanicId = mechanic.getId();
                 if (SharedPrefUtils.getStringData("imageNo3").equals("-1"))
                     if (mechanic.getMechanic_image().length() > 0)
-                        Glide.with(getActivity()).load("http://drkamal3.com/Mechanic/" + mechanic.getMechanic_image()).into(circleImageView);
+                        Picasso.get().load(getString(R.string.drweb) + mechanic.getMechanic_image()).into(circleImageView);
                     else {
                         if (getActivity() != null)
                             circleImageView.setImageDrawable(getActivity().getDrawable(R.drawable.mechanic_avatar));
@@ -305,7 +254,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             circleImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    app.t("aA");
+
                 }
             });
 
@@ -334,7 +283,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onClick(View v) {
                             Intent intentCall = new Intent(Intent.ACTION_DIAL);
-                            intentCall.setData(Uri.parse("tel:" + MainActivity.etcetera.get(2).getMessage()));
+                            intentCall.setData(Uri.parse("tel:" + SplashActivity.etcetera.get(2).getMessage()));
                             startActivity(intentCall);
                         }
                     });
@@ -342,16 +291,16 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                         @Override
                         public void onClick(View v) {
 
-                            Uri uri = Uri.parse("http://instagram.com/_u/abc");
+                            Uri uri = Uri.parse(getString(R.string.insapp) + SplashActivity.etcetera.get(5).getMessage());
                             Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
 
-                            likeIng.setPackage("com.instagram.android");
+                            likeIng.setPackage(getString(R.string.inspa));
 
                             try {
                                 startActivity(likeIng);
                             } catch (ActivityNotFoundException e) {
                                 startActivity(new Intent(Intent.ACTION_VIEW,
-                                        Uri.parse("http://instagram.com/abc")));
+                                        Uri.parse(getString(R.string.insweb) + SplashActivity.etcetera.get(5).getMessage())));
                             }
 
                         }
@@ -359,7 +308,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                     aboutUsNormalUser.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            app.t("c");
+
                         }
                     });
                     signOutNormalUser.setOnClickListener(new View.OnClickListener() {
@@ -447,7 +396,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         RelativeLayout btnShowAllGoods;
         MyTextView cancelAction;
 
-        SweetAlertDialog exitDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.ERROR_TYPE);
+        SweetAlertDialog exitDialog = new SweetAlertDialog(getContext());
         View view1 = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
         exitDialog.setCustomView(view1);
         exitDialog.hideConfirmButton();
@@ -462,7 +411,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
         warrantyLt.setVisibility(View.GONE);
 
-        txt.setText("آیا مطمئن به خروج از برنامه هستید؟");
+        txt.setText("آیا مطمئن به خروج از حساب کاربری خود هستید؟");
 
         txtOk.setText("نه، دستم خورد.");
         cancelAction.setText("آره، میخوام برم.");
@@ -502,7 +451,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                     viewPager.startAutoScroll();
                     viewPager.setInterval(viewpagerData.getIntervalTime());
                     viewPager.setDirection(AutoScrollViewPager.Direction.LEFT);
-                    //viewPager.setScrollBarFadeDuration(1000);
+
                     viewPager.setScrollDurationFactor(viewpagerData.getDelayTime());
                 } else viewPager.stopAutoScroll();
             }
@@ -517,8 +466,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                         JSONArray jsonArray = jsonObjectMain.getJSONArray("mainPageData");
                         String jsonArrayViewPager = jsonObjectMain.getString("viewpagerData");
                         viewpagerData = new Gson().fromJson(jsonArrayViewPager.toString(), ViewpagerData[].class);
-                        app.l("pdofmv" + viewpagerData[0].getChangeState());
-                        app.l(jsonArray.length() + "jleng");
+
+
                         int len = jsonArray.length();
                         for (int i = 0; i < len; i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -537,7 +486,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                                     adapterPlace1.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace1.notifyDataSetChanged();
-                                    app.l("jlengbbb");
+
                                 } else {
                                     containerP1.setVisibility(View.GONE);
                                 }
@@ -593,16 +542,14 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                         viewPagerInfo(viewpagerData[5], place7);
 
 
-                        //showGuide();
-
                         Intent intent = new Intent("dataCount");
                         intent.putExtra("ref", "mpf");
                         LocalBroadcastManager.getInstance(MainPageFragment.this.getContext()).sendBroadcast(intent);
                     } else {
-                        app.l(response.body() + "mmppgg2");
+
                     }
                 } catch (JSONException e) {
-                    app.l(e.getLocalizedMessage() + "mmppgg2");
+
                     e.printStackTrace();
                 }
 
@@ -610,42 +557,10 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                app.l(t.getLocalizedMessage() + "mmppgg2");
+
             }
         });
     }
-
-   /* private void showGuide() {
-        Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/b.ttf");
-
-        new MaterialTapTargetPrompt.Builder(MainPageFragment.this)
-                .setTarget(R.id.hamburger_button)
-                .setPrimaryText("مشاهده اطلاعات").setPrimaryTextTypeface(tf).setSecondaryTextTypeface(tf)
-                .setSecondaryText("اینجا می تونی اطلاعات خودتو ببینی و اگه خواستی برامون فیلم بفرستی")
-                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
-                    @Override
-                    public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
-                        if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED) {
-                            // User has pressed the prompt target
-                            app.t("Abc");
-                        }
-                    }
-                })
-                .setTarget(R.id.container_p1)
-                .setPrimaryText("یه بنر با اطلاعات به روز").setPrimaryTextTypeface(tf).setSecondaryTextTypeface(tf)
-                .setSecondaryText("اینجا همیشه به روز میشه و تو می تونی از این قسمت به جاهای دیگه برنامه بری")
-                .setPromptStateChangeListener(new MaterialTapTargetPrompt.PromptStateChangeListener() {
-                    @Override
-                    public void onPromptStateChanged(MaterialTapTargetPrompt prompt, int state) {
-                        if (state == MaterialTapTargetPrompt.STATE_FOCAL_PRESSED) {
-                            // User has pressed the prompt target
-                            app.t("Abc");
-                        }
-                    }
-                })
-                .show();
-
-    }*/
 
 
     @Override
@@ -665,7 +580,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             case R.id.whats_up_intent:
                 if (app.appInstalledOrNot("com.whatsapp")) {
                     PackageManager pm = getActivity().getPackageManager();
-                    String url = "https://api.whatsapp.com/send?phone=" + MainActivity.etcetera.get(4).getMessage();
+                    String url = getString(R.string.wha) + SplashActivity.etcetera.get(4).getMessage();
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
@@ -697,33 +612,31 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
             case R.id.contact_us:
                 Intent intentCall = new Intent(Intent.ACTION_DIAL);
-                intentCall.setData(Uri.parse("tel:" + MainActivity.etcetera.get(2).getMessage()));
+                intentCall.setData(Uri.parse("tel:" + SplashActivity.etcetera.get(2).getMessage()));
                 startActivity(intentCall);
 
                 break;
             case R.id.about_us:
-                app.l("d");
+
                 break;
             case R.id.bi_khial:
 
-                Uri uri = Uri.parse("http://instagram.com/_u/abc");
+                Uri uri = Uri.parse(getString(R.string.insabc) + SplashActivity.etcetera.get(5).getMessage());//http://instagram.com/_u/abc
                 Intent likeIng = new Intent(Intent.ACTION_VIEW, uri);
 
-                likeIng.setPackage("com.instagram.android");
+                likeIng.setPackage(getString(R.string.insap));
 
                 try {
                     startActivity(likeIng);
                 } catch (ActivityNotFoundException e) {
                     startActivity(new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("http://instagram.com/abc")));
+                            Uri.parse(getString(R.string.inweb) + SplashActivity.etcetera.get(5).getMessage())));//http://instagram.com/abc
                 }
 
                 break;
             case R.id.sign_out:
-                //add r u sure? dialog
-                /*SharedPrefUtils.clear();
-                Objects.requireNonNull(getActivity()).finish();
-                getActivity().startActivity(new Intent(getActivity(), LoginActivity.class));*/
+
+
                 showExitDialog(null);
                 break;
         }
@@ -733,7 +646,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
 
-        // Checking the orientation of the screen
+
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             for (int i = 0; i < parent.getChildCount(); i++) {
                 parent.getChildAt(i).setVisibility(View.GONE);

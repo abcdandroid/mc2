@@ -5,9 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-/**
- * Awesome Pojo Generator
- */
+
 public class Answer implements Serializable {
     @SerializedName("a_entrance_id")
     @Expose

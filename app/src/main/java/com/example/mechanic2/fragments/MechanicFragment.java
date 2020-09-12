@@ -190,7 +190,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
-        });/**/
+        });
 
         JobAutoCompleteAdapter jobAutoCompleteAdapter = new JobAutoCompleteAdapter(getActivity(), R.layout.item_show_auto_complete);
         jobQuestion.setAdapter(jobAutoCompleteAdapter);
@@ -274,16 +274,16 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
         submitFilter.setVisibility(View.INVISIBLE);
 
 
-        /**/
+
         String tempDetail = detail;
-        app.l("step 1");
+
         if (detail == null) {
 
             fromConfig = false;
         } else {
 
             fromConfig = true;
-            app.l("step 2");
+
 
             configureMechanicWithDetail(detail);
         }
@@ -292,22 +292,22 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
         app.validateConnection(getActivity(), errorConnectionSweetAlertDialog, new ConnectionErrorManager() {
             @Override
             public void doAction() {
-                app.l("step 12");
+
                 try {
                     JSONObject jsonDetail = null;
                     if (tempDetail != null) {
                         jsonDetail = new JSONObject(tempDetail);
-                        app.l("step 13");
+
                     }
                     int sortBy = 0;
                     if (jsonDetail != null) {
 
                         sortBy = Integer.parseInt(jsonDetail.getString("sortBy"));
-                        app.l("step 14|||" + sortBy);
+
                     }
 
                     if (sortBy != 2) {
-                        app.l("step 15");
+
                         getDataWithConnectionValidation();
                     }
 
@@ -359,17 +359,17 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
 
     private void spinnerCheckForGpsPermission(boolean requestData) {
         if (Integer.parseInt(filterIdInString) == 2) {
-            app.l("step 4");
+
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                app.l("step 5");
+
 
                 int checkGpsPermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION);
                 if (checkGpsPermission == PackageManager.PERMISSION_GRANTED) {
                     if (detail != null) {
                         detail = null;
                     }
-                    app.l("step 6");
+
 
                     getLocation();
                 } else {
@@ -432,7 +432,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
 
     void getLocation() {
         try {
-            app.l("step 7");
+
 
             gpsSweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
             gpsSweetAlertDialog.setTitle("لطفا شکیبا باشید.");
@@ -444,12 +444,12 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
                 public void onLocationChanged(Location location) {
                     x = location.getLatitude();
                     y = location.getLongitude();
-                    app.l("step 8");
+
 
                     app.validateConnection(getActivity(), errorConnectionSweetAlertDialog, new ConnectionErrorManager() {
                         @Override
                         public void doAction() {
-                            app.l("step 9");
+
 
                             resumeMechanicListener(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                             getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
@@ -460,15 +460,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void onStatusChanged(String provider, int status, Bundle extras) {
 
-/*
-                    gpsSweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
-                    gpsSweetAlertDialog.setTitle("لطفا شکیبا باشید3.");
-                    gpsSweetAlertDialog.setContentText("در حال پیدا کردن موقعیت فعلی شما3");
-                    gpsSweetAlertDialog.show();
-                    resumeMechanicListener(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
-                    getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
 
-*/
 
                 }
 
@@ -536,15 +528,15 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
         map.put("x", String.valueOf(x));
         map.put("y", String.valueOf(y));
         map.put("sortBy", String.valueOf(sortBy));
-        app.l("step 10_______________________");
 
-        app.l("route" + "|||||" + "getMechanics");
-        app.l("offset" + "|||||" + String.valueOf(offset));
-        app.l("jobId" + "|||||" + String.valueOf(jobId));
-        app.l("regionId" + "|||||" + String.valueOf(regionId));
-        app.l("x" + "|||||" + String.valueOf(x));
-        app.l("y" + "|||||" + String.valueOf(y));
-        app.l("sortBy" + "|||||" + String.valueOf(sortBy));
+
+
+
+
+
+
+
+
 
 
         view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
@@ -560,7 +552,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onResponse(Call<MechanicWithMsg> call, Response<MechanicWithMsg> response) {
 
-                app.l("step 11");
+
 
                 if (loadingData != null)
                     loadingData.dismissWithAnimation();
@@ -604,19 +596,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
                     }
 
 
-/*
-                    if (response.body().getMechanic().get(0).getId() == -2) {
-                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از خودروهای پیشنهادی کلیک کنید").show();
-                        return;
-                    }
-                    if (response.body().getMechanic().get(0).getId() == -3) {
-                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از موضوعات پیشنهادی کلیک کنید").show();
-                        return;
-                    }
-                    if (response.body().getMechanic().get(0).getId() == -4) {
-                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از خودروهای پیشنهادی و یکی از موضوعات پیشنهادی کلیک کنید").show();
-                        return;
-                    }*/
+
 
                     mechanics = response.body().getMechanic();
                     if (mechanics != null && mechanics.size() != 0) {
@@ -645,10 +625,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
 
                     }
 
-                } else {/*
-                    sweetAlertDialogQuestionNotExist = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).hideConfirmButton()
-                            .setCustomView(view);
-                    sweetAlertDialogQuestionNotExist.show();*/
+                } else {
 
                     TextView textView = view.findViewById(R.id.txt);
                     TextView txt_ok = view.findViewById(R.id.txt_ok);
@@ -724,7 +701,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-    }/**/
+    }
 
 
     private void modifyIds() {
@@ -752,7 +729,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
                 spinnerFilter.setEnabled(true);
                 spinnerFilter.setClickable(true);
                 resumeMechanicListener(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
-                getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));/**/
+                getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                 break;
             case R.id.reset_region:
                 app.hideKeyboard(jobQuestion);
@@ -763,14 +740,14 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
                 spinnerFilter.setEnabled(true);
                 spinnerFilter.setClickable(true);
                 resumeMechanicListener(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
-                getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));/**/
+                getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                 break;
             case R.id.submit_filter_parent:
                 app.hideKeyboard(jobQuestion);
                 app.hideKeyboard(regionQuestion);
                 modifyIds();
                 resumeMechanicListener(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
-                getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));/**/
+                getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                 break;
             case R.id.btn_contact_us:
                 sweetAlertDialogQuestionNotExist.dismissWithAnimation();
@@ -787,7 +764,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
                     spinnerFilter.setSelection(0);
                 } else if (spinnerFilter.getSelectedItemPosition() == 0) {
                     resumeMechanicListener(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
-                    getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));/**/
+                    getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                 }
                 break;
         }
@@ -801,7 +778,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
                 public void doAction() {
 
                     resumeMechanicListener(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
-                    getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));/**/
+                    getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                 }
             });
     }
@@ -854,12 +831,12 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
             selectedRegionId = region.getId();
             spinnerFilter.setSelection(sortBy);
             filterIdInString = String.valueOf(sortBy);
-            app.l("step 3" + region.getId() + "||" + selectedRegionId);
+
 
             spinnerCheckForGpsPermission(false);
             if (sortBy == 0) {
                 getDataWithConnectionValidation();
-            }  //getLocation();
+            }
 
         } catch (JSONException e) {
             e.printStackTrace();

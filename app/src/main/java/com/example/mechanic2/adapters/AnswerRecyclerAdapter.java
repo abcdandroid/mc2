@@ -17,16 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.ShowMechanicDetailActivity;
 import com.example.mechanic2.app.Application;
-import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.AnswerVoiceOnClickListener;
 import com.example.mechanic2.models.Answers;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.views.MyTextView;
 import com.hmomeni.progresscircula.ProgressCircula;
+import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
@@ -45,7 +44,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
     private AnswerViewHolder playingHolder;
     private Answers answer;
 
-    //shimmer layoyt
+
     public AnswerRecyclerAdapter(Activity activity, Context context, List<Answers> answerList, AnswerVoiceOnClickListener voiceOnClickListener) {
         this.context = context;
         this.activity = activity;
@@ -155,11 +154,10 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
             readMore = itemView.findViewById(R.id.read_more);
 
 
-
         }
 
         private void bindView(Answers answer) {
-            app.l("ansss:" + answer);
+
             voiceParent.setVisibility(answer.getAnswer().getA_voice_url().length() == 0 ? View.GONE : View.VISIBLE);
 
             if (answer.getType() == 0) {
@@ -180,8 +178,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
             } else if (answer.getMechanic().getMechanic_image() == null && answer.getType() == 0) {
                 ivProfile.setImageDrawable(activity.getDrawable(R.drawable.profile_normal_user));
             } else
-                Glide.with(activity).load("http://drkamal3.com/Mechanic/" + answer.getMechanic().getMechanic_image()).into(ivProfile);
-
+                Picasso.get().load(context.getString(R.string.drweb) + answer.getMechanic().getMechanic_image()).into(ivProfile);
             this.answer.setText(answer.getAnswer().getA_text());
 
             if (answer.getAnswer().getA_voice_url().equals(""))
@@ -216,7 +213,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
 
 
                 if (mediaPlayer != null && playingHolder != null) {
-                    //playingHolder.ltPlayPause.setAnimation(mediaPlayer.isPlaying() ? R.raw.play_to_pause : R.raw.pause_to_play);
+
                     playingHolder.ltPlayPause.pauseAnimation();
                 }
 
@@ -266,14 +263,14 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
                 }
                 break;
                 case R.id.parent:
-                    app.l("RRTTef"+answerList.get(getAdapterPosition()).getMechanic().getIs_signed());
+
 
                     Answers answers = answerList.get(getAdapterPosition());
-                    /**/
+
                     Mechanic mechanic = answers.getMechanic();
                     Intent intent = new Intent(activity, ShowMechanicDetailActivity.class);
                     intent.putExtra("mechanic", mechanic);
-                    activity.startActivity(intent);/**/
+                    activity.startActivity(intent);
 
 
                     break;
@@ -317,6 +314,11 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
         mediaPlayer.release();
         mediaPlayer = null;
         currentPlayingPosition = -1;
+    }
+
+    public void killMedia() {
+        if (mediaPlayer != null)
+            releaseMediaPlayer();
     }
 
 

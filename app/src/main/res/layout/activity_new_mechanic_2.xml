@@ -64,8 +64,8 @@
                                 android:layout_margin="16dp"
                                 android:gravity="center_vertical"
                                 android:paddingTop="5sp"
-                                android:text="برای بهتر دیده شدن، چندتا عکس از خودت و مغازت برامون بفرست!"
-                                android:textSize="18dp" />
+                                android:text="@string/send_image"
+                                android:textSize="18sp" />
 
                         </LinearLayout>
 
@@ -99,7 +99,7 @@
                                         android:layout_height="wrap_content"
                                         android:textSize="16sp"
                                         android:layout_marginTop="8dp"
-                                        android:text="عکس مغازه" />
+                                        android:text="@string/store_image" />
 
                                 </LinearLayout>
 
@@ -124,7 +124,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="8dp"
                                         android:textSize="16sp"
-                                        android:text="عکس مغازه" />
+                                        android:text="@string/store_image"/>
                                 </LinearLayout>
 
 
@@ -155,7 +155,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="8dp"
                                         android:textSize="16sp"
-                                        android:text="عکس مغازه" />
+                                        android:text="@string/store_image"/>
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -178,7 +178,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="8dp"
                                         android:textSize="16sp"
-                                        android:text="عکس خودت" />
+                                        android:text="@string/your_image" />
                                 </LinearLayout>
 
 
@@ -233,7 +233,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/transparent"
-                                    android:hint="نام و نام خانوادگی"
+                                    android:hint="@string/name_lastname"
                                     android:maxLength="30"
                                     android:textDirection="rtl" />
 
@@ -267,7 +267,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/transparent"
-                                    android:hint="اسم مغازه"
+                                    android:hint="@string/store_name"
                                     android:textDirection="rtl" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -300,11 +300,11 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/transparent"
-                                    android:hint="شماره تلفن همراه"
+                                    android:hint="@string/your_phone"
                                     android:inputType="phone"
                                     android:layoutDirection="ltr"
                                     android:maxLength="11"
-                                    android:text="09"
+                                    android:text="@string/_09"
                                     android:textDirection="rtl" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -344,8 +344,8 @@
                                 android:layout_margin="16dp"
                                 android:gravity="center_vertical"
                                 android:paddingTop="5sp"
-                                android:text="تخصصاتو اینجا بنویس. حداکثر 5 تخصص! "
-                                android:textSize="16dp" />
+                                android:text="@string/add_job"
+                                android:textSize="16sp" />
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -412,7 +412,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/transparent"
-                                    android:hint="منطقه فعالیتت رو انتخاب کن"
+                                    android:hint="@string/choose_region"
                                     android:includeFontPadding="true"
                                     android:paddingTop="32dp"
                                     android:paddingRight="8dp"
@@ -457,7 +457,7 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:background="@color/transparent"
-                                    android:hint="ادرس دقیقتو بنویس"
+                                    android:hint="@string/write_address"
                                     android:textDirection="rtl" />
 
                             </com.google.android.material.textfield.TextInputLayout>
@@ -489,8 +489,8 @@
                                 android:layout_margin="16dp"
                                 android:gravity="center_vertical"
                                 android:paddingTop="5sp"
-                                android:text="آدرس دقیقتو روی نقشه مشخص کن"
-                                android:textSize="16dp" />
+                                android:text="@string/locate_on_map"
+                                android:textSize="16sp" />
 
                         </LinearLayout>
 
@@ -556,11 +556,14 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:text="درباره خودت بنویس. مثلا سابقه کار، تعرفه خدمات یا اینکه در خدمات دهی به چه ماشین هایی مهارت بیشتری داری." />
+                                android:text="@string/info_desc" />
 
                             <com.google.android.material.textfield.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                app:counterMaxLength="1000"
+                                app:counterEnabled="true"
+                                android:id="@+id/mechanic_about_holder"
                                 android:background="@color/transparent">
 
                                 <androidx.appcompat.widget.AppCompatEditText
@@ -570,7 +573,7 @@
                                     android:layout_gravity="top"
                                     android:background="@color/transparent"
                                     android:gravity="top"
-                                    android:hint="اینجا بنویس"
+                                    android:hint="@string/write_here"
                                     android:lines="10"
                                     android:maxLines="10"
                                     android:textDirection="rtl" />
@@ -623,8 +626,8 @@
                             android:layout_margin="16dp"
                             android:gravity="center_vertical"
                             android:paddingTop="5sp"
-                            android:text="اینجا می تونی فیلم هایی که برامون فرستادی ببینی."
-                            android:textSize="16dp" />
+                            android:text="@string/show_movies"
+                            android:textSize="16sp" />
 
                     </LinearLayout>
 
@@ -700,7 +703,7 @@
                 android:background="@drawable/btn_rounded_primary"
                 android:gravity="center"
                 android:padding="12dp"
-                android:text="ثبت اطلاعات"
+                android:text="@string/confirm_mechanic_data"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
                 android:textStyle="bold" />

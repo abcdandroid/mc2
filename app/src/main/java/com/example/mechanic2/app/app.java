@@ -45,11 +45,9 @@ import static com.example.mechanic2.app.Connectivity.isConnected;
 
 public class app {
     public static class main {
-        public static final String URL = "http://drkamal3.com/Mechanic/index.php/";
+        public static final String URL = Application.getContext().getString(R.string.drk);
         public static String TAG = "mechanic";
     }
-
-    public static String adminBaseUrl = "http://drkamal3.com/Mechanic/index.php?route=getAdminMedias&lastId=";
 
     public static void t(String text) {
         Toast.makeText(Application.getContext(), text, Toast.LENGTH_SHORT).show();
@@ -71,13 +69,13 @@ public class app {
 
     public static void l(String... values) {
         for (String value : values) {
-            app.l(value + "*");
+
         }
     }
 
     public static void l(Integer... values) {
         for (int value : values) {
-            app.l(value + "*");
+
         }
     }
 
@@ -138,7 +136,7 @@ public class app {
         }
 
         if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
-            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+            bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         } else {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
         }
@@ -208,37 +206,7 @@ public class app {
         }
     }
 
-    /*
-    *   @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        ArrayList<String> permissionsToRequest = new ArrayList<>();
-        for (int i = 0; i < grantResults.length; i++) {
-            permissionsToRequest.add(permissions[i]);
-        }
-        if (permissionsToRequest.size() > 0) {
-            ActivityCompat.requestPermissions(
-                this,
-                permissionsToRequest.toArray(new String[0]),
-                REQUEST_PERMISSIONS_REQUEST_CODE);
-        }
-    }
 
-    private void requestPermissionsIfNecessary(String[] permissions) {
-        ArrayList<String> permissionsToRequest = new ArrayList<>();
-        for (String permission : permissions) {
-             if (ContextCompat.checkSelfPermission(this, permission)
-                    != PackageManager.PERMISSION_GRANTED) {
-                // Permission is not granted
-                permissionsToRequest.add(permission);
-            }
-        }
-        if (permissionsToRequest.size() > 0) {
-            ActivityCompat.requestPermissions(
-                this,
-                permissionsToRequest.toArray(new String[0]),
-                REQUEST_PERMISSIONS_REQUEST_CODE);
-        }
-    }   */
 
     private static int screenWidth = -1;
     private static int screenHeight = -1;
@@ -253,12 +221,7 @@ public class app {
         return screenWidth;
     }
 
-    /**
-     * get the screen height in pixels
-     *
-     * @param context
-     * @return
-     */
+
     public static int getScreenHeight(Context context) {
         if (screenHeight == -1) {
             Display display = ((Activity) context).getWindowManager().getDefaultDisplay();
@@ -277,16 +240,16 @@ public class app {
         result.append(" Object {");
         result.append(newLine);
 
-        //determine fields declared in this class only (no fields of superclass)
+
         Field[] fields = this.getClass().getDeclaredFields();
 
-        //print field names paired with their values
+
         for (Field field : fields) {
             result.append("  ");
             try {
                 result.append(field.getName());
                 result.append(": ");
-                //requires access to private field:
+
                 result.append(field.get(this));
             } catch (IllegalAccessException ex) {
                 System.out.println(ex);
@@ -314,7 +277,7 @@ public class app {
     public static void hideStatusBar( Activity activity) {
 
 
-        //Hide the status bar on Android 4.0 and Lower
+
         if (Build.VERSION.SDK_INT < 16) {
             Window w = activity.getWindow();
             w.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -322,10 +285,10 @@ public class app {
 
         } else {
             View decorView = activity.getWindow().getDecorView();
-            // Hide the status bar.
+
             int visibility = View.SYSTEM_UI_FLAG_FULLSCREEN;
             decorView.setSystemUiVisibility(visibility);
-            // Hide action bar that too if necessary.
+
             ActionBar actionBar = activity.getActionBar();
             actionBar.hide();
 
@@ -334,19 +297,19 @@ public class app {
     }
 
     public static void showStatusBar( Activity activity) {
-        // Show the status bar on Android 4.0 and Lower
+
         if (Build.VERSION.SDK_INT < 16) {
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         }
-        //Show the status bar on Android 4.1 and higher
+
         else {
             View decorView = activity.getWindow().getDecorView();
-            // Show the status bar.
+
             int visibility = View.SYSTEM_UI_FLAG_VISIBLE;
             decorView.setSystemUiVisibility(visibility);
-            // Show action bar
+
             ActionBar actionBar = activity.getActionBar();
             actionBar.show();
 

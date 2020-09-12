@@ -1,9 +1,8 @@
 package com.example.mechanic2.models;
+import com.example.mechanic2.R;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-/**
- * Awesome Pojo Generator
- * */
+
 public class AdminMedia{
   @SerializedName("media_desc")
   @Expose

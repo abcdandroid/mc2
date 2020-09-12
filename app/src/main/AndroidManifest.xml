@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mechanic2">
 
-    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -21,15 +20,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.MainPageFragmentActivity"></activity>
-        <activity android:name=".activities.QuestionFragmentActivity" />
-        <activity android:name=".activities.StoreFragmentActivity" />
-        <activity android:name=".activities.MechanicFragmentActivity" />
-        <activity
-            android:name=".activities.SecondTestActivity"
-            android:label="@string/title_activity_second_test"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.ShowMechanicDetailActivity" />
+        <activity android:name=".activities.ShowMechanicDetailActivity"></activity>
         <activity android:name=".activities.ShowGoodDetailActivity" />
 
         <activity android:name=".activities.SplashActivity">
@@ -37,15 +28,18 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-        </activity>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-
-        <activity android:name=".activities.TestActivity">
-            <!--test is here-->
+                <data
+                    android:scheme="https"
+                    android:host="online.mechanic.ir" />
+            </intent-filter>
 
         </activity>
 
@@ -61,8 +55,6 @@
         -->
         <activity android:name=".activities.MechanicLocationActivity" />
         <activity android:name=".activities.NewMechanicActivity2" />
-        <activity android:name=".activities.NewMechanicActivity" />
-        <activity android:name=".activities.NewSampleActivity" />
         <activity android:name=".activities.NewEntranceActivity">
 
         </activity>
@@ -71,8 +63,6 @@
         </activity>
         <activity android:name=".activities.AnswersActivity" />
         <activity android:name=".activities.AddQuestionActivity" />
-        <activity android:name=".activities.ShowAdsItemActivity" />
-        <activity android:name=".activities.SearchStoreActivity" />
         <activity android:name=".activities.FullThumbActivity" />
 
 
@@ -82,7 +72,7 @@
             android:theme="@style/AppThemeFullScreen">
 
         </activity>
-        <activity android:name=".activities.VideoActivity" />
+
         <activity
             android:name=".activities.ExoVideoActivity"
             android:configChanges="orientation|screenSize|layoutDirection" />

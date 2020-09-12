@@ -16,7 +16,6 @@ import androidx.annotation.Nullable;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
-import com.example.mechanic2.app.app;
 import com.example.mechanic2.models.Good;
 
 import org.jetbrains.annotations.NotNull;
@@ -28,13 +27,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
 
     private ArrayList<Good> data;
-    private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchGood&lastId=0&search=";
+    private final String server = getContext().getString(R.string.acgu);
 
     public GoodAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
@@ -79,7 +79,7 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
             mViewHolder.parent = convertView.findViewById(R.id.parent);
 
             convertView.setTag(mViewHolder);
-            //mViewHolder.textView.setTag(data.get(position));
+
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
@@ -115,7 +115,7 @@ public class GoodAutoCompleteAdapter extends ArrayAdapter<String> implements Fil
                         URL url = new URL(server + constraint.toString());
                         conn = (HttpURLConnection) url.openConnection();
                         input = conn.getInputStream();
-                        InputStreamReader reader = new InputStreamReader(input, "UTF-8");
+                        InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
                         BufferedReader buffer = new BufferedReader(reader, 8192);
                         StringBuilder builder = new StringBuilder();
                         String line;

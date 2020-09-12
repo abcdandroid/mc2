@@ -41,7 +41,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
 
         if (target instanceof SwipeRefreshLayout) {
             SwipeRefreshLayout swipeRefreshLayout = ((SwipeRefreshLayout) target);
-            app.l(swipeRefreshLayout.getChildAt(0).getClass().getName());
+
 
 
             RecyclerView recyclerView = ((RecyclerView) swipeRefreshLayout.getChildAt(0));
@@ -52,7 +52,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
                     if (newState == 0) child.show();
                     else child.hide();
                 }
-            });/**/
+            });
         } else {
             RecyclerView recyclerView = ((RecyclerView) target);
             recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -62,7 +62,7 @@ public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
                     if (newState == 0) child.show();
                     else child.hide();
                 }
-            });/**/
+            });
         }
     }
 

@@ -97,7 +97,6 @@
                 android:layout_marginRight="95dp"
                 android:gravity="center_vertical"
                 android:layoutDirection="rtl"
-                android:text="لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ"
                 android:textColor="@color/white"
                 android:textDirection="rtl"
                 android:textSize="20sp" />
@@ -184,6 +183,7 @@
                             android:layout_height="30dp"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="8dp"
+                            android:tint="@color/indigo_900"
                             android:src="@drawable/normal_answer" />
 
                         <com.example.mechanic2.views.MyTextView

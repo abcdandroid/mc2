@@ -1,20 +1,13 @@
 package com.example.mechanic2.fragments;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -35,43 +26,31 @@ import androidx.appcompat.widget.AppCompatTextView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.transition.Slide;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.AddQuestionActivity;
 import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
-import com.example.mechanic2.adapters.GoodAutoCompleteAdapter;
-import com.example.mechanic2.adapters.GooodStoreAdapter;
 import com.example.mechanic2.adapters.MySpinnerAdapter;
 import com.example.mechanic2.adapters.QuestionRecyclerAdapter;
-import com.example.mechanic2.adapters.StoreRecyclerAdapter;
 import com.example.mechanic2.adapters.TitleQuestionAutoCompleteAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
-import com.example.mechanic2.interfaces.AddQuestionFab;
 import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.models.Car;
-import com.example.mechanic2.models.Country;
-import com.example.mechanic2.models.Good;
-import com.example.mechanic2.models.Goood;
+import com.example.mechanic2.models.Question;
 import com.example.mechanic2.models.QusetionWithMsg;
 import com.example.mechanic2.models.Title;
-import com.example.mechanic2.models.Question;
-import com.example.mechanic2.models.Warranty;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -146,7 +125,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
     boolean fromConfig = false;
     AdapterView<?> parentAdapterView;
-    //http://drkamal3.com/Mechanic/index.php?route=getTitlesByCar&carName=%D9%BE%D8%B1%D8%A7%DB%8C%D8%AF
+
 
     @Nullable
     @Override
@@ -211,15 +190,15 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
                 if (view != null) {
                     modifyIds();
-                    app.l("step 1" + (fromConfig ? "A" : "B"));
+
                     View view1 = parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent()));
                     TextView myTextView = view1.findViewById(R.id.id_spinner);
                     filterIdInString = myTextView == null ? "1" : myTextView.getText().toString();
                     int loaderLimiter = fromConfig ? 2 : 1;
-                    //int loaderLimiter = fromConfig ? 2 : 1;
+
                     if (i > loaderLimiter) {
-                        app.l("step 2");
-                        app.l("aappo" + i);
+
+
                         loading.setVisibility(View.VISIBLE);
                         submitFilter.setVisibility(View.INVISIBLE);
                         requestDataWithValidation();
@@ -281,7 +260,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                     resetCar.setVisibility(View.VISIBLE);
                     if ((!carQuestion.getText().toString().equals("همه ماشین ها") || (car != null && !carQuestion.getText().toString().trim().equals(car.getName().trim())) && selectedCarId == 0)) {
 
-                        //app.l("car q:" + carQuestion.getText().toString() + car.getName());
+
                         selectedCarId = -1;
                     }
                 }
@@ -306,7 +285,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 } else {
                     resetTitle.setVisibility(View.VISIBLE);
                     if ((!titleQuestion.getText().toString().equals("همه موضوعات") || (title != null && !titleQuestion.getText().toString().trim().equals(title.getName().trim()))) && selectedTitleId == 0) {
-                        // app.l("pooeir||" + titleQuestion.getText().toString().trim() + title.getName().trim());
+
                         selectedTitleId = -1;
                     }
                 }
@@ -326,11 +305,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
 
 
-      /*  if (detail == null) {
-            resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
-            getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
-        } else configureQuestionWithDetail(detail);
-*/
+
 
 
         if (detail == null) {
@@ -360,7 +335,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
             @Override
             public void doAction() {
 
-                app.l("step 3");
+
                 resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
                 getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
             }
@@ -437,8 +412,8 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
                 titleQuestion.setHint("موضوع سوالت چیه؟");
                 titleQuestion.setText("");
-                //myQuestion.setEnabled(true);
-                //myQuestion.setBackground(getActivity().getDrawable(R.drawable.btn_white));
+
+
 
                 selectedTitleId = 0;
                 filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
@@ -468,8 +443,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 break;
         }
         switch (v.getId()) {
-            case R.id.fab_my_layout:
-                break;
+
             case R.id.fab_add_layout:
                 startActivityForResult(new Intent(getActivity(), AddQuestionActivity.class), 1);
                 break;
@@ -481,13 +455,11 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        isLoading = false;/*
-        resumeDataListener("questionsFetchAll", "null", "null", "null");*//*
-        requestQuestion(0, "questionsFetchAll", "null", "null", "null");*/
+        isLoading = false;
     }
 
 
-    /*-------------------*/
+
 
     SweetAlertDialog sweetAlertDialogQuestionNotExist;
 
@@ -502,7 +474,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         questions = new ArrayList<>();
         tmpQuestions = new ArrayList<>();
         adapter = new QuestionRecyclerAdapter(questions, getActivity());
-        app.l("gettttt");
+
 
 
         Map<String, String> map = new HashMap<>();
@@ -516,14 +488,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         map.put("entrance_id", SharedPrefUtils.getStringData("entranceId"));
 
 
-        app.l("route" + "!!alkdflksdjf!!" + "getQuestions");
-        app.l("lastId" + "!!alkdflksdjf!!" + String.valueOf(lastId));
-        app.l("offset" + "!!alkdflksdjf!!" + String.valueOf(offset));
-        app.l("carId" + "!!alkdflksdjf!!" + String.valueOf(carId));
-        app.l("titleId" + "!!alkdflksdjf!!" + String.valueOf(titleId));
-        app.l("sortBy" + "!!alkdflksdjf!!" + String.valueOf(sortBy));
-        app.l("showMyQuestion" + "!!alkdflksdjf!!" + String.valueOf(showMyQuestion));
-        app.l("entrance_id" + "!!alkdflksdjf!!" + SharedPrefUtils.getStringData("entranceId"));
+
 
         view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
         btnAddQuestion = view.findViewById(R.id.btn_contact_us);
@@ -540,6 +505,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 loadingData.dismissWithAnimation();
                 loading.setVisibility(View.INVISIBLE);
                 submitFilter.setVisibility(View.VISIBLE);
+
 
                 if (response.body() != null && response.body().getQuestion().size() > 0) {
 
@@ -578,21 +544,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                         return;
                     }
 
-                    /*
-                    if (response.body().getQuestion().get(0).getQ_id() == -2) {
 
-
-                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از خودروهای پیشنهادی کلیک کنید").show();
-                        return;
-                    }
-                    if (response.body().getQuestion().get(0).getQ_id() == -3) {
-                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از موضوعات پیشنهادی کلیک کنید").show();
-                        return;
-                    }
-                    if (response.body().getQuestion().get(0).getQ_id() == -4) {
-                        new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setTitleText("لطفا روی یکی از خودروهای پیشنهادی و یکی از موضوعات پیشنهادی کلیک کنید").show();
-                        return;
-                    }*/
 
 
                     questions = response.body().getQuestion();
@@ -603,10 +555,9 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                     } else {
 
                         if (questions != null) {
-                            app.t("not found11");
+
                             isLoading = false;
-                        /*resumeGooodListener(0, 0, 0, 0, is_stoke_active ? 1 : 0);
-                        getGooods(0, 0, 0, 0, is_stoke_active ? 1 : 0);*/
+
 
                         }
                     }
@@ -714,7 +665,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-    }/**/
+    }
 
     private void modifyIds() {
         String carQuestionText = carQuestion.getText().toString();
@@ -824,17 +775,10 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
             titleQuestion.setText(title.getName());
             selectedTitleId = title.getId();
 
-            app.l("selectedTitleId" + selectedTitleId + ",," + "title.getId()" + title.getId());
+
             spinnerFilter.setSelection(sortBy);
             if (sortBy == 0) {
-            /*    app.validateConnection(getActivity(), sweetAlertDialogErrorConnection, new ConnectionErrorManager() {
-                    @Override
-                    public void doAction() {
 
-                        resumeQuestionListener(selectedCarId, selectedTitleId, sortBy, isMyQuestionActiveInteger);
-                        getQuestions(selectedCarId, selectedTitleId, sortBy, isMyQuestionActiveInteger);
-                    }
-                });*/
             }
 
         } catch (JSONException e) {

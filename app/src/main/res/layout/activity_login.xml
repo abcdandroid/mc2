@@ -53,7 +53,7 @@
                     android:layout_marginTop="@dimen/spacing_middle"
                     android:layout_marginBottom="@dimen/spacing_xlarge"
                     android:gravity="center"
-                    android:text="لطفا شماره تلفن همراه\nخود را وارد نمایید."
+                    android:text="@string/insert_phone_number"
                     android:textColor="@color/purple"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -63,13 +63,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:inputType="phone"
                     android:layoutDirection="rtl"
-                    android:text="شماره همراه"
+                    android:text="@string/phone_number"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                     android:textColor="@color/purple"
                     android:textDirection="rtl"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"  />
 
 
 
@@ -82,7 +81,7 @@
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginBottom="16dp"
-                    android:hint="شماره همراه"
+                    android:hint="@string/phone_number_hint"
                     android:paddingBottom="-64dp"
                     android:textDirection="rtl"
                     app:counterMaxLength="200">
@@ -96,7 +95,7 @@
                         android:maxLength="11"
                         android:maxLines="1"
                         android:singleLine="true"
-                        android:textSize="18dp"
+                        android:textSize="18sp"
                         android:textColor="@color/indigo_900"
                         android:textStyle="bold"  />
 
@@ -112,7 +111,6 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="PASSWORD"
                     android:textAlignment="center"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                     android:textColor="@color/grey_40"
@@ -126,7 +124,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:cursorVisible="true"
-                    android:hint="Hint."
                     android:inputType="number"
                     android:padding="8dp"
                     android:textColor="@color/red_900"
@@ -154,7 +151,7 @@
                     android:layout_height="55dp"
                     android:background="@drawable/btn_register"
                     android:gravity="center"
-                    android:text="تایید شماره همراه"
+                    android:text="@string/confirm_phone"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:textSize="18sp"
@@ -168,7 +165,7 @@
                     android:layout_marginRight="-4dp"
                     android:background="@drawable/btn_register"
                     android:gravity="center"
-                    android:text="ارسال کد فعال سازی"
+                    android:text="@string/send_code"
                     android:textAllCaps="false"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"

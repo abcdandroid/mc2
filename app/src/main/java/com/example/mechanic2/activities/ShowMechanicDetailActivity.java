@@ -1,44 +1,29 @@
 package com.example.mechanic2.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.motion.widget.MotionLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.widget.NestedScrollView;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.motion.widget.MotionLayout;
+import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
+
 import com.airbnb.lottie.LottieAnimationView;
-import com.bumptech.glide.Glide;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.OnPauseListener;
@@ -48,7 +33,6 @@ import com.downloader.PRDownloader;
 import com.downloader.Progress;
 import com.downloader.Status;
 import com.downloader.request.DownloadRequest;
-import com.downloader.utils.Utils;
 import com.example.mechanic2.R;
 import com.example.mechanic2.adapters.MechanicMoviesRecyclerAdapter;
 import com.example.mechanic2.adapters.ViewPagerAdapter;
@@ -56,17 +40,13 @@ import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.QuestionImagesFragment;
-import com.example.mechanic2.fragments.ShowThumbnailFragment;
 import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
 import com.example.mechanic2.models.AdminMedia;
-import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.Movies;
-import com.example.mechanic2.views.CheckBox;
 import com.example.mechanic2.views.MyTextView;
-import com.example.mechanic2.views.MyViewPager;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.hmomeni.progresscircula.ProgressCircula;
@@ -76,19 +56,21 @@ import com.squareup.picasso.Picasso;
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.CustomZoomButtonsController;
-import org.osmdroid.views.MapController;
 import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
-import jp.wasabeef.picasso.transformations.BlurTransformation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static com.example.mechanic2.app.Application.getContext;
 
@@ -145,7 +127,6 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_mechanic_detail);
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter("forCall"));
         view = findViewById(R.id.view);
 
         star = findViewById(R.id.star);
@@ -159,7 +140,7 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         storeName = findViewById(R.id.store_name);
         ll = findViewById(R.id.ll);
         nestedContent = findViewById(R.id.nested_content);
-        myInfo = findViewById(R.id.my_info);
+
         personIcon = findViewById(R.id.person_icon);
         mechanicName = findViewById(R.id.mechanic_name);
         storeIcon = findViewById(R.id.store_icon);
@@ -169,9 +150,7 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         regionIcon = findViewById(R.id.region_icon);
         regionName = findViewById(R.id.region_name);
         film_list_container = findViewById(R.id.film_list_container);
-        phoneIcon = findViewById(R.id.phone_icon);
 
-        scoreIcon = findViewById(R.id.score_icon);
 
         myAbout = findViewById(R.id.my_about);
         aboutDesc = findViewById(R.id.about_desc);
@@ -231,7 +210,7 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
             no_mechanic_image.setVisibility(View.VISIBLE);
         }
 
-        app.l(mechanic.getX_location() + "alkfjalkfjlakjflakjf" + mechanic.getY_location() + "aljfaldkfj" + mechanic.getId());
+
         GeoPoint startPoint = new GeoPoint(Double.parseDouble(mechanic.getX_location()), Double.parseDouble(mechanic.getY_location()));
 
 
@@ -248,73 +227,41 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         storeName.setText(mechanic.getStore_name());
         ll.setImageBitmap(null);
         if (mechanic.getMechanic_image().length() > 0)
-            Glide.with(this).load("http://drkamal3.com/Mechanic/" + mechanic.getMechanic_image()).into(ll);
+
+            Picasso.get().load(getString(R.string.drweb) + mechanic.getMechanic_image()).into(ll);
         else ll.setImageDrawable(getDrawable(R.drawable.mechanic_avatar));
         mechanicName.setText(mechanic.getName());
         storeNameMain.setText(mechanic.getStore_name());
         bindJobs(mechanic.getJob());
-        regionName.setText(mechanic.getRegion().getName().concat((" _ " + mechanic.getAddress())));
+        regionName.setText(mechanic.getRegion().getName().concat((" | " + mechanic.getAddress())));
 
 
-        appbar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> ml.setProgress(-verticalOffset / ((float) appbar.getTotalScrollRange())));/**/
+        appbar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> ml.setProgress(-verticalOffset / ((float) appbar.getTotalScrollRange())));
 
         View.OnClickListener onClickListener = v -> {
-            /*if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                int checkCallPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE);
-                if (checkCallPermission == PackageManager.PERMISSION_GRANTED) {
-                    callAction();
-                } else {
-                    View callView = LayoutInflater.from(this).inflate(R.layout.view_request_call_permission, null);
-                    Button allowAccessCall = callView.findViewById(R.id.allow_access_call);
-                    Button denyAccessCall = callView.findViewById(R.id.deny_access_call);
-                    SweetAlertDialog sweetAlertDialogRequestGps = new SweetAlertDialog(this).hideConfirmButton().setCustomView(callView);
-                    sweetAlertDialogRequestGps.show();
-                    app.l("oottmm1");
-                    allowAccessCall.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            app.l("oottmm2");
-                            ActivityCompat.requestPermissions(ShowMechanicDetailActivity.this, new String[]{Manifest.permission.CALL_PHONE}, CALL_REQUEST_CODE);
-                        }
-                    });
-                }
-
-
-            } else {
-                callAction();
-            }*/
-
-
             Intent intent = new Intent(Intent.ACTION_DIAL);
             intent.setData(Uri.parse("tel:" + mechanic.getPhone_number().trim()));
             startActivity(intent);
 
+            Map<String, String> map = new HashMap<>();
+            map.put("route", "addToCalledMechanic");
+            map.put("userId", SharedPrefUtils.getStringData("entranceId"));
+            map.put("mechanicId", String.valueOf(mechanic.getId()));
+            Application.getApi().getDataInString(map).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+
+
         };
         btnCallMechanic.setOnClickListener(onClickListener);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == CALL_REQUEST_CODE) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                callAction();
-            } else {
-                app.t("call not allowweeedd");
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    private void callAction() {
-        app.l("ptokhmhkkk");
-        String uri = "tel:" + mechanic.getPhone_number().trim();
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse(uri));
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            app.t("call not allowweeedd");
-            return;
-        }
-        startActivity(intent);
     }
 
 
@@ -357,7 +304,6 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         intent.putExtra("currentItem", mechanicImages.getCurrentItem());
         intent.putExtra("from", "showMechanicDetailActivity");
 
-        app.l("Eeeeeeeafb" + imageList.toArray().length);
 
         startActivity(intent);
 
@@ -380,12 +326,12 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         String adminUrl = movies.getMovie_url();
         String url = movies.getMovie_url();
         String path = getExternalFilesDir("video/mp4").getAbsolutePath();
-        //String getExternalFilesDir("video/mp4").getAbsolutePath() + adminUrl.substring(adminUrl.lastIndexOf("/"));
+
         File file = new File(getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
-        app.l("file.length():" + file.length() + "adminMedia.getMovie_size():" + movies.getMovie_size() + "file.length() - adminMedia.getMovie_size(): " + (file.length() - movies.getMovie_size()));
+
 
         if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0)) {
-            app.l("playing");
+
             Intent intent = new Intent(this, ExoVideoActivity.class);
             intent.putExtra("path", getExternalFilesDir("video/mp4").getAbsolutePath() + url.
                     substring(url.lastIndexOf("/")));
@@ -421,7 +367,7 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         downloadRequest.setOnPauseListener(new OnPauseListener() {
             @Override
             public void onPause() {
-                app.l("pause***" + movies.getMovie_desc());
+
             }
         }).setOnProgressListener(new OnProgressListener() {
             @Override
@@ -429,12 +375,12 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
                 int value = (int) (100 * progress.currentBytes / progress.totalBytes);
                 progressCircula.setProgress(value);
                 percentDone.setText(String.valueOf(value) + "%");
-                app.l(String.valueOf(progress.currentBytes));
+
             }
         }).setOnStartOrResumeListener(new OnStartOrResumeListener() {
             @Override
             public void onStartOrResume() {
-                app.l("start or resume***" + movies.getMovie_desc());
+
             }
         });
         downloadId = downloadRequest.start(new OnDownloadListener() {
@@ -451,7 +397,6 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
                         .into(((ImageView) itemView.findViewById(R.id.preview)));
                 ((TextView) itemView.findViewById(R.id.totalSize)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
 
-                app.l("completed");
 
             }
 
@@ -473,12 +418,4 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         sweetAlertDialog.show();
     }
 
-
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            app.l("ppoottmm");
-            callAction();
-        }
-    };
 }

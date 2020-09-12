@@ -12,13 +12,13 @@ import android.widget.RatingBar;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.ShowMechanicDetailActivity;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.views.MyTextView;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -78,23 +78,19 @@ public class MechanicRecyclerAdapter extends RecyclerView.Adapter<MechanicRecycl
                     Intent intent = new Intent(context, ShowMechanicDetailActivity.class);
                     intent.putExtra("mechanic", mechanicList.get(getAdapterPosition()));
                     context.startActivity(intent);
-                    // app.l("EEmehc"+mechanicList.get(getAdapterPosition()).getMechanic_image());
+
                 }
             });
         }
 
         private void binder(Mechanic mechanic) {
-            app.l(mechanic.getMechanic_image() + "adfadfgggde");
-
-            app.l(mechanic.getX_location() + "|||oiergnknadnv|||" + mechanic.getId() + "||" + mechanic.getY_location());
-/*
-
-            if(mechanic.getIs_signed()==1) signed_mechanic.setVisibility(View.VISIBLE);
-            else signed_mechanic.setVisibility(View.GONE);
-*/
 
 
-            app.l(";;aoskflkf" + mechanic.getScore());
+
+
+
+
+
             if (mechanic.getScore() == 0)
                 rate_mechanic.setVisibility(View.GONE);
             else {
@@ -105,7 +101,8 @@ public class MechanicRecyclerAdapter extends RecyclerView.Adapter<MechanicRecycl
 
             profileMechanic.setImageBitmap(null);
             if (mechanic.getMechanic_image().length() > 0) {
-                Glide.with(context).load("http://drkamal3.com/Mechanic/" + mechanic.getMechanic_image()).into(profileMechanic);
+
+                Picasso.get().load(context.getString(R.string.drmo) + mechanic.getMechanic_image()).into(profileMechanic);
             } else
                 profileMechanic.setImageDrawable(context.getDrawable(R.drawable.mechanic_avatar));
             tvStoreMechanic.setText(mechanic.getStore_name());

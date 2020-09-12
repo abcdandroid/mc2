@@ -4,9 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.List;
-/**
- * Awesome Pojo Generator
- * */
+
 public class CountriesAndWarranties implements Serializable {
   @SerializedName("countries")
   @Expose

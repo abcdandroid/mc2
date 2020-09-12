@@ -1,44 +1,27 @@
 package com.example.mechanic2.fragments;
 
-import android.content.BroadcastReceiver;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.transition.TransitionInflater;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
+import com.squareup.picasso.Picasso;
 
-import java.util.Objects;
 
-import de.hdodenhof.circleimageview.CircleImageView;
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class ShowThumbnailFragment extends Fragment {
     private String url;
     private OnViewPagerClickListener onViewPagerClickListener;
 
 
     public ShowThumbnailFragment() {
-        // Required empty public constructor
+
     }
 
     public static ShowThumbnailFragment newInstance(String url, OnViewPagerClickListener onViewPagerClickListener) {
@@ -57,7 +40,7 @@ public class ShowThumbnailFragment extends Fragment {
             url = null;
             if (getArguments() != null && getArguments().getString("url") != null) {
                 url = getArguments().getString("url");
-                app.l(url + "_________");
+
             }
             if (getArguments() != null && getArguments().getParcelable("onClick") != null) {
                 onViewPagerClickListener = getArguments().getParcelable("onClick");
@@ -86,6 +69,6 @@ public class ShowThumbnailFragment extends Fragment {
                 }
             });
         }
-        Glide.with(Objects.requireNonNull(getActivity())).load(url).into(imThumbnail);
+        Picasso.get().load(url).into(imThumbnail);
     }
 }

@@ -1,7 +1,6 @@
 package com.example.mechanic2.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,10 +17,7 @@ import androidx.annotation.Nullable;
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
-import com.example.mechanic2.interfaces.FilterListeners;
 import com.example.mechanic2.models.Car;
-import com.example.mechanic2.models.Good;
-import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -32,15 +28,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
 
     private final boolean showAllCars;
     private ArrayList<Car> data;
-    private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchCar&lastId=0&search=";
+    private final String server = getContext().getString(R.string.dkc);
 
     public CarAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource, boolean showAllCars) {
         super(context, resource);
@@ -75,8 +71,8 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
         ViewHolder mViewHolder;
         Car car;
 
-        //data.add(new Car(Application.getContext().getResources().getString(R.string.all_cars), 0));
-        app.l(position + "RRR");
+
+
         if (convertView == null) {
             mViewHolder = new ViewHolder();
 
@@ -90,11 +86,11 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
 
             convertView.setTag(mViewHolder);
-            //mViewHolder.textView.setTag(data.get(position));
+
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
-        //car = (Car) mViewHolder.textView.getTag();
+
 
         if (position <= data.size() - 1)
             car = data.get(position);
@@ -105,7 +101,7 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
 
         return convertView;
-    }/* */
+    }
 
     @NonNull
     @Override
@@ -125,7 +121,7 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
                         conn = (HttpURLConnection) url.openConnection();
                         input = conn.getInputStream();
-                        InputStreamReader reader = new InputStreamReader(input, "UTF-8");
+                        InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
                         BufferedReader buffer = new BufferedReader(reader, 8192);
                         StringBuilder builder = new StringBuilder();
                         String line;
@@ -138,9 +134,9 @@ public class CarAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
 
                         for (int ind = 0; ind < terms.length(); ind++) {
                             JSONObject jsonObject = terms.getJSONObject(ind);
-                            suggestions.add(new Car(jsonObject.getString("name"), Integer.parseInt(jsonObject.getString("id"))));
+                            suggestions.add(new Car(jsonObject.getString("name"), Integer.parseInt(jsonObject.getString(getContext().getString(R.string.id)))));
                         }
-                        app.l(suggestions.size() + "QAZ");
+
                         results.count = suggestions.size();
                         data = suggestions;
                     } catch (Exception ex) {

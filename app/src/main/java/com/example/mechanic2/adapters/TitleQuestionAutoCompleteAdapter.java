@@ -33,7 +33,7 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
 
 
     private ArrayList<Title> data;
-    private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchTitle&search=";
+    private final String server = getContext().getString(R.string.atqr);
     boolean isFromShowQuestions;
 
     public TitleQuestionAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource,boolean isFromAddQuestion ) {
@@ -78,7 +78,7 @@ public class TitleQuestionAutoCompleteAdapter extends ArrayAdapter<String> imple
             mViewHolder.parent = convertView.findViewById(R.id.parent);
 
             convertView.setTag(mViewHolder);
-            //mViewHolder.textView.setTag(data.get(position));
+
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }

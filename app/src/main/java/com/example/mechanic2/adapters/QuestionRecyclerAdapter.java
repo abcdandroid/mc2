@@ -12,8 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
+import com.squareup.picasso.Picasso;
+
 import com.example.mechanic2.activities.AnswersActivity;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
@@ -94,14 +95,14 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
             answerCount.setText(String.valueOf(question.getAnswerCount()));
             seenCount.setText(String.valueOf(question.getSeen_count()));
             if (question.getQ_image_url1().length() > 10) {
-                app.l("position:" + getAdapterPosition() +"****1"+question.getQ_id()+"****"+ question.getQ_image_url1());
-                Glide.with(Application.getContext()).load("http://drkamal3.com/Mechanic/" + question.getQ_image_url1().trim()).into(previewQuestion);
+
+                Picasso.get().load(Application.getContext().getString(R.string.drweb) + question.getQ_image_url1().trim()).into(previewQuestion);
             } else if (question.getQ_image_url2().length() > 10) {
-                app.l("position:" + getAdapterPosition() +"****2"+question.getQ_id()+"****"+ question.getQ_image_url2());
-                Glide.with(Application.getContext()).load("http://drkamal3.com/Mechanic/" + question.getQ_image_url2().trim()).into(previewQuestion);
+
+                Picasso.get().load(Application.getContext().getString(R.string.drweb) + question.getQ_image_url2().trim()).into(previewQuestion);
             } else if (question.getQ_image_url3().length() > 10) {
-                app.l("position:" + getAdapterPosition() +"****3"+question.getQ_id()+"****"+ question.getQ_image_url3());
-                Glide.with(Application.getContext()).load("http://drkamal3.com/Mechanic/" + question.getQ_image_url3().trim()).into(previewQuestion);
+
+                Picasso.get().load(Application.getContext().getString(R.string.drweb) + question.getQ_image_url3().trim()).into(previewQuestion);
             }
 
 
@@ -116,12 +117,12 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
             Application.getApi().getDataInString(map).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    app.l(response.body() + " seen**");
+
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    app.l(t.getLocalizedMessage());
+
                 }
             });
 

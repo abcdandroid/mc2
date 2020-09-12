@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,18 +16,14 @@ import androidx.annotation.Nullable;
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
-import com.example.mechanic2.fragments.AdminFragment;
-import com.example.mechanic2.models.Country;
-import com.j256.ormlite.stmt.query.In;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MySpinnerAdapter extends ArrayAdapter<String> {
     private boolean isActive;
     private List<String> list;
     private List<Integer> ids;
-    //ImageView arrowSpinner;
+
 
     public MySpinnerAdapter(@NonNull Context context, int resource, @NonNull List<String> objects,List<Integer> ids,boolean isActive) {
         super(context, resource, objects);

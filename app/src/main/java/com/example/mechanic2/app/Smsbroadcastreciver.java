@@ -14,21 +14,21 @@ public class Smsbroadcastreciver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        app.l("!!");
+
         if (intent.getAction() == SmsRetriever.SMS_RETRIEVED_ACTION) {
-            app.l("!!!!");
+
 
             Bundle extra = intent.getExtras();
             Status smsRetriever = (Status) extra.get(SmsRetriever.EXTRA_STATUS);
             switch (smsRetriever.getStatusCode()) {
                 case CommonStatusCodes.SUCCESS:
-                    app.l("$$");
+
                     Intent intsms = extra.getParcelable(SmsRetriever.EXTRA_CONSENT_INTENT);
                     smsbroadcastlistner.onsucess(intsms);
                     break;
 
                 case CommonStatusCodes.TIMEOUT:
-                    app.l("**");
+
                     smsbroadcastlistner.error();
 
                     break;

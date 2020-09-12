@@ -27,13 +27,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class JobAutoCompleteAdapter extends ArrayAdapter<String> implements Filterable {
 
 
     private ArrayList<Job> data;
-    private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchJob&search=";
+    private final String server = getContext().getString(R.string.jaa);
     private boolean hasAllJobs = true;
 
     public JobAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
@@ -85,7 +86,7 @@ public class JobAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
             mViewHolder.parent = convertView.findViewById(R.id.parent);
 
             convertView.setTag(mViewHolder);
-            //mViewHolder.textView.setTag(data.get(position));
+
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
@@ -120,7 +121,7 @@ public class JobAutoCompleteAdapter extends ArrayAdapter<String> implements Filt
                         URL url = new URL(server + constraint.toString());
                         conn = (HttpURLConnection) url.openConnection();
                         input = conn.getInputStream();
-                        InputStreamReader reader = new InputStreamReader(input, "UTF-8");
+                        InputStreamReader reader = new InputStreamReader(input, StandardCharsets.UTF_8);
                         BufferedReader buffer = new BufferedReader(reader, 8192);
                         StringBuilder builder = new StringBuilder();
                         String line;

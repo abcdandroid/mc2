@@ -47,7 +47,7 @@
                         android:layout_margin="16dp"
                         android:gravity="center_vertical"
                         android:paddingTop="5sp"
-                        android:text="اسم ماشینی رو که دربارش سوال داری توی کادر پایین بنویس."
+                        android:text="@string/choose_car_desc"
                         android:textSize="16dp" />
 
                 </LinearLayout>
@@ -59,7 +59,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/job_hint"
-                    android:hint="ماشینت چیه؟ یکی رو انتخاب کن!!!"
+                    android:hint="@string/choose_car"
                     android:textDirection="rtl">
 
                     <AutoCompleteTextView
@@ -67,7 +67,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="8dp"
-                        android:textSize="12dp" />
+                        android:textSize="12sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -112,21 +112,20 @@
                         android:layout_margin="16dp"
                         android:gravity="center_vertical"
                         android:paddingTop="5sp"
-                        android:text="موضوع سوالت رو در کادر پایین بنویس.مثلا گیربکس، موتور، جلوبندی یا ...)"
+                        android:text="@string/question_desc"
                         android:textSize="16sp" />
 
                 </LinearLayout>
 
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fieldQuestionType"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/title_hint"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:hint="موضوع سوالت رو اینجا بنویس"
+                    android:hint="@string/question_title"
                     android:textDirection="rtl">
 
                     <AutoCompleteTextView
@@ -134,7 +133,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="8dp"
-                        android:textSize="12dp" />
+                        android:textSize="12sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -179,8 +178,8 @@
                         android:layout_margin="16dp"
                         android:gravity="center_vertical"
                         android:paddingTop="5sp"
-                        android:text="متن سوالت رو اینجا بنویس."
-                        android:textSize="16dp" />
+                        android:text="@string/write_question"
+                        android:textSize="16sp" />
 
                 </LinearLayout>
 

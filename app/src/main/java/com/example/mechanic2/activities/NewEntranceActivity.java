@@ -1,25 +1,19 @@
 package com.example.mechanic2.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.mechanic2.R;
-import com.example.mechanic2.adapters.CardFragmentPagerAdapter;
 import com.example.mechanic2.app.Application;
-import com.example.mechanic2.app.ShadowTransformer;
 import com.example.mechanic2.app.SharedPrefUtils;
-import com.example.mechanic2.app.app;
-import com.example.mechanic2.fragments.CardFragment;
 import com.nightonke.wowoviewpager.Animation.ViewAnimation;
 import com.nightonke.wowoviewpager.Animation.WoWoPositionAnimation;
 import com.nightonke.wowoviewpager.Animation.WoWoRotationAnimation;
@@ -31,7 +25,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -73,20 +66,18 @@ public class NewEntranceActivity extends AppCompatActivity {
         gear = findViewById(R.id.gear2);
         imgMechanic = findViewById(R.id.img_mechanic);
         imgNormal = findViewById(R.id.img_normal);
-        txtNormal1 = findViewById(R.id.txt_normal_1);/*
-        txtNormal1.append("\n"+getResources().getString(R.string.normal_desc_2)+"\n");
-        txtNormal1.append(getResources().getString(R.string.normal_desc_3));*/
+        txtNormal1 = findViewById(R.id.txt_normal_1);
         txtNormal2 = findViewById(R.id.txt_normal_2);
         txtNormal3 = findViewById(R.id.txt_normal_3);
         txtMechanic1 = findViewById(R.id.txt_mechanic_1);
         txtMechanic2 = findViewById(R.id.txt_mechanic_2);
         wowo.setAdapter(WoWoViewPagerAdapter.builder()
                 .fragmentManager(getSupportFragmentManager())
-                .count(2)                                      // Colors of fragments, with transparent as default
+                .count(2)
                 .build());
         wowoGear.setAdapter(WoWoViewPagerAdapter.builder()
                 .fragmentManager(getSupportFragmentManager())
-                .count(2)                                      // Colors of fragments, with transparent as default
+                .count(2)
                 .build());
 
         ViewAnimation viewAnimationRotateGear = new ViewAnimation(gear);
@@ -201,14 +192,14 @@ public class NewEntranceActivity extends AppCompatActivity {
                 } else if (user_type.equals(USER_TYPE.NORMAL)) {
 
                     sweetAlertDialogSendType = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.PROGRESS_TYPE);
-                    sweetAlertDialogSendType.setTitleText("wait a moment").setCancelable(false);
+                    sweetAlertDialogSendType.setTitleText("لطفا شکیبا باشید.").setCancelable(false);
                     sweetAlertDialogSendType.show();
 
                     Map<String, String> map = new HashMap<>();
                     map.put("route", "sms");
                     map.put("action", "registration");
                     map.put("mobile", SharedPrefUtils.getStringData("phoneNumber").equals("-1") ? "11111111111" : SharedPrefUtils.getStringData("phoneNumber"));
-                    //map.put("type", user_type.equals(USER_TYPE.NORMAL) ? String.valueOf(0) : String.valueOf(1));
+
                     map.put("type", String.valueOf(user_type.equals(USER_TYPE.NORMAL) ?0:1));
 
                     Application.getApi().getDataInString(map).enqueue(new Callback<String>() {
@@ -228,19 +219,19 @@ public class NewEntranceActivity extends AppCompatActivity {
                                         startActivity(new Intent(NewEntranceActivity.this, MainActivity.class));
                                     }
                                 } catch (JSONException e) {
-                                    SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("duplicate user");
+                                    SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("خطا");
                                     sweetAlertDialogSendCode.show();
                                 }
 
                             } else if (response.body() == null) {
-                                SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error connection");
+                                SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("خطا در برقراری ارتباط");
                                 sweetAlertDialogSendCode.show();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
-                            SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error connection");
+                            SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("خطا در برقراری ارتباط");
                             sweetAlertDialogSendCode.show();
                         }
                     });
@@ -248,12 +239,11 @@ public class NewEntranceActivity extends AppCompatActivity {
                 }
 
 
-                // app.l(user_type.toString());
 
 
 
-                /*$mobile = app::get(mobile);
-                $type = app::get(type);*/
+
+
 
 
             }

@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,8 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.cardview.widget.CardView;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -36,10 +34,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.OnPauseListener;
@@ -50,8 +44,6 @@ import com.downloader.Progress;
 import com.downloader.Status;
 import com.downloader.request.DownloadRequest;
 import com.example.mechanic2.R;
-import com.example.mechanic2.adapters.CarAutoCompleteAdapter;
-import com.example.mechanic2.adapters.JobAutoCompleteAdapter;
 import com.example.mechanic2.adapters.MechanicMoviesRecyclerAdapter;
 import com.example.mechanic2.adapters.RegionAutoCompleteAdapter;
 import com.example.mechanic2.app.Application;
@@ -65,10 +57,9 @@ import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.Movies;
 import com.example.mechanic2.models.Region;
-import com.example.mechanic2.models.Warranty;
 import com.example.mechanic2.views.JobRow;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.hmomeni.progresscircula.ProgressCircula;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
@@ -86,8 +77,6 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.lang.annotation.ElementType;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -102,9 +91,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static com.huxq17.download.DownloadProvider.context;
-
-public class NewMechanicActivity2 extends Activity implements View.OnClickListener, OnClickListener /*implements View.OnClickListener*/ {
+public class NewMechanicActivity2 extends Activity implements View.OnClickListener, OnClickListener {
 
 
     private Uri resultUri;
@@ -175,7 +162,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         whatsUpIntent = findViewById(R.id.whats_up_intent);
         submitNewMechanic = findViewById(R.id.submit_new_mechanic);
         regionDesc = findViewById(R.id.region_desc);
-        mMapView = findViewById(R.id.map_thumbnail);/**/
+        mMapView = findViewById(R.id.map_thumbnail);
         mapThumbnailFake = findViewById(R.id.map_thumbnail_fake);
         lttLngValue = findViewById(R.id.ltt_lng_value);
         mapThumbnailFake.setOnClickListener(this);
@@ -185,6 +172,9 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         mechanicPhone = findViewById(R.id.mechanic_phone);
         mechanicAbout = findViewById(R.id.mechanic_about);
 
+
+        TextInputLayout mechanic_about_holder=findViewById(R.id.mechanic_about_holder);
+        mechanic_about_holder.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.ttf)));
 
         ImageView storeImage1 = findViewById(R.id.image1);
         images.add(storeImage1);
@@ -205,18 +195,24 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
         Arrays.fill(address_images, "");
 
-        if ((Mechanic) getIntent().getSerializableExtra("mechanicInfo") == null)
+        if ((Mechanic) getIntent().getSerializableExtra("mechanicInfo") == null) {
+
             if (SharedPrefUtils.getStringData("ltt").equals("-1") && SharedPrefUtils.getStringData("lng").equals("-1")) {
                 SharedPrefUtils.saveData("ltt", String.valueOf(36.3201));
                 SharedPrefUtils.saveData("lng", String.valueOf(59.5896));
+
             } else {
                 mechanic = (Mechanic) getIntent().getSerializableExtra("mechanicInfo");
-                SharedPrefUtils.saveData("ltt", mechanic.getX_location());
-                SharedPrefUtils.saveData("lng", mechanic.getY_location());
-            }/**/
+                if (mechanic != null) {
+                    SharedPrefUtils.saveData("ltt", mechanic.getX_location());
+                    SharedPrefUtils.saveData("lng", mechanic.getY_location());
+                }
 
-        if (getIntent() == null) {
-            app.l("getIntaaaaaa");
+            }
+        }
+
+        if (getIntent().getExtras() == null) {
+
             movieLayer.setVisibility(View.GONE);
         } else {
             int mechanicId;
@@ -230,7 +226,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
                 if (mechanic.getJob().size() > 0) jobContainer.removeView(jobRow1);
                 for (int i = 0; i < mechanic.getJob().size(); i++) {
-                    app.l("pohoppoihjjh" + mechanic.getJob().size() + "**" + i);
+
                     JobRow jobRow = new JobRow(this);
                     jobRow.setText(mechanic.getJob().get(i).getName());
                     jobRow.setIdJobRow(String.valueOf(mechanic.getJob().get(i).getId()));
@@ -247,14 +243,14 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
                 SharedPrefUtils.saveData("ltt", mechanic.getX_location());
                 SharedPrefUtils.saveData("lng", mechanic.getY_location());
-                /**/
+
 
                 mechanicAbout.setText(mechanic.getAbout());
 
                 if (mechanic.getMechanic_image().length() != 0 && SharedPrefUtils.getStringData("imageNo" + 3).equals("-1")) {
                     String mechanic_image = mechanic.getMechanic_image();
                     String mechanicImageName = mechanic_image.substring(mechanic_image.lastIndexOf("/") + 1, mechanic_image.length() - 1);
-                    /**/
+
                     Target target = new Target() {
                         @Override
                         public void onPrepareLoad(Drawable arg0) {
@@ -282,13 +278,13 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                     };
 
                     Picasso.get()
-                            .load("http://drkamal3.com/Mechanic/" + mechanic.getMechanic_image())
+                            .load(getString(R.string.drweb) + mechanic.getMechanic_image())
                             .into(target);
                 }
                 if (mechanic.getStore_image_1().length() != 0 && SharedPrefUtils.getStringData("imageNo" + 0).equals("-1")) {
                     String store_image_1 = mechanic.getStore_image_1();
                     String Store1ImageName = store_image_1.substring(store_image_1.lastIndexOf("/") + 1, store_image_1.length() - 1);
-                    /**/
+
                     Target target = new Target() {
                         @Override
                         public void onPrepareLoad(Drawable arg0) {
@@ -317,13 +313,13 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                     };
 
                     Picasso.get()
-                            .load("http://drkamal3.com/Mechanic/" + mechanic.getStore_image_1())
+                            .load(getString(R.string.drweb) + mechanic.getStore_image_1())
                             .into(target);
                 }
                 if (mechanic.getStore_image_2().length() != 0 && SharedPrefUtils.getStringData("imageNo" + 1).equals("-1")) {
                     String store_image_2 = mechanic.getStore_image_2();
                     String Store2ImageName = store_image_2.substring(store_image_2.lastIndexOf("/") + 1, store_image_2.length() - 1);
-                    /**/
+
                     Target target = new Target() {
                         @Override
                         public void onPrepareLoad(Drawable arg0) {
@@ -352,13 +348,13 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                     };
 
                     Picasso.get()
-                            .load("http://drkamal3.com/Mechanic/" + mechanic.getStore_image_2())
+                            .load(getString(R.string.drweb) + mechanic.getStore_image_2())
                             .into(target);
                 }
                 if (mechanic.getStore_image_3().length() != 0 && SharedPrefUtils.getStringData("imageNo" + 2).equals("-1")) {
                     String store_image_3 = mechanic.getStore_image_3();
                     String Store3ImageName = store_image_3.substring(store_image_3.lastIndexOf("/") + 1, store_image_3.length() - 1);
-                    /**/
+
                     Target target = new Target() {
                         @Override
                         public void onPrepareLoad(Drawable arg0) {
@@ -388,7 +384,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                     };
 
                     Picasso.get()
-                            .load("http://drkamal3.com/Mechanic/" + mechanic.getStore_image_3())
+                            .load(getString(R.string.drweb) + mechanic.getStore_image_3())
                             .into(target);
                 }
 
@@ -445,13 +441,13 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
             Map<String, String> map = new HashMap<>();
             map.put("route", "getMechanicMovies");
             map.put("id", String.valueOf(mechanicId));
-            app.l(mechanicId + "akfakljfnvn");
+
             Application.getApi().getMechanicMovies(map).enqueue(new Callback<List<Movies>>() {
                 @Override
                 public void onResponse(Call<List<Movies>> call, Response<List<Movies>> response) {
                     if (response.body() != null) {
-                        app.l("idgeted" + response.body().size());
-                    } else app.l("idgetednull");
+
+                    }
                     MechanicMoviesRecyclerAdapter mechanicMoviesRecyclerAdapter = new MechanicMoviesRecyclerAdapter(NewMechanicActivity2.this, response.body(), NewMechanicActivity2.this);
                     mechanicMovies.setAdapter(mechanicMoviesRecyclerAdapter);
                     mechanicMovies.setLayoutAnimation((new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left))));
@@ -460,7 +456,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                 @Override
                 public void onFailure(Call<List<Movies>> call, Throwable t) {
 
-                    app.l("idgeted0" + t.getLocalizedMessage());
+
                 }
             });
         }
@@ -477,17 +473,17 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                     files.add(body0);
                 }
                 if (i == 1) {
-                    //img.setImageURI(parsedUri);
+
                     body1 = app.prepareImagePart("fileNo" + i, parsedUri);
                     files.add(body1);
                 }
                 if (i == 2) {
-                    //img.setImageURI(parsedUri);
+
                     body2 = app.prepareImagePart("fileNo" + i, parsedUri);
                     files.add(body2);
                 }
                 if (i == 3) {
-                    //img.setImageURI(parsedUri);
+
                     body3 = app.prepareImagePart("fileNo" + i, parsedUri);
                     files.add(body3);
                 }
@@ -506,16 +502,10 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
             mMapView.getOverlays().add(anotherItemizedIconOverlay);
             mMapView.getOverlays().remove(mLocationOverlay);
             mMapView.invalidate();
-        } /**/
-
-
-        /* */
+        }
 
 
         LocalBroadcastManager.getInstance(this).registerReceiver(jobRowReceiver, new IntentFilter("fromJobRow"));
-/*
-                SharedPrefUtils.saveData("jobIds", jobSeparator(listIds));
-                SharedPrefUtils.saveData("jobNames", jobSeparator(listNames));*/
 
 
         JobRow.addJobClickListener = new AddJobClickListener() {
@@ -690,19 +680,18 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
             mMapView.invalidate();
         }
 
-    }/**/
+    }
 
     public void show_dialog() {
         new SweetAlertDialog(this, SweetAlertDialog.SUCCESS_TYPE)
-                .setTitleText("انتخاب تصویر")/*
-                .setContentText("Won't be able to recover this file!")*/
+                .setTitleText("انتخاب تصویر")
                 .setCancelText("از گالری")
                 .setConfirmText("از دوربین")
                 .showCancelButton(true)
                 .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sDialog) {
-                        // reuse previous dialog instance, keep widget user state, reset them if you need
+
                         Intent gallery_intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 
                         startActivityForResult(Intent.createChooser(gallery_intent, "لطفا یک عکس را انتخاب کنید"), 2);
@@ -718,7 +707,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                     uri = Uri.fromFile(photoFile);
 
                     if (photoFile != null) {
-                        app.l("AAA2");
+
 
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                         startActivityForResult(takePictureIntent, 1);
@@ -777,7 +766,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                             break;
                     }
                     sDialog.dismissWithAnimation();
-                    app.l(files.size());
+
                 })
                 .setConfirmClickListener(SweetAlertDialog::dismissWithAnimation)
                 .show();
@@ -793,15 +782,15 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         File image = null;
         try {
             image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".png",         /* suffix */
-                    storageDir      /* directory */
+                    imageFileName,
+                    ".png",
+                    storageDir
             );
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        app.l("AAA1");
+
         return image;
     }
 
@@ -812,15 +801,15 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         File image = null;
         try {
             image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".png",         /* suffix */
-                    storageDir      /* directory */
+                    imageFileName,
+                    ".png",
+                    storageDir
             );
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        app.l("AAA1");
+
         return image;
     }
 
@@ -828,15 +817,15 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        app.l("AAA4" + resultCode);
 
-        if (requestCode == 1 && resultCode == RESULT_OK) {//camera8-
-            app.l("AAA");
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+
 
             CropImage.activity(uri).setAspectRatio(1, 1).setRequestedSize(512, 512).start(this);
-            app.l("AAA5");
 
-        } else if (requestCode == 2 && resultCode == RESULT_OK) {//gallery
+
+        } else if (requestCode == 2 && resultCode == RESULT_OK) {
 
             uri = data.getData();
 
@@ -858,23 +847,21 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                 files.add(body0);
             }
             if (current_image == 1) {
-                //img.setImageURI(resultUri);
+
                 body1 = app.prepareImagePart("fileNo" + current_image, resultUri);
                 files.add(body1);
             }
             if (current_image == 2) {
-                //img.setImageURI(resultUri);
+
                 body2 = app.prepareImagePart("fileNo" + current_image, resultUri);
                 files.add(body2);
             }
             if (current_image == 3) {
-                //img.setImageURI(resultUri);
+
                 body3 = app.prepareImagePart("fileNo" + current_image, resultUri);
                 files.add(body3);
             }
 
-
-            app.l(files.size());
 
         }
 
@@ -901,17 +888,17 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
                 if (app.appInstalledOrNot("com.whatsapp")) {
                     PackageManager pm = getPackageManager();
-                    String url = "https://api.whatsapp.com/send?phone=+989365487593";
+                    String url = getString(R.string.wha_send_mov)+SplashActivity.etcetera.get(4).getMessage();
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
                 } else {
-                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE);
+                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
                     sweetAlertDialog.hideConfirmButton();
                     View viewErrorConnection = LayoutInflater.from(this).inflate(R.layout.view_error_connection, null);
                     TextView retry = viewErrorConnection.findViewById(R.id.retry);
                     TextView msg = viewErrorConnection.findViewById(R.id.msg);
-                    LottieAnimationView lt=viewErrorConnection.findViewById(R.id.lt);
+                    LottieAnimationView lt = viewErrorConnection.findViewById(R.id.lt);
 
                     msg.setText("لطفا قبل از ارسال فیلم برنامه واتساپ را نصب کنید.");
                     retry.setText("خب");
@@ -959,7 +946,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         String mechanicName = this.mechanicName.getText().toString();
         if (mechanicName.length() >= 3)
             if (mechanic == null)
-                SharedPrefUtils.saveData("mechanicName", mechanicName);//
+                SharedPrefUtils.saveData("mechanicName", mechanicName);
             else mechanic.setName(mechanicName);
         else {
 
@@ -974,7 +961,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         String mechanicStoreName = this.mechanicStoreName.getText().toString();
         if (mechanicStoreName.length() > 3)
             if (mechanic == null)
-                SharedPrefUtils.saveData("mechanicStoreName", mechanicStoreName);//
+                SharedPrefUtils.saveData("mechanicStoreName", mechanicStoreName);
             else mechanic.setStore_name(mechanicStoreName);
         else {
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
@@ -984,11 +971,11 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
             return;
         }
 
-        //mechanic form phone
+
         String mechanicPhone = this.mechanicPhone.getText().toString();
         if (mechanicPhone.matches("^09\\d{9}$"))
             if (mechanic == null)
-                SharedPrefUtils.saveData("mechanicPhone", mechanicPhone);//
+                SharedPrefUtils.saveData("mechanicPhone", mechanicPhone);
             else mechanic.setPhone_number(mechanicPhone);
         else {
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
@@ -997,7 +984,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
             sweetAlertDialog.show();
             return;
         }
-        //entrance phone
+
         String phoneNumber = SharedPrefUtils.getStringData("phoneNumber");
 
         String jobNames = jobSeparator(listNames);
@@ -1027,7 +1014,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                 mechanic.setRegion(new Region(regionNameText, Integer.parseInt(regionIdText)));
         } else {
             SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-            sweetAlertDialog.setTitle("لطفا یکی از منطقه های پیشنهادی را برای منطقه فعالیت خود انتخاب کنید.");
+            sweetAlertDialog.setTitle("لطفا یکی از منطقه های پیشنهادی را به عنوان منطقه فعالیت خود انتخاب کنید.");
             sweetAlertDialog.setConfirmText("خب");
             sweetAlertDialog.show();
             return;
@@ -1058,14 +1045,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         if (mechanic == null)
             SharedPrefUtils.saveData("mechanicAbout", mechanicAbout);
         else mechanic.setAbout(mechanicAbout);
-                 /*  if (mechanicAbout.length() >= 10)
-             else {
-                    SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-                    sweetAlertDialog.setTitle("لطفا بتوضیحات کاملتری ارائه دهید..");
-                    sweetAlertDialog.setConfirmText("خب");
-                    sweetAlertDialog.show();
-                    return;
-                }*/
+
 
         if (mechanic != null)
             SharedPrefUtils.saveData("mechanicInfo", new Gson().toJson(mechanic));
@@ -1074,22 +1054,22 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         String lngFinal = SharedPrefUtils.getStringData("lng");
 
 
-        sweetAlertDialog=new SweetAlertDialog(NewMechanicActivity2.this,SweetAlertDialog.PROGRESS_TYPE);
+        sweetAlertDialog = new SweetAlertDialog(NewMechanicActivity2.this, SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.setTitle("لطفا شکیبا باشید");
         sweetAlertDialog.setContentText("در حال بارگذاری اطلاعات");
         sweetAlertDialog.setCancelable(false);
         sweetAlertDialog.show();
 
-        /**/
+
         Call<String> stringCall;
         Map<String, String> map = new HashMap<>();
-        map.put("route", "addNewMechanic");///
-        map.put("job_ids", jobIdsText);///
-        map.put("region_id", regionIdText);////
+        map.put("route", "addNewMechanic");
+        map.put("job_ids", jobIdsText);
+        map.put("region_id", regionIdText);
         map.put("address", regionDesc);
         map.put("name", mechanicName);
         map.put("store_name", mechanicStoreName);
-        map.put("phone_number_entrance", phoneNumber);///
+        map.put("phone_number_entrance", phoneNumber);
         map.put("phone_number_mechanic", mechanicPhone);
         map.put("about", mechanicAbout);
         map.put("x_location", lttFinal);
@@ -1106,21 +1086,21 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         if (files.size() == 0) {
             {
                 stringCall = Application.getApi().sendQuestion(map);
-                app.l("filezero");
+
             }
         } else {
             stringCall = Application.getApi().uploadMultipleFilesDynamic(map, files);
-            app.l("filezero1" + files.size());
+
         }
 
-        app.l(regionDesc + "aksdfklkj");
+
         stringCall.enqueue(new Callback<String>() {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String body = response.body();
 
                 sweetAlertDialog.dismissWithAnimation();
-                app.l(body + "adftts");
+
                 if (body != null) {
 
                     JSONObject jsonObject;
@@ -1136,7 +1116,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                             SharedPrefUtils.saveData("type", 1);
                             SharedPrefUtils.saveData("mechanicId", mId);
                         }
-                        app.l(state + "adftts1");
+
                         startActivity(new Intent(NewMechanicActivity2.this, MainActivity.class));
                     } catch (JSONException e) {
                         SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity2.this, SweetAlertDialog.ERROR_TYPE).setTitleText("خطا در برقراری ارتباط");
@@ -1151,11 +1131,11 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                app.l(t.getLocalizedMessage());
+
                 SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity2.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error connection3");
                 sweetAlertDialogSendCode.show();
             }
-        });/**/
+        });
     }
 
     public String jobSeparator(List<?> list) {
@@ -1178,11 +1158,11 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         @Override
         public void onReceive(Context context, Intent intent) {
             String jobName = intent.getStringExtra("jobName");
-            String jobId = intent.getStringExtra("jobId");/**/
+            String jobId = intent.getStringExtra("jobId");
             listIds.add(Integer.parseInt(jobId));
             listNames.add(jobName);
 
-            app.l(jobName + "sgfddds" + jobId);
+
         }
     };
 
@@ -1203,11 +1183,11 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         String adminUrl = movies.getMovie_url();
         String url = movies.getMovie_url();
         String path = getExternalFilesDir("video/mp4").getAbsolutePath();
-        //String getExternalFilesDir("video/mp4").getAbsolutePath() + adminUrl.substring(adminUrl.lastIndexOf("/"));
+
         File file = new File(getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
         if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0)) {
-            app.l("playing");
+
             Intent intent = new Intent(this, ExoVideoActivity.class);
             intent.putExtra("path", getExternalFilesDir("video/mp4").getAbsolutePath() + url.
                     substring(url.lastIndexOf("/")));
@@ -1243,7 +1223,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         downloadRequest.setOnPauseListener(new OnPauseListener() {
             @Override
             public void onPause() {
-                app.l("pause***" + movies.getMovie_desc());
+
             }
         }).setOnProgressListener(new OnProgressListener() {
             @Override
@@ -1251,12 +1231,12 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                 int value = (int) (100 * progress.currentBytes / progress.totalBytes);
                 progressCircula.setProgress(value);
                 percentDone.setText(String.valueOf(value) + "%");
-                app.l(String.valueOf(progress.currentBytes));
+
             }
         }).setOnStartOrResumeListener(new OnStartOrResumeListener() {
             @Override
             public void onStartOrResume() {
-                app.l("start or resume***" + movies.getMovie_desc());
+
             }
         });
         downloadId = downloadRequest.start(new OnDownloadListener() {
@@ -1273,7 +1253,6 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                         .into(((ImageView) itemView.findViewById(R.id.preview)));
                 ((TextView) itemView.findViewById(R.id.totalSize)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
 
-                app.l("completed");
 
             }
 
@@ -1290,11 +1269,4 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
     public void onRemoveClick(Movies movies, View viewHolder) {
 
     }
-}/*
-<map>
-    <string name="entranceId">232</string>
-    <string name="phoneNumber">09309522601</string>
-    <int name="type" value="1" />
-    <string name="mechanicInfo">{&quot;id&quot;:&quot;77&quot;,&quot;entrance_id&quot;:&quot;232&quot;,&quot;movies&quot;:[],&quot;job&quot;:[{&quot;id&quot;:&quot;1&quot;,&quot;name&quot;:&quot;برق کار&quot;},{&quot;id&quot;:&quot;5&quot;,&quot;name&quot;:&quot;کارواش&quot;}],&quot;region&quot;:{&quot;id&quot;:&quot;3&quot;,&quot;name&quot;:&quot;هدایت&quot;},&quot;address&quot;:&quot;کوچه اون وری&quot;,&quot;name&quot;:&quot;سید احسان&quot;,&quot;store_image_1&quot;:&quot;mechanic images\/store images\/cropped7134056198991074876.jpg&quot;,&quot;store_image_2&quot;:&quot;mechanic images\/store images\/cropped3948603980673343642.jpg&quot;,&quot;store_image_3&quot;:&quot;&quot;,&quot;mechanic_image&quot;:&quot;mechanic images\/profile images\/cropped839862678424798543.jpg&quot;,&quot;store_name&quot;:&quot;مغازه سرکاری&quot;,&quot;phone_number&quot;:&quot;09159521477&quot;,&quot;about&quot;:&quot;من بیگانم من&quot;,&quot;x_location&quot;:&quot;36.32302195075208&quot;,&quot;y_location&quot;:&quot;59.56082224845886&quot;,&quot;score&quot;:&quot;0&quot;,&quot;score_state&quot;:&quot;0&quot;}</string>
-</map>
-*/
+}

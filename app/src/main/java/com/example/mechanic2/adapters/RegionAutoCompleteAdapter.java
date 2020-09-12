@@ -34,18 +34,18 @@ public class RegionAutoCompleteAdapter extends ArrayAdapter<String> implements F
 
 
     private ArrayList<Region> data;
-    private final String server = "http://drkamal3.com/Mechanic/index.php?route=searchRegion&search=";
+    private final String server = getContext().getString(R.string.sRe);
     private boolean showAllRegion=true;
 
     public RegionAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource) {
         super(context, resource);
-        app.l("ad");
+
         this.data = new ArrayList<>();
     }
 
     public RegionAutoCompleteAdapter(@NonNull Context context, @LayoutRes int resource, boolean showAllRegion) {
         super(context, resource);
-        app.l("ad");
+
         this.data = new ArrayList<>();
         this.showAllRegion = showAllRegion;
     }
@@ -74,7 +74,7 @@ public class RegionAutoCompleteAdapter extends ArrayAdapter<String> implements F
     @Override
     public View getView(final int position, View convertView, @NotNull ViewGroup parent) {
 
-        app.l("ad");
+
         ViewHolder mViewHolder;
         Region region;
         if (convertView == null) {
@@ -89,7 +89,7 @@ public class RegionAutoCompleteAdapter extends ArrayAdapter<String> implements F
             mViewHolder.parent = convertView.findViewById(R.id.parent);
 
             convertView.setTag(mViewHolder);
-            //mViewHolder.textView.setTag(data.get(position));
+
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
         }
@@ -112,7 +112,7 @@ public class RegionAutoCompleteAdapter extends ArrayAdapter<String> implements F
         return new Filter() {
             @Override
             protected FilterResults performFiltering(CharSequence constraint) {
-                app.l("ad");
+
                 FilterResults results = new FilterResults();
                 ArrayList<Region> suggestions = new ArrayList<>();
                 if (showAllRegion)
@@ -161,7 +161,7 @@ public class RegionAutoCompleteAdapter extends ArrayAdapter<String> implements F
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
 
-                app.l("ad");
+
                 if (results != null && results.count > 0) {
                     notifyDataSetChanged();
                 } else notifyDataSetInvalidated();

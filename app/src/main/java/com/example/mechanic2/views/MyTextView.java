@@ -1,10 +1,8 @@
 package com.example.mechanic2.views;
 
 import android.content.Context;
-
 import android.graphics.Typeface;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 
 public class MyTextView extends androidx.appcompat.widget.AppCompatTextView {

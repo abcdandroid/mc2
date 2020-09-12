@@ -10,22 +10,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.ShowGoodDetailActivity;
-import com.example.mechanic2.app.app;
-import com.example.mechanic2.fragments.ShowThumbnailFragment;
-import com.example.mechanic2.interfaces.OnGoodClickListener;
 import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.views.MyTextView;
 import com.google.gson.Gson;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -44,23 +37,7 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
     @Override
     public GooodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(activity).inflate(R.layout.item_good, parent, false);
-  /*      final GooodViewHolder holder = new GooodViewHolder(v);
 
-        holder.parent.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(activity, ShowGoodDetailActivity.class);
-
-                intent.putExtra("good", gooodList.get(holder.getAdapterPosition()));
-
-                Pair<View, String> pair = Pair.create(v.findViewById(R.id.preview), "img");
-
-
-                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, pair);
-
-                activity.startActivity(intent, optionsCompat.toBundle());
-            }
-        });*/
         return new GooodViewHolder(v);
     }
 
@@ -113,26 +90,29 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    int status = gooodList.get(getAdapterPosition()).getStatus();
-                    if (status == 1)
-                        parent.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                app.l(status);
-                                Intent intent = new Intent(activity, ShowGoodDetailActivity.class);
+                    if (gooodList != null && gooodList.size() > 0 && getAdapterPosition() != -1) {
+                        int status = gooodList.get(getAdapterPosition()).getStatus();
+                        if (status == 1)
+                            parent.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
 
-                                intent.putExtra("good", gooodList.get(getAdapterPosition()));
+                                    Intent intent = new Intent(activity, ShowGoodDetailActivity.class);
 
-                                activity.startActivity(intent/*, optionsCompat.toBundle()*/);
+                                    intent.putExtra("good", gooodList.get(getAdapterPosition()));
 
-                            }
-                        });
+                                    activity.startActivity(intent);
+
+                                }
+                            });
+                    }
                 }
             }, 100);
         }
 
         void binder(Goood goood) {
-            Glide.with(activity).load(goood.getPreview()).into(preview);
+
+            Picasso.get().load(goood.getPreview()).into(preview);
             goodName.setText(goood.getGood_id().trim());
             Gson gson = new Gson();
             Car[] cars = gson.fromJson(goood.getSuitable_car(), Car[].class);
@@ -174,6 +154,8 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
             }
 
         }
+
+
 
         private void bindCars(Car[] cars) {
             StringBuilder carsText = new StringBuilder();
