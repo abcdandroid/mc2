@@ -107,7 +107,7 @@ public class app {
             sweetAlertDialog.changeAlertType(SweetAlertDialog.CUSTOM_IMAGE_TYPE);
             sweetAlertDialog.hideConfirmButton();
             View viewErrorConnection = LayoutInflater.from(activity).inflate(R.layout.view_error_connection, null, false);
-
+            sweetAlertDialog.setCancelable(false);
             TextView retry = viewErrorConnection.findViewById(R.id.retry);
 
 

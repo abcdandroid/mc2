@@ -26,6 +26,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
+import com.example.mechanic2.BuildConfig;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.LoginActivity;
 import com.example.mechanic2.activities.NewMechanicActivity2;
@@ -91,7 +92,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (SplashActivity.etcetera != null && SplashActivity.etcetera.get(0).getMessage().equals(String.valueOf(1))) {
+        if (SplashActivity.etcetera != null && Integer.parseInt(SplashActivity.etcetera.get(0).getMessage().substring(1)) != BuildConfig.VERSION_CODE) {
             LottieAnimationView warrantyLt;
             MyTextView txt;
             RelativeLayout btnContactUs;
