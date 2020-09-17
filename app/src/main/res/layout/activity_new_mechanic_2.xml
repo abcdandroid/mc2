@@ -572,6 +572,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="top"
                                     android:background="@color/transparent"
+                                    android:maxLength="1000"
                                     android:gravity="top"
                                     android:hint="@string/write_here"
                                     android:lines="10"

@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -415,6 +416,8 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.toString().equals("کالای لوکس")) app.enableDisableView(stoke, false);
+                else app.enableDisableView(stoke, true);
                 if (s.toString().length() == 0) {
                     selectedGoodId = 0;
                     resetGood.setVisibility(View.INVISIBLE);
@@ -478,13 +481,21 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
     private MyTextView txt;
     private RelativeLayout btnConfirm;
+    private static final String TAG = "StoreFragment";
 
     private void getGooods(int carId, int goodId, int warrantyId, int countryId, int isStock) {
         lastId = 0;
         gooods = new ArrayList<>();
         tmpGooods = new ArrayList<>();
         adapter = new GooodStoreAdapter(gooods, getActivity());
-
+        Log.e(TAG, "getGooods: ");
+        Log.e(TAG, "getGooods: " + "lastId" + String.valueOf(lastId));
+        Log.e(TAG, "getGooods: " + "carId" + String.valueOf(carId));
+        Log.e(TAG, "getGooods: " + "goodId" + String.valueOf(goodId));
+        Log.e(TAG, "getGooods: " + "warrantyId" + String.valueOf(warrantyId));
+        Log.e(TAG, "getGooods: " + "countryId" + String.valueOf(countryId));
+        Log.e(TAG, "getGooods: " + "isStock" + String.valueOf(isStock));
+        Log.e(TAG, "getGooods: " + "----------------------------");
 
         Map<String, String> map = new HashMap<>();
         map.put("route", "getStore3");
@@ -495,22 +506,21 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         map.put("countryId", String.valueOf(countryId));
         map.put("isStock", String.valueOf(isStock));
 
-
-
-
-
-
-
-
-
+        if (StoreFragment.this.getView() != null)
+            app.enableDisableView(StoreFragment.this.getView(), false);
         Application.getApi().getGooodList(map).enqueue(new Callback<List<Goood>>() {
             @Override
             public void onResponse(Call<List<Goood>> call, Response<List<Goood>> response) {
                 loading.setVisibility(View.INVISIBLE);
                 submitFilter.setVisibility(View.VISIBLE);
 
-                if (response.body() != null && response.body().size() > 0) {
+                if (StoreFragment.this.getView() != null)
+                    app.enableDisableView(StoreFragment.this.getView(), true);
 
+                app.enableDisableView(countrySpinner, !is_stoke_active);
+                app.enableDisableView(warrantySpinner, !is_stoke_active);
+
+                if (response.body() != null && response.body().size() > 0) {
 
                     int id = response.body().get(0).getId();
                     if (id == -2 || id == -3 || id == -4) {
@@ -553,10 +563,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                         StoreFragment.this.lastId = gooods.get(gooods.size() - 1).getId();
                     } else {
                         if (gooods != null) {
-
                             isLoading = false;
-
-
                         }
                     }
                     Intent intent = new Intent("dataCount");
@@ -570,13 +577,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     TextView textView = view.findViewById(R.id.txt);
                     btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
                     contactUs = view.findViewById(R.id.btn_contact_us);
-
-
                     btnShowAllGoods.setOnClickListener(StoreFragment.this);
                     contactUs.setOnClickListener(StoreFragment.this);
                     sweetAlertDialogGoodNotExist = new SweetAlertDialog(getContext()).hideConfirmButton()
                             .setCustomView(view);
-
                     sweetAlertDialogGoodNotExist.setCancelable(false);
                     sweetAlertDialogGoodNotExist.show();
 
@@ -585,7 +589,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
             @Override
             public void onFailure(Call<List<Goood>> call, Throwable t) {
-
             }
         });
 
@@ -626,6 +629,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
             @Override
             public void onFailure(Call<List<Goood>> call, Throwable t) {
+
 
             }
         });
@@ -733,22 +737,19 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.stoke:
-
-
+                if (goodQuestion.getText().toString().equals("کالای لوکس")) return;
                 modifyIds();
                 is_stoke_active = !is_stoke_active;
-
                 countrySpinnerAdapter.disableAdapter(is_stoke_active);
                 warrantySpinnerAdapter.disableAdapter(is_stoke_active);
                 if (is_stoke_active) {
+
                     stokeState = 1;
                     stoke.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
                     countrySpinner.setEnabled(false);
                     countrySpinner.setClickable(false);
                     warrantySpinner.setEnabled(false);
                     warrantySpinner.setClickable(false);
-
-
                 } else {
                     stokeState = 0;
                     stoke.setBackground(getResources().getDrawable(R.drawable.btn_white));
@@ -767,6 +768,9 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             case R.id.submit_filter_parent:
                 app.hideKeyboard(carQuestion);
                 app.hideKeyboard(goodQuestion);
+
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
                 modifyIds();
                 getGoodsPackage();
                 break;
@@ -792,6 +796,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 }
                 countrySpinnerAdapter.disableAdapter(is_stoke_active);
                 warrantySpinnerAdapter.disableAdapter(is_stoke_active);
+
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
+
                 getGoodsPackage();
                 break;
             case R.id.reset_good:
@@ -819,6 +827,8 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                     warrantySpinnerAdapter.disableAdapter(is_stoke_active);
                 }
 
+                loading.setVisibility(View.VISIBLE);
+                submitFilter.setVisibility(View.INVISIBLE);
                 getGoodsPackage();
                 break;
             case R.id.btn_show_all_goods:
@@ -958,8 +968,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
             e.printStackTrace();
         }
     }
-
-
 
 
 }

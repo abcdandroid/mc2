@@ -17,10 +17,9 @@
         android:ellipsize="start"
         android:gravity="center"
         android:maxLength="20"
-        android:padding="16sp"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
-        android:textSize="16sp"
+        android:textSize="15sp"
         android:textAlignment="inherit" />
 
     <TextView

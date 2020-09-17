@@ -28,11 +28,13 @@ public class FullThumbActivity extends AppCompatActivity {
         if (linkList != null) {
             if (from.equals("answerActivity") || from.equals("showMechanicDetailActivity"))
                 for (String s : linkList) {
-                    adapter.addFragment(ShowThumbnailFragment.newInstance(getString(R.string.drmm) + s, null));
+                    if (s.trim().length() > 0)
+                        adapter.addFragment(ShowThumbnailFragment.newInstance(getString(R.string.drmm) + s, null));
                 }
             else if (from.equals("showGoodDetailActivity"))
                 for (String s : linkList) {
-                    adapter.addFragment(ShowThumbnailFragment.newInstance(s, null));
+                    if (s.trim().length() > 0)
+                        adapter.addFragment(ShowThumbnailFragment.newInstance(s, null));
                 }
         }
         vpThumbnail.setAdapter(adapter);

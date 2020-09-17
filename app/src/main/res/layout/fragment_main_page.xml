@@ -165,6 +165,7 @@
                 </LinearLayout>
 
 
+
                 <com.devbrackets.android.exomedia.ui.widget.VideoView
                     android:id="@+id/place_5_video_view"
                     android:layout_width="match_parent"
@@ -174,7 +175,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="8dp"
-                    android:background="@drawable/image_corner_maker"
+                    android:background="@drawable/image_corner_maker_transparent"
                     app:useDefaultControls="true" />
 
 

@@ -336,6 +336,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         place4 = view.findViewById(R.id.place_4);
         place5VideoView = view.findViewById(R.id.place_5_video_view);
         place5VideoView.showControls();
+        place5VideoView.setClipToOutline(true);
         containerP67 = view.findViewById(R.id.container_p67);
         place6 = view.findViewById(R.id.place_6);
         place7 = view.findViewById(R.id.place_7);
@@ -618,6 +619,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
                 break;
             case R.id.about_us:
+
 
                 break;
             case R.id.bi_khial:

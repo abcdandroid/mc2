@@ -27,7 +27,7 @@
                 android:layout_centerInParent="true"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:layout_margin="16dp" />
+                android:layout_margin="8dp" />
 
 
             <com.airbnb.lottie.LottieAnimationView
@@ -54,7 +54,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
+                android:layout_marginLeft="14sp"
                 app:srcCompat="@drawable/remove_movie" />
 
 
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:textSize="16sp"
+                android:textSize="12sp"
                 android:layout_marginRight="24dp"
                 android:text="12mb" />
 
@@ -117,14 +117,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/download_state"
-            android:layout_marginRight="24dp"
-            android:layout_marginLeft="24dp"
-            android:textStyle="bold"
-            android:maxLines="3"
-            android:layout_marginBottom="16dp"
-            android:textSize="18dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="8dp"
+            android:textSize="16sp"
             android:textColor="@color/indigo_900"
-            android:text="@string/lorem"
             android:textDirection="rtl" />
 
 

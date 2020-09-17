@@ -96,7 +96,6 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
     private MyTextView regionName;
     private ImageView phoneIcon;
 
-
     private ImageView scoreIcon;
 
     private MyTextView myAbout;

@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcel;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,7 +28,6 @@ import com.example.mechanic2.R;
 import com.example.mechanic2.adapters.ViewPagerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
-import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.ShowThumbnailFragment;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
 import com.example.mechanic2.models.Car;
@@ -105,10 +105,12 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             if (mediaPlayer != null) {
                 try {
                     currentCondition = mediaPlayer.getCurrentPosition();
-                    sbProgress.setProgress(currentCondition);
-                    mSeekbarUpdateHandler.postDelayed(this, 50);
+                    if (sbProgress != null) {
+                        sbProgress.setProgress(currentCondition);
+                        mSeekbarUpdateHandler.postDelayed(this, 50);
+                    }
                 } catch (Exception ex) {
-                    mediaPlayer.reset();
+                    mediaPlayer.seekTo(0);
                     currentCondition = mediaPlayer.getCurrentPosition();
                 }
             }
@@ -131,8 +133,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         initViewPager();
 
 
-
-
         audioAddress = context.getExternalFilesDir("voice/mp3").getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
 
         String url = goood.getVoice();
@@ -147,7 +147,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
                     ltPlayPause.setProgress(0);
                     lottieAnimationView.pauseAnimation();
                     lottieAnimationView.setProgress(0);
-
                     ltPlayPause.setAnimation(R.raw.pplt);
                     if (mediaPlayer.isPlaying()) {
                         sbProgress.postDelayed(seekBarUpdater, 100);
@@ -186,7 +185,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         }
 
 
-
         startDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,13 +198,19 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         initComponent();
     }
 
+    private static final String TAG = "ShowGoodDetailActivity";
+
     private void initViewPager() {
-        String thumbAddressesInString = goood.getThumbnails();
-        String[] splitThumb = thumbAddressesInString.split(",");
-        if (splitThumb[0].length() > 0) {
-            splitAll = new String[splitThumb.length + 1];
-            System.arraycopy(splitThumb, 0, splitAll, 1, splitThumb.length);
+        String thumbAddressesInString = goood.getThumbnails().trim();
+        if (thumbAddressesInString.length() > 0) {
+            String[] splitThumb = thumbAddressesInString.split(",");
+            if (splitThumb[0].length() > 0) {
+                splitAll = new String[splitThumb.length + 1];
+                System.arraycopy(splitThumb, 0, splitAll, 1, splitThumb.length);
+            } else
+                splitAll = new String[1];
         } else splitAll = new String[1];
+
         splitAll[0] = goood.getPreview();
         renderData(splitAll);
         viewpager.setOffscreenPageLimit(3);
@@ -306,7 +310,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         });
         SharedPrefUtils.saveData("soundDownloadId**" + good.getId(), downloadId);
     }
-
 
 
     private class SeekBarUpdater implements Runnable {
@@ -427,8 +430,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         }
 
 
-
-
     }
 
     private void bindCars(Car[] cars) {
@@ -530,7 +531,21 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mediaPlayer.release();
+               // mediaPlayer.release();
+
+                seekBarUpdater = new SeekBarUpdater();
+                mediaPlayer.seekTo(0);
+                ltPlayPause.setProgress(0);
+                lottieAnimationView.pauseAnimation();
+                lottieAnimationView.setProgress(0);
+                ltPlayPause.setAnimation(R.raw.pplt);
+                if (mediaPlayer.isPlaying()) {
+                    sbProgress.postDelayed(seekBarUpdater, 100);
+                    ltPlayPause.setSpeed(-3f);
+                } else {
+                    sbProgress.removeCallbacks(seekBarUpdater);
+                    ltPlayPause.setSpeed(3);
+                }
             }
         });
         mediaPlayer.start();

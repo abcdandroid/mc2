@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.mechanic2.R;
-import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
 import com.squareup.picasso.Picasso;
 
@@ -69,6 +68,7 @@ public class ShowThumbnailFragment extends Fragment {
                 }
             });
         }
-        Picasso.get().load(url).into(imThumbnail);
+        if (url != null && url.trim().length() > 0)
+            Picasso.get().load(url).into(imThumbnail);
     }
 }

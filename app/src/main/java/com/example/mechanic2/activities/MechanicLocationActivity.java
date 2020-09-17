@@ -40,7 +40,6 @@ import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.Overlay;
 import org.osmdroid.views.overlay.OverlayItem;
 import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
-import org.osmdroid.views.overlay.mylocation.IMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
@@ -78,20 +77,7 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
         IMapController mMapViewController = mMapView.getController();
         mMapViewController.setZoom(9.5);
         findMeFab.setOnClickListener(this);
-        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context), mMapView)/* {
-
-            @Override
-            public void onLocationChanged(Location location, IMyLocationProvider source) {
-                Log.d(TAG, "onLocationChanged: q");
-                super.onLocationChanged(location, source);
-                if (gpsSweetAlertDialog != null && gpsSweetAlertDialog.isShowing())
-                    gpsSweetAlertDialog.dismissWithAnimation();
-
-                GeoPoint startPoint = mLocationOverlay.getMyLocation();
-                mapController.setCenter(startPoint);
-
-            }
-        }*/;
+        this.mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context), mMapView);
         this.mLocationOverlay.enableMyLocation();
         mapController = mMapView.getController();
         Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_location_new);
@@ -258,10 +244,9 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
             locationListener = new LocationListener() {
                 @Override
                 public void onLocationChanged(Location location) {
-                    Log.d(TAG, "onLocationChanged: ");
+
 
                     if (!mMapView.getOverlays().contains(mLocationOverlay)) {
-                        Log.d(TAG, "onLocationChanged: 1");
                         if (mMapView.getOverlays().contains(myOverLay)) {
                             mMapView.getOverlays().clear();
                             mMapView.getOverlays().add(mLocationOverlay);
@@ -272,7 +257,6 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
 
                     GeoPoint startPoint = mLocationOverlay.getMyLocation();
                     if (startPoint == null) {
-                        Log.d(TAG, "onLocationChanged: 2");
                         startPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
 
 
@@ -285,12 +269,10 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                         mapItem.setMarker(marker);
                         overlayArray.add(mapItem);
                         if (anotherItemizedIconOverlay == null) {
-                            Log.d(TAG, "onLocationChanged: 21");
                             anotherItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(getApplicationContext(), overlayArray, null);
                             mMapView.getOverlays().add(anotherItemizedIconOverlay);
                             mMapView.invalidate();
                         } else {
-                            Log.d(TAG, "onLocationChanged: 22");
                             mMapView.getOverlays().remove(anotherItemizedIconOverlay);
                             mMapView.invalidate();
                             anotherItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(getApplicationContext(), overlayArray, null);
@@ -299,7 +281,6 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                     }
                     mapController.setCenter(startPoint);
                     if (gpsSweetAlertDialog != null) {
-                        Log.d(TAG, "onLocationChanged: 3");
                         gpsSweetAlertDialog.dismissWithAnimation();
                     }
 
@@ -322,9 +303,7 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                         return;
                     }*/
 
-                    Log.d(TAG, "onStatusChanged: ");
                     if (gpsSweetAlertDialog == null) {
-                        Log.d(TAG, "onStatusChanged: 1");
                         gpsSweetAlertDialog = new SweetAlertDialog(MechanicLocationActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                         gpsSweetAlertDialog.setTitle("لطفا شکیبا باشید.");
                         gpsSweetAlertDialog.setContentText("در حال پیدا کردن موقعیت فعلی شما");
@@ -333,7 +312,6 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
 
 
                     if (!mMapView.getOverlays().contains(mLocationOverlay)) {
-                        Log.d(TAG, "onStatusChanged: 2  ");
                         if (mMapView.getOverlays().contains(myOverLay)) {
                             mMapView.getOverlays().clear();
                             mMapView.getOverlays().add(mLocationOverlay);
@@ -350,17 +328,13 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
 
                 @Override
                 public void onProviderEnabled(String provider) {
-                    Log.d(TAG, "onProviderEnabled: ");
                     if (sweetAlertDialogGpsWarning != null) {
-                        Log.d(TAG, "onProviderEnabled: 1");
                         sweetAlertDialogGpsWarning.dismissWithAnimation();
                     }
                     if (gpsSweetAlertDialog != null) {
-                        Log.d(TAG, "onProviderEnabled: 2");
                         gpsSweetAlertDialog.dismissWithAnimation();
 
                     }
-                    Log.d(TAG, "onProviderEnabled: 3");
 
                     gpsSweetAlertDialog = new SweetAlertDialog(MechanicLocationActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                     gpsSweetAlertDialog.setTitle("لطفا شکیبا باشید.");
@@ -369,23 +343,20 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
 
 
                     if (!mMapView.getOverlays().contains(mLocationOverlay)) {
-                        Log.d(TAG, "onProviderEnabled: 4");
                         if (mMapView.getOverlays().contains(myOverLay)) {
-                            Log.d(TAG, "onProviderEnabled: 5");
                             mMapView.getOverlays().clear();
                             mMapView.getOverlays().add(mLocationOverlay);
                             mMapView.getOverlays().add(myOverLay);
                         }
                     }
 
-                    app.l("CCC");
+
                     GeoPoint startPoint = mLocationOverlay.getMyLocation();
                     mapController.setCenter(startPoint);
                 }
 
                 @Override
                 public void onProviderDisabled(String provider) {
-                    Log.d(TAG, "onProviderDisabled: ");
                     sweetAlertDialogGpsWarning = new SweetAlertDialog(MechanicLocationActivity.this);
                     sweetAlertDialogGpsWarning.hideConfirmButton();
                     sweetAlertDialogGpsWarning.setCancelable(false);
@@ -395,11 +366,9 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                         @Override
                         public void onClick(View v) {
                             sweetAlertDialogGpsWarning.dismiss();
-                            Log.d(TAG, "onClick: ");
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Log.d(TAG, "run: ");
                                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                                     startActivity(intent);
                                 }
@@ -412,31 +381,14 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
 
                 }
             };
-            Log.d(TAG, "findLocationWithCheckPermission: ");
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 15, 1000, locationListener);
         } catch (SecurityException e) {
             e.printStackTrace();
         }
 
 
-        //------
-/*        gpsSweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        gpsSweetAlertDialog.setTitle("لطفا شکیبا باشید.");
-        gpsSweetAlertDialog.setContentText("در حال پیدا کردن موقعیت فعلی شما");
-        gpsSweetAlertDialog.show();
-
-        if (!mMapView.getOverlays().contains(mLocationOverlay)) {
-            if (mMapView.getOverlays().contains(myOverLay)) {
-                mMapView.getOverlays().clear();
-                mMapView.getOverlays().add(mLocationOverlay);
-                mMapView.getOverlays().add(myOverLay);
-            }
-        }
-        GeoPoint startPoint = mLocationOverlay.getMyLocation();
-        mapController.setCenter(startPoint);*/
     }
 
-    private static final String TAG = "MechanicLocationActivit";
 
     public class MyOverLay extends Overlay {
         public int a = 2;
@@ -451,9 +403,7 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
 
         @Override
         public boolean onSingleTapConfirmed(MotionEvent e, MapView mapView) {
-            Log.d(TAG, "onSingleTapConfirmed: ");
             if (mMapView.getOverlays().contains(mLocationOverlay)) {
-                Log.d(TAG, "onSingleTapConfirmed: 1");
                 mMapView.getOverlays().remove(mLocationOverlay);
                 mMapView.getOverlays().add(myOverLay);
             }
@@ -467,12 +417,10 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
             mapItem.setMarker(marker);
             overlayArray.add(mapItem);
             if (anotherItemizedIconOverlay == null) {
-                Log.d(TAG, "onSingleTapConfirmed: 2");
                 anotherItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(getApplicationContext(), overlayArray, null);
                 mapView.getOverlays().add(anotherItemizedIconOverlay);
                 mapView.invalidate();
             } else {
-                Log.d(TAG, "onSingleTapConfirmed: 3");
                 mapView.getOverlays().remove(anotherItemizedIconOverlay);
                 mapView.invalidate();
                 anotherItemizedIconOverlay = new ItemizedIconOverlay<OverlayItem>(getApplicationContext(), overlayArray, null);
@@ -492,8 +440,6 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == GPS_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-/*                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);*/
                 findLocationWithCheckPermission();
             } else {
                 app.t("برای پیدا کردن موقعیت مکانی شما،، این برنامه نیاز به دسترسی gps دارد.");

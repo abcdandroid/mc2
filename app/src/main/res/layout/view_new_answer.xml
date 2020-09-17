@@ -5,30 +5,28 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/et_answer_layout"
         android:layout_width="match_parent"
-        android:layout_margin="4dp"
         android:layout_height="wrap_content"
-        app:counterEnabled="true"
+        android:layout_margin="4dp"
+        android:gravity="left"
+        android:hint="@string/write_ur_answer_here"
         android:layoutDirection="rtl"
         android:textDirection="rtl"
-        android:gravity="left"
-        app:counterMaxLength="400"
-        android:hint="@string/write_ur_answer_here"
-        android:id="@+id/et_answer_layout" >
+        app:counterEnabled="true"
+        app:counterMaxLength="400">
 
         <EditText
-            android:background="@color/white"
-            android:maxLength="400"
-            android:layout_gravity="left"
-            android:gravity="top"
             android:id="@+id/et_answer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:background="@color/white"
+            android:gravity="top"
             android:imeOptions="actionNext"
-            android:lines="5" />
+            android:maxLength="400" />
 
     </com.google.android.material.textfield.TextInputLayout>
-
 
 
     <TextView

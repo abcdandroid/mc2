@@ -90,7 +90,7 @@
                     android:textDirection="rtl"
                     android:ellipsize="marquee"
                     android:textSize="20sp"
-                    android:maxLength="33"
+                    android:maxLines="2"
                     android:textStyle="bold"  />
 
             </LinearLayout>

@@ -83,8 +83,7 @@
                     android:layout_marginBottom="16dp"
                     android:hint="@string/phone_number_hint"
                     android:paddingBottom="-64dp"
-                    android:textDirection="rtl"
-                    app:counterMaxLength="200">
+                    android:textDirection="rtl" >
 
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -93,7 +92,6 @@
                         android:layout_height="wrap_content"
                         android:inputType="phone"
                         android:maxLength="11"
-                        android:maxLines="1"
                         android:singleLine="true"
                         android:textSize="18sp"
                         android:textColor="@color/indigo_900"

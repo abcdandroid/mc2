@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -88,8 +89,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="8dp"
             android:layoutDirection="rtl"
             android:minHeight="?android:attr/actionBarSize"
             android:orientation="vertical"
@@ -99,7 +98,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="4dp"
                 android:layout_marginRight="16dp"
                 android:orientation="horizontal">
 
@@ -118,8 +117,6 @@
                         android:textSize="14sp" />
 
                     <TextView
-                        android:text="@string/lorem"
-                        android:maxLines="2"
                         android:id="@+id/carName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -156,8 +153,6 @@
 
                     <TextView
                         android:id="@+id/titleName"
-                        android:text="@string/lorem"
-                        android:maxLines="2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/titleNamePlace"
@@ -178,13 +173,13 @@
                 android:background="@color/white" />
 
             <TextView
+                android:layout_marginBottom="4dp"
                 android:id="@+id/questionText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
 

@@ -12,7 +12,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,7 +45,6 @@ import static com.example.mechanic2.app.Connectivity.isConnected;
 public class app {
     public static class main {
         public static final String URL = Application.getContext().getString(R.string.drk);
-        public static String TAG = "mechanic";
     }
 
     public static void t(String text) {
@@ -57,15 +55,6 @@ public class app {
         Toast.makeText(Application.getContext(), text + "", Toast.LENGTH_SHORT).show();
     }
 
-
-    public static void l(String text) {
-        Log.e(main.TAG, text);
-    }
-
-
-    public static void l(int text) {
-        Log.e(main.TAG, text + "");
-    }
 
     public static void l(String... values) {
         for (String value : values) {
@@ -99,7 +88,7 @@ public class app {
     }
 
 
-     public static void validateConnection(Activity activity, SweetAlertDialog sweetAlertDialog, ConnectionErrorManager connectionErrorManager) {
+    public static void validateConnection(Activity activity, SweetAlertDialog sweetAlertDialog, ConnectionErrorManager connectionErrorManager) {
         if (sweetAlertDialog != null)
             sweetAlertDialog.dismissWithAnimation();
         if (!isConnected(activity)) {
@@ -115,7 +104,7 @@ public class app {
             retry.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    validateConnection(activity,finalSweetAlertDialog,connectionErrorManager);
+                    validateConnection(activity, finalSweetAlertDialog, connectionErrorManager);
                 }
             });
 
@@ -125,6 +114,7 @@ public class app {
             connectionErrorManager.doAction();
         }
     }
+
     public static Bitmap drawableToBitmap(Drawable drawable) {
         Bitmap bitmap = null;
 
@@ -177,7 +167,8 @@ public class app {
     public static float dpToPixels(int dp) {
         return dp * (Application.getContext().getResources().getDisplayMetrics().density);
     }
-    public static int dpToPixels(int dp,int a) {
+
+    public static int dpToPixels(int dp, int a) {
         return (int) (dp * (Application.getContext().getResources().getDisplayMetrics().density));
     }
 
@@ -198,14 +189,14 @@ public class app {
             v.requestLayout();
         }
     }
-    public static void setMargins(View v, int l ) {
+
+    public static void setMargins(View v, int l) {
         if (v.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
             ViewGroup.MarginLayoutParams p = (ViewGroup.MarginLayoutParams) v.getLayoutParams();
             p.setMargins(l, l, l, l);
             v.requestLayout();
         }
     }
-
 
 
     private static int screenWidth = -1;
@@ -274,8 +265,7 @@ public class app {
     }
 
 
-    public static void hideStatusBar( Activity activity) {
-
+    public static void hideStatusBar(Activity activity) {
 
 
         if (Build.VERSION.SDK_INT < 16) {
@@ -296,15 +286,13 @@ public class app {
 
     }
 
-    public static void showStatusBar( Activity activity) {
+    public static void showStatusBar(Activity activity) {
 
         if (Build.VERSION.SDK_INT < 16) {
             activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN,
                     WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        }
-
-        else {
+        } else {
             View decorView = activity.getWindow().getDecorView();
 
             int visibility = View.SYSTEM_UI_FLAG_VISIBLE;
@@ -319,8 +307,21 @@ public class app {
 
     public static void loadFragment(AppCompatActivity appCompatActivity, Fragment fragment) {
         FragmentTransaction fragmentTransaction = appCompatActivity.getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.container , fragment);
+        fragmentTransaction.replace(R.id.container, fragment);
         fragmentTransaction.commit();
+    }
+
+    public static void enableDisableView(View view, boolean enabled) {
+        if (view != null) {
+            view.setEnabled(enabled);
+            if (view instanceof ViewGroup) {
+                ViewGroup group = (ViewGroup) view;
+
+                for (int idx = 0; idx < group.getChildCount(); idx++) {
+                    enableDisableView(group.getChildAt(idx), enabled);
+                }
+            }
+        }
     }
 
 }

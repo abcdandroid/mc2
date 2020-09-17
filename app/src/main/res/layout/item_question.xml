@@ -58,7 +58,7 @@
             android:layout_toEndOf="@id/preview_question"
             android:text="@string/lorem_simple"
             android:layout_marginBottom="32dp"
-            android:lines="2"
+            android:lines="3"
             android:id="@+id/description_question"
             android:ellipsize="end"
             />
@@ -133,8 +133,6 @@
                 android:textColor="@color/indigo_900"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/lorem"
-                android:maxLines="2"
                 android:layout_below="@id/preview_question"
                 android:layout_toLeftOf="@id/car_type"
                 android:textSize="16sp"

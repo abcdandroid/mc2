@@ -2,18 +2,22 @@ package com.example.mechanic2.adapters;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.ShowGoodDetailActivity;
+import com.example.mechanic2.activities.SplashActivity;
 import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.views.MyTextView;
@@ -22,6 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.GooodViewHolder> {
@@ -56,7 +61,7 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
         return (position);
     }
 
-    class GooodViewHolder extends RecyclerView.ViewHolder {
+    class GooodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private CircleImageView preview;
         private MyTextView goodName;
         private ImageView carIcon;
@@ -70,6 +75,7 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
         private ImageView stateIcon;
         private MyTextView stateText;
         private LinearLayout parent;
+        private SweetAlertDialog sweetAlertDialogGoodNotExist;
 
 
         GooodViewHolder(@NonNull View itemView) {
@@ -92,19 +98,36 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
                 public void run() {
                     if (gooodList != null && gooodList.size() > 0 && getAdapterPosition() != -1) {
                         int status = gooodList.get(getAdapterPosition()).getStatus();
-                        if (status == 1)
-                            parent.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
 
+                        parent.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (status == 1) {
                                     Intent intent = new Intent(activity, ShowGoodDetailActivity.class);
-
                                     intent.putExtra("good", gooodList.get(getAdapterPosition()));
-
                                     activity.startActivity(intent);
+                                } else {
+
+                                    View view = LayoutInflater.from(itemView.getContext()).inflate(R.layout.view_good_not_found, null, false);
+                                    TextView textView = view.findViewById(R.id.txt);
+                                    RelativeLayout btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
+                                    RelativeLayout contactUs = view.findViewById(R.id.btn_contact_us);
+
+
+                                    btnShowAllGoods.setOnClickListener(GooodViewHolder.this);
+                                    contactUs.setOnClickListener(GooodViewHolder.this);
+                                    sweetAlertDialogGoodNotExist = new SweetAlertDialog(itemView.getContext()).hideConfirmButton()
+                                            .setCustomView(view);
+
+                                    sweetAlertDialogGoodNotExist.setCancelable(false);
+                                    sweetAlertDialogGoodNotExist.show();
+
 
                                 }
-                            });
+
+
+                            }
+                        });
                     }
                 }
             }, 100);
@@ -156,7 +179,6 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
         }
 
 
-
         private void bindCars(Car[] cars) {
             StringBuilder carsText = new StringBuilder();
 
@@ -173,6 +195,22 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
             }
 
             suitableCars.setText(carsText.toString().trim());
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_contact_us:
+                    if (sweetAlertDialogGoodNotExist != null)
+                        sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                    Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + SplashActivity.etcetera.get(3).getMessage()));
+                    itemView.getContext().startActivity(intent);
+                    break;
+                case R.id.btn_show_all_goods:
+                    sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                    break;
+            }
         }
     }
 

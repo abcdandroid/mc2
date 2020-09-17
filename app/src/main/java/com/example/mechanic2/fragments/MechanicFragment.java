@@ -532,12 +532,13 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
 
 
 
+        app.enableDisableView(MechanicFragment.this.getView(),false);
 
 
 
 
-
-
+        loading.setVisibility(View.VISIBLE);
+        submitFilter.setVisibility(View.INVISIBLE);
 
         view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
         btnAddQuestion = view.findViewById(R.id.btn_contact_us);
@@ -545,13 +546,14 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
         RelativeLayout showAllGoods = view.findViewById(R.id.btn_show_all_goods);
         showAllGoods.setVisibility(View.GONE);
         SweetAlertDialog loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
-
+        loadingData.setCancelable(false);
         loadingData.show();
 
         Application.getApi().getMechanicWutMsg(map).enqueue(new Callback<MechanicWithMsg>() {
             @Override
             public void onResponse(Call<MechanicWithMsg> call, Response<MechanicWithMsg> response) {
 
+                app.enableDisableView(MechanicFragment.this.getView(),true);
 
 
                 if (loadingData != null)

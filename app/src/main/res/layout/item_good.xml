@@ -206,8 +206,6 @@
             android:ellipsize="end"
             android:gravity="right"
             android:layoutDirection="rtl"
-            android:lines="1"
-            android:maxLength="35"
             android:text="برای مشاهده جزییات کلیک کنید"
             android:textColor="@color/purple"
             android:textSize="16sp"

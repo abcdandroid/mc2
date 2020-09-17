@@ -16,7 +16,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.jetbrains.annotations.NotNull;
 
 public class ScrollAwareFABBehavior extends FloatingActionButton.Behavior {
-    private static final String TAG = "ScrollAwareFABBehavior";
 
     public ScrollAwareFABBehavior(Context context, AttributeSet attrs) {
         super();

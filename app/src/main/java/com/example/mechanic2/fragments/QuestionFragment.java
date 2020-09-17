@@ -303,11 +303,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         fab_add_layout.setOnClickListener(this);
 
 
-
-
-
-
-
         if (detail == null) {
             fromConfig = false;
         } else {
@@ -343,7 +338,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -354,8 +348,8 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 isMyQuestionActive = !isMyQuestionActive;
                 filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
                 if (isMyQuestionActive) {
-                    selectedTitleId=0;
-                    selectedCarId=0;
+                    selectedTitleId = 0;
+                    selectedCarId = 0;
                     carQuestion.setText("");
                     titleQuestion.setText("");
 
@@ -414,7 +408,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 titleQuestion.setText("");
 
 
-
                 selectedTitleId = 0;
                 filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
                 requestDataWithValidation();
@@ -459,8 +452,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     }
 
 
-
-
     SweetAlertDialog sweetAlertDialogQuestionNotExist;
 
     View view;
@@ -476,7 +467,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         adapter = new QuestionRecyclerAdapter(questions, getActivity());
 
 
-
         Map<String, String> map = new HashMap<>();
         map.put("route", "getQuestions");
         map.put("lastId", String.valueOf(lastId));
@@ -488,8 +478,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         map.put("entrance_id", SharedPrefUtils.getStringData("entranceId"));
 
 
-
-
         view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
         btnAddQuestion = view.findViewById(R.id.btn_contact_us);
         btnShowAllQuestions = view.findViewById(R.id.btn_show_all_goods);
@@ -497,7 +485,10 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         btnAddQuestion.setOnClickListener(QuestionFragment.this);
         btnShowAllQuestions.setOnClickListener(QuestionFragment.this);
         SweetAlertDialog loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
+        loadingData.setCancelable(false);
         loadingData.show();
+
+        app.enableDisableView(QuestionFragment.this.getView(), false);
 
         Application.getApi().getQuestionWithMsg(map).enqueue(new Callback<QusetionWithMsg>() {
             @Override
@@ -506,6 +497,8 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 loading.setVisibility(View.INVISIBLE);
                 submitFilter.setVisibility(View.VISIBLE);
 
+
+                app.enableDisableView(QuestionFragment.this.getView(), true);
 
                 if (response.body() != null && response.body().getQuestion().size() > 0) {
 
@@ -543,8 +536,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
                         return;
                     }
-
-
 
 
                     questions = response.body().getQuestion();
@@ -709,8 +700,8 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                     spinnerFilter.setEnabled(false);
                     spinnerFilter.setClickable(false);
 
-                    selectedTitleId=0;
-                    selectedCarId=0;
+                    selectedTitleId = 0;
+                    selectedCarId = 0;
                     carQuestion.setText("");
                     titleQuestion.setText("");
 
@@ -748,8 +739,8 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
 
             if (isMyQuestionActiveInteger == 1) {
-                selectedTitleId=0;
-                selectedCarId=0;
+                selectedTitleId = 0;
+                selectedCarId = 0;
                 carQuestion.setText("");
                 titleQuestion.setText("");
 

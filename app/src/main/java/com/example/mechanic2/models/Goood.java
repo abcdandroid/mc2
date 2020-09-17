@@ -40,7 +40,7 @@ public class Goood implements Serializable {
     private Integer is_stock;
     @SerializedName("phone")
     @Expose
-    private Integer phone;
+    private String phone;
     @SerializedName("fileSize")
     @Expose
     private Integer fileSize;
@@ -72,7 +72,7 @@ public class Goood implements Serializable {
     public Goood() {
     }
 
-    public Goood(String preview, String sentence_2, String sentence_3, String sentence_1, String voice, String price_time, String good_id, String suitable_car, Integer is_stock, Integer phone, Integer fileSize, String price, String warranty, String company, Integer id, String thumbnails, String made_by, String good_desc, Integer status) {
+    public Goood(String preview, String sentence_2, String sentence_3, String sentence_1, String voice, String price_time, String good_id, String suitable_car, Integer is_stock, String phone, Integer fileSize, String price, String warranty, String company, Integer id, String thumbnails, String made_by, String good_desc, Integer status) {
         this.preview = preview;
         this.sentence_2 = sentence_2;
         this.sentence_3 = sentence_3;
@@ -144,11 +144,11 @@ public class Goood implements Serializable {
         return is_stock;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String  phone) {
         this.phone = phone;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 

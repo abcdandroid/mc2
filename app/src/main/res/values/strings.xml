@@ -10,7 +10,12 @@
     <string name="mechanic_desc_1">اگر یه گوشه این شهر یه مغازه خدمات خودرویی(مکانیک، کارواش یا هرچی) داری و آدم مشتی و باحالی هستی اینجا ثبت نام کن</string>
     <string name="mechanic_desc_2">همکاری با ما هیچ هزینه ای برات نداره و ثبت نام هم خیلی آسونه</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="about_us">طراح و سازنده:
+سیداحمد بنی کمالی
+ایمیل:
+ahmad.banikamali@gmail.com</string>
+
+
     <string name="all_cars">همه ماشین ها</string>
     <string name="all_titles">همه موضوعات</string>
     <string name="etc_title">متفرقه</string>

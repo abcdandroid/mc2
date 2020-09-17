@@ -15,6 +15,7 @@ import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -809,7 +810,6 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
             e.printStackTrace();
         }
 
-
         return image;
     }
 
@@ -821,19 +821,18 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
 
-
-            CropImage.activity(uri).setAspectRatio(1, 1).setRequestedSize(512, 512).start(this);
-
+            CropImage.activity(uri).setAspectRatio(1, 1).setRequestedSize(256, 256).setOutputCompressQuality(100).start(this);
 
         } else if (requestCode == 2 && resultCode == RESULT_OK) {
 
             uri = data.getData();
 
-            CropImage.activity(uri).setAspectRatio(1, 1).setRequestedSize(512, 512).start(this);
+            CropImage.activity(uri).setAspectRatio(1, 1).setRequestedSize(256, 256).setOutputCompressQuality(100).start(this);
 
         } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+
 
             resultUri = result.getUri();
 
@@ -1121,23 +1120,26 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                     } catch (JSONException e) {
                         SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity2.this, SweetAlertDialog.ERROR_TYPE).setTitleText("خطا در برقراری ارتباط");
                         sweetAlertDialogSendCode.show();
+                        sweetAlertDialog.dismiss();
                     }
 
                 } else {
                     SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity2.this, SweetAlertDialog.ERROR_TYPE).setTitleText("خطا در برقراری ارتباط");
                     sweetAlertDialogSendCode.show();
+                    sweetAlertDialog.dismiss();
                 }
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
-                SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity2.this, SweetAlertDialog.WARNING_TYPE).setTitleText("error connection3");
+                SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity2.this, SweetAlertDialog.WARNING_TYPE).setTitleText("خطا در برقراری ارتباط");
                 sweetAlertDialogSendCode.show();
+                sweetAlertDialog.dismiss();
             }
         });
     }
 
+    private static final String TAG = "NewMechanicActivity2";
     public String jobSeparator(List<?> list) {
         StringBuilder jobIds = new StringBuilder();
         if (list.size() == 1) {
