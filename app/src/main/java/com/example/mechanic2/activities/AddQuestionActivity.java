@@ -100,6 +100,7 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
                 selectedCarId = Integer.parseInt(((TextView) parent.getAdapter().getView(position, view, ((ViewGroup) view.getParent())).findViewById(R.id.id)).getText().toString());
             }
         });
+
         carType.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
