@@ -27,14 +27,12 @@
             android:gravity="top"
             android:layout_gravity="center"
             >
-            <de.hdodenhof.circleimageview.CircleImageView
+            <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/profile_mechanic"
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:src="@drawable/mechanic_avatar"
-                android:tint="@color/purple"
-                app:civ_border_color="@color/purple"
-                app:civ_border_width="1dp" />
+                app:roundAsCircle="true"/>
 
             <RatingBar
                 android:layout_marginTop="8dp"

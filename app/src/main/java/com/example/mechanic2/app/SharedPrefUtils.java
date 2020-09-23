@@ -10,7 +10,7 @@ import static com.example.mechanic2.app.Application.getContext;
 
 public class SharedPrefUtils {
 
-    public static final String PREF_APP = "pref_app";
+    public static final String PREF_APP = "prefApp";
 
     private SharedPrefUtils() {
         throw new UnsupportedOperationException(
@@ -83,6 +83,7 @@ public class SharedPrefUtils {
     }
     static public void clear() {
          getSharedPrefEditor(PREF_APP).clear().apply();
+         getSharedPrefEditor(PREF_APP).clear().commit();
 
     }
 

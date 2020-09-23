@@ -20,17 +20,16 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.ShowMechanicDetailActivity;
 import com.example.mechanic2.app.Application;
+import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.AnswerVoiceOnClickListener;
 import com.example.mechanic2.models.Answers;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.views.MyTextView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.hmomeni.progresscircula.ProgressCircula;
-import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAdapter.AnswerViewHolder> {
 
@@ -129,7 +128,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
         private TextView percentDone;
         private LinearLayout parent;
         private SeekBar sbProgress;
-        private CircleImageView ivProfile;
+        private SimpleDraweeView ivProfile;
         private MyTextView name;
         private MyTextView readMore;
         private MyTextView answer;
@@ -174,11 +173,12 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
 
 
             if ((answer.getMechanic().getMechanic_image() == null || answer.getMechanic().getMechanic_image().length() == 0) && answer.getType() == 1) {
-                ivProfile.setImageDrawable(activity.getDrawable(R.drawable.mechanic_avatar));
+                ivProfile.setImageResource((R.drawable.mechanic_avatar));
             } else if (answer.getMechanic().getMechanic_image() == null && answer.getType() == 0) {
-                ivProfile.setImageDrawable(activity.getDrawable(R.drawable.profile_normal_user));
+                ivProfile.setImageResource((R.drawable.profile_normal_user));
             } else
-                Picasso.get().load(context.getString(R.string.drweb) + answer.getMechanic().getMechanic_image()).into(ivProfile);
+                app.fresco(context, context.getString(R.string.drweb) + answer.getMechanic().getMechanic_image(), ivProfile);
+
             this.answer.setText(answer.getAnswer().getA_text());
 
             if (answer.getAnswer().getA_voice_url().equals(""))

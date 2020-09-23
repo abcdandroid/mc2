@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -13,14 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mechanic2.R;
-import com.squareup.picasso.Picasso;
-
 import com.example.mechanic2.activities.AnswersActivity;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.views.MyTextView;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.HashMap;
 import java.util.List;
@@ -68,10 +66,9 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
         TextView questionText;
         TextView answerCount;
         LinearLayout parent;
-        ImageView previewQuestion;
+        SimpleDraweeView previewQuestion;
         private TextView seenCount;
         private MyTextView titleQuestion;
-
 
 
         QuestionViewHolder(@NonNull View convertView) {
@@ -95,14 +92,11 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
             answerCount.setText(String.valueOf(question.getAnswerCount()));
             seenCount.setText(String.valueOf(question.getSeen_count()));
             if (question.getQ_image_url1().length() > 10) {
-
-                Picasso.get().load(Application.getContext().getString(R.string.drweb) + question.getQ_image_url1().trim()).into(previewQuestion);
+                app.fresco(itemView.getContext(), Application.getContext().getString(R.string.drweb) + question.getQ_image_url1().trim(), previewQuestion);
             } else if (question.getQ_image_url2().length() > 10) {
-
-                Picasso.get().load(Application.getContext().getString(R.string.drweb) + question.getQ_image_url2().trim()).into(previewQuestion);
+                app.fresco(itemView.getContext(), Application.getContext().getString(R.string.drweb) + question.getQ_image_url2().trim(), previewQuestion);
             } else if (question.getQ_image_url3().length() > 10) {
-
-                Picasso.get().load(Application.getContext().getString(R.string.drweb) + question.getQ_image_url3().trim()).into(previewQuestion);
+                app.fresco(itemView.getContext(), Application.getContext().getString(R.string.drweb) + question.getQ_image_url3().trim(), previewQuestion);
             }
 
 

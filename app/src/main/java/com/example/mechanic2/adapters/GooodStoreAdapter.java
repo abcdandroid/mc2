@@ -18,9 +18,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.ShowGoodDetailActivity;
 import com.example.mechanic2.activities.SplashActivity;
+import com.example.mechanic2.app.app;
 import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.views.MyTextView;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
@@ -62,7 +64,7 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
     }
 
     class GooodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private CircleImageView preview;
+        private SimpleDraweeView preview;
         private MyTextView goodName;
         private ImageView carIcon;
         private MyTextView suitableCars;
@@ -135,7 +137,8 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
 
         void binder(Goood goood) {
 
-            Picasso.get().load(goood.getPreview()).into(preview);
+           // Picasso.get().load(goood.getPreview()).into(preview);
+            app.fresco(itemView.getContext(),goood.getPreview(),preview);
             goodName.setText(goood.getGood_id().trim());
             Gson gson = new Gson();
             Car[] cars = gson.fromJson(goood.getSuitable_car(), Car[].class);

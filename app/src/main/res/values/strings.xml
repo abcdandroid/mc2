@@ -124,6 +124,7 @@ ahmad.banikamali@gmail.com</string>
     <string name="wha_send_mov">https://api.whatsapp.com/send?phone=</string>
     <string name="sRe"><![CDATA[http://drkamal3.com/Mechanic/index.php?route=searchRegion&search=]]></string>
     <string name="atqr"><![CDATA[http://drkamal3.com/Mechanic/index.php?route=searchTitle&search=]]></string>
+    <string name="title_activity_test">TestActivity</string>
 
 
 </resources>

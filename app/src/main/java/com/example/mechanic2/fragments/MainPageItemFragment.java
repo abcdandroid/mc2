@@ -1,19 +1,22 @@
 package com.example.mechanic2.fragments;
 
 import android.content.Intent;
+import android.graphics.drawable.Animatable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.AnswersActivity;
 import com.example.mechanic2.activities.ShowGoodDetailActivity;
@@ -23,8 +26,13 @@ import com.example.mechanic2.models.Goood;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.views.MyTextView;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.controller.BaseControllerListener;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.image.ImageInfo;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,17 +41,18 @@ import org.json.JSONObject;
 public class MainPageItemFragment extends Fragment implements View.OnClickListener {
 
 
-
     private String titleArg;
     private String descArg;
     private String imageUrlArg;
     private String jsonParamsArg;
     private int field;
 
-    private ImageView imageView;
+    private SimpleDraweeView imageView;
     private MyTextView title;
     private MyTextView desc;
     private LinearLayout parent;
+    LottieAnimationView lt_loading;
+    RelativeLayout btn_retry;
 
     public MainPageItemFragment() {
 
@@ -57,8 +66,6 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
     }
 
 
-
-
     String detail;
 
     @Override
@@ -66,11 +73,65 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
 
         View inflate = inflater.inflate(R.layout.fragment_main_page_item, container, false);
         imageView = inflate.findViewById(R.id.image_view);
+        lt_loading = inflate.findViewById(R.id.lt_loading);
+        btn_retry = inflate.findViewById(R.id.btn_retry);
         title = inflate.findViewById(R.id.title);
         desc = inflate.findViewById(R.id.desc);
         parent = inflate.findViewById(R.id.parent);
 
-        Picasso.get().load(imageUrlArg).into(imageView);
+        //Picasso.get().load(imageUrlArg).into(imageView);
+
+        Uri imageUri = Uri.parse(imageUrlArg);
+        imageView.setImageURI(imageUri);
+
+        final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
+        progressBarDrawable.setColor(getResources().getColor(R.color.purple));
+        progressBarDrawable.setBackgroundColor(getResources().getColor(R.color.blue_grey_50));
+        progressBarDrawable.setRadius(getResources().getDimensionPixelSize(R.dimen.spacing_medium));
+
+        imageView.getHierarchy().setProgressBarImage(progressBarDrawable);
+        DraweeController controller = Fresco.newDraweeControllerBuilder().setTapToRetryEnabled(true).setUri(imageUri)
+                .setControllerListener(new BaseControllerListener<ImageInfo>() {
+                    @Override
+                    public void onSubmit(String id, Object callerContext) {
+                        super.onSubmit(id, callerContext);
+
+                        lt_loading.setVisibility(View.VISIBLE);
+                        btn_retry.setVisibility(View.GONE);
+                        lt_loading.playAnimation();
+                    }
+
+                    @Override
+                    public void onFinalImageSet(String id, ImageInfo imageInfo, Animatable animatable) {
+                        super.onFinalImageSet(id, imageInfo, animatable);
+                        parent.setOnClickListener(MainPageItemFragment.this);
+
+                        lt_loading.setVisibility(View.GONE);
+                        btn_retry.setVisibility(View.GONE);
+
+                    }
+
+
+                    @Override
+                    public void onFailure(String id, Throwable throwable) {
+                        super.onFailure(id, throwable);
+
+                        lt_loading.setVisibility(View.GONE);
+                        btn_retry.setVisibility(View.VISIBLE);
+
+
+                    }
+
+                    @Override
+                    public void onRelease(String id) {
+                        super.onRelease(id);
+
+                    }
+                })
+                .build();
+
+        imageView.setController(controller);
+
 
         if (jsonParamsArg != null)
             try {
@@ -79,7 +140,6 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-        parent.setOnClickListener(this);
         if (title != null && titleArg != null) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 title.setText(Html.fromHtml(titleArg, Html.FROM_HTML_MODE_COMPACT));
@@ -148,7 +208,6 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
 
         }
     }
-
 
 
 }

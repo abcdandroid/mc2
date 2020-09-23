@@ -70,7 +70,6 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
     MultipartBody.Part body0;
     MultipartBody.Part body1;
     MultipartBody.Part body2;
-    private TextInputLayout fieldCarType;
     private AutoCompleteTextView carType;
     private AutoCompleteTextView questionType;
     private TextInputLayout fieldQuestion;
@@ -88,7 +87,6 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
         submitQuestion = findViewById(R.id.submitQuestion);
         cancelSend = findViewById(R.id.cancelSend);
 
-        fieldCarType = findViewById(R.id.fieldCarType);
         carType = findViewById(R.id.carType);
         questionType = findViewById(R.id.questionType);
         fieldQuestion = findViewById(R.id.fieldQuestion);

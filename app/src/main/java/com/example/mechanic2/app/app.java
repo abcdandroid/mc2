@@ -29,6 +29,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.interfaces.ConnectionErrorManager;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -321,6 +323,30 @@ public class app {
                     enableDisableView(group.getChildAt(idx), enabled);
                 }
             }
+        }
+    }
+
+    public static void fresco(Context context, String uri, SimpleDraweeView view) {
+        view.getHierarchy().reset();
+        Uri imageUri = Uri.parse(uri);
+        view.setImageURI(imageUri);
+        final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
+        progressBarDrawable.setBarWidth(5);
+        progressBarDrawable.setColor(context.getResources().getColor(R.color.purple));
+        progressBarDrawable.setBackgroundColor(context.getResources().getColor(R.color.blue_grey_50));
+
+        view.getHierarchy().setProgressBarImage(progressBarDrawable);
+    }
+
+    public static void fresco(Context context, String uri, SimpleDraweeView view, boolean showProgress) {
+        Uri imageUri = Uri.parse(uri);
+        view.setImageURI(imageUri);
+        if (showProgress) {
+            final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
+            progressBarDrawable.setColor(context.getResources().getColor(R.color.purple));
+            progressBarDrawable.setBackgroundColor(context.getResources().getColor(R.color.blue_grey_50));
+            progressBarDrawable.setRadius(1);
+            view.getHierarchy().setProgressBarImage(progressBarDrawable);
         }
     }
 

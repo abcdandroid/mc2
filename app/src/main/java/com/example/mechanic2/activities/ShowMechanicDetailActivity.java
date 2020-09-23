@@ -38,7 +38,6 @@ import com.example.mechanic2.adapters.MechanicMoviesRecyclerAdapter;
 import com.example.mechanic2.adapters.ViewPagerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
-import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.QuestionImagesFragment;
 import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
@@ -47,6 +46,8 @@ import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.Movies;
 import com.example.mechanic2.views.MyTextView;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.hmomeni.progresscircula.ProgressCircula;
@@ -67,7 +68,6 @@ import java.util.List;
 import java.util.Map;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
-import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -83,7 +83,7 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
     private MotionLayout ml;
     private RelativeLayout b;
     private TextView storeName;
-    private CircleImageView ll;
+    private SimpleDraweeView ll;
     private NestedScrollView nestedContent;
     private MyTextView myInfo;
     private ImageView personIcon;
@@ -149,8 +149,6 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         regionIcon = findViewById(R.id.region_icon);
         regionName = findViewById(R.id.region_name);
         film_list_container = findViewById(R.id.film_list_container);
-
-
         myAbout = findViewById(R.id.my_about);
         aboutDesc = findViewById(R.id.about_desc);
         myMovies = findViewById(R.id.my_movies);
@@ -224,11 +222,20 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         mapController.setCenter(startPoint);
 
         storeName.setText(mechanic.getStore_name());
-        ll.setImageBitmap(null);
-        if (mechanic.getMechanic_image().length() > 0)
+        ll.setImageRequest(null);
+        if (mechanic.getMechanic_image().length() > 0) {
+            final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
+            progressBarDrawable.setColor(getResources().getColor(R.color.purple));
+            progressBarDrawable.setBackgroundColor(getResources().getColor(R.color.blue_grey_50));
+            progressBarDrawable.setRadius(getResources().getDimensionPixelSize(R.dimen.spacing_xsmall));
 
-            Picasso.get().load(getString(R.string.drweb) + mechanic.getMechanic_image()).into(ll);
-        else ll.setImageDrawable(getDrawable(R.drawable.mechanic_avatar));
+
+            String imageUri = getString(R.string.drweb) + mechanic.getMechanic_image();
+            ll.setImageURI(imageUri);
+            ll.getHierarchy().setProgressBarImage(progressBarDrawable);
+
+            //Picasso.get().load(imageUri).into(ll);
+        } else ll.setImageResource(R.drawable.mechanic_avatar);
         mechanicName.setText(mechanic.getName());
         storeNameMain.setText(mechanic.getStore_name());
         bindJobs(mechanic.getJob());

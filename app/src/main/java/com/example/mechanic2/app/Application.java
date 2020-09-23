@@ -7,6 +7,7 @@ import android.preference.PreferenceManager;
 import com.downloader.PRDownloader;
 import com.downloader.PRDownloaderConfig;
 import com.example.mechanic2.interfaces.Api;
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.picasso.Picasso;
@@ -39,6 +40,8 @@ public class Application extends android.app.Application {
 
         super.onCreate();
         context = this;
+        Fresco.initialize(this);
+
 
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -53,7 +56,7 @@ public class Application extends android.app.Application {
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(60, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -83,6 +86,7 @@ public class Application extends android.app.Application {
     public static Api getApi() {
         return api;
     }
+
 
 
 

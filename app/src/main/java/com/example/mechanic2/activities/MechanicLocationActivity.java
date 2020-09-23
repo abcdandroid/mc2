@@ -14,7 +14,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -185,6 +184,7 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                     requestForGps = gpsView.findViewById(R.id.request_for_gps);
                     allowAccessGps = gpsView.findViewById(R.id.allow_access_gps);
                     sweetAlertDialogRequestGps = new SweetAlertDialog(this).hideConfirmButton().setCustomView(gpsView);
+                    sweetAlertDialogRequestGps.setCancelable(false);
                     sweetAlertDialogRequestGps.show();
                     allowAccessGps.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -237,6 +237,7 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                 gpsSweetAlertDialog = new SweetAlertDialog(MechanicLocationActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                 gpsSweetAlertDialog.setTitle("لطفا شکیبا باشید.");
                 gpsSweetAlertDialog.setContentText("در حال پیدا کردن موقعیت فعلی شما");
+                gpsSweetAlertDialog.setCancelable(false);
                 gpsSweetAlertDialog.show();
             }
 
@@ -306,6 +307,7 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                     if (gpsSweetAlertDialog == null) {
                         gpsSweetAlertDialog = new SweetAlertDialog(MechanicLocationActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                         gpsSweetAlertDialog.setTitle("لطفا شکیبا باشید.");
+                        gpsSweetAlertDialog.setCancelable(false);
                         gpsSweetAlertDialog.setContentText("در حال پیدا کردن موقعیت فعلی شما");
                         gpsSweetAlertDialog.show();
                     }
@@ -339,6 +341,7 @@ public class MechanicLocationActivity extends AppCompatActivity implements View.
                     gpsSweetAlertDialog = new SweetAlertDialog(MechanicLocationActivity.this, SweetAlertDialog.PROGRESS_TYPE);
                     gpsSweetAlertDialog.setTitle("لطفا شکیبا باشید.");
                     gpsSweetAlertDialog.setContentText("در حال پیدا کردن موقعیت فعلی شما");
+                    gpsSweetAlertDialog.setCancelable(false);
                     gpsSweetAlertDialog.show();
 
 

@@ -58,6 +58,7 @@ public class SplashActivity extends Activity {
                         }
                         startActivity(intent1);
                     } else {
+                        SharedPrefUtils.clear();
                         startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                     }
                 }

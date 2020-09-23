@@ -488,14 +488,14 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         gooods = new ArrayList<>();
         tmpGooods = new ArrayList<>();
         adapter = new GooodStoreAdapter(gooods, getActivity());
-        Log.e(TAG, "getGooods: ");
-        Log.e(TAG, "getGooods: " + "lastId" + String.valueOf(lastId));
-        Log.e(TAG, "getGooods: " + "carId" + String.valueOf(carId));
-        Log.e(TAG, "getGooods: " + "goodId" + String.valueOf(goodId));
-        Log.e(TAG, "getGooods: " + "warrantyId" + String.valueOf(warrantyId));
-        Log.e(TAG, "getGooods: " + "countryId" + String.valueOf(countryId));
-        Log.e(TAG, "getGooods: " + "isStock" + String.valueOf(isStock));
-        Log.e(TAG, "getGooods: " + "----------------------------");
+
+
+
+
+
+
+
+
 
         Map<String, String> map = new HashMap<>();
         map.put("route", "getStore3");

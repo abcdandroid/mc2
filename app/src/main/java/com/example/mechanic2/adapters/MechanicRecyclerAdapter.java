@@ -18,11 +18,9 @@ import com.example.mechanic2.app.app;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.views.MyTextView;
-import com.squareup.picasso.Picasso;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MechanicRecyclerAdapter extends RecyclerView.Adapter<MechanicRecyclerAdapter.MechanicViewHolder> {
     private Context context;
@@ -51,7 +49,7 @@ public class MechanicRecyclerAdapter extends RecyclerView.Adapter<MechanicRecycl
 
     public class MechanicViewHolder extends RecyclerView.ViewHolder {
         private LinearLayout parent;
-        private CircleImageView profileMechanic;
+        private SimpleDraweeView profileMechanic;
         private MyTextView tvStoreMechanic;
         private ImageView imJobMechanic;
         private MyTextView tvJobMechanic;
@@ -86,11 +84,6 @@ public class MechanicRecyclerAdapter extends RecyclerView.Adapter<MechanicRecycl
         private void binder(Mechanic mechanic) {
 
 
-
-
-
-
-
             if (mechanic.getScore() == 0)
                 rate_mechanic.setVisibility(View.GONE);
             else {
@@ -99,12 +92,11 @@ public class MechanicRecyclerAdapter extends RecyclerView.Adapter<MechanicRecycl
             }
 
 
-            profileMechanic.setImageBitmap(null);
+            profileMechanic.setImageRequest(null);
             if (mechanic.getMechanic_image().length() > 0) {
-
-                Picasso.get().load(context.getString(R.string.drmo) + mechanic.getMechanic_image()).into(profileMechanic);
+                app.fresco( context,context.getString(R.string.drmo) + mechanic.getMechanic_image(), profileMechanic);
             } else
-                profileMechanic.setImageDrawable(context.getDrawable(R.drawable.mechanic_avatar));
+                profileMechanic.setImageResource(R.drawable.mechanic_avatar);
             tvStoreMechanic.setText(mechanic.getStore_name());
             bindJobs(mechanic.getJob());
             tvRegionMechanic.setText(mechanic.getRegion().getName());

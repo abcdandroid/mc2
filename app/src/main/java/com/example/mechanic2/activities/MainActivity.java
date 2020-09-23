@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         this.type = SharedPrefUtils.getIntData("type");
         this.mechanicInfo = SharedPrefUtils.getStringData("mechanicInfo");
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("mp"));
-       loadMainPageFragment(type, mechanicInfo);
+        loadMainPageFragment(type, mechanicInfo);
 
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {

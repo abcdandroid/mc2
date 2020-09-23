@@ -219,11 +219,13 @@ public class NewEntranceActivity extends AppCompatActivity {
                                         startActivity(new Intent(NewEntranceActivity.this, MainActivity.class));
                                     }
                                 } catch (JSONException e) {
+                                    sweetAlertDialogSendType.dismissWithAnimation();
                                     SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("خطا");
                                     sweetAlertDialogSendCode.show();
                                 }
 
                             } else if (response.body() == null) {
+                                sweetAlertDialogSendType.dismissWithAnimation();
                                 SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("خطا در برقراری ارتباط");
                                 sweetAlertDialogSendCode.show();
                             }
@@ -231,6 +233,7 @@ public class NewEntranceActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
+                            sweetAlertDialogSendType.dismissWithAnimation();
                             SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewEntranceActivity.this, SweetAlertDialog.WARNING_TYPE).setTitleText("خطا در برقراری ارتباط");
                             sweetAlertDialogSendCode.show();
                         }

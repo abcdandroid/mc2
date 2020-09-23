@@ -1,5 +1,6 @@
 package com.example.mechanic2.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import androidx.fragment.app.Fragment;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
+import com.facebook.drawee.drawable.ProgressBarDrawable;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.squareup.picasso.Picasso;
 
 
@@ -59,7 +62,7 @@ public class ShowThumbnailFragment extends Fragment {
 
 
     private void init(View inflate) {
-        ImageView imThumbnail = inflate.findViewById(R.id.imThumbnail);
+        SimpleDraweeView imThumbnail = inflate.findViewById(R.id.imThumbnail);
         if (onViewPagerClickListener != null) {
             imThumbnail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -69,6 +72,19 @@ public class ShowThumbnailFragment extends Fragment {
             });
         }
         if (url != null && url.trim().length() > 0)
-            Picasso.get().load(url).into(imThumbnail);
+        {//    {Picasso.get().load(url).into(imThumbnail);}
+
+            Uri imageUri = Uri.parse(url);
+            imThumbnail.setImageURI(imageUri);
+
+            final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
+            progressBarDrawable.setColor(getResources().getColor(R.color.purple));
+            progressBarDrawable.setBackgroundColor(getResources().getColor(R.color.blue_grey_50));
+            progressBarDrawable.setRadius(getResources().getDimensionPixelSize(R.dimen.spacing_medium));
+
+            imThumbnail.getHierarchy().setProgressBarImage(progressBarDrawable);
+
+        }
+
     }
 }

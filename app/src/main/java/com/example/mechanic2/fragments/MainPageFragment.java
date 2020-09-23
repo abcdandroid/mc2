@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.example.mechanic2.BuildConfig;
 import com.example.mechanic2.R;
@@ -43,7 +45,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -186,7 +187,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
     private AppBarLayout appbar;
 
-
     private View init(View view) {
         adapterPlace1 = new MyFragmentStatePagerAdapter(getActivity().getSupportFragmentManager(), 0);
         adapterPlace2 = new MyFragmentStatePagerAdapter(getActivity().getSupportFragmentManager(), 0);
@@ -228,8 +228,14 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             navView.setVisibility(View.VISIBLE);
             if (mechanicInfo.length() == 0) {
                 mechanicId = Integer.parseInt(SharedPrefUtils.getStringData("m_id"));
-                Uri parsedUri = Uri.parse(SharedPrefUtils.getStringData("imageNo" + 3));
-                circleImageView.setImageURI(parsedUri);
+
+                String stringData = SharedPrefUtils.getStringData("imageNo" + 3);
+                if (!stringData.trim().equals("-1")) {
+                    Uri parsedUri = Uri.parse(stringData);
+                    circleImageView.setImageURI(parsedUri);
+                } else {
+                    circleImageView.setImageDrawable(getActivity().getDrawable(R.drawable.mechanic_avatar));
+                }
                 navStoreName.setText(SharedPrefUtils.getStringData("mechanicStoreName"));
                 navMechanicName.setText(SharedPrefUtils.getStringData("mechanicName"));
 
@@ -238,9 +244,12 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                 mechanic = new Gson().fromJson(mechanicInfo, Mechanic.class);
                 mechanicId = mechanic.getId();
                 if (SharedPrefUtils.getStringData("imageNo3").equals("-1"))
-                    if (mechanic.getMechanic_image().length() > 0)
-                        Picasso.get().load(getString(R.string.drweb) + mechanic.getMechanic_image()).into(circleImageView);
-                    else {
+                    if (mechanic.getMechanic_image().length() > 0) {
+                        //Picasso.get().load(getString(R.string.drweb) + mechanic.getMechanic_image()).into(circleImageView);
+                        Glide.with(this).load(getString(R.string.drweb) + mechanic.getMechanic_image()).into(circleImageView);
+
+                    } else {
+
                         if (getActivity() != null)
                             circleImageView.setImageDrawable(getActivity().getDrawable(R.drawable.mechanic_avatar));
                     }
@@ -252,12 +261,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                 navStoreName.setText(mechanic.getStore_name());
             }
 
-            circleImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
 
         } else {
             navView.setVisibility(View.GONE);
@@ -442,6 +445,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
     private void getData() {
         SweetAlertDialog loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
+        loadingData.setCancelable(false);
         loadingData.show();
         Map<String, String> map = new HashMap<>();
         map.put("route", "getMainPageData");
@@ -680,8 +684,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             params.leftMargin = place5VideoViewML;
             params.bottomMargin = place5VideoViewMB;
             params.topMargin = place5VideoViewMT;
-
-
             place5VideoView.setLayoutParams(params);
         }
     }

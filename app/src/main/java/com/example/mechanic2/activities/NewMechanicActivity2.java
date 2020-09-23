@@ -28,6 +28,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.cardview.widget.CardView;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -35,6 +37,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.downloader.Error;
 import com.downloader.OnDownloadListener;
 import com.downloader.OnPauseListener;
@@ -59,11 +64,11 @@ import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.Movies;
 import com.example.mechanic2.models.Region;
 import com.example.mechanic2.views.JobRow;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.hmomeni.progresscircula.ProgressCircula;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.json.JSONException;
@@ -96,7 +101,6 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
 
     private Uri resultUri;
-
 
     ArrayList<ImageView> images = new ArrayList<>();
     List<MultipartBody.Part> files = new ArrayList<>();
@@ -144,6 +148,17 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
     private SweetAlertDialog sweetAlertDialog;
 
 
+    private SpinKitView loadingImage3;
+    private SpinKitView loadingImage2;
+    private SpinKitView loadingImage1;
+    private SpinKitView loadingImageProfile;
+
+    private ImageView retryImage3;
+    private ImageView retryImage2;
+    private ImageView retryImage1;
+    private ImageView retryimageProfile;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -174,15 +189,38 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         mechanicAbout = findViewById(R.id.mechanic_about);
 
 
-        TextInputLayout mechanic_about_holder=findViewById(R.id.mechanic_about_holder);
+        loadingImage3 = findViewById(R.id.loading_image3);
+        loadingImage2 = findViewById(R.id.loading_image2);
+        loadingImage1 = findViewById(R.id.loading_image1);
+        loadingImageProfile = findViewById(R.id.loading_imageProfile);
+        loadingImage3.setVisibility(View.GONE);
+        loadingImage2.setVisibility(View.GONE);
+        loadingImage1.setVisibility(View.GONE);
+        loadingImageProfile.setVisibility(View.GONE);
+
+        retryImage3 = findViewById(R.id.retryImage3);
+        retryImage2 = findViewById(R.id.retryImage2);
+        retryImage1 = findViewById(R.id.retryImage1);
+        retryimageProfile = findViewById(R.id.retryImageProfile);
+
+        retryImage3.setVisibility(View.GONE);
+        retryImage2.setVisibility(View.GONE);
+        retryImage1.setVisibility(View.GONE);
+        retryimageProfile.setVisibility(View.GONE);
+
+
+        TextInputLayout mechanic_about_holder = findViewById(R.id.mechanic_about_holder);
         mechanic_about_holder.setTypeface(Typeface.createFromAsset(getAssets(), getString(R.string.ttf)));
 
         ImageView storeImage1 = findViewById(R.id.image1);
+        storeImage1.setClipToOutline(true);
         images.add(storeImage1);
         ImageView storeImage2 = findViewById(R.id.image2);
+        storeImage2.setClipToOutline(true);
         images.add(storeImage2);
         ImageView storeImage3 = findViewById(R.id.image3);
         images.add(storeImage3);
+        storeImage3.setClipToOutline(true);
         CircleImageView circularProfileImage = findViewById(R.id.imageProfile);
         images.add(circularProfileImage);
         jobContainer = findViewById(R.id.job_container);
@@ -249,7 +287,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                 mechanicAbout.setText(mechanic.getAbout());
 
                 if (mechanic.getMechanic_image().length() != 0 && SharedPrefUtils.getStringData("imageNo" + 3).equals("-1")) {
-                    String mechanic_image = mechanic.getMechanic_image();
+                    /*String mechanic_image = mechanic.getMechanic_image();
                     String mechanicImageName = mechanic_image.substring(mechanic_image.lastIndexOf("/") + 1, mechanic_image.length() - 1);
 
                     Target target = new Target() {
@@ -280,10 +318,11 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
                     Picasso.get()
                             .load(getString(R.string.drweb) + mechanic.getMechanic_image())
-                            .into(target);
+                            .into(target);*/
+                    loadImage(mechanic.getMechanic_image(), circularProfileImage, loadingImageProfile, retryimageProfile);
                 }
                 if (mechanic.getStore_image_1().length() != 0 && SharedPrefUtils.getStringData("imageNo" + 0).equals("-1")) {
-                    String store_image_1 = mechanic.getStore_image_1();
+/*                    String store_image_1 = mechanic.getStore_image_1();
                     String Store1ImageName = store_image_1.substring(store_image_1.lastIndexOf("/") + 1, store_image_1.length() - 1);
 
                     Target target = new Target() {
@@ -315,10 +354,11 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
                     Picasso.get()
                             .load(getString(R.string.drweb) + mechanic.getStore_image_1())
-                            .into(target);
+                            .into(target);*/
+                    loadImage(mechanic.getStore_image_1(), storeImage1, loadingImage1, retryImage1);
                 }
                 if (mechanic.getStore_image_2().length() != 0 && SharedPrefUtils.getStringData("imageNo" + 1).equals("-1")) {
-                    String store_image_2 = mechanic.getStore_image_2();
+                  /*  String store_image_2 = mechanic.getStore_image_2();
                     String Store2ImageName = store_image_2.substring(store_image_2.lastIndexOf("/") + 1, store_image_2.length() - 1);
 
                     Target target = new Target() {
@@ -350,10 +390,12 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
                     Picasso.get()
                             .load(getString(R.string.drweb) + mechanic.getStore_image_2())
-                            .into(target);
+                            .into(target);*/
+
+                    loadImage(mechanic.getStore_image_2(), storeImage2, loadingImage2, retryImage2);
                 }
                 if (mechanic.getStore_image_3().length() != 0 && SharedPrefUtils.getStringData("imageNo" + 2).equals("-1")) {
-                    String store_image_3 = mechanic.getStore_image_3();
+                    /*String store_image_3 = mechanic.getStore_image_3();
                     String Store3ImageName = store_image_3.substring(store_image_3.lastIndexOf("/") + 1, store_image_3.length() - 1);
 
                     Target target = new Target() {
@@ -386,7 +428,8 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
                     Picasso.get()
                             .load(getString(R.string.drweb) + mechanic.getStore_image_3())
-                            .into(target);
+                            .into(target);*/
+                    loadImage(mechanic.getStore_image_3(), storeImage3, loadingImage3, retryImage3);
                 }
 
 
@@ -461,35 +504,10 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                 }
             });
         }
+
+
         for (int i = 0; i < 4; i++) {
-            String key = "imageNo" + i;
-            if (!SharedPrefUtils.getStringData(key).equals("-1") && SharedPrefUtils.getStringData("imageNo").length() > 0) {
-                fill_images[i] = true;
-                Uri parsedUri = Uri.parse(SharedPrefUtils.getStringData("imageNo" + i));
-                images.get(i).setImageURI(null);
-                images.get(i).setImageURI(parsedUri);
-
-                if (i == 0) {
-                    body0 = app.prepareImagePart("fileNo" + i, parsedUri);
-                    files.add(body0);
-                }
-                if (i == 1) {
-
-                    body1 = app.prepareImagePart("fileNo" + i, parsedUri);
-                    files.add(body1);
-                }
-                if (i == 2) {
-
-                    body2 = app.prepareImagePart("fileNo" + i, parsedUri);
-                    files.add(body2);
-                }
-                if (i == 3) {
-
-                    body3 = app.prepareImagePart("fileNo" + i, parsedUri);
-                    files.add(body3);
-                }
-
-            }
+            addToFileList(i);
         }
         GeoPoint startPoint = new GeoPoint(Double.parseDouble(SharedPrefUtils.getStringData("ltt")), Double.parseDouble(SharedPrefUtils.getStringData("lng")));
         mapController.setCenter(startPoint);
@@ -647,6 +665,40 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
     }
 
+    private void addToFileList(int i) {
+        String key = "imageNo" + i;
+        if (!SharedPrefUtils.getStringData(key).equals("-1") && SharedPrefUtils.getStringData("imageNo").length() > 0) {
+            fill_images[i] = true;
+            Uri parsedUri = Uri.parse(SharedPrefUtils.getStringData("imageNo" + i));
+            images.get(i).setImageURI(null);
+            images.get(i).setImageURI(parsedUri);
+
+            if (i == 0) {
+                body0 = app.prepareImagePart("fileNo" + i, parsedUri);
+                files.add(body0);
+
+            }
+            if (i == 1) {
+
+                body1 = app.prepareImagePart("fileNo" + i, parsedUri);
+                files.add(body1);
+
+            }
+            if (i == 2) {
+
+                body2 = app.prepareImagePart("fileNo" + i, parsedUri);
+                files.add(body2);
+
+            }
+            if (i == 3) {
+                body3 = app.prepareImagePart("fileNo" + i, parsedUri);
+                files.add(body3);
+
+            }
+
+        }
+    }
+
     private void jobIconManager() {
         for (int i = 0; i < jobContainer.getChildCount(); i++) {
             LinearLayout linearLayout = ((LinearLayout) jobContainer.getChildAt(i));
@@ -741,12 +793,14 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                     switch (current_image) {
                         case 0:
                             files.remove(body0);
+
                             if (mechanic != null) {
                                 mechanic.setStore_image_1("");
                             }
                             break;
                         case 1:
                             files.remove(body1);
+
                             if (mechanic != null) {
                                 mechanic.setStore_image_2("");
                             }
@@ -821,13 +875,13 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
         if (requestCode == 1 && resultCode == RESULT_OK) {
 
-            CropImage.activity(uri).setAspectRatio(1, 1).setRequestedSize(256, 256).setOutputCompressQuality(100).start(this);
+            CropImage.activity(uri).setAspectRatio(1, 1).setRequestedSize(512, 512).setOutputCompressQuality(100).start(this);
 
         } else if (requestCode == 2 && resultCode == RESULT_OK) {
 
             uri = data.getData();
 
-            CropImage.activity(uri).setAspectRatio(1, 1).setRequestedSize(256, 256).setOutputCompressQuality(100).start(this);
+            CropImage.activity(uri).setAspectRatio(1, 1).setRequestedSize(512, 512).setOutputCompressQuality(100).start(this);
 
         } else if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
 
@@ -844,21 +898,25 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
             if (current_image == 0) {
                 body0 = app.prepareImagePart("fileNo" + current_image, resultUri);
                 files.add(body0);
+
             }
             if (current_image == 1) {
 
                 body1 = app.prepareImagePart("fileNo" + current_image, resultUri);
                 files.add(body1);
+
             }
             if (current_image == 2) {
 
                 body2 = app.prepareImagePart("fileNo" + current_image, resultUri);
                 files.add(body2);
+
             }
             if (current_image == 3) {
 
                 body3 = app.prepareImagePart("fileNo" + current_image, resultUri);
                 files.add(body3);
+
             }
 
 
@@ -876,7 +934,6 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                 app.validateConnection(this, sweetAlertDialogErrorConnection, new ConnectionErrorManager() {
                     @Override
                     public void doAction() {
-
                         submitNewMechanic();
                     }
                 });
@@ -887,7 +944,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
                 if (app.appInstalledOrNot("com.whatsapp")) {
                     PackageManager pm = getPackageManager();
-                    String url = getString(R.string.wha_send_mov)+SplashActivity.etcetera.get(4).getMessage();
+                    String url = getString(R.string.wha_send_mov) + SplashActivity.etcetera.get(4).getMessage();
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     startActivity(i);
@@ -1090,6 +1147,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         } else {
             stringCall = Application.getApi().uploadMultipleFilesDynamic(map, files);
 
+
         }
 
 
@@ -1140,6 +1198,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
     }
 
     private static final String TAG = "NewMechanicActivity2";
+
     public String jobSeparator(List<?> list) {
         StringBuilder jobIds = new StringBuilder();
         if (list.size() == 1) {
@@ -1233,7 +1292,6 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
                 int value = (int) (100 * progress.currentBytes / progress.totalBytes);
                 progressCircula.setProgress(value);
                 percentDone.setText(String.valueOf(value) + "%");
-
             }
         }).setOnStartOrResumeListener(new OnStartOrResumeListener() {
             @Override
@@ -1269,6 +1327,115 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
     @Override
     public void onRemoveClick(Movies movies, View viewHolder) {
+
+    }
+
+    public <E extends ImageView> void loadImage(String imageUrl, E imageView, SpinKitView spinKitView, ImageView retryImage) {
+        if (imageUrl.trim().length() == 0) return;
+
+        imageView.setVisibility(View.GONE);
+        spinKitView.setVisibility(View.VISIBLE);
+        retryImage.setVisibility(View.GONE);
+
+        String Store1ImageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.length() - 1);
+        Glide.with(this)
+                .asBitmap()
+                .load(getString(R.string.drweb) + imageUrl)
+                .into(new CustomTarget<Bitmap>() {
+                    private Bitmap resource;
+                    private Transition<? super Bitmap> transition;
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+                        imageView.setVisibility(View.GONE);
+                        spinKitView.setVisibility(View.VISIBLE);
+                        retryImage.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                        this.resource = resource;
+                        this.transition = transition;
+                        imageView.setImageBitmap(resource);
+                        File file = createImageFile(Store1ImageName);
+                        FileOutputStream ostream;
+                        try {
+                            ostream = new FileOutputStream(file);
+                            resource.compress(Bitmap.CompressFormat.JPEG, 80, ostream);
+                            ostream.close();
+
+                            int i;
+                            if (imageUrl.equals(mechanic.getMechanic_image())) {
+                                i = 3;
+                            } else if (imageUrl.equals(mechanic.getStore_image_1())) {
+                                i = 0;
+                            } else if (imageUrl.equals(mechanic.getStore_image_2())) {
+                                i = 1;
+                            } else if (imageUrl.equals(mechanic.getStore_image_3())) {
+                                i = 2;
+                            } else {
+                                i = -1;
+
+                            }
+
+
+                            SharedPrefUtils.saveData("imageNo" + i, file.getPath());
+                            fill_images[i] = true;
+                            addToFileList(i);
+
+                            spinKitView.setVisibility(View.GONE);
+                            retryImage.setVisibility(View.GONE);
+                            imageView.setVisibility(View.VISIBLE);
+
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+
+
+                    @Override
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                        super.onLoadFailed(errorDrawable);
+                        spinKitView.setVisibility(View.GONE);
+                        imageView.setVisibility(View.GONE);
+                        retryImage.setVisibility(View.VISIBLE);
+
+                        fill_images[current_image] = false;
+                        //SharedPrefUtils.removeDataByArgument("imageNo" + current_image);
+
+                     /*   if (imageUrl.equals(mechanic.getStore_image_1())) {
+                            files.remove(body0);
+                            if (mechanic != null) {
+                                mechanic.setStore_image_1("");
+                            }
+                        } else if (imageUrl.equals(mechanic.getStore_image_2())) {
+                            files.remove(body1);
+                            if (mechanic != null) {
+                                mechanic.setStore_image_2("");
+                            }
+                        } else if (imageUrl.equals(mechanic.getStore_image_3())) {
+                            files.remove(body2);
+                            if (mechanic != null) {
+                                mechanic.setStore_image_3("");
+                            }
+                        } else if (imageUrl.equals(mechanic.getMechanic_image())) {
+                            files.remove(body3);
+                            if (mechanic != null) {
+                                mechanic.setMechanic_image("");
+                            }
+                        }
+*/
+                    }
+
+
+                });
 
     }
 }

@@ -2,14 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@drawable/gradient_color"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/gradient_color">
 
     <RelativeLayout
         android:id="@+id/parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
 
 
         <LinearLayout
@@ -22,6 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -88,18 +88,45 @@
                                     android:gravity="center"
                                     android:orientation="vertical">
 
-                                    <ImageView
-                                        android:id="@+id/image3"
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:src="@drawable/mechanic_store_preview" />
+
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+
+                                        <ImageView
+                                            android:id="@+id/image3"
+                                            android:layout_width="100dp"
+                                            android:layout_height="100dp"
+                                            android:background="@drawable/image_corner_maker_transparent"
+                                            android:src="@drawable/mechanic_store_preview" />
+
+
+                                        <com.github.ybq.android.spinkit.SpinKitView
+                                            android:id="@+id/loading_image3"
+                                            android:layout_width="90dp"
+                                            android:layout_height="90dp"
+                                            android:layout_gravity="center"
+                                            app:SpinKit_Color="@color/indigo_900"
+                                            app:SpinKit_Style="FadingCircle" />
+
+
+
+                                        <ImageView
+                                            android:id="@+id/retryImage3"
+                                            android:visibility="gone"
+                                            android:layout_width="50dp"
+                                            android:layout_height="50dp"
+                                            android:layout_gravity="center"
+                                            android:src="@drawable/error_logo" />
+
+                                    </FrameLayout>
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
-                                        android:textSize="16sp"
                                         android:layout_marginTop="8dp"
-                                        android:text="@string/store_image" />
+                                        android:text="@string/store_image"
+                                        android:textSize="16sp" />
 
                                 </LinearLayout>
 
@@ -111,20 +138,42 @@
                                     android:gravity="center"
                                     android:orientation="vertical">
 
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
 
-                                    <ImageView
-                                        android:id="@+id/image2"
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:src="@drawable/mechanic_store_preview" />
+                                        <com.github.ybq.android.spinkit.SpinKitView
+                                            android:id="@+id/loading_image2"
+                                            android:layout_width="90dp"
+                                            android:layout_height="90dp"
+                                            android:layout_gravity="center"
+                                            app:SpinKit_Color="@color/indigo_900"
+                                            app:SpinKit_Style="FadingCircle" />
+
+                                        <ImageView
+                                            android:id="@+id/image2"
+                                            android:layout_width="100dp"
+                                            android:layout_height="100dp"
+                                            android:background="@drawable/image_corner_maker_transparent"
+                                            android:src="@drawable/mechanic_store_preview" />
+
+                                        <ImageView
+                                            android:id="@+id/retryImage2"
+                                            android:visibility="gone"
+                                            android:layout_width="50dp"
+                                            android:layout_height="50dp"
+                                            android:layout_gravity="center"
+                                            android:src="@drawable/error_logo" />
+
+                                    </FrameLayout>
 
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="8dp"
-                                        android:textSize="16sp"
-                                        android:text="@string/store_image"/>
+                                        android:text="@string/store_image"
+                                        android:textSize="16sp" />
                                 </LinearLayout>
 
 
@@ -144,18 +193,46 @@
                                     android:gravity="center"
                                     android:orientation="vertical">
 
-                                    <ImageView
-                                        android:id="@+id/image1"
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:src="@drawable/mechanic_store_preview" />
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+
+
+                                        <ImageView
+                                            android:id="@+id/image1"
+                                            android:layout_width="100dp"
+                                            android:layout_height="100dp"
+                                            android:background="@drawable/image_corner_maker_transparent"
+                                            android:src="@drawable/mechanic_store_preview" />
+
+
+                                        <com.github.ybq.android.spinkit.SpinKitView
+                                            android:id="@+id/loading_image1"
+                                            android:layout_width="90dp"
+                                            android:layout_height="90dp"
+                                            android:layout_gravity="center"
+                                            app:SpinKit_Color="@color/indigo_900"
+                                            app:SpinKit_Style="FadingCircle" />
+
+
+                                        <ImageView
+                                            android:id="@+id/retryImage1"
+                                            android:visibility="gone"
+                                            android:layout_width="50dp"
+                                            android:layout_height="50dp"
+                                            android:layout_gravity="center"
+                                            android:src="@drawable/error_logo" />
+
+
+                                    </FrameLayout>
+
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="8dp"
-                                        android:textSize="16sp"
-                                        android:text="@string/store_image"/>
+                                        android:text="@string/store_image"
+                                        android:textSize="16sp" />
                                 </LinearLayout>
 
                                 <LinearLayout
@@ -166,19 +243,43 @@
                                     android:gravity="center"
                                     android:orientation="vertical">
 
+                                    <FrameLayout
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
 
-                                    <de.hdodenhof.circleimageview.CircleImageView
-                                        android:id="@+id/imageProfile"
-                                        android:layout_width="100dp"
-                                        android:layout_height="100dp"
-                                        android:src="@drawable/mechanic_face2" />
+                                        <de.hdodenhof.circleimageview.CircleImageView
+                                            android:id="@+id/imageProfile"
+                                            android:layout_width="100dp"
+                                            android:layout_height="100dp"
+                                            android:src="@drawable/mechanic_face2" />
+
+                                        <com.github.ybq.android.spinkit.SpinKitView
+                                            android:id="@+id/loading_imageProfile"
+                                            android:layout_width="90dp"
+                                            android:layout_height="90dp"
+                                            android:padding="10dp"
+                                            android:layout_gravity="center"
+                                            app:SpinKit_Color="@color/indigo_900"
+                                            app:SpinKit_Style="FadingCircle" />
+
+
+                                        <ImageView
+                                            android:padding="50dp"
+                                            android:id="@+id/retryImageProfile"
+                                            android:visibility="gone"
+                                            android:layout_width="50dp"
+                                            android:layout_height="50dp"
+                                            android:layout_gravity="center"
+                                            android:src="@drawable/error_logo" />
+
+                                    </FrameLayout>
 
                                     <TextView
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="8dp"
-                                        android:textSize="16sp"
-                                        android:text="@string/your_image" />
+                                        android:text="@string/your_image"
+                                        android:textSize="16sp" />
                                 </LinearLayout>
 
 
@@ -319,24 +420,29 @@
                     android:layout_margin="16dp"
                     android:layoutDirection="rtl"
                     app:cardCornerRadius="16dp">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="16dp">
+
                         <LinearLayout
                             android:id="@+id/job_hint"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="horizontal">
+
                             <ImageView
                                 android:layout_width="@dimen/spacing_mxlarge"
                                 android:layout_height="@dimen/spacing_mxlarge"
                                 android:layout_gravity="center_vertical"
                                 android:background="@android:color/transparent"
                                 android:src="@drawable/pen" />
+
                             <View
                                 android:layout_width="@dimen/spacing_large"
                                 android:layout_height="match_parent" />
+
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -347,12 +453,14 @@
                                 android:text="@string/add_job"
                                 android:textSize="16sp" />
                         </LinearLayout>
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_below="@id/job_hint"
                             android:orientation="horizontal"
                             android:padding="8dp">
+
                             <LinearLayout
                                 android:id="@+id/job_container"
                                 android:layout_width="match_parent"
@@ -559,12 +667,12 @@
                                 android:text="@string/info_desc" />
 
                             <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/mechanic_about_holder"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                app:counterMaxLength="1000"
+                                android:background="@color/transparent"
                                 app:counterEnabled="true"
-                                android:id="@+id/mechanic_about_holder"
-                                android:background="@color/transparent">
+                                app:counterMaxLength="1000">
 
                                 <androidx.appcompat.widget.AppCompatEditText
                                     android:id="@+id/mechanic_about"
@@ -572,10 +680,10 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="top"
                                     android:background="@color/transparent"
-                                    android:maxLength="1000"
                                     android:gravity="top"
                                     android:hint="@string/write_here"
                                     android:lines="10"
+                                    android:maxLength="1000"
                                     android:maxLines="10"
                                     android:textDirection="rtl" />
 
@@ -589,12 +697,12 @@
 
 
             <androidx.cardview.widget.CardView
-                android:visibility="gone"
                 android:id="@+id/movie_layer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
                 android:layoutDirection="rtl"
+                android:visibility="gone"
                 app:cardCornerRadius="16dp">
 
                 <RelativeLayout
@@ -611,8 +719,8 @@
                         <ImageView
                             android:layout_width="@dimen/spacing_mxlarge"
                             android:layout_height="@dimen/spacing_mxlarge"
-                            android:layout_marginBottom="18dp"
                             android:layout_gravity="center_vertical"
+                            android:layout_marginBottom="18dp"
                             android:background="@android:color/transparent"
                             android:src="@drawable/pen" />
 
@@ -633,11 +741,10 @@
                     </LinearLayout>
 
                     <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mechanic_movies"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/movie_hint"
-                        android:id="@+id/mechanic_movies"
-                        />
+                        android:layout_below="@id/movie_hint" />
 
                 </RelativeLayout>
 
@@ -657,6 +764,7 @@
                     android:layout_gravity="top"
                     android:layout_marginTop="24dp"
                     android:background="@android:color/transparent"
+                    android:tint="@color/white"
                     android:src="@drawable/pen" />
 
                 <View
@@ -671,10 +779,10 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:textColor="@color/white"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/send_movie_hint" />
+                        android:text="@string/send_movie_hint"
+                        android:textColor="@color/white" />
 
 
                 </LinearLayout>

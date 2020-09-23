@@ -116,17 +116,16 @@
         </RelativeLayout>
 
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ll"
             android:layout_width="110dp"
             android:layout_height="110dp"
             android:layout_gravity="top"
             android:fitsSystemWindows="true"
             android:layoutDirection="rtl"
-            android:minHeight="?android:attr/actionBarSize"
-            android:orientation="vertical"
             android:src="@drawable/mechanic_avatar"
-            android:textDirection="rtl" />
+            app:roundAsCircle="true"
+            />
 
     </androidx.constraintlayout.motion.widget.MotionLayout>
 
