@@ -5,10 +5,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,9 +20,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.mechanic2.R;
 import com.example.mechanic2.app.Application;
@@ -31,23 +33,17 @@ import com.example.mechanic2.fragments.MainPageFragment;
 import com.example.mechanic2.fragments.MechanicFragment;
 import com.example.mechanic2.fragments.QuestionFragment;
 import com.example.mechanic2.fragments.StoreFragment;
+import com.example.mechanic2.interfaces.IOnBackPressed;
 import com.example.mechanic2.interfaces.UpdateNavBar;
 import com.example.mechanic2.models.Etcetera;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.List;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 
 public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 101;
-    ViewPager viewpager;
     BottomNavigationView bottomNavigationView;
-    boolean searchPressed;
-
-    boolean isFabPressed;
-    private SweetAlertDialog sweetAlertDialog;
     private int type;
     private String mechanicInfo;
 
@@ -55,11 +51,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     public static List<Etcetera> etcetera;
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d(TAG, "onCreate: EEERRR");
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -77,13 +75,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void myAction() {
-
-
         this.type = SharedPrefUtils.getIntData("type");
         this.mechanicInfo = SharedPrefUtils.getStringData("mechanicInfo");
         LocalBroadcastManager.getInstance(this).registerReceiver(broadcastReceiver, new IntentFilter("mp"));
         loadMainPageFragment(type, mechanicInfo);
-
+        /**/
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             item.setChecked(true);
@@ -109,8 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (getIntent().getBooleanExtra("linked", false)) {
             bottomNavigationView.setSelectedItemId(R.id.questions);
-        } else
-            bottomNavigationView.setSelectedItemId(R.id.main_page);
+        }
 
 
         updateNavBar = new UpdateNavBar() {
@@ -136,10 +131,15 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        StoreFragment.sendData = () -> bottomNavigationView.setSelectedItemId(R.id.store);
+
     }
 
+
     private void loadMainPageFragment(int type, String mechanicInfo) {
+
         MainPageFragment mainPageFragment1;
+
         if (type == 0 || (type == 1 && mechanicInfo.equals("-1"))) {
             mainPageFragment1 = new MainPageFragment(type);
         } else if (type == 1 && !mechanicInfo.equals("-1")) {
@@ -148,7 +148,9 @@ public class MainActivity extends AppCompatActivity {
 
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.container, mainPageFragment1);
+
         fragmentTransaction.commitAllowingStateLoss();
+        /*   */
     }
 
 
@@ -202,8 +204,14 @@ public class MainActivity extends AppCompatActivity {
             a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(a);
         } else {
-            bottomNavigationView.setSelectedItemId(R.id.main_page);
-            loadMainPageFragment(type, mechanicInfo);
+            Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.container);
+            ;
+            if (!(fragment instanceof IOnBackPressed) || !((IOnBackPressed) fragment).onBackPressed()) {
+                bottomNavigationView.setSelectedItemId(R.id.main_page);
+                loadMainPageFragment(type, mechanicInfo);
+            }
+
+
         }
 
     }
@@ -219,19 +227,16 @@ public class MainActivity extends AppCompatActivity {
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
             getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
             bottomNavigationView.setVisibility(View.VISIBLE);
-
         }
     }
 
-    private int selected = 5;
     BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            selected = intent.getIntExtra("selected", 0);
+            int selected = intent.getIntExtra("selected", 0);
             String detail = intent.getStringExtra("detail");
             Menu menu = bottomNavigationView.getMenu();
             menu.getItem(selected).setChecked(true);
-
 
         }
     };

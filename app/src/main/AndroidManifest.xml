@@ -3,10 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.mechanic2">
 
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-
-    <uses-feature android:name="android.hardware.type.watch" />
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -25,20 +21,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
-        <activity android:name=".activities.TestActivity">
-
-        </activity>
-        <!--
-               Set to true if your app is Standalone, that is, it does not require the handheld
-               app to run.
-        -->
-
         <activity android:name=".activities.ShowMechanicDetailActivity" />
         <activity android:name=".activities.ShowGoodDetailActivity" />
         <activity android:name=".activities.SplashActivity">
-
-            <!-- splash is here -->
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -50,8 +35,9 @@
                     android:scheme="https" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"
 
+                    />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -71,7 +57,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="orientation|screenSize|layoutDirection"
-            android:theme="@style/AppThemeFullScreen"></activity>
+            android:theme="@style/AppThemeFullScreen" />
         <activity
             android:name=".activities.ExoVideoActivity"
             android:configChanges="orientation|screenSize|layoutDirection" />

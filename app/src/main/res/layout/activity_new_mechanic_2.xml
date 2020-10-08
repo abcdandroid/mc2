@@ -11,6 +11,8 @@
         android:layout_height="wrap_content">
 
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -58,6 +60,7 @@
                                 android:layout_height="match_parent" />
 
                             <TextView
+
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -117,7 +120,7 @@
                                             android:layout_width="50dp"
                                             android:layout_height="50dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/error_logo" />
+                                            android:src="@drawable/mechanic_avatar" />
 
                                     </FrameLayout>
 
@@ -163,7 +166,7 @@
                                             android:layout_width="50dp"
                                             android:layout_height="50dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/error_logo" />
+                                            android:src="@drawable/mechanic_avatar" />
 
                                     </FrameLayout>
 
@@ -221,7 +224,7 @@
                                             android:layout_width="50dp"
                                             android:layout_height="50dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/error_logo" />
+                                            android:src="@drawable/mechanic_avatar" />
 
 
                                     </FrameLayout>
@@ -257,20 +260,20 @@
                                             android:id="@+id/loading_imageProfile"
                                             android:layout_width="90dp"
                                             android:layout_height="90dp"
-                                            android:padding="10dp"
                                             android:layout_gravity="center"
+                                            android:padding="20sp"
                                             app:SpinKit_Color="@color/indigo_900"
                                             app:SpinKit_Style="FadingCircle" />
 
 
                                         <ImageView
-                                            android:padding="50dp"
                                             android:id="@+id/retryImageProfile"
                                             android:visibility="gone"
                                             android:layout_width="50dp"
                                             android:layout_height="50dp"
+                                            android:padding="50dp"
                                             android:layout_gravity="center"
-                                            android:src="@drawable/error_logo" />
+                                            android:src="@drawable/mechanic_avatar" />
 
                                     </FrameLayout>
 
@@ -406,7 +409,7 @@
                                     android:layoutDirection="ltr"
                                     android:maxLength="11"
                                     android:text="@string/_09"
-                                    android:textDirection="rtl" />
+                                    android:textDirection="ltr" />
 
                             </com.google.android.material.textfield.TextInputLayout>
 

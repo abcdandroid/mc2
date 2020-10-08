@@ -26,6 +26,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,7 +48,9 @@ import com.example.mechanic2.adapters.MySpinnerAdapter;
 import com.example.mechanic2.adapters.RegionAutoCompleteAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.AlertAction;
 import com.example.mechanic2.interfaces.ConnectionErrorManager;
+import com.example.mechanic2.interfaces.IOnBackPressed;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.MechanicWithMsg;
@@ -70,7 +73,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MechanicFragment extends Fragment implements View.OnClickListener {
+public class MechanicFragment extends Fragment implements View.OnClickListener, IOnBackPressed {
 
     public static final int REQUEST_CODE = 200;
     private CoordinatorLayout parent;
@@ -108,6 +111,8 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
     private boolean dataGutted = false;
     private Region region;
     private Job job;
+    private SweetAlertDialog loadingData;
+    private SweetAlertDialog sweetAlertDialogInvalidLength;
 
     public static MechanicFragment newInstance(String detail) {
         Bundle args = new Bundle();
@@ -272,7 +277,6 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
         recyclerMechanic.setLayoutAnimation(new LayoutAnimationController(AnimationUtils.loadAnimation(Application.getContext(), android.R.anim.slide_in_left)));
         loading.setVisibility(View.VISIBLE);
         submitFilter.setVisibility(View.INVISIBLE);
-
 
 
         String tempDetail = detail;
@@ -461,7 +465,6 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
                 public void onStatusChanged(String provider, int status, Bundle extras) {
 
 
-
                 }
 
                 @Override
@@ -528,14 +531,9 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
         map.put("x", String.valueOf(x));
         map.put("y", String.valueOf(y));
         map.put("sortBy", String.valueOf(sortBy));
+        if (sweetAlertDialogInvalidLength != null) sweetAlertDialogInvalidLength.dismiss();
 
-
-
-
-        app.enableDisableView(MechanicFragment.this.getView(),false);
-
-
-
+        app.enableDisableView(MechanicFragment.this.getView(), false);
 
         loading.setVisibility(View.VISIBLE);
         submitFilter.setVisibility(View.INVISIBLE);
@@ -545,7 +543,10 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
         btnAddQuestion.setOnClickListener(MechanicFragment.this);
         RelativeLayout showAllGoods = view.findViewById(R.id.btn_show_all_goods);
         showAllGoods.setVisibility(View.GONE);
-        SweetAlertDialog loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
+
+        if (loadingData != null) loadingData.dismiss();
+
+        loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
         loadingData.setCancelable(false);
         loadingData.show();
 
@@ -553,7 +554,7 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onResponse(Call<MechanicWithMsg> call, Response<MechanicWithMsg> response) {
 
-                app.enableDisableView(MechanicFragment.this.getView(),true);
+                app.enableDisableView(MechanicFragment.this.getView(), true);
 
 
                 if (loadingData != null)
@@ -596,8 +597,6 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
 
                         return;
                     }
-
-
 
 
                     mechanics = response.body().getMechanic();
@@ -649,10 +648,44 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<MechanicWithMsg> call, Throwable t) {
-
+                loadingData.dismiss();
+                showAlertDialog(new AlertAction() {
+                    @Override
+                    public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                        getMechanics(jobId, regionId, sortBy);
+                    }
+                });
             }
         });
 
+    }
+
+
+    private void showAlertDialog(AlertAction alertAction) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (getActivity() == null) {
+                    Toast.makeText(Application.getContext(), "خطا در برقراری ارتباط", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                sweetAlertDialogInvalidLength = new SweetAlertDialog(getActivity());
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_good_not_found, null);
+                ((TextView) view.findViewById(R.id.txt)).setText("خطا در برقراری ارتباط");
+                view.findViewById(R.id.btn_show_all_goods).setVisibility(View.GONE);
+                TextView txtOk = view.findViewById(R.id.txt_ok);
+                txtOk.setText("تلاش دوباره");
+                view.findViewById(R.id.btn_contact_us).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertAction.doOnClick(sweetAlertDialogInvalidLength);
+                    }
+                });
+                sweetAlertDialogInvalidLength.setCustomView(view);
+                sweetAlertDialogInvalidLength.hideConfirmButton();
+                sweetAlertDialogInvalidLength.show();
+            }
+        }, 1000);
     }
 
     private void resumeGetMechanics(int offset, int jobId, int regionId, int sortBy) {
@@ -723,24 +756,12 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.reset_job:
-                app.hideKeyboard(jobQuestion);
-                app.hideKeyboard(regionQuestion);
-                jobQuestion.setText("");
-                selectedJobId = 0;
-                modifyIds();
-                spinnerFilter.setEnabled(true);
-                spinnerFilter.setClickable(true);
+                resetJob();
                 resumeMechanicListener(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                 getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                 break;
             case R.id.reset_region:
-                app.hideKeyboard(jobQuestion);
-                app.hideKeyboard(regionQuestion);
-                regionQuestion.setText("");
-                selectedRegionId = 0;
-                modifyIds();
-                spinnerFilter.setEnabled(true);
-                spinnerFilter.setClickable(true);
+                resetRegion();
                 resumeMechanicListener(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                 getMechanics(selectedJobId, selectedRegionId, Integer.parseInt(filterIdInString));
                 break;
@@ -773,6 +794,26 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void resetRegion() {
+        app.hideKeyboard(jobQuestion);
+        app.hideKeyboard(regionQuestion);
+        regionQuestion.setText("");
+        selectedRegionId = 0;
+        modifyIds();
+        spinnerFilter.setEnabled(true);
+        spinnerFilter.setClickable(true);
+    }
+
+    private void resetJob() {
+        app.hideKeyboard(jobQuestion);
+        app.hideKeyboard(regionQuestion);
+        jobQuestion.setText("");
+        selectedJobId = 0;
+        modifyIds();
+        spinnerFilter.setEnabled(true);
+        spinnerFilter.setClickable(true);
+    }
+
     private void getDataWithConnectionValidation() {
         if (!dataGutted && detail == null)
             app.validateConnection(getActivity(), errorConnectionSweetAlertDialog, new ConnectionErrorManager() {
@@ -797,6 +838,22 @@ public class MechanicFragment extends Fragment implements View.OnClickListener {
             getDataWithConnectionValidation();
         }
     };
+
+    @Override
+    public boolean onBackPressed() {
+        modifyIds();
+        if (selectedRegionId != 0 || selectedJobId != 0 || spinnerFilter.getSelectedItemPosition() != 0) {
+            resetJob();
+            resetRegion();
+            spinnerFilter.setSelection(0);
+            filterIdInString = String.valueOf(0);
+
+            getDataWithConnectionValidation();
+            return true;
+        }
+
+        return false;
+    }
 
     public class GpsReceiver extends BroadcastReceiver {
 

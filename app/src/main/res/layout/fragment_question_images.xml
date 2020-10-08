@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.QuestionImagesFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -15,36 +15,40 @@
         android:layout_height="match_parent" />
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lt_loading"
         android:layout_width="128dp"
         android:layout_height="128dp"
         android:layout_gravity="center"
-        app:lottie_rawRes="@raw/wrench"
-        android:id="@+id/lt_loading"
         app:lottie_loop="true"
-
-        />
+        app:lottie_rawRes="@raw/wrench" />
 
     <RelativeLayout
-        android:layout_gravity="center"
+        android:layoutDirection="ltr"
         android:id="@+id/btn_retry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_gravity="center"
         android:background="@drawable/btn_submit_store"
         android:gravity="center"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:padding="4dp">
 
+        <ImageView
+            android:id="@+id/retry_icon"
+            android:layout_width="48dp"
+            android:layout_height="48sp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ripple"
+            android:src="@drawable/retry_png"
+            android:tint="@color/white" />
 
         <com.example.mechanic2.views.MyTextView
-            android:gravity="center"
+            android:id="@+id/txt_ok"
             style="@style/TextAppearance.Medium.Bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/txt_ok"
-            android:layout_margin="8dp"
+            android:layout_below="@id/retry_icon"
+            android:gravity="center"
             android:text="تلاش مجدد"
             android:textColor="@color/white" />
 

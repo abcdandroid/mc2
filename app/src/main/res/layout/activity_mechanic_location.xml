@@ -21,7 +21,6 @@
         app:backgroundTint="@android:color/white"
         app:elevation="1dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         app:fabSize="normal"
         android:layout_margin="16dp"

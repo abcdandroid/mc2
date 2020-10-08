@@ -1,6 +1,8 @@
 package com.example.mechanic2.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +104,7 @@ public class MechanicMoviesRecyclerAdapter extends RecyclerView.Adapter<Mechanic
 
             String url = movies.getMovie_url();
 
-            File file = new File(context.getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
 
             if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0 )) {
@@ -115,7 +117,7 @@ public class MechanicMoviesRecyclerAdapter extends RecyclerView.Adapter<Mechanic
                 lottieAnimationView.setProgress(0.99f);
             }
 
-            File tmpFile = new File(context.getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
+            File tmpFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
             if (tmpFile.exists()) {
 
                 progressCircula.setVisibility(View.VISIBLE);

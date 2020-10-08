@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -190,7 +191,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
 
 
             if (url.length() > 0) {
-                File file = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
                 if (file.exists() && file.length() == answer.getAnswer().getFileSize()) {
                     progressCirculaSound.setVisibility(View.GONE);
@@ -200,7 +201,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
                     ltPlayPause.setProgress(0);
                 }
 
-                File tmpFile = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
+                File tmpFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
                 if (tmpFile.exists()) {
                     progressCirculaSound.setVisibility(View.VISIBLE);
                     percentDone.setVisibility(View.VISIBLE);
@@ -257,7 +258,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
                         }
                         playingHolder = this;
 
-                        startMediaPlayer(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().substring(answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().lastIndexOf("/")));
+                        startMediaPlayer(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().substring(answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().lastIndexOf("/")));
                     }
                     updatePlayingView();
                 }

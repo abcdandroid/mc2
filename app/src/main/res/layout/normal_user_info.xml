@@ -85,7 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
-            android:text="درباره ما"
+            android:text="درباره این برنامه"
             android:textAllCaps="false"
             android:textColor="@color/indigo_900"
             android:textStyle="bold" />

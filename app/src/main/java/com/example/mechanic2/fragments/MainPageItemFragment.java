@@ -79,15 +79,16 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
         desc = inflate.findViewById(R.id.desc);
         parent = inflate.findViewById(R.id.parent);
 
-        //Picasso.get().load(imageUrlArg).into(imageView);
 
-        Uri imageUri = Uri.parse(imageUrlArg);
+        Uri imageUri = Uri.parse(imageUrlArg.replaceAll(" ", "%20"));
         imageView.setImageURI(imageUri);
 
         final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
-        progressBarDrawable.setColor(getResources().getColor(R.color.purple));
+        progressBarDrawable.setColor(getResources().getColor(R.color.green_A700));
         progressBarDrawable.setBackgroundColor(getResources().getColor(R.color.blue_grey_50));
         progressBarDrawable.setRadius(getResources().getDimensionPixelSize(R.dimen.spacing_medium));
+
+        StoreFragment.sendData = () -> app.loadFragment((AppCompatActivity) getActivity(), StoreFragment.newInstance(detail));
 
         imageView.getHierarchy().setProgressBarImage(progressBarDrawable);
         DraweeController controller = Fresco.newDraweeControllerBuilder().setTapToRetryEnabled(true).setUri(imageUri)
@@ -205,6 +206,9 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
 
                     break;
             }
+
+
+
 
         }
     }

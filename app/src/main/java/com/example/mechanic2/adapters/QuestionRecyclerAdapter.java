@@ -86,11 +86,11 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
 
         void bindParams(Question question) {
 
-            carName.setText(question.getCarName());
-            questionText.setText(question.getQ_text());
-            titleQuestion.setText(question.getQ_title());
-            answerCount.setText(String.valueOf(question.getAnswerCount()));
-            seenCount.setText(String.valueOf(question.getSeen_count()));
+            carName.setText(question.getCarName().trim());
+            questionText.setText(question.getQ_text().trim());
+            titleQuestion.setText(question.getQ_title().trim());
+            answerCount.setText(String.valueOf(question.getAnswerCount()).trim());
+            seenCount.setText(String.valueOf(question.getSeen_count()).trim());
             if (question.getQ_image_url1().length() > 10) {
                 app.fresco(itemView.getContext(), Application.getContext().getString(R.string.drweb) + question.getQ_image_url1().trim(), previewQuestion);
             } else if (question.getQ_image_url2().length() > 10) {
@@ -98,7 +98,6 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
             } else if (question.getQ_image_url3().length() > 10) {
                 app.fresco(itemView.getContext(), Application.getContext().getString(R.string.drweb) + question.getQ_image_url3().trim(), previewQuestion);
             }
-
 
         }
 

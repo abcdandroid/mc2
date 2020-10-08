@@ -68,6 +68,7 @@
 
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:id="@+id/ml"
+        android:layoutDirection="rtl"
         android:layout_width="match_parent"
         android:layout_height="140dp"
         android:elevation="4dp"
@@ -94,7 +95,7 @@
                 android:layout_toRightOf="@id/star"
                 android:layout_height="match_parent"
                 android:layout_marginTop="35dp"
-                android:layout_marginRight="95dp"
+                android:layout_marginRight="90dp"
                 android:gravity="center_vertical"
                 android:layoutDirection="rtl"
                 android:textColor="@color/white"
@@ -102,7 +103,8 @@
                 android:textSize="20sp" />
 
             <RatingBar
-                android:layout_marginRight="8dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginRight="24dp"
                 android:layout_marginLeft="16dp"
                 android:id="@+id/star"
                 android:progressDrawable="@drawable/star_shape"
@@ -304,6 +306,7 @@
                 app:cardElevation="2dp">
 
                 <RelativeLayout
+                    android:layoutDirection="ltr"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 

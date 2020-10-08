@@ -114,16 +114,12 @@ public class GooodStoreAdapter extends RecyclerView.Adapter<GooodStoreAdapter.Go
                                     TextView textView = view.findViewById(R.id.txt);
                                     RelativeLayout btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
                                     RelativeLayout contactUs = view.findViewById(R.id.btn_contact_us);
-
-
                                     btnShowAllGoods.setOnClickListener(GooodViewHolder.this);
                                     contactUs.setOnClickListener(GooodViewHolder.this);
                                     sweetAlertDialogGoodNotExist = new SweetAlertDialog(itemView.getContext()).hideConfirmButton()
                                             .setCustomView(view);
-
                                     sweetAlertDialogGoodNotExist.setCancelable(false);
                                     sweetAlertDialogGoodNotExist.show();
-
 
                                 }
 

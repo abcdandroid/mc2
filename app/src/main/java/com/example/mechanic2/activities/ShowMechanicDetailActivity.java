@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Parcel;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -225,13 +226,13 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         ll.setImageRequest(null);
         if (mechanic.getMechanic_image().length() > 0) {
             final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
-            progressBarDrawable.setColor(getResources().getColor(R.color.purple));
+            progressBarDrawable.setColor(getResources().getColor(R.color.green_A700));
             progressBarDrawable.setBackgroundColor(getResources().getColor(R.color.blue_grey_50));
             progressBarDrawable.setRadius(getResources().getDimensionPixelSize(R.dimen.spacing_xsmall));
 
 
             String imageUri = getString(R.string.drweb) + mechanic.getMechanic_image();
-            ll.setImageURI(imageUri);
+            ll.setImageURI(imageUri.replaceAll(" ", "%20"));
             ll.getHierarchy().setProgressBarImage(progressBarDrawable);
 
             //Picasso.get().load(imageUri).into(ll);
@@ -331,15 +332,15 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         percentDone = itemView.findViewById(R.id.percentDone);
         String adminUrl = movies.getMovie_url();
         String url = movies.getMovie_url();
-        String path = getExternalFilesDir("video/mp4").getAbsolutePath();
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
-        File file = new File(getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
 
         if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0)) {
 
             Intent intent = new Intent(this, ExoVideoActivity.class);
-            intent.putExtra("path", getExternalFilesDir("video/mp4").getAbsolutePath() + url.
+            intent.putExtra("path", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.
                     substring(url.lastIndexOf("/")));
 
             intent.putExtra("id", movies.getId());

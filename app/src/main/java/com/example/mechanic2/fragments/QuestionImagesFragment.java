@@ -3,7 +3,6 @@ package com.example.mechanic2.fragments;
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,8 +21,6 @@ import com.facebook.drawee.interfaces.DraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.image.ImageInfo;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
-
 
 public class QuestionImagesFragment extends Fragment {
     private ImageView image;
@@ -31,6 +28,7 @@ public class QuestionImagesFragment extends Fragment {
     private SimpleDraweeView draweeView;
     LottieAnimationView lt_loading;
     RelativeLayout btn_retry;
+
     public QuestionImagesFragment() {
 
     }
@@ -53,8 +51,6 @@ public class QuestionImagesFragment extends Fragment {
         } else return "";
     }
 
-    private static final String TAG = "QuestionImagesFragment";
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,10 +70,11 @@ public class QuestionImagesFragment extends Fragment {
 
             draweeView = inflate.findViewById(R.id.my_image_view);
 
-            Uri imageUri = Uri.parse(getString(R.string.drweb) + getArguments().getString("imageUri"));
+
+            Uri imageUri = Uri.parse(getString(R.string.drweb) + getArguments().getString("imageUri").replaceAll(" ", "%20"));
             draweeView.setImageURI(imageUri);
             final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
-            progressBarDrawable.setColor(getResources().getColor(R.color.purple));
+            progressBarDrawable.setColor(getResources().getColor(R.color.green_A700));
             progressBarDrawable.setBackgroundColor(getResources().getColor(R.color.blue_grey_50));
             progressBarDrawable.setRadius(getResources().getDimensionPixelSize(R.dimen.spacing_medium));
 
@@ -111,14 +108,12 @@ public class QuestionImagesFragment extends Fragment {
                         }
 
 
-
                         @Override
                         public void onFailure(String id, Throwable throwable) {
                             super.onFailure(id, throwable);
 
                             lt_loading.setVisibility(View.GONE);
                             btn_retry.setVisibility(View.VISIBLE);
-
 
 
                         }
@@ -141,4 +136,6 @@ public class QuestionImagesFragment extends Fragment {
 
         return inflate;
     }
+
+
 }

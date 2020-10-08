@@ -2,6 +2,8 @@ package com.example.mechanic2.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +36,7 @@ import com.example.mechanic2.adapters.NewAdminAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.AlertAction;
 import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.models.AdminMedia;
@@ -67,6 +71,8 @@ public class AdminFragment extends Fragment implements OnClickListener {
     private List<AdminMedia> tmpModels = new ArrayList<>();
     private Map<String, String> data = new HashMap<>();
     private boolean isLoading;
+    private SweetAlertDialog sweetAlertDialog;
+    private SweetAlertDialog sweetAlertDialogInvalidLength;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,7 +103,6 @@ public class AdminFragment extends Fragment implements OnClickListener {
     }
 
 
-
     @Override
     public void onDownloadStateClick(AdminMedia adminMedia, View itemView) {
 
@@ -113,13 +118,12 @@ public class AdminFragment extends Fragment implements OnClickListener {
 
         String adminUrl = adminMedia.getMovie_url();
         String url = adminMedia.getMovie_url();
-        String path = getActivity().getExternalFilesDir("video/mp4").getAbsolutePath();
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
-        File file = new File(getActivity().getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
 
-
-        if (file.exists() &&(file.length() - adminMedia.getMovie_size() == -8 || file.length() - adminMedia.getMovie_size() == 0 )) {
+        if (file.exists() && (file.length() - adminMedia.getMovie_size() == -8 || file.length() - adminMedia.getMovie_size() == 0)) {
 
             Picasso.get().load(adminMedia.getMovie_preview())
                     .into(preview);
@@ -198,6 +202,7 @@ public class AdminFragment extends Fragment implements OnClickListener {
 
 
     }
+
     @Override
     public void onDownloadStateClick(Movies movies, View viewHolder) {
 
@@ -210,7 +215,11 @@ public class AdminFragment extends Fragment implements OnClickListener {
 
     private void getAdminMedias() {
 
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
+        if(sweetAlertDialog !=null) sweetAlertDialog.dismiss();;
+        if(sweetAlertDialogInvalidLength!=null) sweetAlertDialogInvalidLength.dismiss();
+
+
+        sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.PROGRESS_TYPE);
         sweetAlertDialog.setTitle("لطفا شکیبا باشید.");
         sweetAlertDialog.setContentText("در حال دریافت فیلم های آموزشی");
         sweetAlertDialog.show();
@@ -249,7 +258,21 @@ public class AdminFragment extends Fragment implements OnClickListener {
 
             @Override
             public void onFailure(Call<List<AdminMedia>> call, Throwable t) {
-
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getContext() == null) {
+                            app.t("خطا در برقراری ارتباط");
+                            return;
+                        }
+                        showAlertDialog("خطا در برقراری ارتباط", "تلاش دوباره", false, new AlertAction() {
+                            @Override
+                            public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                                getAdminMedias();
+                            }
+                        });
+                    }
+                }, 1000);
             }
         });
 
@@ -305,5 +328,29 @@ public class AdminFragment extends Fragment implements OnClickListener {
                 }
             }
         });
+    }
+
+
+    private void showAlertDialog(String titleMsg, String okMsg, boolean isCancellable, AlertAction alertAction) {
+        if (getContext() == null) {
+            Toast.makeText(Application.getContext(), "خطا در برقراری ارتباط", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        sweetAlertDialogInvalidLength = new SweetAlertDialog(getContext());
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
+        ((TextView) view.findViewById(R.id.txt)).setText(titleMsg);
+        view.findViewById(R.id.btn_show_all_goods).setVisibility(View.GONE);
+        TextView txtOk = view.findViewById(R.id.txt_ok);
+        txtOk.setText(okMsg);
+        view.findViewById(R.id.btn_contact_us).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertAction.doOnClick(sweetAlertDialogInvalidLength);
+            }
+        });
+        sweetAlertDialogInvalidLength.setCancelable(isCancellable);
+        sweetAlertDialogInvalidLength.setCustomView(view);
+        sweetAlertDialogInvalidLength.hideConfirmButton();
+        sweetAlertDialogInvalidLength.show();
     }
 }

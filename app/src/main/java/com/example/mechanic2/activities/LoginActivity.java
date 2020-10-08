@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -89,6 +90,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     showAlertDialog("کد فعال سازی معتبر نمی باشد.", new AlertAction() {
                         @Override
                         public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+
                             pinView.setText("");
                             sweetAlertDialog.dismissWithAnimation();
                         }
@@ -153,12 +155,18 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 pinView.setVisibility(View.VISIBLE);
                 sendPhone.setVisibility(View.GONE);
                 sendCode.setVisibility(View.VISIBLE);
+
             }
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-
-            }
+                sweetAlertDialogSendCode.dismissWithAnimation();
+                showAlertDialog("خطا در ارسال اطلاعات", new AlertAction() {
+                    @Override
+                    public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                    }
+                });            }
         });
     }
 
@@ -184,6 +192,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     SweetAlertDialog sweetAlertDialogSendCode;
 
     private void sendPin() {
+
         sweetAlertDialogSendCode = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE).setTitleText("لطفا شکیبا باشید");
         sweetAlertDialogSendCode.setCancelable(false);
         sweetAlertDialogSendCode.show();
@@ -201,10 +210,13 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                 String responseBody = response.body();
 
                 if (responseBody != null) {
+
                     if (responseBody.equals("registrationStep1")) {
                         SharedPrefUtils.saveData("phoneNumber", phoneNumber);
+
                         startActivity(new Intent(LoginActivity.this, NewEntranceActivity.class));
                     } else if (responseBody.equals("errorCode")) {
+
                         showAlertDialog("کد وارد شده صحیح نمی باشد.", new AlertAction() {
                             @Override
                             public void doOnClick(SweetAlertDialog sweetAlertDialog) {
@@ -212,9 +224,11 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                             }
                         });
                     } else if (responseBody.equals("time out")) {
+
                         showAlertDialog("برای ورود به برنامه مجددا شماره خود را وارد کنید.", new AlertAction() {
                             @Override
                             public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+
                                 phoneInput.setActivated(true);
                                 phoneInput.setInputType(InputType.TYPE_CLASS_PHONE);
                                 pinView.setVisibility(View.GONE);
@@ -231,7 +245,9 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                             String type = jsonObject.getString("type");
                             String entranceId = jsonObject.getString("entranceId");
                             String mobile = jsonObject.getString("mobile");
+
                             if (Integer.parseInt(type) == 1) {
+
                                 String mechanicInfo = jsonObject.getString("mechanicInfo");
                                 SharedPrefUtils.saveData("mechanicInfo", mechanicInfo);
                             }
@@ -240,7 +256,6 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                             SharedPrefUtils.saveData("type", Integer.parseInt(type));
                             SharedPrefUtils.saveData("phoneNumber", mobile);
 
-
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
 
                         } catch (JSONException e) {
@@ -248,6 +263,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                             showAlertDialog("خطا در ارسال اطلاعات", new AlertAction() {
                                 @Override
                                 public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+
                                     sweetAlertDialog.dismissWithAnimation();
                                 }
                             });
@@ -266,6 +282,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                sweetAlertDialogSendCode.dismissWithAnimation();
 
                 showAlertDialog("خطا در ارسال اطلاعات", new AlertAction() {
                     @Override

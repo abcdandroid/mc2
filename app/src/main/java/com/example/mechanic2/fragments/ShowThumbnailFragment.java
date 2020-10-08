@@ -74,11 +74,11 @@ public class ShowThumbnailFragment extends Fragment {
         if (url != null && url.trim().length() > 0)
         {//    {Picasso.get().load(url).into(imThumbnail);}
 
-            Uri imageUri = Uri.parse(url);
+            Uri imageUri = Uri.parse(url.replaceAll(" ", "%20"));
             imThumbnail.setImageURI(imageUri);
 
             final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
-            progressBarDrawable.setColor(getResources().getColor(R.color.purple));
+            progressBarDrawable.setColor(getResources().getColor(R.color.green_A700));
             progressBarDrawable.setBackgroundColor(getResources().getColor(R.color.blue_grey_50));
             progressBarDrawable.setRadius(getResources().getDimensionPixelSize(R.dimen.spacing_medium));
 

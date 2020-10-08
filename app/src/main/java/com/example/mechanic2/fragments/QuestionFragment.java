@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +43,9 @@ import com.example.mechanic2.adapters.TitleQuestionAutoCompleteAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.AlertAction;
 import com.example.mechanic2.interfaces.ConnectionErrorManager;
+import com.example.mechanic2.interfaces.IOnBackPressed;
 import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.models.QusetionWithMsg;
@@ -65,7 +69,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class QuestionFragment extends Fragment implements View.OnClickListener {
+public class QuestionFragment extends Fragment implements View.OnClickListener, IOnBackPressed {
     private boolean x;
     private FloatingActionButton fab_add_layout;
     private FragmentManager fragmentManager;
@@ -113,6 +117,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     private String detail;
     private Title title;
     private Car car;
+    private SweetAlertDialog loadingData;
 
     public static QuestionFragment newInstance(String detail) {
 
@@ -395,35 +400,11 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
                 getActivity().startActivity(new Intent(getActivity(), AddQuestionActivity.class));
                 break;
             case R.id.reset_title:
-                app.hideKeyboard(carQuestion);
-                app.hideKeyboard(titleQuestion);
-                modifyIds();
-                if (!isMyQuestionActive) {
-                    spinnerFilter.setEnabled(true);
-                    spinnerFilter.setClickable(true);
-                }
-                filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
-
-                titleQuestion.setHint("موضوع سوالت چیه؟");
-                titleQuestion.setText("");
-
-
-                selectedTitleId = 0;
-                filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+                resetTitle();
                 requestDataWithValidation();
                 break;
             case R.id.reset_car:
-                app.hideKeyboard(carQuestion);
-                app.hideKeyboard(titleQuestion);
-                carQuestion.setText("");
-                carQuestion.setHint("درباره چه ماشینی سوال داری؟");
-                selectedCarId = 0;
-                modifyIds();
-                if (!isMyQuestionActive) {
-                    spinnerFilter.setEnabled(true);
-                    spinnerFilter.setClickable(true);
-                }
-                filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+                resetCar();
                 requestDataWithValidation();
                 break;
             case R.id.submit_filter_parent:
@@ -444,6 +425,38 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
     }
 
+    private void resetTitle() {
+        app.hideKeyboard(carQuestion);
+        app.hideKeyboard(titleQuestion);
+        modifyIds();
+        if (!isMyQuestionActive) {
+            spinnerFilter.setEnabled(true);
+            spinnerFilter.setClickable(true);
+        }
+        filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+
+        titleQuestion.setHint("موضوع سوالت چیه؟");
+        titleQuestion.setText("");
+
+
+        selectedTitleId = 0;
+        filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+    }
+
+    private void resetCar() {
+        app.hideKeyboard(carQuestion);
+        app.hideKeyboard(titleQuestion);
+        carQuestion.setText("");
+        carQuestion.setHint("درباره چه ماشینی سوال داری؟");
+        selectedCarId = 0;
+        modifyIds();
+        if (!isMyQuestionActive) {
+            spinnerFilter.setEnabled(true);
+            spinnerFilter.setClickable(true);
+        }
+        filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -460,6 +473,9 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
     private RelativeLayout btnShowAllQuestions;
 
     private void getQuestions(int carId, int titleId, int sortBy, int showMyQuestion) {
+        if (loadingData != null || (loadingData != null && loadingData.isShowing()))
+            loadingData.dismiss();
+
         lastId = 0;
         offset = 0;
         questions = new ArrayList<>();
@@ -484,7 +500,7 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
         btnAddQuestion.setOnClickListener(QuestionFragment.this);
         btnShowAllQuestions.setOnClickListener(QuestionFragment.this);
-        SweetAlertDialog loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
+        loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
         loadingData.setCancelable(false);
         loadingData.show();
 
@@ -586,10 +602,45 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<QusetionWithMsg> call, Throwable t) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAlertDialog("خطا در برقراری ارتباط", "تلاش مجدد", true, new AlertAction() {
+                            @Override
+                            public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismissWithAnimation();
+                                getQuestions(carId, titleId, sortBy, showMyQuestion);
 
+                            }
+                        });
+                    }
+                }, 1000);
             }
         });
 
+    }
+
+    private void showAlertDialog(String titleMsg, String okMsg, boolean isCancellable, AlertAction alertAction) {
+        if (getContext() == null) {
+            Toast.makeText(Application.getContext(), "خطا در برقراری ارتباط", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        SweetAlertDialog sweetAlertDialogInvalidLength = new SweetAlertDialog(getContext());
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
+        ((TextView) view.findViewById(R.id.txt)).setText(titleMsg);
+        view.findViewById(R.id.btn_show_all_goods).setVisibility(View.GONE);
+        TextView txtOk = view.findViewById(R.id.txt_ok);
+        txtOk.setText(okMsg);
+        view.findViewById(R.id.btn_contact_us).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertAction.doOnClick(sweetAlertDialogInvalidLength);
+            }
+        });
+        sweetAlertDialogInvalidLength.setCancelable(isCancellable);
+        sweetAlertDialogInvalidLength.setCustomView(view);
+        sweetAlertDialogInvalidLength.hideConfirmButton();
+        sweetAlertDialogInvalidLength.show();
     }
 
     private void resumeGetQuestions(int lastIdN, int offset, int carId, int titleId, int sortBy, int showMyQuestion) {
@@ -775,5 +826,46 @@ public class QuestionFragment extends Fragment implements View.OnClickListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        modifyIds();
+        if (selectedCarId != 0 || selectedTitleId != 0 || spinnerFilter.getSelectedItemPosition() != 0 || getMyQuestionValue() != 0) {
+            app.hideKeyboard(carQuestion);
+            app.hideKeyboard(titleQuestion);
+            carQuestion.setText("");
+            carQuestion.setHint("درباره چه ماشینی سوال داری؟");
+            selectedCarId = 0;
+
+            isMyQuestionActive = false;
+
+            spinnerFilter.setEnabled(true);
+            spinnerFilter.setClickable(true);
+            filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+
+            titleQuestion.setHint("موضوع سوالت چیه؟");
+            titleQuestion.setText("");
+
+
+            selectedTitleId = 0;
+            filterSpinnerAdapter.disableAdapter(isMyQuestionActive);
+
+            myQuestion.setBackground(getResources().getDrawable(R.drawable.btn_white));
+
+            spinnerFilter.setSelection(0);
+
+            app.validateConnection(getActivity(), sweetAlertDialogErrorConnection, new ConnectionErrorManager() {
+                @Override
+                public void doAction() {
+                    resumeQuestionListener(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                    getQuestions(selectedCarId, selectedTitleId, Integer.parseInt(filterIdInString), getMyQuestionValue());
+                }
+            });
+
+            return true;
+        }
+
+        return false;
     }
 }

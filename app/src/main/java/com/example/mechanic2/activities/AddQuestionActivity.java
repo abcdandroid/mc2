@@ -4,8 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.net.Uri; 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.StrictMode;
 import android.provider.MediaStore;
@@ -44,7 +45,7 @@ import retrofit2.Response;
 
 public class AddQuestionActivity extends Activity implements View.OnClickListener {
 
-    public final String successQ =  "سوال شما با موفقیت ثبت شد و به زودی منتشر خواهد شد";
+    public final String successQ = "سوال شما با موفقیت ثبت شد و به زودی منتشر خواهد شد";
     public final String Q_TEXT = "q_text";
     public final String ENTRANCE_ID = "entranceId";
     public final String ENTRANCE_ID1 = "entrance_id";
@@ -84,6 +85,9 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
         images.add(findViewById(R.id.image1));
         images.add(findViewById(R.id.imageProfile));
         images.add(findViewById(R.id.image3));
+        for (ImageView iv : images) {
+            iv.setClipToOutline(true);
+        }
         submitQuestion = findViewById(R.id.submitQuestion);
         cancelSend = findViewById(R.id.cancelSend);
 
@@ -229,11 +233,6 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
                 .show();
 
 
-
-
-
-
-
     }
 
 
@@ -270,10 +269,9 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
     }
 
     private File createImageFile() {
-
         long timeStamp = System.currentTimeMillis();
         String imageFileName = getString(R.string.NAME_) + timeStamp;
-        File storageDir = getExternalFilesDir("image");
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File image = null;
         try {
             image = File.createTempFile(
@@ -284,8 +282,6 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         return image;
     }
 
@@ -327,8 +323,6 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
                 body2 = app.prepareImagePart(FILE_NO + current_image, resultUri);
                 files.add(body2);
             }
-
-
 
 
         }
@@ -385,43 +379,66 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
                 map.put(getString(R.string.car_id), String.valueOf(selectedCarId));
                 map.put(getString(R.string.title_id), String.valueOf(selectedTitleId));
                 if (files.size() == 0) {
-                    {stringCall = Application.getApi().sendQuestion(map);
+                    {
+                        stringCall = Application.getApi().sendQuestion(map);
 
                     }
-                } else{
+                } else {
                     stringCall = Application.getApi().uploadMultipleFilesDynamic(map, files);
 
                 }
 
-                stringCall.enqueue(new Callback<String>() {
-                    @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-
-                        if (response.body() != null) {
-                            sweetAlertDialog.dismiss();
-                            SweetAlertDialog sweetAlertDialogSubmit = new SweetAlertDialog(AddQuestionActivity.this, SweetAlertDialog.SUCCESS_TYPE);
-                            sweetAlertDialogSubmit.setContentText(successQ).hideConfirmButton().show();
-                            sweetAlertDialogSubmit.setCancelable(false);
-                            new Handler().postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    sweetAlertDialogSubmit.dismissWithAnimation();
-                                    finish();
-                                }
-                            }, 2000);
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<String> call, Throwable t) {
-
-                    }
-                });
+                getEnqueue(stringCall, sweetAlertDialog);
 
                 break;
             case R.id.cancelSend:
                 finish();
                 break;
         }
+    }
+
+    private void getEnqueue(Call<String> stringCall, SweetAlertDialog sweetAlertDialog2) {
+        stringCall.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+                if (response.body() != null) {
+                    sweetAlertDialog2.dismiss();
+                    SweetAlertDialog sweetAlertDialogSubmit = new SweetAlertDialog(AddQuestionActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                    sweetAlertDialogSubmit.setContentText(successQ).hideConfirmButton().show();
+                    sweetAlertDialogSubmit.setCancelable(false);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            sweetAlertDialogSubmit.dismissWithAnimation();
+                            finish();
+                        }
+                    }, 2000);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(AddQuestionActivity.this, SweetAlertDialog.ERROR_TYPE);
+                sweetAlertDialog.setTitle("مشکل در برقراری ارتباط");
+                sweetAlertDialog.setConfirmText("تلاش مجدد").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog1) {
+                        sweetAlertDialog.dismiss();
+                        sweetAlertDialog1.dismissWithAnimation();
+                        getEnqueue(stringCall, sweetAlertDialog2);
+                    }
+                }).setCancelText("بی خیال").setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog1) {
+                        sweetAlertDialog.dismiss();
+                        sweetAlertDialog1.dismissWithAnimation();
+                        AddQuestionActivity.this.finish();
+                    }
+                });
+                sweetAlertDialog.show();
+
+            }
+        });
     }
 }

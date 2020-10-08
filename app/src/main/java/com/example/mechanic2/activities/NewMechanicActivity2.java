@@ -11,6 +11,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -157,13 +158,14 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
     private ImageView retryImage2;
     private ImageView retryImage1;
     private ImageView retryimageProfile;
+    private SweetAlertDialog sweetAlertDialogFailureLoading;
+    private SweetAlertDialog sweetAlertDialogGoodNotExist;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_mechanic_2);
-
 
         movieLayer = findViewById(R.id.movie_layer);
         parent = findViewById(R.id.parent);
@@ -833,7 +835,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
         long timeStamp = System.currentTimeMillis();
         String imageFileName = "NAME_" + timeStamp;
-        File storageDir = getExternalFilesDir("image");
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File image = null;
         try {
             image = File.createTempFile(
@@ -852,7 +854,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
     private File createImageFile(String imageFileName) {
 
         long timeStamp = System.currentTimeMillis();
-        File storageDir = getExternalFilesDir("image");
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File image = null;
         try {
             image = File.createTempFile(
@@ -1147,7 +1149,6 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         } else {
             stringCall = Application.getApi().uploadMultipleFilesDynamic(map, files);
 
-
         }
 
 
@@ -1190,14 +1191,35 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
-                SweetAlertDialog sweetAlertDialogSendCode = new SweetAlertDialog(NewMechanicActivity2.this, SweetAlertDialog.WARNING_TYPE).setTitleText("خطا در برقراری ارتباط");
-                sweetAlertDialogSendCode.show();
-                sweetAlertDialog.dismiss();
+
+                View view = LayoutInflater.from(NewMechanicActivity2.this).inflate(R.layout.view_good_not_found, null, false);
+                TextView textView = view.findViewById(R.id.txt);
+                textView.setText("خطا در ارسال اطلاعات.\n سرعت اینترنت شما برای به روز رسانی اطلاعات کافی نیست.");
+                RelativeLayout btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
+
+                RelativeLayout contactUs = view.findViewById(R.id.btn_contact_us);
+                LottieAnimationView warranty_lt = view.findViewById(R.id.warranty_lt);
+                warranty_lt.setVisibility(View.GONE);
+                btnShowAllGoods.setVisibility(View.GONE);
+
+                ((TextView) view.findViewById(R.id.txt_ok)).setText("خروج");
+
+                contactUs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        NewMechanicActivity2.this.finish();
+                    }
+                });
+                sweetAlertDialogGoodNotExist = new SweetAlertDialog(NewMechanicActivity2.this).hideConfirmButton()
+                        .setCustomView(view);
+
+                sweetAlertDialogGoodNotExist.setCancelable(false);
+                sweetAlertDialogGoodNotExist.show();
             }
         });
     }
 
-    private static final String TAG = "NewMechanicActivity2";
+
 
     public String jobSeparator(List<?> list) {
         StringBuilder jobIds = new StringBuilder();
@@ -1243,14 +1265,14 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         percentDone = itemView.findViewById(R.id.percentDone);
         String adminUrl = movies.getMovie_url();
         String url = movies.getMovie_url();
-        String path = getExternalFilesDir("video/mp4").getAbsolutePath();
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
-        File file = new File(getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
         if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0)) {
 
             Intent intent = new Intent(this, ExoVideoActivity.class);
-            intent.putExtra("path", getExternalFilesDir("video/mp4").getAbsolutePath() + url.
+            intent.putExtra("path", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.
                     substring(url.lastIndexOf("/")));
 
             intent.putExtra("id", movies.getId());
@@ -1339,7 +1361,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
         String Store1ImageName = imageUrl.substring(imageUrl.lastIndexOf("/") + 1, imageUrl.length() - 1);
         Glide.with(this)
-                .asBitmap()
+                .asBitmap().timeout(10000)
                 .load(getString(R.string.drweb) + imageUrl)
                 .into(new CustomTarget<Bitmap>() {
                     private Bitmap resource;
@@ -1396,42 +1418,32 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
                     @Override
                     public void onLoadCleared(@Nullable Drawable placeholder) {
-
                     }
 
 
                     @Override
                     public void onLoadFailed(@Nullable Drawable errorDrawable) {
                         super.onLoadFailed(errorDrawable);
+
+                        if (sweetAlertDialogFailureLoading != null && sweetAlertDialogFailureLoading.isShowing())
+                            return;
                         spinKitView.setVisibility(View.GONE);
                         imageView.setVisibility(View.GONE);
                         retryImage.setVisibility(View.VISIBLE);
-
                         fill_images[current_image] = false;
-                        //SharedPrefUtils.removeDataByArgument("imageNo" + current_image);
 
-                     /*   if (imageUrl.equals(mechanic.getStore_image_1())) {
-                            files.remove(body0);
-                            if (mechanic != null) {
-                                mechanic.setStore_image_1("");
+                        sweetAlertDialogFailureLoading = new SweetAlertDialog(NewMechanicActivity2.this, SweetAlertDialog.ERROR_TYPE);
+                        sweetAlertDialogFailureLoading.setTitle("خطا در دریافت اطلاعات");
+                        sweetAlertDialogFailureLoading.setContentText("متاسفانه به علت پایین بودن سرعت اینترنت قادر به ویرایش اطلاعات نیستید.");
+                        sweetAlertDialogFailureLoading.setConfirmText("خروج");
+                        sweetAlertDialogFailureLoading.setCancelable(false);
+                        sweetAlertDialogFailureLoading.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                            @Override
+                            public void onClick(SweetAlertDialog sweetAlertDialogFailureLoading) {
+                                NewMechanicActivity2.this.finish();
                             }
-                        } else if (imageUrl.equals(mechanic.getStore_image_2())) {
-                            files.remove(body1);
-                            if (mechanic != null) {
-                                mechanic.setStore_image_2("");
-                            }
-                        } else if (imageUrl.equals(mechanic.getStore_image_3())) {
-                            files.remove(body2);
-                            if (mechanic != null) {
-                                mechanic.setStore_image_3("");
-                            }
-                        } else if (imageUrl.equals(mechanic.getMechanic_image())) {
-                            files.remove(body3);
-                            if (mechanic != null) {
-                                mechanic.setMechanic_image("");
-                            }
-                        }
-*/
+                        });
+                        sweetAlertDialogFailureLoading.show();
                     }
 
 

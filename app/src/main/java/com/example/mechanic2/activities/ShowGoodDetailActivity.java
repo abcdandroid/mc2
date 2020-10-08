@@ -6,9 +6,9 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcel;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -133,10 +133,10 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         initViewPager();
 
 
-        audioAddress = context.getExternalFilesDir("voice/mp3").getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
+        audioAddress = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
 
         String url = goood.getVoice();
-        File file = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
         if (file.exists() && file.length() == goood.getFileSize()) {
             mediaPlayer = MediaPlayer.create(Application.getContext(), Uri.parse(audioAddress));
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -167,7 +167,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             sbProgress.setEnabled(false);
         }
 
-        File tmpFile = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
+        File tmpFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
         if (tmpFile.exists()) {
             sbProgress.setEnabled(false);
             progressCirculaSound.setVisibility(View.VISIBLE);
@@ -198,7 +198,6 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         initComponent();
     }
 
-    private static final String TAG = "ShowGoodDetailActivity";
 
     private void initViewPager() {
         String thumbAddressesInString = goood.getThumbnails().trim();
@@ -261,7 +260,8 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         ltPlayPause.pauseAnimation();
         startDownload.setAlpha(0f);
         String url = good.getVoice();
-        String path = getExternalFilesDir("voice/mp3").getAbsolutePath();
+        //String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
         int downloadId = SharedPrefUtils.getIntData("soundDownloadId**" + good.getId());
         if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {
@@ -531,7 +531,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-               // mediaPlayer.release();
+                // mediaPlayer.release();
 
                 seekBarUpdater = new SeekBarUpdater();
                 mediaPlayer.seekTo(0);

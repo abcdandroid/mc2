@@ -20,9 +20,8 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-
             android:layout_marginRight="8dp"
             android:orientation="horizontal"
             android:weightSum="10"
@@ -31,14 +30,13 @@
             app:layout_scrollFlags="scroll|enterAlways">
 
             <RelativeLayout
+                android:layoutDirection="ltr"
                 android:id="@+id/submit_filter_parent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/car_question_parent"
                 android:layout_alignBottom="@id/title_question_parent"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="4dp"
                 android:background="@drawable/ripple_nav_button"
                 android:gravity="center"
                 android:paddingLeft="16dp"

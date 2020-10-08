@@ -15,8 +15,6 @@
     <color name="grey_80">#37474F</color>
 
 
-    <!--Material color list from https://material.io/guidelines/style/color.html-->
-
     <color name="red_200">#EF9A9A</color>
     <color name="red_900">#B71C1C</color>
     <color name="red_A100">#FF8A80</color>

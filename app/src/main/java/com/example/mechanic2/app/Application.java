@@ -10,7 +10,6 @@ import com.example.mechanic2.interfaces.Api;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.squareup.picasso.Picasso;
 
 import org.osmdroid.config.Configuration;
 
@@ -26,9 +25,7 @@ public class Application extends android.app.Application {
     private static Context context;
 
 
-
     private static Api api;
-
 
 
     public static Context getContext() {
@@ -43,7 +40,6 @@ public class Application extends android.app.Application {
         Fresco.initialize(this);
 
 
-
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
@@ -55,20 +51,18 @@ public class Application extends android.app.Application {
         OkHttpClient client = new OkHttpClient();
 
         final OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(60, TimeUnit.SECONDS)
-                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .connectTimeout(30, TimeUnit.SECONDS)
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(app.main.URL)
-
                 .client(okHttpClient)
                 .addConverterFactory(ScalarsConverterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
 
         api = retrofit.create(Api.class);
-
 
 
         PRDownloaderConfig config = PRDownloaderConfig.newBuilder()
@@ -82,12 +76,9 @@ public class Application extends android.app.Application {
     }
 
 
-
     public static Api getApi() {
         return api;
     }
-
-
 
 
 }

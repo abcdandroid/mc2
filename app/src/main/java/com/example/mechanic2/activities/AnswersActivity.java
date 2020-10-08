@@ -7,6 +7,7 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.SystemClock;
@@ -206,7 +207,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
 
         long timeStamp = System.currentTimeMillis();
         String imageFileName = "NAME_" + timeStamp;
-        File storageDir = getExternalFilesDir("audio");
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File voice = null;
         try {
             voice = File.createTempFile(
@@ -529,7 +530,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         ltPlayPause.pauseAnimation();
         startDownload.setAlpha(0f);
         String url = getString(R.string.drweb) + answers.getAnswer().getA_voice_url();
-        String path = getExternalFilesDir("voice/mp3").getAbsolutePath();
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
         int downloadId = SharedPrefUtils.getIntData("soundDownloadId**" + answers.getAnswer().getA_id());
         if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {

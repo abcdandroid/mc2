@@ -7,9 +7,10 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,7 +54,10 @@ import com.example.mechanic2.adapters.MySpinnerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.AlertAction;
 import com.example.mechanic2.interfaces.ConnectionErrorManager;
+import com.example.mechanic2.interfaces.IOnBackPressed;
+import com.example.mechanic2.interfaces.SendData;
 import com.example.mechanic2.interfaces.VoiceOnClickListener;
 import com.example.mechanic2.models.Car;
 import com.example.mechanic2.models.CountriesAndWarranties;
@@ -79,7 +84,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StoreFragment extends Fragment implements VoiceOnClickListener, View.OnClickListener {
+public class StoreFragment extends Fragment implements VoiceOnClickListener, View.OnClickListener, IOnBackPressed {
 
     private static final int REQUEST_CODE_FOR_SEARCH_GOODS = 101;
     public static final String ALL = "همه";
@@ -123,6 +128,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     SweetAlertDialog sweetAlertDialogGoodNotExist;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    public static SendData sendData;
 
     String detail;
 
@@ -131,6 +137,8 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     int j = 0;
     private Car car;
     private Good good;
+    private SweetAlertDialog loadingData;
+    private Bundle savedInstanceState;
 
     public static StoreFragment newInstance(String detail) {
         Bundle args = new Bundle();
@@ -144,6 +152,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.savedInstanceState = savedInstanceState;
     }
 
     View inflate;
@@ -162,6 +171,29 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         return init(inflate);
     }
 
+
+    private void showAlertDialog(String titleMsg, String okMsg, boolean isCancellable, AlertAction alertAction) {
+        if (getContext() == null) {
+            Toast.makeText(Application.getContext(), "خطا در برقراری ارتباط", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        SweetAlertDialog sweetAlertDialogInvalidLength = new SweetAlertDialog(getContext());
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
+        ((TextView) view.findViewById(R.id.txt)).setText(titleMsg);
+        view.findViewById(R.id.btn_show_all_goods).setVisibility(View.GONE);
+        TextView txtOk = view.findViewById(R.id.txt_ok);
+        txtOk.setText(okMsg);
+        view.findViewById(R.id.btn_contact_us).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertAction.doOnClick(sweetAlertDialogInvalidLength);
+            }
+        });
+        sweetAlertDialogInvalidLength.setCancelable(isCancellable);
+        sweetAlertDialogInvalidLength.setCustomView(view);
+        sweetAlertDialogInvalidLength.hideConfirmButton();
+        sweetAlertDialogInvalidLength.show();
+    }
 
     private View init(View inflate) {
 
@@ -184,67 +216,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
         submitFilterParent.setOnClickListener(this);
 
-        SweetAlertDialog loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
-        loadingData.setCancelable(false);
-        loadingData.show();
-        loadingData.setCancelable(false);
-        Map<String, String> map = new HashMap<>();
-        map.put("route", "getCountriesAndWarranties");
-        warrantySpinner.setVisibility(View.GONE);
-        countrySpinner.setVisibility(View.GONE);
-        stoke.setVisibility(View.GONE);
-        app.validateConnection(getActivity(), null, new ConnectionErrorManager() {
-            @Override
-            public void doAction() {
-
-                Application.getApi().getCountriesAndWarranties(map).enqueue(new Callback<CountriesAndWarranties>() {
-                    @Override
-                    public void onResponse(Call<CountriesAndWarranties> call, Response<CountriesAndWarranties> response) {
-                        if (loadingData != null)
-                            loadingData.dismissWithAnimation();
-                        List<Country> countries = response.body().getCountries();
-                        List<Warranty> warranties = response.body().getWarranties();
-                        List<String> countryNames = new ArrayList<>();
-                        List<Integer> countryIds = new ArrayList<>();
-                        List<String> warrantyNames = new ArrayList<>();
-                        List<Integer> warrantyIds = new ArrayList<>();
-                        for (Country countries1 : countries) {
-                            countryNames.add(countries1.getName());
-                            countryIds.add(countries1.getId());
-                        }
-                        for (Warranty warranty1 : warranties) {
-                            warrantyNames.add(warranty1.getName());
-                            warrantyIds.add(warranty1.getId());
-                        }
-                        if (getContext() != null) {
-                            countrySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, countryNames, countryIds, false);
-                            warrantySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, warrantyNames, warrantyIds, false);
-                            warrantySpinner.setAdapter(warrantySpinnerAdapter);
-                            countrySpinner.setAdapter(countrySpinnerAdapter);
-                        }
-                        stoke.setVisibility(View.VISIBLE);
-                        countrySpinner.setVisibility(View.VISIBLE);
-                        warrantySpinner.setVisibility(View.VISIBLE);
-                        if (detail == null) {
-                            fromConfig = false;
-                        } else {
-                            fromConfig = true;
-                            configureStoreWithDetail(detail);
-                        }
-
-
-                       /* resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
-                        getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));*/
-                    }
-
-                    @Override
-                    public void onFailure(Call<CountriesAndWarranties> call, Throwable t) {
-                        loadingData.dismissWithAnimation();
-
-                    }
-                });
-            }
-        });
+        getInitData();
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -457,6 +429,80 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         return inflate;
     }
 
+    private void getInitData() {
+        if (loadingData != null) loadingData.dismiss();
+        loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
+        loadingData.setCancelable(false);
+        loadingData.show();
+        loadingData.setCancelable(false);
+        Map<String, String> map = new HashMap<>();
+        map.put("route", "getCountriesAndWarranties");
+        warrantySpinner.setVisibility(View.GONE);
+        countrySpinner.setVisibility(View.GONE);
+        stoke.setVisibility(View.GONE);
+        app.validateConnection(getActivity(), null, new ConnectionErrorManager() {
+            @Override
+            public void doAction() {
+
+                Application.getApi().getCountriesAndWarranties(map).enqueue(new Callback<CountriesAndWarranties>() {
+                    @Override
+                    public void onResponse(Call<CountriesAndWarranties> call, Response<CountriesAndWarranties> response) {
+                        if (loadingData != null)
+                            loadingData.dismissWithAnimation();
+                        List<Country> countries = response.body().getCountries();
+                        List<Warranty> warranties = response.body().getWarranties();
+                        List<String> countryNames = new ArrayList<>();
+                        List<Integer> countryIds = new ArrayList<>();
+                        List<String> warrantyNames = new ArrayList<>();
+                        List<Integer> warrantyIds = new ArrayList<>();
+                        for (Country countries1 : countries) {
+                            countryNames.add(countries1.getName());
+                            countryIds.add(countries1.getId());
+                        }
+                        for (Warranty warranty1 : warranties) {
+                            warrantyNames.add(warranty1.getName());
+                            warrantyIds.add(warranty1.getId());
+                        }
+                        if (getContext() != null) {
+                            countrySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, countryNames, countryIds, false);
+                            warrantySpinnerAdapter = new MySpinnerAdapter(getContext(), R.layout.item_spinner, warrantyNames, warrantyIds, false);
+                            warrantySpinner.setAdapter(warrantySpinnerAdapter);
+                            countrySpinner.setAdapter(countrySpinnerAdapter);
+                        }
+                        stoke.setVisibility(View.VISIBLE);
+                        countrySpinner.setVisibility(View.VISIBLE);
+                        warrantySpinner.setVisibility(View.VISIBLE);
+                        if (detail == null) {
+                            fromConfig = false;
+                        } else {
+                            fromConfig = true;
+                            configureStoreWithDetail(detail);
+                        }
+
+
+                       /* resumeGooodListener(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));
+                        getGooods(selectedCarId, selectedGoodId, Integer.parseInt(warrantyIdInString), Integer.parseInt(countryIdInString), getStockValue(stokeState));*/
+                    }
+
+                    @Override
+                    public void onFailure(Call<CountriesAndWarranties> call, Throwable t) {
+                        loadingData.dismissWithAnimation();
+
+                        showAlertDialog("خطا در برقراری ارتباط", "تلاش دوباره", true, new AlertAction() {
+                            @Override
+                            public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                                sweetAlertDialog.dismiss();
+                                if (sendData != null)
+                                    sendData.toStoreFragment();
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+
+
     private void modifyIds() {
         if (carQuestion.getText().toString().length() == 0 && selectedCarId == 0) {
             selectedCarId = 0;
@@ -471,32 +517,19 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                         (!goodQuestion.getText().toString().equals(getString(R.string.all_goods)) && !goodQuestion.getText().toString().equals(getString(R.string.luxury_good)) && (good != null && !goodQuestion.getText().toString().equals(good.getName())))
                         && selectedGoodId == 0
         ) {
-
-
             selectedGoodId = -1;
-
-
         }
     }
 
     private MyTextView txt;
     private RelativeLayout btnConfirm;
-    private static final String TAG = "StoreFragment";
+
 
     private void getGooods(int carId, int goodId, int warrantyId, int countryId, int isStock) {
         lastId = 0;
         gooods = new ArrayList<>();
         tmpGooods = new ArrayList<>();
         adapter = new GooodStoreAdapter(gooods, getActivity());
-
-
-
-
-
-
-
-
-
         Map<String, String> map = new HashMap<>();
         map.put("route", "getStore3");
         map.put("lastId", String.valueOf(lastId));
@@ -534,7 +567,6 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                         } else if (id == -4) {
                             txt.setText("لطفا روی یکی از قطعات و خودروهای پیشنهادی کلیک کنید.");
                         }
-
                         btnConfirm = view.findViewById(R.id.btn_confirm);
                         SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.WARNING_TYPE).setCustomView(view);
 
@@ -589,6 +621,13 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
             @Override
             public void onFailure(Call<List<Goood>> call, Throwable t) {
+                showAlertDialog(new AlertAction() {
+                    @Override
+                    public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                        getGooods(carId, goodId, warrantyId, countryId, isStock);
+                    }
+                });
             }
         });
 
@@ -674,7 +713,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         ltPlayPause.pauseAnimation();
         startDownload.setAlpha(0f);
         String url = good.getVoice();
-        String path = getActivity().getExternalFilesDir("voice/mp3").getAbsolutePath();
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
 
         int downloadId = SharedPrefUtils.getIntData("soundDownloadId**" + good.getId());
         if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {
@@ -730,6 +769,33 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
     }
 
+    private void showAlertDialog(AlertAction alertAction) {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (getActivity() == null) {
+                    Toast.makeText(Application.getContext(), "خطا در برقراری ارتباط", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                SweetAlertDialog sweetAlertDialogInvalidLength = new SweetAlertDialog(getActivity());
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.view_good_not_found, null);
+                ((TextView) view.findViewById(R.id.txt)).setText("خطا در برقراری ارتباط");
+                view.findViewById(R.id.btn_show_all_goods).setVisibility(View.GONE);
+                TextView txtOk = view.findViewById(R.id.txt_ok);
+                txtOk.setText("تلاش دوباره");
+                view.findViewById(R.id.btn_contact_us).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertAction.doOnClick(sweetAlertDialogInvalidLength);
+                    }
+                });
+                sweetAlertDialogInvalidLength.setCustomView(view);
+                sweetAlertDialogInvalidLength.hideConfirmButton();
+                sweetAlertDialogInvalidLength.show();
+            }
+        }, 1000);
+    }
+
 
     private boolean is_stoke_active = false;
 
@@ -744,19 +810,9 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 warrantySpinnerAdapter.disableAdapter(is_stoke_active);
                 if (is_stoke_active) {
 
-                    stokeState = 1;
-                    stoke.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
-                    countrySpinner.setEnabled(false);
-                    countrySpinner.setClickable(false);
-                    warrantySpinner.setEnabled(false);
-                    warrantySpinner.setClickable(false);
+                    enableStoke();
                 } else {
-                    stokeState = 0;
-                    stoke.setBackground(getResources().getDrawable(R.drawable.btn_white));
-                    countrySpinner.setEnabled(true);
-                    countrySpinner.setClickable(true);
-                    warrantySpinner.setEnabled(true);
-                    warrantySpinner.setClickable(true);
+                    disableStoke();
                 }
 
                 loading.setVisibility(View.VISIBLE);
@@ -782,54 +838,10 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
                 startActivity(intent);
                 break;
             case R.id.reset_car:
-                app.hideKeyboard(carQuestion);
-                app.hideKeyboard(goodQuestion);
-                carQuestion.setText("");
-                carQuestion.setHint("ماشینت چیه؟");
-                selectedCarId = 0;
-                modifyIds();
-                if (!is_stoke_active) {
-                    warrantySpinner.setEnabled(true);
-                    countrySpinner.setEnabled(true);
-                    countrySpinner.setClickable(true);
-                    warrantySpinner.setClickable(true);
-                }
-                countrySpinnerAdapter.disableAdapter(is_stoke_active);
-                warrantySpinnerAdapter.disableAdapter(is_stoke_active);
-
-                loading.setVisibility(View.VISIBLE);
-                submitFilter.setVisibility(View.INVISIBLE);
-
-                getGoodsPackage();
+                resetCar(true);
                 break;
             case R.id.reset_good:
-                app.hideKeyboard(carQuestion);
-                app.hideKeyboard(goodQuestion);
-                modifyIds();
-                goodQuestion.setHint(getString(R.string.ask_good));
-                goodQuestion.setText("");
-                if (stokeState == 2) {
-                    stokeState = 0;
-                    stoke.setEnabled(true);
-                    stoke.setTextColor(Color.WHITE);
-                    stoke.setBackground(getActivity().getDrawable(R.drawable.btn_white));
-
-                } else
-
-
-                    selectedGoodId = 0;
-                if (!is_stoke_active) {
-                    warrantySpinner.setEnabled(true);
-                    countrySpinner.setEnabled(true);
-                    countrySpinner.setClickable(true);
-                    warrantySpinner.setClickable(true);
-                    countrySpinnerAdapter.disableAdapter(is_stoke_active);
-                    warrantySpinnerAdapter.disableAdapter(is_stoke_active);
-                }
-
-                loading.setVisibility(View.VISIBLE);
-                submitFilter.setVisibility(View.INVISIBLE);
-                getGoodsPackage();
+                resetGoods(true);
                 break;
             case R.id.btn_show_all_goods:
                 sweetAlertDialogGoodNotExist.dismissWithAnimation();
@@ -869,6 +881,77 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
 
 
         }
+    }
+
+    private void enableStoke() {
+        stokeState = 1;
+        stoke.setBackground(getResources().getDrawable(R.drawable.btn_active_stoke));
+        countrySpinner.setEnabled(false);
+        countrySpinner.setClickable(false);
+        warrantySpinner.setEnabled(false);
+        warrantySpinner.setClickable(false);
+    }
+
+    private void disableStoke() {
+        stokeState = 0;
+        stoke.setBackground(getResources().getDrawable(R.drawable.btn_white));
+        countrySpinner.setEnabled(true);
+        countrySpinner.setClickable(true);
+        warrantySpinner.setEnabled(true);
+        warrantySpinner.setClickable(true);
+    }
+
+    private void resetCar(boolean requestData) {
+        app.hideKeyboard(carQuestion);
+        app.hideKeyboard(goodQuestion);
+        carQuestion.setText("");
+        carQuestion.setHint("ماشینت چیه؟");
+        selectedCarId = 0;
+        modifyIds();
+        if (!is_stoke_active) {
+            warrantySpinner.setEnabled(true);
+            countrySpinner.setEnabled(true);
+            countrySpinner.setClickable(true);
+            warrantySpinner.setClickable(true);
+        }
+        countrySpinnerAdapter.disableAdapter(is_stoke_active);
+        warrantySpinnerAdapter.disableAdapter(is_stoke_active);
+
+        loading.setVisibility(View.VISIBLE);
+        submitFilter.setVisibility(View.INVISIBLE);
+        if (requestData)
+            getGoodsPackage();
+    }
+
+    private void resetGoods(boolean requestData) {
+        app.hideKeyboard(carQuestion);
+        app.hideKeyboard(goodQuestion);
+        modifyIds();
+        goodQuestion.setHint(getString(R.string.ask_good));
+        goodQuestion.setText("");
+        if (stokeState == 2) {
+            stokeState = 0;
+            stoke.setEnabled(true);
+            stoke.setTextColor(Color.WHITE);
+            stoke.setBackground(getActivity().getDrawable(R.drawable.btn_white));
+
+        } else
+
+
+            selectedGoodId = 0;
+        if (!is_stoke_active) {
+            warrantySpinner.setEnabled(true);
+            countrySpinner.setEnabled(true);
+            countrySpinner.setClickable(true);
+            warrantySpinner.setClickable(true);
+            countrySpinnerAdapter.disableAdapter(is_stoke_active);
+            warrantySpinnerAdapter.disableAdapter(is_stoke_active);
+        }
+
+        loading.setVisibility(View.VISIBLE);
+        submitFilter.setVisibility(View.INVISIBLE);
+        if (requestData)
+            getGoodsPackage();
     }
 
     private void getGoodsPackage() {
@@ -970,4 +1053,33 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
     }
 
 
+    @Override
+    public boolean onBackPressed() {
+        modifyIds();
+
+        if (selectedCarId != 0 || selectedGoodId != 0 || stokeState != 0 || warrantySpinner.getSelectedItemPosition() != 0 || countrySpinner.getSelectedItemPosition() != 0) {
+
+            stokeState = 0;
+            is_stoke_active = false;
+            stoke.setBackground(getResources().getDrawable(R.drawable.btn_white));
+            countrySpinner.setEnabled(true);
+            countrySpinner.setClickable(true);
+            warrantySpinner.setEnabled(true);
+            warrantySpinner.setClickable(true);
+
+
+            if (getContext() != null) {
+                countrySpinnerAdapter.disableAdapter(is_stoke_active);
+                warrantySpinnerAdapter.disableAdapter(is_stoke_active);
+                warrantySpinner.setSelection(0);
+                countrySpinner.setSelection(0);
+            }
+            resetCar(false);
+            resetGoods(false);
+            getGoodsPackage();
+
+            return true;
+        }
+        return false;
+    }
 }

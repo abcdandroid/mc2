@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="59bda64b-e028-401f-8fbf-c407de0df449" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/interfaces/IOnBackPressed.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/interfaces/SendData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../drawable/retry_png.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/update_lt.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../../build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/../../../../build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../../AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/AddQuestionActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/AddQuestionActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/ExoVideoActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/ExoVideoActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/LoginActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/LoginActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/NewMechanicActivity2.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/NewMechanicActivity2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/ShowMechanicDetailActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/ShowMechanicDetailActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/SplashActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/activities/SplashActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/adapters/QuestionRecyclerAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/adapters/QuestionRecyclerAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/app/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/app/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/app/app.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/app/app.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/AdminFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/AdminFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/MainPageFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/MainPageFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/MainPageItemFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/MainPageItemFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/MechanicFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/MechanicFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/QuestionFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/QuestionFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/QuestionImagesFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/QuestionImagesFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/ShowThumbnailFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/ShowThumbnailFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/StoreFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/fragments/StoreFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../java/com/example/mechanic2/interfaces/Api.java" beforeDir="false" afterPath="$PROJECT_DIR$/../../java/com/example/mechanic2/interfaces/Api.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/activity_mechanic_location.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/activity_mechanic_location.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/activity_new_entrance.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/activity_new_entrance.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/activity_new_mechanic_2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/activity_new_mechanic_2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/activity_show_good_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/activity_show_good_detail.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/activity_show_mechanic_detail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/activity_show_mechanic_detail.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/fragment_add_question.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/fragment_add_question.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/fragment_main_page.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/fragment_main_page.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/fragment_main_page_item.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/fragment_main_page_item.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/fragment_mechanic.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/fragment_mechanic.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/fragment_question.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/fragment_question.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/fragment_question_images.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/fragment_question_images.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/fragment_show_thumbnail.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/fragment_show_thumbnail.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/fragment_store.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/fragment_store.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/item_good.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/item_good.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/item_mechanic.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/item_mechanic.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../layout/item_question.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../layout/item_question.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../xml/activity_test_scene.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../xml/activity_test_scene.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../../../.." />
+  </component>
+  <component name="ProjectId" id="1iKWo6Hva0lMrUm4WoLvNw3iAyb" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="android.sdk.path" value="$USER_HOME$/AppData/Local/Android/Sdk" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="SDK Location" />
+    <property name="project.structure.proportion" value="0.17" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="59bda64b-e028-401f-8fbf-c407de0df449" name="Default Changelist" comment="" />
+      <created>1601656935739</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1601656935739</updated>
+    </task>
+    <servers />
+  </component>
+</project>

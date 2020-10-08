@@ -25,7 +25,7 @@ public class ExoVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_video);
         videoView = findViewById(R.id.videoView);
         path = getIntent().getExtras().getString(getString(R.string.pth));
-        videoView.setVideoURI(Uri.parse(path));
+        videoView.setVideoURI(Uri.parse(path.replaceAll(" ", "%20")));
         videoView.start();
     }
 

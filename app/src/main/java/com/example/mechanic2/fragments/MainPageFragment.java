@@ -4,9 +4,11 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +17,9 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -27,6 +31,8 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.example.mechanic2.BuildConfig;
 import com.example.mechanic2.R;
@@ -37,10 +43,12 @@ import com.example.mechanic2.adapters.MyFragmentStatePagerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
+import com.example.mechanic2.interfaces.AlertAction;
 import com.example.mechanic2.interfaces.ConnectionErrorManager;
 import com.example.mechanic2.models.Mechanic;
 import com.example.mechanic2.models.ViewpagerData;
 import com.example.mechanic2.views.MyTextView;
+import com.github.ybq.android.spinkit.SpinKitView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.Gson;
@@ -74,6 +82,10 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     int mechanicId;
     private Mechanic mechanic;
 
+    private SpinKitView loadingImageProfile;
+    private ImageView retryImageProfile;
+    private SweetAlertDialog sweetAlertDialogInvalidLength;
+    private static boolean alarmShowed = false;
 
     public MainPageFragment() {
 
@@ -94,6 +106,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
         if (SplashActivity.etcetera != null && Integer.parseInt(SplashActivity.etcetera.get(0).getMessage().substring(1)) != BuildConfig.VERSION_CODE) {
+            if (alarmShowed) return;
             LottieAnimationView warrantyLt;
             MyTextView txt;
             RelativeLayout btnContactUs;
@@ -101,26 +114,28 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             RelativeLayout btnShowAllGoods;
             MyTextView cancelAction;
 
-            SweetAlertDialog exitDialog = new SweetAlertDialog(getContext());
+            SweetAlertDialog exitDialog = new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE);
             View view1 = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
             exitDialog.setCustomView(view1);
             exitDialog.hideConfirmButton();
 
             warrantyLt = view1.findViewById(R.id.warranty_lt);
+            warrantyLt.setVisibility(View.GONE);
+
             txt = view1.findViewById(R.id.txt);
             btnContactUs = view1.findViewById(R.id.btn_contact_us);
             txtOk = view1.findViewById(R.id.txt_ok);
             btnShowAllGoods = view1.findViewById(R.id.btn_show_all_goods);
             cancelAction = view1.findViewById(R.id.cancel_action);
 
-            warrantyLt.setVisibility(View.GONE);
 
-            txt.setText("نسخخه جدیدی از برنامه اومده");
+            txt.setText("نسخه جدیدی از برنامه اومده");
 
             txtOk.setText("آپدیت کن");
+            cancelAction.setText("بعدا");
 
-            cancelAction.setVisibility(View.GONE);
-            btnShowAllGoods.setVisibility(View.INVISIBLE);
+            cancelAction.setVisibility(View.VISIBLE);
+            btnShowAllGoods.setVisibility(View.VISIBLE);
 
             btnContactUs.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,8 +144,18 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                     Intent i = new Intent(Intent.ACTION_VIEW);
                     i.setData(Uri.parse(url));
                     getActivity().startActivity(i);
+                    alarmShowed = true;
                 }
             });
+
+            btnShowAllGoods.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    exitDialog.dismissWithAnimation();
+                    alarmShowed = true;
+                }
+            });
+
 
             exitDialog.show();
         }
@@ -140,6 +165,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main_page, container, false);
+
         return init(view);
     }
 
@@ -188,6 +214,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     private AppBarLayout appbar;
 
     private View init(View view) {
+
         adapterPlace1 = new MyFragmentStatePagerAdapter(getActivity().getSupportFragmentManager(), 0);
         adapterPlace2 = new MyFragmentStatePagerAdapter(getActivity().getSupportFragmentManager(), 0);
         adapterPlace3 = new MyFragmentStatePagerAdapter(getActivity().getSupportFragmentManager(), 0);
@@ -200,6 +227,10 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         navView = view.findViewById(R.id.nav_view);
         appbar = view.findViewById(R.id.appbar);
         hamburgerButton = view.findViewById(R.id.hamburger_button);
+        loadingImageProfile = view.findViewById(R.id.loading_imageProfile);
+        retryImageProfile = view.findViewById(R.id.retryImageProfile);
+        loadingImageProfile.setVisibility(View.GONE);
+        retryImageProfile.setVisibility(View.GONE);
 
 
         circleImageView = view.findViewById(R.id.nav_mechanic_image);
@@ -245,16 +276,17 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                 mechanicId = mechanic.getId();
                 if (SharedPrefUtils.getStringData("imageNo3").equals("-1"))
                     if (mechanic.getMechanic_image().length() > 0) {
-                        //Picasso.get().load(getString(R.string.drweb) + mechanic.getMechanic_image()).into(circleImageView);
-                        Glide.with(this).load(getString(R.string.drweb) + mechanic.getMechanic_image()).into(circleImageView);
 
+                            loadImage(getString(R.string.drweb) + mechanic.getMechanic_image(), circleImageView, loadingImageProfile, retryImageProfile);
                     } else {
 
                         if (getActivity() != null)
                             circleImageView.setImageDrawable(getActivity().getDrawable(R.drawable.mechanic_avatar));
                     }
                 else {
+
                     Uri parsedUri = Uri.parse(SharedPrefUtils.getStringData("imageNo" + 3));
+
                     circleImageView.setImageURI(parsedUri);
                 }
                 navMechanicName.setText(mechanic.getName());
@@ -312,7 +344,9 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                     aboutUsNormalUser.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            if (sweetAlertDialog != null && sweetAlertDialog.isShowing())
+                                sweetAlertDialog.dismissWithAnimation();
+                            showAboutUs();
                         }
                     });
                     signOutNormalUser.setOnClickListener(new View.OnClickListener() {
@@ -357,7 +391,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
 
             }
-        });
+        });/**/
 
         coordinatorLayout = view.findViewById(R.id.coordinator_layout);
 
@@ -442,9 +476,18 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         exitDialog.show();
     }
 
+    SweetAlertDialog loadingData;
+    SweetAlertDialog sweetAlertDialog;
 
     private void getData() {
-        SweetAlertDialog loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
+
+        if (loadingData != null) {
+            loadingData.dismissWithAnimation();
+            loadingData = null;
+        }
+        if (sweetAlertDialogInvalidLength != null) sweetAlertDialogInvalidLength.dismiss();
+
+        loadingData = new SweetAlertDialog(getActivity(), SweetAlertDialog.PROGRESS_TYPE).setContentText("در حال دریافت اطلاعات").setTitleText("لطفا شکیبا باشید.");
         loadingData.setCancelable(false);
         loadingData.show();
         Map<String, String> map = new HashMap<>();
@@ -464,8 +507,23 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                if (loadingData != null)
-                    loadingData.dismissWithAnimation();
+
+
+                if (loadingData != null) {
+
+                    loadingData.dismiss();
+                } else {
+
+                }
+
+                if (sweetAlertDialog != null) {
+                    //      sweetAlertDialog.dismiss();
+
+                } else {
+
+                }
+
+
                 try {
                     if (response.body() != null) {
                         JSONObject jsonObjectMain = new JSONObject(response.body());
@@ -479,6 +537,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             if (jsonObject.getInt("field") == 8) {
                                 if (jsonObject.getInt("visibility") == 1) {
+                                    place5VideoView.setVisibility(View.VISIBLE);
                                     place5VideoView.setVideoURI(Uri.parse(jsonObject.getString("view_url")));
                                 } else {
                                     place5VideoView.setVisibility(View.GONE);
@@ -489,6 +548,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                             if (jsonObject.getInt("place") == 1) {
 
                                 if (jsonObject.getInt("visibility") == 1) {
+
+                                    containerP1.setVisibility(View.VISIBLE);
                                     adapterPlace1.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace1.notifyDataSetChanged();
@@ -498,6 +559,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                                 }
                             } else if (jsonObject.getInt("place") == 2) {
                                 if (jsonObject.getInt("visibility") == 1) {
+
+                                    containerP2.setVisibility(View.VISIBLE);
                                     adapterPlace2.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace2.notifyDataSetChanged();
@@ -506,6 +569,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                                 }
                             } else if (jsonObject.getInt("place") == 3) {
                                 if (jsonObject.getInt("visibility") == 1) {
+
+                                    place3.setVisibility(View.VISIBLE);
                                     adapterPlace3.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace3.notifyDataSetChanged();
@@ -514,6 +579,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                                 }
                             } else if (jsonObject.getInt("place") == 4) {
                                 if (jsonObject.getInt("visibility") == 1) {
+                                    place4.setVisibility(View.VISIBLE);
                                     adapterPlace4.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace4.notifyDataSetChanged();
@@ -522,6 +588,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                                 }
                             } else if (jsonObject.getInt("place") == 6) {
                                 if (jsonObject.getInt("visibility") == 1) {
+                                    place6.setVisibility(View.VISIBLE);
                                     adapterPlace6.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace6.notifyDataSetChanged();
@@ -530,6 +597,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                                 }
                             } else if (jsonObject.getInt("place") == 7) {
                                 if (jsonObject.getInt("visibility") == 1) {
+                                    place7.setVisibility(View.VISIBLE);
                                     adapterPlace7.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace7.notifyDataSetChanged();
@@ -564,8 +632,68 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
 
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (getContext() != null) {
+
+                            showAlertDialog("خطا در برقراری ارتباط", "تلاش دوباره", false, new AlertAction() {
+                                @Override
+                                public void doOnClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                    getData();
+                                }
+                            });
+
+
+                        }
+                    }
+                }, 1000);
+
+
             }
         });
+    }
+
+
+    private void showAlertDialog(String titleMsg, String okMsg, boolean isCancellable, AlertAction alertAction) {
+        if (getContext() == null) {
+            Toast.makeText(Application.getContext(), "خطا در برقراری ارتباط", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        sweetAlertDialogInvalidLength = new SweetAlertDialog(getContext());
+
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null);
+
+        ((TextView) view.findViewById(R.id.txt)).setText(titleMsg);
+        ((TextView) view.findViewById(R.id.cancel_action)).setText(titleMsg);
+
+        TextView txtOk = view.findViewById(R.id.txt_ok);
+        txtOk.setText(okMsg);
+
+        TextView cancel_action = view.findViewById(R.id.cancel_action);
+        cancel_action.setText("خروج از برنامه");
+
+
+        view.findViewById(R.id.btn_contact_us).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertAction.doOnClick(sweetAlertDialogInvalidLength);
+            }
+        });
+
+        view.findViewById(R.id.btn_show_all_goods).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Objects.requireNonNull(getActivity()).moveTaskToBack(true);
+                getActivity().finish();
+            }
+        });
+
+        sweetAlertDialogInvalidLength.setCancelable(isCancellable);
+        sweetAlertDialogInvalidLength.setCustomView(view);
+        sweetAlertDialogInvalidLength.hideConfirmButton();
+        sweetAlertDialogInvalidLength.show();
     }
 
 
@@ -624,6 +752,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                 break;
             case R.id.about_us:
 
+                showAboutUs();
+
 
                 break;
             case R.id.bi_khial:
@@ -649,6 +779,93 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    private void showAboutUs() {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.view_good_not_found, null, false);
+        TextView textView = view.findViewById(R.id.txt);
+        textView.setText("آنلاین مکانیک برای ارتباط سریع و آسان میان خدمات دهندگان صنف مشاغل خودرویی و شهروندان، طراحی گردیده است. با استفاده از این برنامه، شهروندان می توانند برای سرویس خودروی خود انتخاب هوشمندانه تری داشته باشند. همچنین سرویس دهندگان خودرویی می توانند فارغ از محلی که در آن فعالیت می کنند با دادن مشاوره و نشان دادن خدمات حرفه ای،  اقدام به جذب مشتری کنند.");
+        textView.setTextSize(16f);
+        RelativeLayout btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
+        RelativeLayout contactUs = view.findViewById(R.id.btn_contact_us);
+        (view.findViewById(R.id.warranty_lt)).setVisibility(View.GONE);
+
+        ((TextView) view.findViewById(R.id.txt_ok)).setText("موافقم");
+        btnShowAllGoods.setVisibility(View.GONE);
+        SweetAlertDialog sweetAlertDialogGoodNotExist = new SweetAlertDialog(getContext()).hideConfirmButton()
+                .setCustomView(view);
+
+
+        contactUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sweetAlertDialogGoodNotExist.dismissWithAnimation();
+            }
+        });
+        sweetAlertDialogGoodNotExist.setCancelable(false);
+        sweetAlertDialogGoodNotExist.show();
+    }
+
+
+    public <E extends ImageView> void loadImage(String imageUrl, E imageView, SpinKitView spinKitView, ImageView retryImage) {
+        if (imageUrl.trim().length() == 0) {
+            return;
+        }
+
+        imageView.setVisibility(View.GONE);
+        spinKitView.setVisibility(View.VISIBLE);
+        retryImage.setVisibility(View.GONE);
+
+        Glide.with(this)
+                .asBitmap()
+                .load(imageUrl)
+                .into(new CustomTarget<Bitmap>() {
+
+                    @Override
+                    public void onStart() {
+                        super.onStart();
+
+                        imageView.setVisibility(View.GONE);
+                        spinKitView.setVisibility(View.VISIBLE);
+                        retryImage.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+
+                        imageView.setImageBitmap(resource);
+
+                        spinKitView.setVisibility(View.GONE);
+                        retryImage.setVisibility(View.GONE);
+                        imageView.setVisibility(View.VISIBLE);
+
+                    }
+
+                    @Override
+                    public void onLoadCleared(@Nullable Drawable placeholder) {
+
+                    }
+
+
+                    @Override
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                        super.onLoadFailed(errorDrawable);
+
+                        spinKitView.setVisibility(View.GONE);
+                        imageView.setVisibility(View.GONE);
+                        retryImage.setVisibility(View.VISIBLE);
+
+                    }
+
+                });
+
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        place5VideoView.pause();
+    }
+
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -660,7 +877,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             }
             appbar.setVisibility(View.GONE);
             place5VideoView.setVisibility(View.VISIBLE);
-
 
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) place5VideoView.getLayoutParams();
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
@@ -686,7 +902,5 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             params.topMargin = place5VideoViewMT;
             place5VideoView.setLayoutParams(params);
         }
-    }
-
-
+    }/**/
 }

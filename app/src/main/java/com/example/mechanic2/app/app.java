@@ -328,22 +328,22 @@ public class app {
 
     public static void fresco(Context context, String uri, SimpleDraweeView view) {
         view.getHierarchy().reset();
-        Uri imageUri = Uri.parse(uri);
+        Uri imageUri = Uri.parse(uri.replaceAll(" ", "%20"));
         view.setImageURI(imageUri);
         final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
         progressBarDrawable.setBarWidth(5);
-        progressBarDrawable.setColor(context.getResources().getColor(R.color.purple));
+        progressBarDrawable.setColor(context.getResources().getColor(R.color.green_A700));
         progressBarDrawable.setBackgroundColor(context.getResources().getColor(R.color.blue_grey_50));
 
         view.getHierarchy().setProgressBarImage(progressBarDrawable);
     }
 
     public static void fresco(Context context, String uri, SimpleDraweeView view, boolean showProgress) {
-        Uri imageUri = Uri.parse(uri);
+        Uri imageUri = Uri.parse(uri.replaceAll(" ", "%20"));
         view.setImageURI(imageUri);
         if (showProgress) {
             final ProgressBarDrawable progressBarDrawable = new ProgressBarDrawable();
-            progressBarDrawable.setColor(context.getResources().getColor(R.color.purple));
+            progressBarDrawable.setColor(context.getResources().getColor(R.color.green_A700));
             progressBarDrawable.setBackgroundColor(context.getResources().getColor(R.color.blue_grey_50));
             progressBarDrawable.setRadius(1);
             view.getHierarchy().setProgressBarImage(progressBarDrawable);
