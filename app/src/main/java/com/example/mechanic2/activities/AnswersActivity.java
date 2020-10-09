@@ -207,7 +207,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
 
         long timeStamp = System.currentTimeMillis();
         String imageFileName = "NAME_" + timeStamp;
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File storageDir = getExternalFilesDir("audio");
         File voice = null;
         try {
             voice = File.createTempFile(
@@ -530,7 +530,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         ltPlayPause.pauseAnimation();
         startDownload.setAlpha(0f);
         String url = getString(R.string.drweb) + answers.getAnswer().getA_voice_url();
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        String path = getExternalFilesDir("voice/mp3").getAbsolutePath();
 
         int downloadId = SharedPrefUtils.getIntData("soundDownloadId**" + answers.getAnswer().getA_id());
         if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {

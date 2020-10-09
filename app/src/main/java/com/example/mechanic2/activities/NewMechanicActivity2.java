@@ -835,7 +835,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
 
         long timeStamp = System.currentTimeMillis();
         String imageFileName = "NAME_" + timeStamp;
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File storageDir = getExternalFilesDir("image");
         File image = null;
         try {
             image = File.createTempFile(
@@ -854,7 +854,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
     private File createImageFile(String imageFileName) {
 
         long timeStamp = System.currentTimeMillis();
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File storageDir = getExternalFilesDir("image");
         File image = null;
         try {
             image = File.createTempFile(
@@ -1265,14 +1265,14 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         percentDone = itemView.findViewById(R.id.percentDone);
         String adminUrl = movies.getMovie_url();
         String url = movies.getMovie_url();
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        String path = getExternalFilesDir("video/mp4").getAbsolutePath();
 
         File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
         if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0)) {
 
             Intent intent = new Intent(this, ExoVideoActivity.class);
-            intent.putExtra("path", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.
+            intent.putExtra("path", getExternalFilesDir("video/mp4").getAbsolutePath() + url.
                     substring(url.lastIndexOf("/")));
 
             intent.putExtra("id", movies.getId());

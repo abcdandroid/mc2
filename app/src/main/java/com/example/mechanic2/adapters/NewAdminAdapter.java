@@ -100,7 +100,7 @@ public class NewAdminAdapter extends RecyclerView.Adapter<NewAdminAdapter.AdminV
 
             String url = movies.getMovie_url();
 
-            File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+            File file = new File(context.getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
             if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0 )) {
 
@@ -112,7 +112,7 @@ public class NewAdminAdapter extends RecyclerView.Adapter<NewAdminAdapter.AdminV
                 lottieAnimationView.setProgress(0.99f);
             }
 
-            File tmpFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
+            File tmpFile = new File(context.getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
             if (tmpFile.exists()) {
                 progressCircula.setVisibility(View.VISIBLE);
                 percentDone.setVisibility(View.VISIBLE);

@@ -271,7 +271,7 @@ public class AddQuestionActivity extends Activity implements View.OnClickListene
     private File createImageFile() {
         long timeStamp = System.currentTimeMillis();
         String imageFileName = getString(R.string.NAME_) + timeStamp;
-        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File storageDir = getExternalFilesDir("image");
         File image = null;
         try {
             image = File.createTempFile(

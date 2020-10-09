@@ -133,10 +133,10 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         initViewPager();
 
 
-        audioAddress = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
+        audioAddress = context.getExternalFilesDir("voice/mp3").getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
 
         String url = goood.getVoice();
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+        File file = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
         if (file.exists() && file.length() == goood.getFileSize()) {
             mediaPlayer = MediaPlayer.create(Application.getContext(), Uri.parse(audioAddress));
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -261,7 +261,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         startDownload.setAlpha(0f);
         String url = good.getVoice();
         //String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        String path = getExternalFilesDir("voice/mp3").getAbsolutePath();
 
         int downloadId = SharedPrefUtils.getIntData("soundDownloadId**" + good.getId());
         if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {

@@ -332,15 +332,14 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         percentDone = itemView.findViewById(R.id.percentDone);
         String adminUrl = movies.getMovie_url();
         String url = movies.getMovie_url();
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        String path = getExternalFilesDir("video/mp4").getAbsolutePath();
 
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
-
+        File file = new File(getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
         if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0)) {
 
             Intent intent = new Intent(this, ExoVideoActivity.class);
-            intent.putExtra("path", Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.
+            intent.putExtra("path", getExternalFilesDir("video/mp4").getAbsolutePath() + url.
                     substring(url.lastIndexOf("/")));
 
             intent.putExtra("id", movies.getId());

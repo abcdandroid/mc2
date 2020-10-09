@@ -118,9 +118,9 @@ public class AdminFragment extends Fragment implements OnClickListener {
 
         String adminUrl = adminMedia.getMovie_url();
         String url = adminMedia.getMovie_url();
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        String path = getActivity().getExternalFilesDir("video/mp4").getAbsolutePath();
 
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+        File file = new File(getActivity().getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
 
         if (file.exists() && (file.length() - adminMedia.getMovie_size() == -8 || file.length() - adminMedia.getMovie_size() == 0)) {

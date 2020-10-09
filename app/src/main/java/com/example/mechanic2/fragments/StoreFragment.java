@@ -713,7 +713,7 @@ public class StoreFragment extends Fragment implements VoiceOnClickListener, Vie
         ltPlayPause.pauseAnimation();
         startDownload.setAlpha(0f);
         String url = good.getVoice();
-        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
+        String path = getActivity().getExternalFilesDir("voice/mp3").getAbsolutePath();
 
         int downloadId = SharedPrefUtils.getIntData("soundDownloadId**" + good.getId());
         if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {

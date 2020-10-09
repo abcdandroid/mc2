@@ -191,7 +191,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
 
 
             if (url.length() > 0) {
-                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+                File file = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
                 if (file.exists() && file.length() == answer.getAnswer().getFileSize()) {
                     progressCirculaSound.setVisibility(View.GONE);
@@ -201,7 +201,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
                     ltPlayPause.setProgress(0);
                 }
 
-                File tmpFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
+                File tmpFile = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
                 if (tmpFile.exists()) {
                     progressCirculaSound.setVisibility(View.VISIBLE);
                     percentDone.setVisibility(View.VISIBLE);
