@@ -2,7 +2,9 @@ package com.example.mechanic2.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class ViewpagerData{
+import java.io.Serializable;
+
+public class ViewpagerData implements Serializable {
   @SerializedName("changeState")
   @Expose
   private Integer changeState;

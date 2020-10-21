@@ -91,6 +91,34 @@
             android:textStyle="bold" />
 
     </LinearLayout>
+    <LinearLayout
+        android:background="?android:attr/selectableItemBackground"
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:layoutDirection="rtl"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:tint="@color/purple"
+            android:layout_width="30dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/privacy" />
+
+        <TextView
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:text="قوانین استفاده از برنامه"
+            android:textAllCaps="false"
+            android:textColor="@color/indigo_900"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/sign_out"

@@ -80,6 +80,8 @@ public class NewEntranceActivity extends AppCompatActivity {
                 .count(2)
                 .build());
 
+
+
         ViewAnimation viewAnimationRotateGear = new ViewAnimation(gear);
         viewAnimationRotateGear.add(WoWoRotationAnimation.builder().page(0)
                 .fromZ(0).toZ(145).keepY(0).keepX(0).ease(Ease.InOutBack).build());

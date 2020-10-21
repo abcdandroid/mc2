@@ -8,11 +8,13 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+
+
     defaultConfig {
         applicationId "com.example.mechanic2"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 1
+        versionCode 3
         versionName "1.0"
         renderscriptTargetApi 28
         renderscriptSupportModeEnabled true
@@ -23,13 +25,11 @@ android {
 
     buildTypes {
         release {
-
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             shrinkResources true //to shrink files
         }
     }
-
 }
 
 dependencies {
@@ -63,21 +63,22 @@ dependencies {
 
 
     implementation 'com.chaos.view:pinview:1.4.3'
-    implementation 'com.facebook.fresco:fresco:2.3.0'
 
+    implementation 'com.facebook.fresco:fresco:2.3.0'
 
     implementation 'com.google.android.gms:play-services-auth-api-phone:17.4.0'
 
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 
     implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+
     implementation 'com.google.android.material:material:1.1.0'
 
-
     implementation 'org.osmdroid:osmdroid-geopackage:6.1.6'
-    implementation 'com.mikhaellopez:circularimageview:3.2.0'
-    implementation 'com.nightonke:wowoviewpager:2.0.0'
 
+    implementation 'com.mikhaellopez:circularimageview:3.2.0'
+
+    implementation 'com.nightonke:wowoviewpager:2.0.0'
 
     implementation 'com.github.ybq:Android-SpinKit:1.4.0'
 
@@ -85,16 +86,13 @@ dependencies {
 
     implementation 'jp.wasabeef:picasso-transformations:2.2.1'
 
-
     implementation 'com.devbrackets.android:exomedia:4.3.0'
-
 
     implementation 'com.github.pzienowicz:androidx-auto-scroll-view-pager:1.1.0'
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
-    implementation 'androidx.wear:wear:1.0.0'
+
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
-    compileOnly 'com.google.android.wearable:wearable:2.7.0'
 
 
 }

@@ -102,6 +102,16 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
 
+                <com.example.mechanic2.views.MyTextView
+                    android:layout_gravity="center"
+                    android:id="@+id/text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="قوانین و مقررات استفاده از برنامه"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="8dp"
+                    />
                 <View
                     android:layout_width="0dp"
                     android:layout_height="@dimen/spacing_medium" />

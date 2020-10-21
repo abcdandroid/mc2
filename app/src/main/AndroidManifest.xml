@@ -16,11 +16,20 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:replace="android:allowBackup">
+        <activity android:name=".activities.EmbedActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+        <activity android:name=".activities.PrivacyActivity" />
         <activity android:name=".activities.ShowMechanicDetailActivity" />
         <activity android:name=".activities.ShowGoodDetailActivity" />
         <activity android:name=".activities.SplashActivity">
@@ -33,12 +42,6 @@
                 <data
                     android:host="online.mechanic.ir"
                     android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"
-
-                    />
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
@@ -57,6 +60,7 @@
         <activity
             android:name=".activities.MainActivity"
             android:configChanges="orientation|screenSize|layoutDirection"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeFullScreen" />
         <activity
             android:name=".activities.ExoVideoActivity"

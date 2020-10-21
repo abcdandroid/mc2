@@ -7,7 +7,6 @@ import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcel;
 import android.os.SystemClock;
@@ -55,6 +54,7 @@ import com.example.mechanic2.interfaces.OnViewPagerClickListener;
 import com.example.mechanic2.models.AnswerWithMsg;
 import com.example.mechanic2.models.Answers;
 import com.example.mechanic2.models.Question;
+import com.example.mechanic2.views.MyTextView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -92,6 +92,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     private MediaPlayer player = null;
     private AppBarLayout appbar;
     private CollapsingToolbarLayout collapsingToolbar;
+    LinearLayout warning_report;
 
 
     private LottieAnimationView ltPlayPause;
@@ -145,10 +146,12 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         carName = findViewById(R.id.carName);
         titleName = findViewById(R.id.titleName);
         questionText = findViewById(R.id.questionText);
+        warning_report = findViewById(R.id.warning_report);
         question = (Question) getIntent().getSerializableExtra("question");
         questionText.setText(question.getQ_text());
         carName.setText(question.getCarName());
         titleName.setText(question.getQ_title());
+        warning_report.setOnClickListener(this);
 
         q_id = question.getQ_id();
 
@@ -230,6 +233,80 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId()) {
             case R.id.btn_show_all_goods:
                 finish();
+                break;
+            case R.id.warning_report:
+
+                View view = LayoutInflater.from(this).inflate(R.layout.view_good_not_found, null, false);
+                TextView textView = view.findViewById(R.id.txt);
+                textView.setText(R.string.warning_alert);
+
+                RelativeLayout btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
+                MyTextView txt_ok = view.findViewById(R.id.txt_ok);
+
+
+                RelativeLayout contactUs = view.findViewById(R.id.btn_contact_us);
+                MyTextView cancel_action = view.findViewById(R.id.cancel_action);
+
+                txt_ok.setText("بی خیال");
+                cancel_action.setText("ارسال گزارش");
+
+
+                SweetAlertDialog sweetAlertDialogGoodNotExist = new SweetAlertDialog(this).hideConfirmButton()
+                        .setCustomView(view);
+                sweetAlertDialogGoodNotExist.setCancelable(false);
+                sweetAlertDialogGoodNotExist.show();
+
+                contactUs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                    }
+                });
+                btnShowAllGoods.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sweetAlertDialogGoodNotExist.dismissWithAnimation();
+
+
+                        Map<String, String> map = new HashMap<>();
+
+                        map.put("route", "errorReport");
+                        map.put("id", String.valueOf(question.getQ_id()));
+                        map.put("type", String.valueOf(0));
+                        map.put("phone", String.valueOf(SharedPrefUtils.getStringData("phoneNumber")));
+
+                        View view = LayoutInflater.from(AnswersActivity.this).inflate(R.layout.view_good_not_found, null, false);
+                        TextView textView = view.findViewById(R.id.txt);
+                        textView.setText("در حال ارسال گزارش خطا");
+
+                        RelativeLayout btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
+                        btnShowAllGoods.setVisibility(View.GONE);
+
+                        view.findViewById(R.id.warranty_lt).setVisibility(View.GONE);
+
+                        RelativeLayout contactUs = view.findViewById(R.id.btn_contact_us);
+                        contactUs.setVisibility(View.GONE);
+
+                        SweetAlertDialog sweetAlertDialogGoodNotExist = new SweetAlertDialog(AnswersActivity.this,SweetAlertDialog.PROGRESS_TYPE).hideConfirmButton()
+                                .setCustomView(view);
+                        sweetAlertDialogGoodNotExist.setCancelable(true);
+                        sweetAlertDialogGoodNotExist.show();
+
+                        Application.getApi().problemReport(map).enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                            }
+                        });
+
+                    }
+                });
+
                 break;
 
             case R.id.ivPlayPause:
@@ -384,7 +461,6 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void playVoice(boolean y) {
-
 
 
         if (player == null) {
@@ -617,8 +693,6 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                 if (response.body() != null && response.body().getAnswers().size() > 0) {
 
 
-
-
                     answers = response.body().getAnswers();
                     if (answers != null && answers.size() != 0) {
                         tmpAnswers.addAll(answers);
@@ -694,8 +768,6 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
         Application.getApi().getAnswersWithMsg(map).enqueue(new Callback<AnswerWithMsg>() {
             @Override
             public void onResponse(Call<AnswerWithMsg> call, Response<AnswerWithMsg> response) {
-
-
 
 
                 if (response.body() != null && response.body().getAnswers().size() == 0) {

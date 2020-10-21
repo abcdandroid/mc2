@@ -249,7 +249,6 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
 
                         if (mediaPlayer != null) {
 
-
                             if (null != playingHolder) {
 
                                 updateNonPlayingView(playingHolder);
@@ -258,7 +257,7 @@ public class AnswerRecyclerAdapter extends RecyclerView.Adapter<AnswerRecyclerAd
                         }
                         playingHolder = this;
 
-                        startMediaPlayer(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().substring(answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().lastIndexOf("/")));
+                        startMediaPlayer(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().substring(answerList.get(getAdapterPosition()).getAnswer().getA_voice_url().lastIndexOf("/")));
                     }
                     updatePlayingView();
                 }

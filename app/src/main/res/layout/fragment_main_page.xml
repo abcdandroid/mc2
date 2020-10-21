@@ -248,10 +248,9 @@
 
 
     <com.google.android.material.navigation.NavigationView
+        android:layout_gravity="end"
         android:id="@+id/nav_view"
         android:layout_width="300dp"
-        android:layout_gravity="end"
-
         android:layout_height="match_parent"
         android:fitsSystemWindows="false">
 
@@ -438,34 +437,6 @@
 
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/about_us"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginRight="2dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:layoutDirection="rtl"
-                    android:orientation="horizontal">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:layout_width="24dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="24dp"
-                        app:srcCompat="@drawable/about_us" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="درباره این برنامه"
-                        android:textAllCaps="false"
-                        android:textColor="@color/indigo_900"
-                        android:textStyle="bold" />
-
-                </LinearLayout>
 
                 <LinearLayout
                     android:background="?android:attr/selectableItemBackground"
@@ -497,6 +468,65 @@
 
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/about_us"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="2dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:layoutDirection="rtl"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="24dp"
+                        app:srcCompat="@drawable/about_us" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:text="درباره این برنامه"
+                        android:textAllCaps="false"
+                        android:textColor="@color/indigo_900"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginRight="2dp"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:gravity="center_vertical"
+                    android:layoutDirection="rtl"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:layout_width="24dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="24dp"
+                        android:tint="@color/indigo_900"
+                        app:srcCompat="@drawable/privacy" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="4dp"
+                        android:text="قوانین استفاده از برنامه"
+                        android:textAllCaps="false"
+                        android:textColor="@color/indigo_900"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
             </LinearLayout>
 

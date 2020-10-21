@@ -14,14 +14,12 @@ import com.example.mechanic2.models.MechanicWithMsg;
 import com.example.mechanic2.models.Movies;
 import com.example.mechanic2.models.Question;
 import com.example.mechanic2.models.QusetionWithMsg;
-import com.google.android.exoplayer2.C;
 
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;
-import retrofit2.http.Field;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -100,9 +98,12 @@ public interface Api {
     Call<List<Movies>> getMechanicMovies(@QueryMap Map<String, String> map);
 
 
-
     @GET(".")
     Call<List<Etcetera>> getEtcetera(@QueryMap Map<String, String> map);
+
+
+    @GET(".")
+    Call<String> problemReport(@QueryMap Map<String, String> map);
 
 
 }

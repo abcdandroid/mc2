@@ -167,7 +167,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             sbProgress.setEnabled(false);
         }
 
-        File tmpFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
+        File tmpFile = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
         if (tmpFile.exists()) {
             sbProgress.setEnabled(false);
             progressCirculaSound.setVisibility(View.VISIBLE);

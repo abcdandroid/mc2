@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
@@ -72,6 +71,14 @@ public class LoginActivity extends Activity implements View.OnClickListener {
         gear.startAnimation(rotation);
         sendPhone.setOnClickListener(this);
         sendCode.setOnClickListener(this);
+
+        findViewById(R.id.text).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.this.startActivity(new Intent(LoginActivity.this, PrivacyActivity.class));
+            }
+        });
+
     }
 
 
@@ -110,7 +117,7 @@ public class LoginActivity extends Activity implements View.OnClickListener {
     }
 
     private void sendPhone() {
-        if (phoneInput.getText() != null && (phoneInput.getText().toString().length() != 11 || !phoneInput.getText().toString().matches("(09)[1239]\\d{8}"))) {
+        if (phoneInput.getText() != null && (phoneInput.getText().toString().length() != 11 || !phoneInput.getText().toString().matches("(09)\\d{9}"))) {
             showAlertDialog("لطفا شماره همراه خود را \nبه درستی وارد کنید.", new AlertAction() {
                 @Override
                 public void doOnClick(SweetAlertDialog sweetAlertDialog) {
@@ -166,7 +173,8 @@ public class LoginActivity extends Activity implements View.OnClickListener {
                     public void doOnClick(SweetAlertDialog sweetAlertDialog) {
                         sweetAlertDialog.dismissWithAnimation();
                     }
-                });            }
+                });
+            }
         });
     }
 

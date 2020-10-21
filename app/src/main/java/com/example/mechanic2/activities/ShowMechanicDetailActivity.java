@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Parcel;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -113,6 +113,7 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
     private List<String> imageList;
 
     private LinearLayout btnCallMechanic;
+    private LinearLayout warning_report;
     public static final int CALL_REQUEST_CODE = 110;
 
     private View view;
@@ -135,6 +136,85 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         mechanicImages = findViewById(R.id.mechanic_images);
         flexibleIndicator = findViewById(R.id.flexibleIndicator);
         no_mechanic_image = findViewById(R.id.no_mechanic_image);
+        warning_report = findViewById(R.id.warning_report);
+        warning_report.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                View view = LayoutInflater.from(ShowMechanicDetailActivity.this).inflate(R.layout.view_good_not_found, null, false);
+                TextView textView = view.findViewById(R.id.txt);
+                textView.setText(R.string.warning_alert);
+
+                RelativeLayout btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
+                MyTextView txt_ok = view.findViewById(R.id.txt_ok);
+
+
+                RelativeLayout contactUs = view.findViewById(R.id.btn_contact_us);
+                MyTextView cancel_action = view.findViewById(R.id.cancel_action);
+
+                txt_ok.setText("بی خیال");
+                cancel_action.setText("ارسال گزارش");
+
+
+                SweetAlertDialog sweetAlertDialogGoodNotExist = new SweetAlertDialog(ShowMechanicDetailActivity.this).hideConfirmButton()
+                        .setCustomView(view);
+                sweetAlertDialogGoodNotExist.setCancelable(false);
+                sweetAlertDialogGoodNotExist.show();
+
+                contactUs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                    }
+                });
+                btnShowAllGoods.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        sweetAlertDialogGoodNotExist.dismissWithAnimation();
+
+
+                        Map<String, String> map = new HashMap<>();
+
+                        map.put("route", "errorReport");
+                        map.put("id", String.valueOf(mechanic.getId()));
+                        map.put("type", String.valueOf(1));
+                        map.put("phone", String.valueOf(SharedPrefUtils.getStringData("phoneNumber")));
+
+                        View view = LayoutInflater.from(ShowMechanicDetailActivity.this).inflate(R.layout.view_good_not_found, null, false);
+                        TextView textView = view.findViewById(R.id.txt);
+                        textView.setText("در حال ارسال گزارش خطا");
+
+                        RelativeLayout btnShowAllGoods = view.findViewById(R.id.btn_show_all_goods);
+                        btnShowAllGoods.setVisibility(View.GONE);
+
+                        view.findViewById(R.id.warranty_lt).setVisibility(View.GONE);
+
+                        RelativeLayout contactUs = view.findViewById(R.id.btn_contact_us);
+                        contactUs.setVisibility(View.GONE);
+
+
+
+                        SweetAlertDialog sweetAlertDialogGoodNotExist = new SweetAlertDialog(ShowMechanicDetailActivity.this,SweetAlertDialog.PROGRESS_TYPE).hideConfirmButton()
+                                .setCustomView(view);
+                        sweetAlertDialogGoodNotExist.setCancelable(true);
+                        sweetAlertDialogGoodNotExist.show();
+
+                        Application.getApi().problemReport(map).enqueue(new Callback<String>() {
+                            @Override
+                            public void onResponse(Call<String> call, Response<String> response) {
+                                sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                            }
+
+                            @Override
+                            public void onFailure(Call<String> call, Throwable t) {
+                                sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                            }
+                        });
+
+                    }
+                });
+            }
+        });
         ml = findViewById(R.id.ml);
         b = findViewById(R.id.b);
         storeName = findViewById(R.id.store_name);

@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,6 +70,7 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
         SimpleDraweeView previewQuestion;
         private TextView seenCount;
         private MyTextView titleQuestion;
+        LinearLayout warningReport;
 
 
         QuestionViewHolder(@NonNull View convertView) {
@@ -80,8 +82,10 @@ public class QuestionRecyclerAdapter extends RecyclerView.Adapter<QuestionRecycl
             previewQuestion = convertView.findViewById(R.id.preview_question);
             seenCount = convertView.findViewById(R.id.seen_count);
             titleQuestion = convertView.findViewById(R.id.title_question);
+
             previewQuestion.setClipToOutline(true);
             parent.setOnClickListener(this);
+
         }
 
         void bindParams(Question question) {

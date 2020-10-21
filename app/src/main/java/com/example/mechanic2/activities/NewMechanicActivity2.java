@@ -11,12 +11,10 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +112,6 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
     MultipartBody.Part body2;
     MultipartBody.Part body3;
     private LinearLayout jobContainer;
-
 
     private RelativeLayout parent;
     private LinearLayout picHint;
@@ -1220,7 +1217,6 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
     }
 
 
-
     public String jobSeparator(List<?> list) {
         StringBuilder jobIds = new StringBuilder();
         if (list.size() == 1) {
@@ -1267,7 +1263,7 @@ public class NewMechanicActivity2 extends Activity implements View.OnClickListen
         String url = movies.getMovie_url();
         String path = getExternalFilesDir("video/mp4").getAbsolutePath();
 
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+        File file = new File(getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
 
         if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0)) {
 

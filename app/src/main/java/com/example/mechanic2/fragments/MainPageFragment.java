@@ -27,7 +27,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
@@ -38,6 +37,7 @@ import com.example.mechanic2.BuildConfig;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.LoginActivity;
 import com.example.mechanic2.activities.NewMechanicActivity2;
+import com.example.mechanic2.activities.PrivacyActivity;
 import com.example.mechanic2.activities.SplashActivity;
 import com.example.mechanic2.adapters.MyFragmentStatePagerAdapter;
 import com.example.mechanic2.app.Application;
@@ -105,7 +105,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (SplashActivity.etcetera != null && Integer.parseInt(SplashActivity.etcetera.get(0).getMessage().substring(1)) != BuildConfig.VERSION_CODE) {
+        if (SplashActivity.etcetera != null && Integer.parseInt(SplashActivity.etcetera.get(0).getMessage().substring(1)) != BuildConfig.VERSION_CODE/**/) {
             if (alarmShowed) return;
             LottieAnimationView warrantyLt;
             MyTextView txt;
@@ -158,6 +158,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
 
             exitDialog.show();
+            /* */
         }
 
     }
@@ -209,6 +210,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     private LinearLayout aboutUs;
     private LinearLayout biKhial;
     private LinearLayout signOut;
+    private LinearLayout text;
     private NavigationView navView;
 
     private AppBarLayout appbar;
@@ -243,6 +245,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         aboutUs = view.findViewById(R.id.about_us);
         biKhial = view.findViewById(R.id.bi_khial);
         signOut = view.findViewById(R.id.sign_out);
+        text = view.findViewById(R.id.text);
 
         whatsUpIntent.setOnClickListener(this);
         editInfo.setOnClickListener(this);
@@ -250,6 +253,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         aboutUs.setOnClickListener(this);
         biKhial.setOnClickListener(this);
         signOut.setOnClickListener(this);
+        text.setOnClickListener(this);
 
 
         if (type == 1) {
@@ -277,7 +281,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                 if (SharedPrefUtils.getStringData("imageNo3").equals("-1"))
                     if (mechanic.getMechanic_image().length() > 0) {
 
-                            loadImage(getString(R.string.drweb) + mechanic.getMechanic_image(), circleImageView, loadingImageProfile, retryImageProfile);
+                        loadImage(getString(R.string.drweb) + mechanic.getMechanic_image(), circleImageView, loadingImageProfile, retryImageProfile);
                     } else {
 
                         if (getActivity() != null)
@@ -314,6 +318,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                     LinearLayout contactUsNormalUser = inflate.findViewById(R.id.contact_us);
                     LinearLayout aboutUsNormalUser = inflate.findViewById(R.id.about_us);
                     LinearLayout signOutNormalUser = inflate.findViewById(R.id.sign_out);
+                    LinearLayout text = inflate.findViewById(R.id.text);
 
                     editInfoNormalUser.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -355,6 +360,13 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                             showExitDialog(sweetAlertDialog);
                         }
                     });
+                    text.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            startActivity(new Intent(getContext(), PrivacyActivity.class));
+                        }
+                    });
+
 
                     sweetAlertDialog.setCustomView(inflate);
                     sweetAlertDialog.hideConfirmButton();
@@ -426,6 +438,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
         return view;
     }
+
 
     private void showExitDialog(SweetAlertDialog sweetAlertDialog) {
         LottieAnimationView warrantyLt;
@@ -533,6 +546,8 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
 
                         int len = jsonArray.length();
+
+
                         for (int i = 0; i < len; i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             if (jsonObject.getInt("field") == 8) {
@@ -609,16 +624,18 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
 
                         viewPagerInfo(viewpagerData[0], place1);
+
                         viewPagerInfo(viewpagerData[1], place2);
                         viewPagerInfo(viewpagerData[2], place3);
                         viewPagerInfo(viewpagerData[3], place4);
                         viewPagerInfo(viewpagerData[4], place6);
                         viewPagerInfo(viewpagerData[5], place7);
 
-
-                        Intent intent = new Intent("dataCount");
+                        /**/
+                        /*Intent intent = new Intent("dataCount");
                         intent.putExtra("ref", "mpf");
-                        LocalBroadcastManager.getInstance(MainPageFragment.this.getContext()).sendBroadcast(intent);
+                        LocalBroadcastManager.getInstance(MainPageFragment.this.getContext()).sendBroadcast(intent);*/
+
                     } else {
 
                     }
@@ -775,6 +792,9 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
 
                 showExitDialog(null);
+                break;
+            case R.id.text:
+                startActivity(new Intent(getContext(), PrivacyActivity.class));
                 break;
         }
     }
