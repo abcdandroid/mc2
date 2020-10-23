@@ -141,7 +141,6 @@ public class NewAdminAdapter extends RecyclerView.Adapter<NewAdminAdapter.AdminV
             totalSize.setText(movie_size_human_readable);
             desc.setText(movies.getMedia_desc());
 
-
             preview.setImageBitmap(null);
             if (file.exists() && file.length() - movies.getMovie_size() == 0) {
 

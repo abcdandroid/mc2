@@ -202,12 +202,10 @@ public class MainPageItemFragment extends Fragment implements View.OnClickListen
                     startActivity(intentMechanic);
                     break;
                 case 4:
-                    app.loadFragment((AppCompatActivity) getActivity(), new AdminFragment());
+                    app.loadFragment((AppCompatActivity) getActivity(), new AdminWebViewFragment());
 
                     break;
             }
-
-
 
 
         }

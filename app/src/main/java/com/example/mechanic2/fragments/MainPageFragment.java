@@ -3,15 +3,21 @@ package com.example.mechanic2.fragments;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.CookieManager;
+import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -32,7 +38,6 @@ import com.airbnb.lottie.LottieAnimationView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.devbrackets.android.exomedia.ui.widget.VideoView;
 import com.example.mechanic2.BuildConfig;
 import com.example.mechanic2.R;
 import com.example.mechanic2.activities.LoginActivity;
@@ -41,6 +46,7 @@ import com.example.mechanic2.activities.PrivacyActivity;
 import com.example.mechanic2.activities.SplashActivity;
 import com.example.mechanic2.adapters.MyFragmentStatePagerAdapter;
 import com.example.mechanic2.app.Application;
+import com.example.mechanic2.app.ChromeClient;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.interfaces.AlertAction;
@@ -181,7 +187,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     private AutoScrollViewPager place6;
     private AutoScrollViewPager place7;
     private LinearLayout containerP67;
-    private VideoView place5VideoView;
+    private WebView place5VideoView;
 
 
     MyFragmentStatePagerAdapter adapterPlace1;
@@ -384,7 +390,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
         place3 = view.findViewById(R.id.place_3);
         place4 = view.findViewById(R.id.place_4);
         place5VideoView = view.findViewById(R.id.place_5_video_view);
-        place5VideoView.showControls();
         place5VideoView.setClipToOutline(true);
         containerP67 = view.findViewById(R.id.container_p67);
         place6 = view.findViewById(R.id.place_6);
@@ -491,6 +496,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
 
     SweetAlertDialog loadingData;
     SweetAlertDialog sweetAlertDialog;
+    private static final String TAG = "MainPageFragment";
 
     private void getData() {
 
@@ -551,54 +557,105 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                         for (int i = 0; i < len; i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             if (jsonObject.getInt("field") == 8) {
-                                if (jsonObject.getInt("visibility") == 1) {
+                                if (jsonObject.getInt("visibility") == 1 && jsonObject.getString("view_url").trim().length() > 0) {
+                                    Log.d(TAG, "onResponse: p51");
                                     place5VideoView.setVisibility(View.VISIBLE);
-                                    place5VideoView.setVideoURI(Uri.parse(jsonObject.getString("view_url")));
+
+                                    place5VideoView.getSettings().setJavaScriptEnabled(true);
+                                    place5VideoView.setWebChromeClient(new ChromeClient(getActivity()));
+                                    place5VideoView.setWebViewClient(new WebViewClient());
+
+                                    place5VideoView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
+                                    place5VideoView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
+                                    place5VideoView.getSettings().setMediaPlaybackRequiresUserGesture(true);
+                                    place5VideoView.getSettings().setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+                                    place5VideoView.getSettings().setJavaScriptEnabled(true);
+                                    place5VideoView.getSettings().setAllowFileAccess(true);
+                                    place5VideoView.getSettings().setAppCacheEnabled(true);
+
+                                    CookieManager.getInstance().setAcceptThirdPartyCookies(place5VideoView, true);
+                                    place5VideoView.setBackgroundColor(0);
+                                    //            place5VideoView.setBackgroundColor(Color.argb(1, 0, 0, 0));
+                                    //  place5VideoView.setBackground(getContext().getDrawable(R.drawable.btn_white_solid));
+                                    place5VideoView.setWebChromeClient(new WebChromeClient());
+                                    place5VideoView.getSettings().setUserAgentString("Mozilla/5.0 (Linux; U; Android 2.0; en-us; Droid Build/ESD20) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17");
+                                    place5VideoView.setWebViewClient(new WebViewClient() {
+
+                                        @Override
+                                        public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+
+                                            view.loadUrl(request.getUrl().toString());
+                                            return super.shouldOverrideUrlLoading(view, request);
+                                        }
+
+                                        @Override
+                                        public void onPageStarted(WebView webview, String url, Bitmap favicon) {
+                                            super.onPageStarted(webview, url, favicon);
+                                            webview.setVisibility(View.INVISIBLE);
+                                        }
+
+                                        @Override
+                                        public void onPageFinished(WebView webview, String url) {
+
+                                            webview.setVisibility(View.VISIBLE);
+                                            super.onPageFinished(webview, url);
+
+                                        }
+                                    });
+
+                                    place5VideoView.loadDataWithBaseURL("", jsonObject.getString("view_url"), "text/html", "UTF-8", null);
                                 } else {
+                                    Log.d(TAG, "onResponse: p50");
                                     place5VideoView.setVisibility(View.GONE);
                                 }
                             }
 
 
                             if (jsonObject.getInt("place") == 1) {
+                                Log.d(TAG, "onResponse: p1");
 
                                 if (jsonObject.getInt("visibility") == 1) {
-
+                                    Log.d(TAG, "onResponse: p11");
                                     containerP1.setVisibility(View.VISIBLE);
                                     adapterPlace1.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace1.notifyDataSetChanged();
 
                                 } else {
+                                    Log.d(TAG, "onResponse: p10");
                                     containerP1.setVisibility(View.GONE);
                                 }
                             } else if (jsonObject.getInt("place") == 2) {
                                 if (jsonObject.getInt("visibility") == 1) {
-
+                                    Log.d(TAG, "onResponse: p21");
                                     containerP2.setVisibility(View.VISIBLE);
                                     adapterPlace2.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace2.notifyDataSetChanged();
                                 } else {
+                                    Log.d(TAG, "onResponse: p20");
                                     containerP2.setVisibility(View.GONE);
                                 }
                             } else if (jsonObject.getInt("place") == 3) {
                                 if (jsonObject.getInt("visibility") == 1) {
-
+                                    Log.d(TAG, "onResponse: p31");
                                     place3.setVisibility(View.VISIBLE);
                                     adapterPlace3.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace3.notifyDataSetChanged();
                                 } else {
+                                    Log.d(TAG, "onResponse: p30");
                                     place3.setVisibility(View.GONE);
                                 }
                             } else if (jsonObject.getInt("place") == 4) {
                                 if (jsonObject.getInt("visibility") == 1) {
+                                    Log.d(TAG, "onResponse: p41");
                                     place4.setVisibility(View.VISIBLE);
                                     adapterPlace4.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace4.notifyDataSetChanged();
                                 } else {
+                                    Log.d(TAG, "onResponse: p40");
                                     place4.setVisibility(View.GONE);
                                 }
                             } else if (jsonObject.getInt("place") == 6) {
@@ -607,16 +664,20 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                                     adapterPlace6.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace6.notifyDataSetChanged();
+                                    Log.d(TAG, "onResponse: p61");
                                 } else {
+                                    Log.d(TAG, "onResponse: p60");
                                     place6.setVisibility(View.GONE);
                                 }
                             } else if (jsonObject.getInt("place") == 7) {
                                 if (jsonObject.getInt("visibility") == 1) {
+                                    Log.d(TAG, "onResponse: p71");
                                     place7.setVisibility(View.VISIBLE);
                                     adapterPlace7.addFragment(new MainPageItemFragment(jsonObject.getInt("field"), jsonObject.getString("image_title"),
                                             jsonObject.getString("image_desc"), jsonObject.getString("view_url"), jsonObject.getString("params")));
                                     adapterPlace7.notifyDataSetChanged();
                                 } else {
+                                    Log.d(TAG, "onResponse: p70");
                                     place7.setVisibility(View.GONE);
                                 }
                             }
@@ -630,6 +691,7 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
                         viewPagerInfo(viewpagerData[3], place4);
                         viewPagerInfo(viewpagerData[4], place6);
                         viewPagerInfo(viewpagerData[5], place7);
+
 
                         /**/
                         /*Intent intent = new Intent("dataCount");
@@ -882,10 +944,10 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onStop() {
         super.onStop();
-        place5VideoView.pause();
+        place5VideoView.destroy();
     }
 
-
+/*
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
@@ -912,7 +974,6 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             }
             appbar.setVisibility(View.VISIBLE);
 
-            place5VideoView.showControls();
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) place5VideoView.getLayoutParams();
             params.width = ViewGroup.LayoutParams.MATCH_PARENT;
             params.height = place5VideoViewHeight;
@@ -922,5 +983,5 @@ public class MainPageFragment extends Fragment implements View.OnClickListener {
             params.topMargin = place5VideoViewMT;
             place5VideoView.setLayoutParams(params);
         }
-    }/**/
+    }*/
 }

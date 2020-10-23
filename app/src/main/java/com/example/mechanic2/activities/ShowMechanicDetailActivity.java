@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcel;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,36 +25,21 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.airbnb.lottie.LottieAnimationView;
-import com.downloader.Error;
-import com.downloader.OnDownloadListener;
-import com.downloader.OnPauseListener;
-import com.downloader.OnProgressListener;
-import com.downloader.OnStartOrResumeListener;
-import com.downloader.PRDownloader;
-import com.downloader.Progress;
-import com.downloader.Status;
-import com.downloader.request.DownloadRequest;
 import com.example.mechanic2.R;
-import com.example.mechanic2.adapters.MechanicMoviesRecyclerAdapter;
+import com.example.mechanic2.adapters.MechanicWebViewAdapter;
 import com.example.mechanic2.adapters.ViewPagerAdapter;
 import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.fragments.QuestionImagesFragment;
-import com.example.mechanic2.interfaces.OnClickListener;
 import com.example.mechanic2.interfaces.OnViewPagerClickListener;
-import com.example.mechanic2.models.AdminMedia;
 import com.example.mechanic2.models.Job;
 import com.example.mechanic2.models.Mechanic;
-import com.example.mechanic2.models.Movies;
 import com.example.mechanic2.views.MyTextView;
 import com.facebook.drawee.drawable.ProgressBarDrawable;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.hmomeni.progresscircula.ProgressCircula;
 import com.merhold.extensiblepageindicator.ExtensiblePageIndicator;
-import com.squareup.picasso.Picasso;
 
 import org.osmdroid.api.IMapController;
 import org.osmdroid.util.GeoPoint;
@@ -62,7 +48,6 @@ import org.osmdroid.views.MapView;
 import org.osmdroid.views.overlay.ItemizedIconOverlay;
 import org.osmdroid.views.overlay.OverlayItem;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +61,7 @@ import retrofit2.Response;
 import static com.example.mechanic2.app.Application.getContext;
 
 @SuppressLint("ParcelCreator")
-public class ShowMechanicDetailActivity extends AppCompatActivity implements OnViewPagerClickListener, OnClickListener {
+public class ShowMechanicDetailActivity extends AppCompatActivity implements OnViewPagerClickListener {
     private AppBarLayout appbar;
     private CollapsingToolbarLayout collapsingMl;
     private ViewPager mechanicImages;
@@ -193,8 +178,7 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
                         contactUs.setVisibility(View.GONE);
 
 
-
-                        SweetAlertDialog sweetAlertDialogGoodNotExist = new SweetAlertDialog(ShowMechanicDetailActivity.this,SweetAlertDialog.PROGRESS_TYPE).hideConfirmButton()
+                        SweetAlertDialog sweetAlertDialogGoodNotExist = new SweetAlertDialog(ShowMechanicDetailActivity.this, SweetAlertDialog.PROGRESS_TYPE).hideConfirmButton()
                                 .setCustomView(view);
                         sweetAlertDialogGoodNotExist.setCancelable(true);
                         sweetAlertDialogGoodNotExist.show();
@@ -203,11 +187,31 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
                                 sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                                SweetAlertDialog sweetAlertDialog1 = new SweetAlertDialog(ShowMechanicDetailActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                                sweetAlertDialog1.hideConfirmButton();
+                                sweetAlertDialog1.setTitle("گزارش شما با موفقیت ثبت گردید.");
+                                sweetAlertDialog1.show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        sweetAlertDialog1.dismissWithAnimation();
+                                    }
+                                }, 1500);
                             }
 
                             @Override
                             public void onFailure(Call<String> call, Throwable t) {
                                 sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                                SweetAlertDialog sweetAlertDialog1 = new SweetAlertDialog(ShowMechanicDetailActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                                sweetAlertDialog1.hideConfirmButton();
+                                sweetAlertDialog1.setTitle("گزارش شما با موفقیت ثبت گردید.");
+                                sweetAlertDialog1.show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        sweetAlertDialog1.dismissWithAnimation();
+                                    }
+                                }, 1500);
                             }
                         });
 
@@ -253,7 +257,7 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         recyclerMechanicMovies.setLayoutManager(new LinearLayoutManager(this));
         recyclerMechanicMovies.setLayoutAnimation((new LayoutAnimationController(AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left))));
         if (mechanic.getMovies().size() > 0) {
-            MechanicMoviesRecyclerAdapter adapter = new MechanicMoviesRecyclerAdapter(this, mechanic.getMovies(), this);
+            MechanicWebViewAdapter adapter = new MechanicWebViewAdapter(this,mechanic.getMovies());
             recyclerMechanicMovies.setAdapter(adapter);
         } else {
             film_list_container.setVisibility(View.GONE);
@@ -395,113 +399,6 @@ public class ShowMechanicDetailActivity extends AppCompatActivity implements OnV
         startActivity(intent);
 
 
-    }
-
-    @Override
-    public void onDownloadStateClick(AdminMedia movies, View viewHolder) {
-
-    }
-
-    @Override
-    public void onDownloadStateClick(Movies movies, View itemView) {
-        ProgressCircula progressCircula;
-        LottieAnimationView lottieAnimationView;
-        TextView percentDone;
-        progressCircula = itemView.findViewById(R.id.progressCircula);
-        lottieAnimationView = itemView.findViewById(R.id.lottieAnimationView);
-        percentDone = itemView.findViewById(R.id.percentDone);
-        String adminUrl = movies.getMovie_url();
-        String url = movies.getMovie_url();
-        String path = getExternalFilesDir("video/mp4").getAbsolutePath();
-
-        File file = new File(getExternalFilesDir("video/mp4").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
-
-        if (file.exists() && (file.length() - movies.getMovie_size() == -8 || file.length() - movies.getMovie_size() == 0)) {
-
-            Intent intent = new Intent(this, ExoVideoActivity.class);
-            intent.putExtra("path", getExternalFilesDir("video/mp4").getAbsolutePath() + url.
-                    substring(url.lastIndexOf("/")));
-
-            intent.putExtra("id", movies.getId());
-            startActivity(intent);
-            return;
-        }
-
-        if (!lottieAnimationView.isAnimating()) {
-            lottieAnimationView.resumeAnimation();
-            progressCircula.startRotation();
-        } else {
-            lottieAnimationView.pauseAnimation();
-            progressCircula.stopRotation();
-        }
-
-
-        int downloadId = SharedPrefUtils.getIntData("downloadId**" + movies.getMovie_desc());
-        if (Status.RUNNING == PRDownloader.getStatus(downloadId)) {
-            PRDownloader.pause(downloadId);
-            progressCircula.stopRotation();
-            return;
-        }
-        if (Status.PAUSED == PRDownloader.getStatus(downloadId)) {
-            PRDownloader.resume(downloadId);
-            progressCircula.startRotation();
-            return;
-        }
-
-
-        DownloadRequest downloadRequest = PRDownloader.download(url, path, adminUrl.substring(adminUrl.lastIndexOf("/"))).build();
-        downloadRequest.setOnPauseListener(new OnPauseListener() {
-            @Override
-            public void onPause() {
-
-            }
-        }).setOnProgressListener(new OnProgressListener() {
-            @Override
-            public void onProgress(Progress progress) {
-                int value = (int) (100 * progress.currentBytes / progress.totalBytes);
-                progressCircula.setProgress(value);
-                percentDone.setText(String.valueOf(value) + "%");
-
-            }
-        }).setOnStartOrResumeListener(new OnStartOrResumeListener() {
-            @Override
-            public void onStartOrResume() {
-
-            }
-        });
-        downloadId = downloadRequest.start(new OnDownloadListener() {
-            @Override
-            public void onDownloadComplete() {
-                SharedPrefUtils.getSharedPrefEditor(SharedPrefUtils.PREF_APP).remove("downloadId**" + movies.getMovie_desc()).apply();
-                progressCircula.setVisibility(View.GONE);
-                percentDone.setVisibility(View.GONE);
-                lottieAnimationView.setAnimation(R.raw.play_main2);
-                lottieAnimationView.setRepeatCount(0);
-                lottieAnimationView.playAnimation();
-
-                Picasso.get().load(movies.getMovie_preview())
-                        .into(((ImageView) itemView.findViewById(R.id.preview)));
-                ((TextView) itemView.findViewById(R.id.totalSize)).setTextColor(getResources().getColor(android.R.color.holo_green_dark));
-
-
-            }
-
-            @Override
-            public void onError(Error error) {
-
-            }
-        });
-        SharedPrefUtils.saveData("downloadId**" + movies.getMovie_desc(), downloadId);
-
-    }
-
-
-    @Override
-    public void onRemoveClick(Movies movies, View viewHolder) {
-        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
-        sweetAlertDialog.setCancelText("بله");
-        sweetAlertDialog.setConfirmText("خیر");
-        sweetAlertDialog.show();
     }
 
 }

@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcel;
 import android.view.View;
@@ -16,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -91,6 +91,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
 
     private TextView priceBtn;
     private TextView call;
+    private CardView voice_card_view;
     Goood goood;
     private ExtensiblePageIndicator extensiblePageIndicator;
     String audioAddress;
@@ -116,12 +117,14 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
             }
         }
     };
+    private static final String TAG = "ShowGoodDetailActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_good_detail);
         initViews();
+
         sbProgress.setEnabled(false);
 
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -132,70 +135,73 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         binder(goood);
         initViewPager();
 
+        if (goood.getVoice().trim().length() > 0) {
+            audioAddress = context.getExternalFilesDir("voice/mp3").getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
 
-        audioAddress = context.getExternalFilesDir("voice/mp3").getAbsolutePath() + goood.getVoice().substring(goood.getVoice().lastIndexOf("/"));
-
-        String url = goood.getVoice();
-        File file = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
-        if (file.exists() && file.length() == goood.getFileSize()) {
-            mediaPlayer = MediaPlayer.create(Application.getContext(), Uri.parse(audioAddress));
-            mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                @Override
-                public void onCompletion(MediaPlayer mp) {
-                    seekBarUpdater = new SeekBarUpdater();
-                    mediaPlayer.seekTo(0);
-                    ltPlayPause.setProgress(0);
-                    lottieAnimationView.pauseAnimation();
-                    lottieAnimationView.setProgress(0);
-                    ltPlayPause.setAnimation(R.raw.pplt);
-                    if (mediaPlayer.isPlaying()) {
-                        sbProgress.postDelayed(seekBarUpdater, 100);
-                        ltPlayPause.setSpeed(-3f);
-                    } else {
-                        sbProgress.removeCallbacks(seekBarUpdater);
-                        ltPlayPause.setSpeed(3);
+            String url = goood.getVoice();
+            File file = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")));
+            if (file.exists() && file.length() == goood.getFileSize()) {
+                mediaPlayer = MediaPlayer.create(Application.getContext(), Uri.parse(audioAddress));
+                mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mp) {
+                        seekBarUpdater = new SeekBarUpdater();
+                        mediaPlayer.seekTo(0);
+                        ltPlayPause.setProgress(0);
+                        lottieAnimationView.pauseAnimation();
+                        lottieAnimationView.setProgress(0);
+                        ltPlayPause.setAnimation(R.raw.pplt);
+                        if (mediaPlayer.isPlaying()) {
+                            sbProgress.postDelayed(seekBarUpdater, 100);
+                            ltPlayPause.setSpeed(-3f);
+                        } else {
+                            sbProgress.removeCallbacks(seekBarUpdater);
+                            ltPlayPause.setSpeed(3);
+                        }
                     }
+                });
+
+                progressCirculaSound.setVisibility(View.GONE);
+                percentDone.setVisibility(View.GONE);
+                startDownload.setVisibility(View.GONE);
+                ltPlayPause.setVisibility(View.VISIBLE);
+                ltPlayPause.setAnimation(R.raw.pplt);
+                ltPlayPause.setProgress(0f);
+                sbProgress.setEnabled(false);
+            }
+
+            File tmpFile = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
+            if (tmpFile.exists()) {
+                sbProgress.setEnabled(false);
+                progressCirculaSound.setVisibility(View.VISIBLE);
+                percentDone.setVisibility(View.VISIBLE);
+                startDownload.setAlpha(0f);
+
+                ltPlayPause.setVisibility(View.GONE);
+                int progress = (int) (tmpFile.length() * 100 / goood.getFileSize());
+
+                progressCirculaSound.stopRotation();
+                progressCirculaSound.setProgress(progress);
+                progressCirculaSound.setSpeed(0f);
+                String text = progress + "%";
+                percentDone.setText(text);
+            }
+
+
+            startDownload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    playManager(goood);
                 }
             });
 
-            progressCirculaSound.setVisibility(View.GONE);
-            percentDone.setVisibility(View.GONE);
-            startDownload.setVisibility(View.GONE);
-            ltPlayPause.setVisibility(View.VISIBLE);
-            ltPlayPause.setAnimation(R.raw.pplt);
-            ltPlayPause.setProgress(0f);
-            sbProgress.setEnabled(false);
+            ltPlayPause.setOnClickListener(this);
+            sbProgress.setOnSeekBarChangeListener(this);
+
         }
-
-        File tmpFile = new File(context.getExternalFilesDir("voice/mp3").getAbsolutePath() + url.substring(url.lastIndexOf("/")) + ".temp");
-        if (tmpFile.exists()) {
-            sbProgress.setEnabled(false);
-            progressCirculaSound.setVisibility(View.VISIBLE);
-            percentDone.setVisibility(View.VISIBLE);
-            startDownload.setAlpha(0f);
-
-            ltPlayPause.setVisibility(View.GONE);
-            int progress = (int) (tmpFile.length() * 100 / goood.getFileSize());
-
-            progressCirculaSound.stopRotation();
-            progressCirculaSound.setProgress(progress);
-            progressCirculaSound.setSpeed(0f);
-            String text = progress + "%";
-            percentDone.setText(text);
-        }
-
-
-        startDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                playManager(goood);
-            }
-        });
+        initComponent();
         call.setOnClickListener(this);
 
-        ltPlayPause.setOnClickListener(this);
-        sbProgress.setOnSeekBarChangeListener(this);
-        initComponent();
     }
 
 
@@ -234,6 +240,7 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
         stateText = findViewById(R.id.state_text);
         parent = findViewById(R.id.parent);
         desc = findViewById(R.id.desc);
+        voice_card_view = findViewById(R.id.voice_card_view);
 
         priceBtn = findViewById(R.id.price);
         call = findViewById(R.id.call);
@@ -368,6 +375,9 @@ public class ShowGoodDetailActivity extends AppCompatActivity implements View.On
     }
 
     void binder(Goood goood) {
+        if (goood.getVoice().trim().length() == 0) {
+            voice_card_view.setVisibility(View.GONE);
+        }
         imSen1.setVisibility(goood.getSentence_1().length() > 0 ? View.VISIBLE : View.GONE);
         imSen2.setVisibility(goood.getSentence_2().length() > 0 ? View.VISIBLE : View.GONE);
         imSen3.setVisibility(goood.getSentence_3().length() > 0 ? View.VISIBLE : View.GONE);

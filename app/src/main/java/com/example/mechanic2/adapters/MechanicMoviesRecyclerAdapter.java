@@ -43,7 +43,7 @@ public class MechanicMoviesRecyclerAdapter extends RecyclerView.Adapter<Mechanic
     @NonNull
     @Override
     public AdminViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_mechanic_movie, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_web_view, parent, false);
         return new AdminViewHolder(view);
     }
 

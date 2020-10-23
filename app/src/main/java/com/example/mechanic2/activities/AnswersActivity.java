@@ -287,7 +287,7 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                         RelativeLayout contactUs = view.findViewById(R.id.btn_contact_us);
                         contactUs.setVisibility(View.GONE);
 
-                        SweetAlertDialog sweetAlertDialogGoodNotExist = new SweetAlertDialog(AnswersActivity.this,SweetAlertDialog.PROGRESS_TYPE).hideConfirmButton()
+                        SweetAlertDialog sweetAlertDialogGoodNotExist = new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.PROGRESS_TYPE).hideConfirmButton()
                                 .setCustomView(view);
                         sweetAlertDialogGoodNotExist.setCancelable(true);
                         sweetAlertDialogGoodNotExist.show();
@@ -296,11 +296,31 @@ public class AnswersActivity extends AppCompatActivity implements View.OnClickLi
                             @Override
                             public void onResponse(Call<String> call, Response<String> response) {
                                 sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                                SweetAlertDialog sweetAlertDialog1 = new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                                sweetAlertDialog1.hideConfirmButton();
+                                sweetAlertDialog1.setTitle("گزارش شما با موفقیت ثبت گردید.");
+                                sweetAlertDialog1.show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        sweetAlertDialog1.dismissWithAnimation();
+                                    }
+                                }, 1500);
                             }
 
                             @Override
                             public void onFailure(Call<String> call, Throwable t) {
                                 sweetAlertDialogGoodNotExist.dismissWithAnimation();
+                                SweetAlertDialog sweetAlertDialog1 = new SweetAlertDialog(AnswersActivity.this, SweetAlertDialog.SUCCESS_TYPE);
+                                sweetAlertDialog1.hideConfirmButton();
+                                sweetAlertDialog1.setTitle("گزارش شما با موفقیت ثبت گردید.");
+                                sweetAlertDialog1.show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        sweetAlertDialog1.dismissWithAnimation();
+                                    }
+                                }, 1500);
                             }
                         });
 

@@ -247,10 +247,7 @@ public class AdminFragment extends Fragment implements OnClickListener {
                             isLoading = false;
                         }
                     }
-                    Intent intent = new Intent(getString(R.string.dc));
-                    intent.putExtra("ref", "qsf");
-                    LocalBroadcastManager.getInstance(AdminFragment.this.getContext()).sendBroadcast(intent);
-                    adapter = new NewAdminAdapter(getContext(), tmpModels, AdminFragment.this);
+                   adapter = new NewAdminAdapter(getContext(), tmpModels, AdminFragment.this);
                     recyclerAdmin.setAdapter(adapter);
 
                 }

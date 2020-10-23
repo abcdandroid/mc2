@@ -568,9 +568,6 @@ public class QuestionFragment extends Fragment implements View.OnClickListener, 
 
                         }
                     }
-                    Intent intent = new Intent("dataCount");
-                    intent.putExtra("ref", "qsf");
-                    LocalBroadcastManager.getInstance(QuestionFragment.this.getContext()).sendBroadcast(intent);
                     adapter = new QuestionRecyclerAdapter(tmpQuestions, getActivity());
                     recyclerQuestion.setAdapter(adapter);
 

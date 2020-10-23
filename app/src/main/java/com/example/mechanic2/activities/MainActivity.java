@@ -29,6 +29,7 @@ import com.example.mechanic2.app.Application;
 import com.example.mechanic2.app.SharedPrefUtils;
 import com.example.mechanic2.app.app;
 import com.example.mechanic2.fragments.AdminFragment;
+import com.example.mechanic2.fragments.AdminWebViewFragment;
 import com.example.mechanic2.fragments.MainPageFragment;
 import com.example.mechanic2.fragments.MechanicFragment;
 import com.example.mechanic2.fragments.QuestionFragment;
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
+        //setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     app.loadFragment(this, new MechanicFragment());
                     break;
                 case R.id.home:
-                    app.loadFragment(this, new AdminFragment());
+                    app.loadFragment(this, new AdminWebViewFragment());
                     break;
                 case R.id.questions:
                     app.loadFragment(this, new QuestionFragment());

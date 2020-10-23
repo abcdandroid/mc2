@@ -38,6 +38,10 @@ public interface Api {
     @GET(".")
     Call<List<AdminMedia>> getAdminMediaInList(@QueryMap Map<String, String> map);
 
+
+    @GET(".")
+    Call<List<Job>> getWebMediaInList(@QueryMap Map<String, String> map);
+
     @GET(".")
     Call<List<Good>> getGoodList(@QueryMap Map<String, String> map);
 
